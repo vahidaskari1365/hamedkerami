@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Reveal } from "@/components/cinematic";
 import { PageHero } from "@/components/pages/about";
 import { BeforeAfter } from "@/components/before-after";
-import { BEFORE_AFTER, GALLERY_CATS, GALLERY_CASES, VIDEOS } from "@/lib/data";
+import { BEFORE_AFTER, GALLERY_CATS, GALLERY_CASES, PORTFOLIO_COVERS, VIDEOS } from "@/lib/data";
 
 export function GalleryPage() {
   const [cat, setCat] = useState("همه");
@@ -47,6 +47,56 @@ export function GalleryPage() {
               />
             </Reveal>
           </div>
+        </div>
+      </section>
+
+      {/* portfolio covers — کاور نمونه کارها */}
+      <section className="bg-ink py-20 text-white" aria-label="کاور نمونه کارها">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <Reveal className="flex flex-wrap items-end justify-between gap-6">
+            <div className="max-w-2xl">
+              <h2 className="text-2xl font-black sm:text-3xl">کاور نمونه کارها</h2>
+              <p className="mt-3 text-sm leading-7 text-white/60">
+                مجموعه کاور نتایج جراحی های ارتوگناتیک فک و صورت (قبل و بعد) — از استوری های
+                اینستاگرام دکتر کرمانی.
+              </p>
+            </div>
+            <a
+              href="https://www.instagram.com/dr.hamedkermani.omfs/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-white/10 px-6 py-3 text-xs font-bold text-white ring-1 ring-white/20 transition hover:bg-teal hover:ring-teal"
+            >
+              مشاهده اینستاگرام
+            </a>
+          </Reveal>
+        </div>
+        <div className="thin-scrollbar mt-12 flex gap-5 overflow-x-auto px-4 pb-4 sm:px-6 lg:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]">
+          {PORTFOLIO_COVERS.map((c, i) => (
+            <motion.figure
+              key={c.src}
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: Math.min(i * 0.05, 0.4), ease: [0.22, 1, 0.36, 1] }}
+              className="group relative w-56 shrink-0 cursor-zoom-in sm:w-64"
+              onClick={() => setLightbox(c.src)}
+            >
+              <div className="relative aspect-[9/16] overflow-hidden rounded-2xl bg-ink-3 ring-1 ring-white/10 transition group-hover:ring-teal/50">
+                <Image
+                  src={c.src}
+                  alt={`${c.title} — نمونه کار جراحی فک و صورت دکتر کرمانی`}
+                  fill
+                  sizes="256px"
+                  className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
+                <figcaption className="absolute bottom-0 right-0 left-0 p-4 text-xs font-extrabold text-white">
+                  {c.title}
+                </figcaption>
+              </div>
+            </motion.figure>
+          ))}
         </div>
       </section>
 
@@ -146,9 +196,16 @@ export function GalleryPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.92, opacity: 0 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="relative aspect-[4/3] w-full max-w-4xl overflow-hidden rounded-2xl"
+              className="relative max-h-[80vh] w-full max-w-4xl overflow-hidden rounded-2xl"
             >
-              <Image src={lightbox} alt="نمایش کامل تصویر گالری" fill sizes="90vw" className="object-contain" />
+              <Image
+                src={lightbox}
+                alt="نمایش کامل تصویر گالری"
+                width={1400}
+                height={1600}
+                className="mx-auto max-h-[80vh] w-auto max-w-full object-contain"
+                priority
+              />
             </motion.div>
             <button
               className="absolute right-6 top-6 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/25 transition hover:bg-white/20"

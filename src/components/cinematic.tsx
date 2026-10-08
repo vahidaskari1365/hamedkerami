@@ -193,7 +193,6 @@ export function PageTransition({
       initial="enter"
       animate="center"
       exit="exit"
-      mode="wait"
       className="min-h-[70vh]"
     >
       {children}

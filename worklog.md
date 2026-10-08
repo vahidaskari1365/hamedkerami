@@ -1,6 +1,29 @@
 # Worklog
 
 ---
+Task ID: 4
+Agent: main
+Task: Add doctor's portfolio file (Downloads.rar) + certificates + old logo + remaining dromfs content
+
+Work Log:
+- First upload (build-btc6 zip) was wrong file (BTC prediction app, no images); user sent Downloads.rar
+- Extracted 38 JPGs -> 31 unique (md5 dedupe); classified by watermark: 15 covers = Dr. Kermani (skull logo), 16 = Dr. Pedram Bakhshaie (S logo) -> EXCLUDED Pedram's to avoid credit misattribution
+- Downloaded 23 missing dromfs.com images via wsrv.nl proxy (11 framed certificates IMG_6500-6519, surgery/clinic photos DSC_0476, ghjDSC_0416, portraits, 6 educational case posts)
+- Processed all: covers 810x1440 q80 -> public/images/covers/ (15), certificates 1100px q85 -> public/images/certificates/ (11), clinic -> public/images/clinic/ (4), cases -> public/images/cases/ (6)
+- data.ts: added PORTFOLIO_COVERS (15), CERTIFICATES (11 with Persian titles), extended GALLERY_CASES (+9), GALLERY_CATS (+جراحی های داخل دهان، کلینیک و اتاق عمل)
+- About page: new "مدارک و گواهینامه ها" section (3-col grid, keyboard-accessible, lightbox with max-h 78vh)
+- Gallery page: new "کاور نمونه کارها" horizontal 9:16 scroll strip + lightbox; fixed lightbox for portrait images (max-h 80vh)
+- Logo: generated favicon set (32/48/192/512/apple) from old logo.png; metadata.icons added; navbar/footer logo now object-cover badge (skull visible, no white circle)
+- Fixed pre-existing TS error in cinematic.tsx (mode="wait" on motion.main)
+- Verified: tsc src clean, eslint clean, certificates render (11), covers strip + lightbox OK, clinic filter (4 items), mobile 390px OK, favicon links in HTML, zero console errors
+
+Stage Summary:
+- All doctor's portfolio covers (his watermark only) live in gallery
+- Certificates section restored (was on old site's about page, missing from rebuild)
+- Old logo now favicon + clean circular badge in navbar/footer
+- Remaining dromfs content (clinic photos, educational posts) transferred
+
+---
 Task ID: 3
 Agent: main
 Task: Remove film-grain (برفک/static) effect from site

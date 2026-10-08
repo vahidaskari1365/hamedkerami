@@ -309,11 +309,62 @@ export const GALLERY_CASES = [
   { src: "/images/case-10.jpg", cat: "ایمپلنت", title: "کاشت دندان بدون برش جراحی" },
   { src: "/images/case-11.jpg", cat: "ایمپلنت", title: "کاشت دندان در بهترین مطب تهران" },
   { src: "/images/case-12.jpg", cat: "ایمپلنت", title: "کاشت دندان های جلو" },
+  { src: "/images/cases/case-bimax.jpg", cat: "ارتوسرجری", title: "جراحی دو فک (بایمکس)" },
+  { src: "/images/cases/case-bimax-2.jpg", cat: "ارتوسرجری", title: "جراحی دو فک — قبل و بعد" },
+  { src: "/images/cases/case-profile.jpg", cat: "ارتوسرجری", title: "آنالیز پروفایل قبل از جراحی" },
+  { src: "/images/cases/case-nerve-anatomy.jpg", cat: "جراحی های داخل دهان", title: "آناتومی عصب آلوئولار در جراحی ایمپلنت" },
+  { src: "/images/cases/case-mandible.jpg", cat: "جراحی های داخل دهان", title: "آناتومی فک پایین — کانال مندیبولار" },
+  { src: "/images/cases/case-sinus-lift.jpg", cat: "ایمپلنت", title: "سینوس لیفت و ایمپلنت" },
   { src: "/images/before-after-main.jpg", cat: "قبل و بعد", title: "جراحی فک و صورت - قبل و بعد" },
-  { src: "/images/dr-profile.jpg", cat: "کlinic", title: "دکتر حامد کرمانی" },
+  { src: "/images/clinic/surgery-1.jpg", cat: "کلینیک و اتاق عمل", title: "جراحی فک و صورت در اتاق عمل" },
+  { src: "/images/clinic/surgery-2.jpg", cat: "کلینیک و اتاق عمل", title: "تیم جراحی در حال عمل" },
+  { src: "/images/clinic/dr-portrait.jpg", cat: "کلینیک و اتاق عمل", title: "دکتر حامد کرمانی" },
+  { src: "/images/clinic/dr-formal.jpg", cat: "کلینیک و اتاق عمل", title: "دکتر حامد کرمانی" },
 ];
 
-export const GALLERY_CATS = ["همه", "ارتوسرجری", "جنیوپلاستی", "ایمپلنت", "قبل و بعد"];
+export const GALLERY_CATS = [
+  "همه",
+  "ارتوسرجری",
+  "جنیوپلاستی",
+  "ایمپلنت",
+  "جراحی های داخل دهان",
+  "قبل و بعد",
+  "کلینیک و اتاق عمل",
+];
+
+/* کاور نمونه کارهای جراحی (استوری اینستاگرام دکتر کرمانی) */
+export const PORTFOLIO_COVERS = [
+  { src: "/images/covers/cover-01.jpg", title: "جراحی دو فک (بایمکس)" },
+  { src: "/images/covers/cover-02.jpg", title: "جراحی ارتوگناتیک فک" },
+  { src: "/images/covers/cover-03.jpg", title: "جراحی دو فک و جنیوپلاستی" },
+  { src: "/images/covers/cover-04.jpg", title: "اصلاح پروفایل فک و چانه" },
+  { src: "/images/covers/cover-05.jpg", title: "جراحی ارتوگناتیک — نمای روبرو" },
+  { src: "/images/covers/cover-06.jpg", title: "جراحی ارتوگناتیک فک و صورت" },
+  { src: "/images/covers/cover-07.jpg", title: "جراحی فک — نمای پروفایل" },
+  { src: "/images/covers/cover-08.jpg", title: "جراحی دو فک" },
+  { src: "/images/covers/cover-09.jpg", title: "جراحی فک و صورت" },
+  { src: "/images/covers/cover-10.jpg", title: "جراحی ارتوگناتیک" },
+  { src: "/images/covers/cover-11.jpg", title: "جنیوپلاستی و بایمکس" },
+  { src: "/images/covers/cover-12.jpg", title: "جراحی فک بالا و پایین" },
+  { src: "/images/covers/cover-13.jpg", title: "جراحی ارتوگناتیک فک" },
+  { src: "/images/covers/cover-14.jpg", title: "جراحی دو فک" },
+  { src: "/images/covers/cover-15.jpg", title: "جراحی ارتوگناتیک — پروفایل" },
+];
+
+/* مدارک و گواهینامه های دکتر کرمانی — منتقل شده از صفحه درباره ما dromfs.com */
+export const CERTIFICATES = [
+  { src: "/images/certificates/cert-01.jpg", title: "کارگاه جراحی اندوسکوپیک سینوس — مشهد ۱۳۹۸" },
+  { src: "/images/certificates/cert-02.jpg", title: "گواهینامه رتبه نخست آزمون تخصصی" },
+  { src: "/images/certificates/cert-03.jpg", title: "دوره انکولوژی و بازسازی فک و صورت — بیمارستان نهم شانگهای، چین ۱۳۹۸" },
+  { src: "/images/certificates/cert-04.jpg", title: "دوره AOCMF اصول مدیریت شکستگی های کرانیومکزیفال — تبریز ۱۳۹۴" },
+  { src: "/images/certificates/cert-05.jpg", title: "دوره AOCMF پیشرفت های جراحی و بازسازی فک و صورت — شیراز ۱۳۹۴" },
+  { src: "/images/certificates/cert-06.jpg", title: "مدرک بورد تخصصی جراحی فک و صورت" },
+  { src: "/images/certificates/cert-07.jpg", title: "دومین دوره بازآموزی American OMS — استانبول ۱۳۹۸" },
+  { src: "/images/certificates/cert-08.jpg", title: "گواهینامه انجمن اروپایی جراحی کرانیومکزیوفاسیال (EACMFS)" },
+  { src: "/images/certificates/cert-09.jpg", title: "دوره AOCMF با نمونه های آناتومیک — لایپزیگ، آلمان ۱۳۹۴" },
+  { src: "/images/certificates/cert-10.jpg", title: "گواهینامه جراحی های زیبایی و لیزر" },
+  { src: "/images/certificates/cert-11.jpg", title: "دوره AOCMF عوارض و درمان مبتنی بر شواهد — فنلاند ۱۳۹۶" },
+];
 
 export const VIDEOS = {
   aparat: "https://www.aparat.com/dromfs",

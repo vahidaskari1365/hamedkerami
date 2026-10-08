@@ -13,8 +13,8 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3">
-              <span className="relative h-14 w-14 overflow-hidden rounded-full bg-white p-1.5">
-                <Image src="/images/logo.png" alt="لوگوی دکتر حامد کرمانی" fill sizes="56px" className="object-contain p-1" />
+              <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full ring-1 ring-white/20">
+                <Image src="/images/logo.png" alt="لوگوی دکتر حامد کرمانی" fill sizes="56px" className="object-cover" />
               </span>
               <div>
                 <p className="text-lg font-extrabold">دکتر حامد کرمانی</p>

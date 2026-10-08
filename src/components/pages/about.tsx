@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { Counter, Parallax, Reveal } from "@/components/cinematic";
 import { Link } from "@/components/hash-router";
-import { BIO, EDUCATION, STATS, SUCCESS_RATES, SITE, TEAM } from "@/lib/data";
+import { BIO, CERTIFICATES, EDUCATION, STATS, SUCCESS_RATES, SITE, TEAM } from "@/lib/data";
 
 export function PageHero({
   eyebrow,
@@ -53,6 +55,8 @@ export function PageHero({
 }
 
 export function AboutPage() {
+  const [cert, setCert] = useState<{ src: string; title: string } | null>(null);
+
   return (
     <>
       <PageHero
@@ -130,6 +134,53 @@ export function AboutPage() {
         </div>
       </section>
 
+      {/* certificates — منتقل شده از بخش مدارک و گواهینامه های سایت قبلی */}
+      <section className="bg-bone py-20" aria-label="مدارک و گواهینامه ها">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <Reveal className="max-w-2xl">
+            <p className="mb-4 flex items-center gap-3 text-sm font-semibold text-teal-3">
+              <span className="h-px w-10 bg-teal-3" aria-hidden />
+              مدارک و گواهینامه ها
+            </p>
+            <h2 className="text-2xl font-black sm:text-3xl">
+              گواهینامه های داخلی و بین المللی دکتر کرمانی
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-foreground/60">
+              مجموعه ای از مدارک، گواهینامه های دوره های تخصصی داخلی و بین المللی و مدرک بورد
+              جراحی فک و صورت — شامل دوره های AOCMF، انکولوژی و بازسازی فک و صورت، جراحی
+              اندوسکوپیک سینوس و جراحی های زیبایی.
+            </p>
+          </Reveal>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {CERTIFICATES.map((c, i) => (
+              <Reveal key={c.src} delay={(i % 3) * 0.08}>
+                <figure
+                  className="group cursor-zoom-in overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-ink/5 transition hover:shadow-xl hover:shadow-ink/10"
+                  onClick={() => setCert(c)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`مشاهده بزرگ: ${c.title}`}
+                  onKeyDown={(e) => e.key === "Enter" && setCert(c)}
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden bg-bone">
+                    <Image
+                      src={c.src}
+                      alt={`${c.title} — گواهینامه دکتر حامد کرمانی`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-[1.1s] ease-out group-hover:scale-105"
+                    />
+                  </div>
+                  <figcaption className="p-4 text-xs font-bold leading-6 text-foreground/75">
+                    {c.title}
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* stats band */}
       <section className="bg-ink py-16 text-white" aria-label="آمار جراحی ها">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 text-center sm:px-6 lg:grid-cols-4">
@@ -189,6 +240,51 @@ export function AboutPage() {
           </Reveal>
         </div>
       </section>
+
+      {/* certificate lightbox */}
+      <AnimatePresence>
+        {cert && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[110] flex items-center justify-center bg-ink/92 p-6 backdrop-blur-sm"
+            onClick={() => setCert(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`گواهینامه: ${cert.title}`}
+          >
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.94, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-4xl"
+            >
+              <div className="relative max-h-[78vh] w-full overflow-hidden rounded-2xl bg-white">
+                <Image
+                  src={cert.src}
+                  alt={cert.title}
+                  width={1100}
+                  height={1500}
+                  className="mx-auto max-h-[78vh] w-auto object-contain"
+                  priority
+                />
+              </div>
+              <p className="mt-4 text-center text-sm font-bold text-white/85">{cert.title}</p>
+            </motion.div>
+            <button
+              className="absolute right-6 top-6 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/25 transition hover:bg-white/20"
+              onClick={() => setCert(null)}
+              aria-label="بستن"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
