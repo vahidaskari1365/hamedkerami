@@ -1,6 +1,21 @@
 # Worklog
 
 ---
+Task ID: 3
+Agent: main
+Task: Remove film-grain (برفک/static) effect from site
+
+Work Log:
+- User reported برفک (TV-static noise) on site — it was the cinematic film-grain overlay (.film-grain::after with SVG feTurbulence fractalNoise + grain keyframes)
+- Removed .film-grain::after block and @keyframes grain from src/app/globals.css; cleaned its reference in prefers-reduced-motion block
+- Removed film-grain class from root div in src/components/app-shell.tsx
+- Verified via grep: zero grain/noise/feTurbulence references remain in src/
+- Verified in browser: ::after content is none, homepage screenshot clean, no console errors
+
+Stage Summary:
+- Film-grain static effect fully removed from all pages; all other cinematic effects (Ken Burns, parallax, reveals, marquee, counters) retained
+
+---
 Task ID: 2
 Agent: main
 Task: Build new Next.js website for Dr. Hamed Kermani (dromfs.com redesign)

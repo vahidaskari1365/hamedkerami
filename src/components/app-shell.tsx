@@ -89,7 +89,7 @@ function FloatingActions() {
 export function AppShell() {
   return (
     <HashRouter>
-      <div className="film-grain flex min-h-screen flex-col">
+      <div className="flex min-h-screen flex-col">
         <ScrollProgress />
         <Navbar />
         <Pages />
