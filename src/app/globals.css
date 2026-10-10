@@ -240,6 +240,41 @@ html {
 .thin-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .thin-scrollbar::-webkit-scrollbar-thumb { background: #0f8a8d55; border-radius: 3px; }
 
+/* ============ 3D ring carousel — portfolio covers ============ */
+.ring-stage {
+  touch-action: pan-y;
+  cursor: grab;
+  outline: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ring-stage:focus-visible {
+  box-shadow: 0 0 0 2px #0f8a8d, 0 0 40px -8px #0f8a8d66;
+  border-radius: 2rem;
+}
+.ring-stage.dragging { cursor: grabbing; }
+.ring-card {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.55s ease;
+  will-change: transform, opacity;
+}
+.ring-card.is-active {
+  z-index: 30;
+  filter: brightness(1.1) saturate(1.06);
+}
+.ring-card.is-active figure {
+  box-shadow:
+    0 44px 90px -28px rgba(0, 0, 0, 0.8),
+    0 0 0 1.5px rgba(15, 138, 141, 0.65);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ring-card { transition-duration: 0.2s; }
+}
+
 /* Persian digits utility */
 .persian-nums {
   font-variant-numeric: normal;

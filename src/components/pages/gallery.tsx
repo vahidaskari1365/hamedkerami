@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Reveal } from "@/components/cinematic";
 import { PageHero } from "@/components/pages/about";
 import { BeforeAfter } from "@/components/before-after";
+import { CoverCarousel } from "@/components/cover-carousel";
 import { BEFORE_AFTER, GALLERY_CATS, GALLERY_CASES, PORTFOLIO_COVERS, VIDEOS } from "@/lib/data";
 
 export function GalleryPage() {
@@ -71,33 +72,7 @@ export function GalleryPage() {
             </a>
           </Reveal>
         </div>
-        <div className="thin-scrollbar mt-12 flex gap-5 overflow-x-auto px-4 pb-4 sm:px-6 lg:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]">
-          {PORTFOLIO_COVERS.map((c, i) => (
-            <motion.figure
-              key={c.src}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: Math.min(i * 0.05, 0.4), ease: [0.22, 1, 0.36, 1] }}
-              className="group relative w-56 shrink-0 cursor-zoom-in sm:w-64"
-              onClick={() => setLightbox(c.src)}
-            >
-              <div className="relative aspect-[9/16] overflow-hidden rounded-2xl bg-ink-3 ring-1 ring-white/10 transition group-hover:ring-teal/50">
-                <Image
-                  src={c.src}
-                  alt={`${c.title} — نمونه کار جراحی فک و صورت دکتر کرمانی`}
-                  fill
-                  sizes="256px"
-                  className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
-                <figcaption className="absolute bottom-0 right-0 left-0 p-4 text-xs font-extrabold text-white">
-                  {c.title}
-                </figcaption>
-              </div>
-            </motion.figure>
-          ))}
-        </div>
+        <CoverCarousel covers={PORTFOLIO_COVERS} onSelect={setLightbox} />
       </section>
 
       {/* filterable grid */}
