@@ -97,6 +97,11 @@
   --color-sand: #c8b48c;
 }
 
+/* framer-motion useScroll: scroll container (scrollingElement) must be non-static */
+html {
+  position: relative;
+}
+
 :root {
   --radius: 0.5rem;
   --background: #f6f5f1;
@@ -240,10 +245,112 @@
   font-variant-numeric: normal;
 }
 
+/* ============ Magic UI animations (adapted for brand) ============ */
+
+/* Aurora gradient text */
+@keyframes aurora {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.aurora-text {
+  background-size: 220% auto;
+  animation: aurora 9s ease-in-out infinite;
+}
+
+/* Shiny text sweep */
+@keyframes shiny-text {
+  0% { background-position: calc(var(--shiny-width) * -1) 0; }
+  100% { background-position: calc(var(--shiny-width) * 2.5) 0; }
+}
+.shiny-text {
+  --shiny-width: 120px;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    var(--shiny-color, rgba(15, 138, 141, 0.9)) 50%,
+    transparent 80%
+  );
+  background-size: var(--shiny-width) 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-repeat: no-repeat;
+  animation: shiny-text 3.2s cubic-bezier(0.6, 0.6, 0, 1) infinite;
+}
+
+/* Shimmer button — rotating conic spark behind solid backdrop */
+@keyframes spin-around {
+  to { transform: rotate(360deg); }
+}
+.shimmer-spark {
+  position: absolute;
+  inset: -150%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 300deg,
+    var(--shimmer-color, rgba(255, 255, 255, 0.9)) 330deg,
+    transparent 360deg
+  );
+  animation: spin-around var(--shimmer-speed, 3.2s) linear infinite;
+  will-change: transform;
+}
+
+/* Border beam — conic highlight travelling the border ring */
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes beam-rotate {
+  to { --beam-angle: 360deg; }
+}
+.border-beam {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--beam-width, 2px);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg 285deg,
+    var(--beam-color, rgba(15, 138, 141, 0.95)) 330deg,
+    rgba(255, 255, 255, 0.55) 345deg,
+    transparent 360deg
+  );
+  animation: beam-rotate var(--beam-speed, 6s) linear infinite;
+  pointer-events: none;
+}
+
+/* Pulsating halo for CTA */
+@keyframes pulse-halo {
+  0% { box-shadow: 0 0 0 0 rgba(15, 138, 141, 0.45); }
+  70% { box-shadow: 0 0 0 16px rgba(15, 138, 141, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(15, 138, 141, 0); }
+}
+.pulse-cta {
+  animation: pulse-halo 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.pulse-cta-white {
+  animation: pulse-halo-white 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse-halo-white {
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+  70% { box-shadow: 0 0 0 18px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .kenburns,
   .spotlight-sweep::before,
-  .marquee-track {
+  .marquee-track,
+  .aurora-text,
+  .shiny-text,
+  .shimmer-spark,
+  .border-beam,
+  .pulse-cta,
+  .pulse-cta-white {
     animation: none !important;
   }
   html { scroll-behavior: auto; }

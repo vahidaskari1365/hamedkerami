@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { AppShell } from "@/components/app-shell";
+import { PwaRegister } from "@/components/pwa-register";
 import { BLOG_POSTS, FAQ, SITE } from "@/lib/data";
 
 /* ---------------- Metadata: SEO + GEO + AEO ---------------- */
@@ -38,6 +39,12 @@ export const metadata: Metadata = {
   publisher: "دکتر حامد کرمانی",
   alternates: { canonical: "/" },
   category: "Health",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    title: "دکتر حامد کرمانی",
+    statusBarStyle: "black-translucent",
+  },
   icons: {
     icon: [
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
@@ -93,6 +100,7 @@ export const viewport: Viewport = {
   themeColor: "#0d1114",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 /* ---------------- JSON-LD: SEO + AEO + GEO ---------------- */
@@ -222,6 +230,7 @@ export default function RootLayout({
         {JsonLd()}
         {children}
         <Toaster />
+        <PwaRegister />
       </body>
     </html>
   );

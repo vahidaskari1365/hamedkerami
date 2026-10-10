@@ -13,6 +13,16 @@ import {
 import { BeforeAfter } from "@/components/before-after";
 import { Link } from "@/components/hash-router";
 import {
+  AnimatedShinyText,
+  BorderBeam,
+  DotPattern,
+  MagicCard,
+  Particles,
+  PulsatingButton,
+  ShimmerButton,
+  WordRotate,
+} from "@/components/magicui";
+import {
   BIO,
   EDUCATION,
   FAQ,
@@ -64,20 +74,35 @@ function Hero() {
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/30" />
         <div className="absolute inset-0 bg-gradient-to-l from-ink/80 via-transparent to-ink/40" />
+        <DotPattern
+          className="opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+          dotColor="rgba(94, 234, 212, 0.14)"
+          size={26}
+        />
+        <Particles
+          quantity={48}
+          color="#5eead4"
+          maxOpacity={0.4}
+          className="[mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)]"
+        />
       </div>
 
       <div className="relative mx-auto grid w-full max-w-7xl items-end gap-10 px-4 sm:px-6 lg:grid-cols-[1.15fr_0.85fr]">
         {/* copy */}
         <motion.div style={{ y: textY, opacity: fade }}>
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.15 }}
-            className="mb-5 flex items-center gap-3 text-sm font-semibold text-teal"
+            className="mb-5 flex items-center gap-3"
           >
             <span className="h-px w-10 bg-teal" aria-hidden />
-            {HERO.eyebrow}
-          </motion.p>
+            <span className="rounded-full border border-teal/35 bg-teal/10 px-4 py-1.5 text-sm font-semibold text-teal">
+              <AnimatedShinyText shinyWidth={140}>
+                {HERO.eyebrow}
+              </AnimatedShinyText>
+            </span>
+          </motion.div>
 
           <h1 className="text-4xl font-black leading-[1.15] tracking-tight sm:text-6xl lg:text-[4.2rem]">
             <LineReveal lines={HERO.headline} startDelay={0.25} />
@@ -91,6 +116,24 @@ function Hero() {
           >
             {HERO.name} — {HERO.sub}
           </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.85 }}
+            className="mt-3 text-lg font-bold text-white/90 sm:text-xl"
+          >
+            تخصص در {""}
+            <WordRotate
+              words={[
+                "جراحی ارتوگناتیک فک",
+                "جراحی دو فک (بایمکس)",
+                "بلفاروپلاستی",
+                "جنیوپلاستی",
+                "ایمپلنت زایگوماتیک",
+              ]}
+              className="text-teal"
+            />
+          </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -98,16 +141,13 @@ function Hero() {
             transition={{ duration: 0.9, delay: 0.9 }}
             className="mt-9 flex flex-wrap items-center gap-4"
           >
-            <a
+            <ShimmerButton
               href={`tel:${SITE.phone}`}
-              className="group relative overflow-hidden rounded-full bg-teal px-8 py-4 text-base font-bold shadow-xl shadow-teal/30 transition hover:bg-teal-2"
+              ariaLabel="رزرو نوبت و مشاوره — تماس با مطب"
+              className="px-8 py-4 text-base font-bold text-white shadow-xl shadow-teal/30"
             >
-              <span className="relative z-10">رزرو نوبت و مشاوره</span>
-              <span
-                aria-hidden
-                className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 group-hover:translate-x-0"
-              />
-            </a>
+              رزرو نوبت و مشاوره
+            </ShimmerButton>
             <Link
               href="/gallery"
               className="rounded-full border border-white/25 px-8 py-4 text-base font-bold text-white/90 backdrop-blur transition hover:border-teal hover:text-teal"
@@ -142,6 +182,7 @@ function Hero() {
               sizes="(max-width: 1024px) 0px, 384px"
               className="object-cover object-top"
             />
+            <BorderBeam width={2.5} speed={7} />
           </div>
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -338,10 +379,12 @@ function ServicesSection() {
         <Reveal delay={0.1} className="mt-10">
           <div className="grid gap-4 rounded-2xl bg-bone p-6 sm:grid-cols-2 lg:grid-cols-4">
             {SERVICE_EXTRAS.map((x) => (
-              <div key={x.title} className="border-r-2 border-teal/50 pr-4">
-                <p className="text-sm font-extrabold">{x.title}</p>
-                <p className="mt-1 text-xs leading-6 text-foreground/60">{x.desc}</p>
-              </div>
+              <MagicCard key={x.title} className="rounded-xl" surface="var(--color-bone)">
+                <div className="h-full border-r-2 border-teal/50 py-2 pr-4">
+                  <p className="text-sm font-extrabold">{x.title}</p>
+                  <p className="mt-1 text-xs leading-6 text-foreground/60">{x.desc}</p>
+                </div>
+              </MagicCard>
             ))}
           </div>
         </Reveal>
@@ -417,15 +460,21 @@ function SuccessRates() {
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {SUCCESS_RATES.map((s, i) => (
             <Reveal key={s.title} delay={i * 0.1}>
-              <div className="group relative overflow-hidden rounded-2xl border border-ink/8 bg-white p-8 transition-shadow hover:shadow-xl hover:shadow-teal/10">
-                <p className="text-5xl font-black text-teal">{s.rate}</p>
-                <h3 className="mt-4 font-extrabold leading-7">{s.title}</h3>
-                <p className="mt-2 text-sm text-foreground/60">{s.detail}</p>
-                <span
-                  aria-hidden
-                  className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full bg-teal/8 transition-transform duration-500 group-hover:scale-150"
-                />
-              </div>
+              <MagicCard
+                className="h-full rounded-2xl"
+                surface="#ffffff"
+                gradientSize={260}
+              >
+                <div className="relative h-full overflow-hidden rounded-2xl bg-white p-8">
+                  <p className="text-5xl font-black text-teal">{s.rate}</p>
+                  <h3 className="mt-4 font-extrabold leading-7">{s.title}</h3>
+                  <p className="mt-2 text-sm text-foreground/60">{s.detail}</p>
+                  <span
+                    aria-hidden
+                    className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full bg-teal/8 transition-transform duration-500 group-hover:scale-150"
+                  />
+                </div>
+              </MagicCard>
             </Reveal>
           ))}
         </div>
@@ -556,13 +605,13 @@ function CtaSection() {
             ارسال عکس رادیوگرافی و دریافت نظر اولیه، همین حالا تماس بگیرید.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <a
+            <PulsatingButton
               href={`tel:${SITE.phone}`}
-              className="rounded-full bg-white px-9 py-4 text-base font-black text-teal-3 shadow-xl transition hover:bg-bone"
-              dir="ltr"
+              ariaLabel={`تماس با مطب — ${SITE.phoneDisplay}`}
+              className="bg-white px-9 py-4 text-base font-black text-teal-3 shadow-xl transition hover:bg-bone"
             >
-              {SITE.phoneDisplay}
-            </a>
+              <span dir="ltr">{SITE.phoneDisplay}</span>
+            </PulsatingButton>
             <Link
               href="/contact"
               className="rounded-full border border-white/40 px-9 py-4 text-base font-bold transition hover:bg-white/10"

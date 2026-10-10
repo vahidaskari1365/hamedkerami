@@ -1,0 +1,71 @@
+{
+  "name": "دکتر حامد کرمانی | متخصص جراحی فک و صورت",
+  "short_name": "دکتر کرمانی",
+  "description": "وب‌سایت رسمی دکتر حامد کرمانی — متخصص جراحی فک و صورت و فلوشیپ جراحی های کرانیوفیشال؛ جراحی ارتوگناتیک، بایمکس، بلفاروپلاستی، جنیوپلاستی و ایمپلنت در تهران",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "fa-IR",
+  "background_color": "#0d1114",
+  "theme_color": "#0d1114",
+  "categories": ["health", "medical", "lifestyle"],
+  "icons": [
+    {
+      "src": "/pwa-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/pwa-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "رزرو نوبت و مشاوره",
+      "short_name": "رزرو نوبت",
+      "description": "تماس مستقیم با مطب برای رزرو نوبت",
+      "url": "/#/contact",
+      "icons": [{ "src": "/pwa-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "گالری نمونه جراحی ها",
+      "short_name": "گالری",
+      "description": "تصاویر قبل و بعد از جراحی ها",
+      "url": "/#/gallery",
+      "icons": [{ "src": "/pwa-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "تعرفه خدمات",
+      "short_name": "تعرفه ها",
+      "description": "هزینه جراحی فک و ایمپلنت",
+      "url": "/#/costs",
+      "icons": [{ "src": "/pwa-96.png", "sizes": "96x96" }]
+    }
+  ]
+}
