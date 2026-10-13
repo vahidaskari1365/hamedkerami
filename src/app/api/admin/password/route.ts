@@ -14,9 +14,17 @@ export async function PUT(req: NextRequest) {
       current?: string;
       next?: string;
     };
-    if (!current || !next || next.length < 6) {
+    /* حداقل ۸ حرف + ترکیب حرف و عدد */
+    const strong =
+      typeof next === "string" &&
+      next.length >= 8 &&
+      next.length <= 128 &&
+      /[^\s]/.test(next) &&
+      /\p{L}/u.test(next) &&
+      /\p{N}/u.test(next);
+    if (!current || !strong) {
       return NextResponse.json(
-        { ok: false, error: "رمز جدید باید حداقل ۶ حرف باشد" },
+        { ok: false, error: "رمز جدید باید حداقل ۸ حرف و شامل حرف و عدد باشد" },
         { status: 400 }
       );
     }

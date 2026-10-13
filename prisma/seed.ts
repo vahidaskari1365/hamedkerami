@@ -1,5 +1,6 @@
 /* Seed — انتقال کل محتوای data.ts به دیتابیس (فقط جدول‌های خالی) */
 import { PrismaClient } from "@prisma/client";
+import { randomBytes } from "node:crypto";
 import { hashPassword } from "../src/lib/auth";
 import {
   BEFORE_AFTER,
@@ -28,10 +29,17 @@ async function main() {
   console.log("→ seeding…");
 
   if ((await db.adminUser.count()) === 0) {
+    /* رمز تصادفی قوی — فقط یک بار در کنسول سرور چاپ می‌شود، هرگز در کد کامیت نمی‌شود */
+    const adminPassword = `${randomBytes(9).toString("base64url")}9K`;
     await db.adminUser.create({
-      data: { username: "admin", passwordHash: hashPassword("kermani1403") },
+      data: { username: "admin", passwordHash: hashPassword(adminPassword) },
     });
-    console.log("  ✓ admin user (admin / kermani1403)");
+    console.log("  ✓ admin user created");
+    console.log("  ┌──────────────────────────────────────────┐");
+    console.log(`  │  username: admin                          `);
+    console.log(`  │  password: ${adminPassword}  `);
+    console.log("  │  → بعد از اولین ورود رمز را عوض کنید!     │");
+    console.log("  └──────────────────────────────────────────┘");
   }
 
   const setting = async (key: string, value: unknown) => {

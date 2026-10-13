@@ -32,10 +32,13 @@ export async function PUT(req: NextRequest) {
     for (const [key, value] of Object.entries(body)) {
       if (!allowed.includes(key)) continue;
       if (typeof value !== "object" || value === null) continue;
+      const serialized = JSON.stringify(value);
+      /* سقف حجم هر گروه تنظیمات — جلوگیری از پرکردن دیتابیس */
+      if (!serialized || serialized.length > 100 * 1024) continue;
       await db.setting.upsert({
         where: { key },
-        create: { key, value: JSON.stringify(value) },
-        update: { value: JSON.stringify(value) },
+        create: { key, value: serialized },
+        update: { value: serialized },
       });
     }
     return NextResponse.json({ ok: true });

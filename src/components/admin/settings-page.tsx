@@ -160,6 +160,14 @@ export function SettingsPage() {
       toast({ title: "تکرار رمز مطابقت ندارد", variant: "destructive" });
       return;
     }
+    if (pw.next.length < 8 || !/\p{L}/u.test(pw.next) || !/\p{N}/u.test(pw.next)) {
+      toast({
+        title: "رمز جدید کافی قوی نیست",
+        description: "حداقل ۸ حرف و شامل حرف و عدد باشد",
+        variant: "destructive",
+      });
+      return;
+    }
     try {
       const res = await fetch("/api/admin/password", {
         method: "PUT",

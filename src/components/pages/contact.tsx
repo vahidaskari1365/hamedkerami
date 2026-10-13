@@ -27,6 +27,8 @@ export function ContactPage() {
           email: fd.get("email"),
           subject: fd.get("subject"),
           message: fd.get("message"),
+          /* تله‌ی ربات — کاربر واقعی آن را نمی‌بیند و پر نمی‌کند */
+          website: fd.get("website"),
         }),
       });
       if (!res.ok) throw new Error();
@@ -158,6 +160,11 @@ export function ContactPage() {
                 <div className="grid gap-2">
                   <Label htmlFor="message">توضیحات (اختیاری)</Label>
                   <Textarea id="message" name="message" rows={5} placeholder="شرح حال یا سوال خود را بنویسید..." />
+                </div>
+                {/* honeypot — با CSS و tabindex از دید کاربر و اسکرین‌ریدر پنهان است */}
+                <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                  <label htmlFor="website">وبسایت</label>
+                  <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
                 </div>
                 <button
                   type="submit"

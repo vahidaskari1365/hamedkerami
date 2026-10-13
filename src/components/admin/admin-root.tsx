@@ -248,20 +248,16 @@ export function AdminRoot() {
   const [username, setUsername] = useState("admin");
 
   useEffect(() => {
-    /* اگر هیچ مدیری نبود، حساب پیش‌فرض ساخته می‌شود؛ سپس نشست چک می‌شود */
-    fetch("/api/admin/login")
-      .catch(() => {})
-      .finally(() => {
-        fetch("/api/admin/me")
-          .then((r) => (r.ok ? r.json() : Promise.reject()))
-          .then((d) => {
-            if (d.ok) {
-              setUsername(d.username);
-              setAuthed(true);
-            } else setAuthed(false);
-          })
-          .catch(() => setAuthed(false));
-      });
+    /* فقط بررسی نشست فعلی — ساخت حساب ادمین فقط سمت سرور (seed) انجام می‌شود */
+    fetch("/api/admin/me")
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => {
+        if (d.ok) {
+          setUsername(d.username);
+          setAuthed(true);
+        } else setAuthed(false);
+      })
+      .catch(() => setAuthed(false));
   }, []);
 
   if (authed === null) {

@@ -1,4 +1,12 @@
-import { createHmac, randomBytes, scryptSync, timingSafeEqual, createHash } from "node:crypto";
+import {
+  createHmac,
+  randomBytes,
+  scryptSync,
+  timingSafeEqual,
+  createHash,
+} from "node:crypto";
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import path from "node:path";
 
 /* ============================================================
    Auth — مدیر سایت
@@ -6,8 +14,32 @@ import { createHmac, randomBytes, scryptSync, timingSafeEqual, createHash } from
    (مستقل از الیاس‌ها تا اسکریپت seed هم بتواند استفاده کند)
    ============================================================ */
 
-const SECRET =
-  process.env.ADMIN_SECRET || "kermani-omfs-admin-secret-please-set-ADMIN_SECRET";
+/* ---------- رمز امضای نشست ----------
+   ترتیب: متغیر محیطی ADMIN_SECRET → فایل پایدار db/.admin-secret
+   (خارج از مخزن git). هرگز از یک مقدار ثابت کامیت‌شده استفاده نمی‌کنیم
+   چون هر کسی که سورس را ببیند می‌تواند کوکی ادمین جعل کند. */
+function loadOrCreateSecret(): string {
+  const fromEnv = process.env.ADMIN_SECRET;
+  if (fromEnv && fromEnv.length >= 16) return fromEnv;
+
+  try {
+    const dir = path.join(process.cwd(), "db");
+    const file = path.join(dir, ".admin-secret");
+    if (existsSync(file)) {
+      const existing = readFileSync(file, "utf8").trim();
+      if (existing.length >= 32) return existing;
+    }
+    const secret = randomBytes(32).toString("hex");
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(file, secret, { mode: 0o600 });
+    return secret;
+  } catch {
+    /* فایل‌سیستم در دسترس نیست — حداقل یک رمز تصادفی برای این فرایند */
+    return randomBytes(32).toString("hex");
+  }
+}
+
+const SECRET = loadOrCreateSecret();
 
 export const SESSION_COOKIE = "km_admin";
 export const SESSION_TTL_SEC = 60 * 60 * 24 * 7; // ۷ روز
@@ -31,18 +63,38 @@ export function verifyPassword(password: string, stored: string): boolean {
   }
 }
 
+/* هش ساختگی برای برابرکردن زمان پاسخ وقتی کاربر وجود ندارد
+   (جلوگیری از شناسایی نام کاربری معتبر با اندازه‌گیری زمان) */
+const DUMMY_HASH = `s1:${randomBytes(16).toString("hex")}:${randomBytes(64).toString("hex")}`;
+export function dummyVerify(password: string): void {
+  try {
+    verifyPassword(password, DUMMY_HASH);
+  } catch {
+    /* بی‌اهمیت */
+  }
+}
+
+/* ---------- نسخه‌ی رمز (pv) ----------
+   اثر انگشت کوتاه hash رمز فعلی؛ داخل توکن نشست ذخیره می‌شود.
+   با تغییر رمز، همه‌ی نشست‌های قدیمی بلافاصله باطل می‌شوند. */
+export function passwordVersion(passwordHash: string): string {
+  return createHash("sha256").update(passwordHash).digest("hex").slice(0, 12);
+}
+
 /* ---------- توکن نشست ---------- */
 function b64url(input: Buffer | string): string {
   return Buffer.from(input).toString("base64url");
 }
 
-export function signSession(payload: { u: string; exp: number }): string {
+export function signSession(payload: { u: string; exp: number; pv: string }): string {
   const body = b64url(JSON.stringify(payload));
   const sig = createHmac("sha256", SECRET).update(body).digest("base64url");
   return `${body}.${sig}`;
 }
 
-export function verifySession(token: string | undefined | null): { u: string } | null {
+export function verifySession(
+  token: string | undefined | null
+): { u: string; pv: string } | null {
   if (!token) return null;
   const [body, sig] = token.split(".");
   if (!body || !sig) return null;
@@ -54,11 +106,13 @@ export function verifySession(token: string | undefined | null): { u: string } |
     const payload = JSON.parse(Buffer.from(body, "base64url").toString()) as {
       u: string;
       exp: number;
+      pv?: string;
     };
     if (!payload?.u || typeof payload.exp !== "number" || payload.exp * 1000 < Date.now()) {
       return null;
     }
-    return { u: payload.u };
+    /* توکن‌های قدیمی بدون pv — فقط تا پایان مهاجرت معتبر بمانند */
+    return { u: payload.u, pv: typeof payload.pv === "string" ? payload.pv : "" };
   } catch {
     return null;
   }
@@ -80,6 +134,29 @@ export function loginAllowed(key: string): boolean {
 
 export function loginSucceeded(key: string): void {
   attempts.delete(key);
+}
+
+/* ---------- محدودکننده‌ی عمومی نرخ درخواست (در حافظه) ----------
+   پنجره‌ی لغزان ساده برای APIهای عمومی (فرم تماس، آمار بازدید) */
+const buckets = new Map<string, number[]>();
+
+export function rateLimit(key: string, limit: number, windowMs: number): boolean {
+  const now = Date.now();
+  const arr = buckets.get(key) ?? [];
+  const fresh = arr.filter((t) => now - t < windowMs);
+  if (fresh.length >= limit) {
+    buckets.set(key, fresh);
+    return false;
+  }
+  fresh.push(now);
+  buckets.set(key, fresh);
+  /* جلوگیری از رشد بی‌نهایت حافظه */
+  if (buckets.size > 10000) {
+    for (const [k, v] of buckets) {
+      if (v.length === 0 || now - v[v.length - 1] > windowMs) buckets.delete(k);
+    }
+  }
+  return true;
 }
 
 /* ---------- شناسه نشست بازدیدکننده (آمار) ---------- */

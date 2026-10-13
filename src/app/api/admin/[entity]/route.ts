@@ -53,6 +53,13 @@ export async function POST(req: NextRequest, ctx: Ctx) {
     if (errors.length) {
       return NextResponse.json({ ok: false, error: errors.join("، ") }, { status: 400 });
     }
+    /* موجودیت‌های فقط‌خواندنی (مثل پیام‌ها) نباید ردیف خالی بسازند */
+    if (Object.keys(data).length === 0) {
+      return NextResponse.json(
+        { ok: false, error: "داده‌ای برای ذخیره وجود ندارد" },
+        { status: 400 }
+      );
+    }
     const row = await found.delegate.create({ data });
     return NextResponse.json({ ok: true, row });
   } catch (e) {

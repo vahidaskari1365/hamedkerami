@@ -196,23 +196,27 @@ async function JsonLd() {
     })),
   };
 
+  /* جلوگیری از تزریق </script> — کاراکتر < داخل JSON به escape امن تبدیل می‌شود */
+  const safeJsonLd = (obj: unknown) =>
+    JSON.stringify(obj).replace(/</g, "\\u003c");
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(physicianLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(faqLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(servicesLd) }}
       />
     </>
   );
