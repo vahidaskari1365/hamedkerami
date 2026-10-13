@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import { Link, usePathname } from "@/components/hash-router";
-import { NAV, SITE } from "@/lib/data";
+import { useContent } from "@/lib/content-context";
+import { NAV } from "@/lib/data";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 // Link comes from hash-router (preview-safe client routing)
 
 export function Navbar() {
+  const { site: SITE } = useContent();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);

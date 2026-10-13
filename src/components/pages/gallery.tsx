@@ -7,9 +7,16 @@ import { Reveal } from "@/components/cinematic";
 import { PageHero } from "@/components/pages/about";
 import { BeforeAfter } from "@/components/before-after";
 import { CoverCarousel } from "@/components/cover-carousel";
-import { BEFORE_AFTER, GALLERY_CATS, GALLERY_CASES, PORTFOLIO_COVERS, VIDEOS } from "@/lib/data";
+import { useContent } from "@/lib/content-context";
 
 export function GalleryPage() {
+  const {
+    beforeAfter: BEFORE_AFTER,
+    galleryCats: GALLERY_CATS,
+    galleryCases: GALLERY_CASES,
+    portfolioCovers: PORTFOLIO_COVERS,
+    videos: VIDEOS,
+  } = useContent();
   const [cat, setCat] = useState("همه");
   const [lightbox, setLightbox] = useState<string | null>(null);
   const cases = cat === "همه" ? GALLERY_CASES : GALLERY_CASES.filter((c) => c.cat === cat);

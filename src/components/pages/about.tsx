@@ -6,7 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Counter, Parallax, Reveal } from "@/components/cinematic";
 import { Link } from "@/components/hash-router";
-import { BIO, CERTIFICATES, EDUCATION, STATS, SUCCESS_RATES, SITE, TEAM } from "@/lib/data";
+import { useContent } from "@/lib/content-context";
 
 export function PageHero({
   eyebrow,
@@ -55,6 +55,15 @@ export function PageHero({
 }
 
 export function AboutPage() {
+  const {
+    site: SITE,
+    about: BIO,
+    certificates: CERTIFICATES,
+    education: EDUCATION,
+    stats: STATS,
+    successRates: SUCCESS_RATES,
+    team: TEAM,
+  } = useContent();
   const [cert, setCert] = useState<{ src: string; title: string } | null>(null);
 
   return (

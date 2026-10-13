@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { Reveal } from "@/components/cinematic";
 import { PageHero } from "@/components/pages/about";
-import { HOURS, SITE } from "@/lib/data";
+import { useContent } from "@/lib/content-context";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 
 export function ContactPage() {
+  const { site: SITE, hours: HOURS } = useContent();
   const [sending, setSending] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import { Link, usePathname } from "@/components/hash-router";
-import { HOURS, NAV, SITE } from "@/lib/data";
+import { useContent } from "@/lib/content-context";
+import { NAV } from "@/lib/data";
 
 export function Footer() {
+  const { site: SITE, hours: HOURS } = useContent();
   const pathname = usePathname();
   return (
     <footer className="mt-auto bg-ink text-white">

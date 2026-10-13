@@ -13,7 +13,8 @@ import { CostsPage } from "@/components/pages/costs";
 import { GalleryPage } from "@/components/pages/gallery";
 import { BlogPage } from "@/components/pages/blog";
 import { ContactPage } from "@/components/pages/contact";
-import { SITE } from "@/lib/data";
+import { AdminRoot } from "@/components/admin/admin-root";
+import { ContentProvider, useContent } from "@/lib/content-context";
 
 const ROUTE_TITLES: Record<string, string> = {
   "/": "دکتر حامد کرمانی | متخصص جراحی فک و صورت در تهران",
@@ -24,6 +25,21 @@ const ROUTE_TITLES: Record<string, string> = {
   "/blog": "وبلاگ آموزشی جراحی فک و صورت | دکتر حامد کرمانی",
   "/contact": "تماس با ما | رزرو نوبت مطب دکتر حامد کرمانی",
 };
+
+/* ---------- آمار بازدید: هر تغییر مسیر یک view ثبت می‌کند ---------- */
+function Tracker() {
+  const path = usePathname();
+  useEffect(() => {
+    if (path.startsWith("/admin")) return;
+    fetch("/api/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path, referrer: document.referrer || "" }),
+      keepalive: true,
+    }).catch(() => {});
+  }, [path]);
+  return null;
+}
 
 function Pages() {
   const path = usePathname();
@@ -60,6 +76,9 @@ function Pages() {
 
 /* Floating quick-contact actions */
 function FloatingActions() {
+  const path = usePathname();
+  const { site: SITE } = useContent();
+  if (path.startsWith("/admin")) return null;
   return (
     <div className="fixed bottom-5 left-5 z-[85] flex flex-col gap-3">
       <a
@@ -86,16 +105,32 @@ function FloatingActions() {
   );
 }
 
+function Chrome() {
+  const path = usePathname();
+  const isAdmin = path.startsWith("/admin");
+
+  if (isAdmin) {
+    return <AdminRoot />;
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <ScrollProgress />
+      <Navbar />
+      <Pages />
+      <Footer />
+      <FloatingActions />
+    </div>
+  );
+}
+
 export function AppShell() {
   return (
-    <HashRouter>
-      <div className="flex min-h-screen flex-col">
-        <ScrollProgress />
-        <Navbar />
-        <Pages />
-        <Footer />
-        <FloatingActions />
-      </div>
-    </HashRouter>
+    <ContentProvider>
+      <HashRouter>
+        <Tracker />
+        <Chrome />
+      </HashRouter>
+    </ContentProvider>
   );
 }

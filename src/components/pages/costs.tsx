@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Reveal } from "@/components/cinematic";
 import { PageHero } from "@/components/pages/about";
-import { IMPLANT_COSTS, JAW_COSTS, SITE } from "@/lib/data";
+import { useContent } from "@/lib/content-context";
 import {
   Table,
   TableBody,
@@ -52,6 +52,7 @@ function CostTable({
 }
 
 export function CostsPage() {
+  const { site: SITE, jawCosts: JAW_COSTS, implantCosts: IMPLANT_COSTS } = useContent();
   return (
     <>
       <PageHero

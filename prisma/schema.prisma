@@ -15,3 +15,149 @@ model ContactMessage {
   message   String?
   createdAt DateTime @default(now())
 }
+
+/* ---------- ادمین ---------- */
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+/* تنظیمات متنی سایت — key/value با مقدار JSON */
+model Setting {
+  key   String @id
+  value String
+}
+
+/* ---------- آمار بازدید ---------- */
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  referrer  String   @default("")
+  device    String   @default("desktop") // desktop | mobile | tablet
+  browser   String   @default("")
+  sessionId String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path])
+}
+
+/* ---------- محتوای سایت ---------- */
+model Service {
+  id        String  @id @default(cuid())
+  slug      String  @default("")
+  title     String
+  latin     String  @default("")
+  desc      String  @default("")
+  image     String  @default("")
+  points    String  @default("[]") // JSON: array of strings
+  order     Int     @default(0)
+  published Boolean @default(true)
+}
+
+model ServiceExtra {
+  id    String @id @default(cuid())
+  title String
+  desc  String @default("")
+  order Int    @default(0)
+}
+
+model Education {
+  id    String @id @default(cuid())
+  year  String
+  title String
+  place String @default("")
+  order Int    @default(0)
+}
+
+model TeamMember {
+  id    String  @id @default(cuid())
+  name  String
+  role  String  @default("")
+  image String  @default("")
+  order Int     @default(0)
+}
+
+model Stat {
+  id     String @id @default(cuid())
+  value  Int    @default(0)
+  label  String
+  suffix String @default("")
+  order  Int    @default(0)
+}
+
+model SuccessRate {
+  id     String @id @default(cuid())
+  rate   String
+  title  String
+  detail String @default("")
+  order  Int    @default(0)
+}
+
+model CostItem {
+  id       String @id @default(cuid())
+  category String @default("jaw") // jaw | implant
+  item     String
+  price    String
+  order    Int    @default(0)
+}
+
+model BlogPost {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  excerpt   String   @default("")
+  body      String   @default("")
+  cover     String   @default("")
+  date      String   @default("")
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GalleryCase {
+  id    String @id @default(cuid())
+  src   String
+  cat   String @default("")
+  title String @default("")
+  order Int    @default(0)
+}
+
+model PortfolioCover {
+  id    String @id @default(cuid())
+  src   String
+  title String @default("")
+  order Int    @default(0)
+}
+
+model Certificate {
+  id    String @id @default(cuid())
+  src   String
+  title String @default("")
+  order Int    @default(0)
+}
+
+model Faq {
+  id    String @id @default(cuid())
+  q     String
+  a     String @default("")
+  order Int    @default(0)
+}
+
+model Hour {
+  id     String @id @default(cuid())
+  day    String
+  doctor String @default("")
+  time   String @default("")
+  order  Int    @default(0)
+}
+
+model BeforeAfterPair {
+  id     String @id @default(cuid())
+  key    String @unique // bimax | blepharo | main
+  before String
+  after  String
+  label  String @default("")
+}

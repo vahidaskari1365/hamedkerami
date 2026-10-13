@@ -23,26 +23,16 @@ import {
   WordRotate,
 } from "@/components/magicui";
 import {
-  BIO,
-  EDUCATION,
-  FAQ,
-  HERO,
-  SERVICE_EXTRAS,
-  SERVICES,
-  SITE,
-  STATS,
-  SUCCESS_RATES,
-  TEAM,
-} from "@/lib/data";
-import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useContent } from "@/lib/content-context";
 
 /* ================= HERO ================= */
 function Hero() {
+  const { site: SITE, hero: HERO, stats: STATS } = useContent();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -218,7 +208,9 @@ function Hero() {
 }
 
 /* ================= STATS ================= */
+/* ================= STATS ================= */
 function Stats() {
+  const { stats: STATS } = useContent();
   return (
     <section className="relative bg-ink-2 text-white" aria-label="آمار نتایج درمان">
       <Marquee
@@ -249,6 +241,7 @@ function Stats() {
 
 /* ================= ABOUT TEASER ================= */
 function AboutTeaser() {
+  const { services: SERVICES, education: EDUCATION, about: BIO } = useContent();
   return (
     <section className="bg-bone py-24" aria-label="درباره دکتر">
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2">
@@ -315,6 +308,7 @@ function AboutTeaser() {
 
 /* ================= SERVICES ================= */
 function ServicesSection() {
+  const { services: SERVICES, serviceExtras: SERVICE_EXTRAS } = useContent();
   return (
     <section className="bg-white py-24" aria-label="خدمات">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -395,6 +389,7 @@ function ServicesSection() {
 
 /* ================= BEFORE / AFTER ================= */
 function BeforeAfterSection() {
+  const { beforeAfter: BEFORE_AFTER } = useContent();
   return (
     <section className="spotlight-sweep relative overflow-hidden bg-ink py-24 text-white" aria-label="نمونه جراحی های انجام شده">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
@@ -416,15 +411,15 @@ function BeforeAfterSection() {
         <div className="mt-14 grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
             <BeforeAfter
-              before="/images/bimax-before.jpg"
-              after="/images/bimax-after.jpg"
-              label="جراحی دو فک (بایمکس) — دکتر حامد کرمانی"
+              before={BEFORE_AFTER.bimax.before}
+              after={BEFORE_AFTER.bimax.after}
+              label={`${BEFORE_AFTER.bimax.label} — دکتر حامد کرمانی`}
             />
           </Reveal>
           <Reveal delay={0.12}>
             <BeforeAfter
-              before="/images/blepharo-1.jpg"
-              after="/images/blepharo-2.jpg"
+              before={BEFORE_AFTER.blepharo.before}
+              after={BEFORE_AFTER.blepharo.after}
               label="بلفاروپلاستی — نمونه انجام شده"
             />
           </Reveal>
@@ -445,6 +440,7 @@ function BeforeAfterSection() {
 
 /* ================= SUCCESS RATES ================= */
 function SuccessRates() {
+  const { successRates: SUCCESS_RATES, team: TEAM } = useContent();
   return (
     <section className="bg-bone py-24" aria-label="آمار نتایج درمان ها">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -485,6 +481,7 @@ function SuccessRates() {
 
 /* ================= TEAM ================= */
 function TeamSection() {
+  const { team: TEAM, faq: FAQ } = useContent();
   return (
     <section className="bg-white py-24" aria-label="اعضای مجموعه">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -534,6 +531,7 @@ function TeamSection() {
 
 /* ================= FAQ (AEO) ================= */
 function FaqSection() {
+  const { site: SITE, faq: FAQ } = useContent();
   return (
     <section className="bg-bone py-24" aria-label="سوالات متداول">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr]">
@@ -583,6 +581,7 @@ function FaqSection() {
 
 /* ================= CTA ================= */
 function CtaSection() {
+  const { site: SITE } = useContent();
   return (
     <section className="relative overflow-hidden bg-teal-3 py-20 text-white" aria-label="تماس با ما">
       <div

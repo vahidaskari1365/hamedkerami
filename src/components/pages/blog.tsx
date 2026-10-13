@@ -4,9 +4,10 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Reveal } from "@/components/cinematic";
 import { PageHero } from "@/components/pages/about";
-import { BLOG_POSTS, SITE } from "@/lib/data";
+import { useContent } from "@/lib/content-context";
 
 export function BlogPage() {
+  const { site: SITE, blogPosts: BLOG_POSTS } = useContent();
   const [openSlug, setOpenSlug] = useState<string | null>(null);
   const open = BLOG_POSTS.find((p) => p.slug === openSlug);
 

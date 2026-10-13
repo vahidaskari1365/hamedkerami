@@ -5,9 +5,10 @@ import { motion } from "framer-motion";
 import { Reveal } from "@/components/cinematic";
 import { PageHero } from "@/components/pages/about";
 import { Link } from "@/components/hash-router";
-import { SERVICES, SERVICE_EXTRAS, SITE } from "@/lib/data";
+import { useContent } from "@/lib/content-context";
 
 export function ServicesPage() {
+  const { site: SITE, services: SERVICES, serviceExtras: SERVICE_EXTRAS } = useContent();
   return (
     <>
       <PageHero

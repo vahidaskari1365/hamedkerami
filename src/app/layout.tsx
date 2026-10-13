@@ -3,10 +3,12 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { AppShell } from "@/components/app-shell";
 import { PwaRegister } from "@/components/pwa-register";
-import { BLOG_POSTS, FAQ, SITE } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content";
 
-/* ---------------- Metadata: SEO + GEO + AEO ---------------- */
-export const metadata: Metadata = {
+/* ---------------- Metadata: SEO + GEO + AEO (از دیتابیس) ---------------- */
+export async function generateMetadata(): Promise<Metadata> {
+  const { site: SITE } = await getSiteContent();
+  return {
   metadataBase: new URL(SITE.url),
   title: {
     default: "دکتر حامد کرمانی | متخصص جراحی فک و صورت در تهران",
@@ -94,7 +96,8 @@ export const metadata: Metadata = {
     "geo.position": `${SITE.geo.lat};${SITE.geo.lng}`,
     ICBM: `${SITE.geo.lat}, ${SITE.geo.lng}`,
   },
-};
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#0d1114",
@@ -103,8 +106,9 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-/* ---------------- JSON-LD: SEO + AEO + GEO ---------------- */
-function JsonLd() {
+/* ---------------- JSON-LD: SEO + AEO + GEO (از دیتابیس) ---------------- */
+async function JsonLd() {
+  const { site: SITE, faq: FAQ, services: SERVICES } = await getSiteContent();
   const physicianLd = {
     "@context": "https://schema.org",
     "@type": "Physician",
@@ -178,19 +182,12 @@ function JsonLd() {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "خدمات جراحی فک و صورت دکتر حامد کرمانی",
-    itemListElement: [
-      "جراحی یک فک",
-      "جراحی دو فک (بایمکس)",
-      "بلفاروپلاستی",
-      "جنیوپلاستی (جراحی چانه)",
-      "ایمپلنت (کاشت دندان)",
-      "بازسازی فک",
-    ].map((s, i) => ({
+    itemListElement: SERVICES.map((s, i) => ({
       "@type": "ListItem",
       position: i + 1,
       item: {
         "@type": "MedicalProcedure",
-        name: s,
+        name: s.title,
         procedureType: "Surgical",
         howPerformed:
           "جراحی زیر بیهوشی در بیمارستان با تیم مجرب، همراه با پیگیری دوره نقاهت.",
