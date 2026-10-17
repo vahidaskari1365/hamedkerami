@@ -10,8 +10,8 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     env:
-      # تا یوزرنیم SSH ست نشده، مرحله‌ی دیپلوی skip می‌شود (بیلد سبز می‌ماند)
-      DEPLOY_READY: ${{ secrets.SSH_USERNAME != '' }}
+      # تا یوزرنیم FTP ست نشده، مرحله‌ی دیپلوی skip می‌شود (بیلد سبز می‌ماند)
+      DEPLOY_READY: ${{ secrets.FTP_USERNAME != '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -56,39 +56,49 @@ jobs:
           echo "---- deploy tree (top) ----"
           du -sh deploy/* 2>/dev/null || true
 
-      # ---------- دیپلوی امن با SSH (کلید، بدون رمز عبور) ----------
-      - name: Deploy via SSH (rsync + remote setup)
+      # ---------- دیپلوی با FTP (SSH در این هاست بسته است) ----------
+      # کش وضعیت → فقط فایل‌های تغییرکرده آپلود می‌شوند (دفعات بعد چند دقیقه)
+      - name: Restore FTP state cache
         if: env.DEPLOY_READY == 'true'
-        uses: easingthemes/ssh-deploy@v5.1.0
+        uses: actions/cache@v4
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USERNAME }}
-          REMOTE_PORT: ${{ secrets.SSH_PORT }}
-          SOURCE: "deploy/"
-          # مقصد نسبت به home اکانت cPanel — پوشه‌ی اپ
-          TARGET: "kermani-app/"
-          # ⚠️ بدون --delete — دیتابیس (db/) و آپلودها (data/) هرگز حذف نمی‌شوند
-          ARGS: "-rlgoDzvc -i"
-          # بعد از rsync: دیتابیس/آپلودها آماده و Passenger ری‌استارت می‌شود
-          SCRIPT_AFTER: |
-            cd ~/kermani-app
-            bash setup.sh
+          path: deploy/.ftp-deploy-sync-state.json
+          key: ftp-state-${{ github.run_id }}
+          restore-keys: |
+            ftp-state-
 
-      # ---------- پلن جایگزین: FTP (اگر روزی SSH غیرفعال شد) ----------
-      # Secrets لازم: FTP_SERVER / FTP_USERNAME / FTP_PASSWORD / FTP_SERVER_DIR
-      # - name: Deploy via FTP
-      #   uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy via FTP
+        if: env.DEPLOY_READY == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftpes
+          local-dir: deploy/
+          # مسیر روی هاست نسبت به home اکانت cPanel
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          # ⚠️ هرگز فایل‌های هاست حذف نشوند — دیتابیس و آپلودها امن می‌مانند
+          dangerous-cleaner: false
+          log-level: minimal
+
+      # ---------- پلن جایگزین: SSH (اگر روزی هاست فعالش کرد) ----------
+      # کلید ed25519 از قبل آماده و در cPanel authorized شده (scripts/deploy_ed25519)
+      # Secrets لازم: SSH_HOST / SSH_PORT / SSH_PRIVATE_KEY / SSH_USERNAME
+      # - name: Deploy via SSH (rsync + remote setup)
+      #   uses: easingthemes/ssh-deploy@v5.1.0
       #   with:
-      #     server: ${{ secrets.FTP_SERVER }}
-      #     username: ${{ secrets.FTP_USERNAME }}
-      #     password: ${{ secrets.FTP_PASSWORD }}
-      #     port: 21
-      #     protocol: ftp
-      #     local-dir: deploy/
-      #     server-dir: ${{ secrets.FTP_SERVER_DIR }}
-      #     dangerous-cleaner: false
-      #     log-level: minimal
+      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     REMOTE_HOST: ${{ secrets.SSH_HOST }}
+      #     REMOTE_USER: ${{ secrets.SSH_USERNAME }}
+      #     REMOTE_PORT: ${{ secrets.SSH_PORT }}
+      #     SOURCE: "deploy/"
+      #     TARGET: "kermani-app/"
+      #     ARGS: "-rlgoDzvc -i"
+      #     SCRIPT_AFTER: |
+      #       cd ~/kermani-app
+      #       bash setup.sh
 
       - name: Done
-        run: echo "بیلد + rsync + setup.sh + ری‌استارت Passenger انجام شد."
+        run: echo "بیلد + آپلود FTP + ری‌استارت Passenger انجام شد (db در اولین بوت خودکار ساخته می‌شود)."

@@ -27,9 +27,19 @@ process.env.HOSTNAME = "0.0.0.0";
 /* Passenger پورت را از env می‌دهد؛ در نبودش 3000 */
 if (!process.env.PORT) process.env.PORT = "3000";
 
-/* دیتابیس SQLite — فایل پایدار در db/ کنار اپ (بیلد آن را پاک نمی‌کند) */
+/* دیتابیس SQLite — فایل پایدار در db/ کنار اپ (بیلد آن را پاک نمی‌کند)
+   بوت‌استرپ: اگر custom.db نبود ولی init.db بود (اولین دیپلوی)،
+   خودکار از init.db ساخته می‌شود — بدون نیاز به ترمینال */
+const DB_DIR = path.join(ROOT, "db");
+const DB_FILE = path.join(DB_DIR, "custom.db");
+const INIT_FILE = path.join(DB_DIR, "init.db");
+if (!fs.existsSync(DB_FILE) && fs.existsSync(INIT_FILE)) {
+  fs.mkdirSync(DB_DIR, { recursive: true });
+  fs.copyFileSync(INIT_FILE, DB_FILE);
+  console.log("[server.js] دیتابیس ساخته شد (db/custom.db از init.db)");
+}
 process.env.DATABASE_URL =
-  process.env.DATABASE_URL || "file:" + path.join(ROOT, "db", "custom.db");
+  process.env.DATABASE_URL || "file:" + DB_FILE;
 
 /* آپلودهای ادمین در <اپ>/data/uploads می‌مانند (پایدار، همراه بکاپ‌ها)
    و از طریق route داینامیک /uploads/<file> سرو می‌شوند */
