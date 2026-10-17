@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 // Link comes from hash-router (preview-safe client routing)
 
 export function Navbar() {
-  const { site: SITE } = useContent();
+  const { site: SITE, brand } = useContent();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -42,7 +42,7 @@ export function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-3" aria-label="صفحه اصلی دکتر حامد کرمانی">
           <span className="relative h-11 w-11 overflow-hidden rounded-full shadow-md ring-1 ring-white/25">
-            <Image src="/images/logo.png" alt="لوگوی دکتر حامد کرمانی" fill sizes="44px" className="object-cover" />
+            <Image src={brand?.logoImage || "/images/logo.png"} alt="لوگوی دکتر حامد کرمانی" fill sizes="44px" className="object-cover" />
           </span>
           <span className={`leading-tight transition-colors duration-500 ${scrolled ? "text-white" : "text-white"}`}>
             <span className="block text-sm font-extrabold sm:text-base">دکتر حامد کرمانی</span>

@@ -5,7 +5,7 @@
 export interface FieldDef {
   key: string;
   label: string;
-  type: "text" | "textarea" | "lines" | "number" | "image" | "bool" | "select";
+  type: "text" | "textarea" | "lines" | "number" | "image" | "bool" | "select" | "markdown";
   options?: { value: string; label: string }[];
   placeholder?: string;
   hint?: string;
@@ -148,7 +148,13 @@ export const ENTITY_CONFIGS: Record<string, EntityConfig> = {
       { key: "date", label: "تاریخ نمایشی", type: "text", placeholder: "۱۲ مهر ۱۴۰۳" },
       { key: "cover", label: "تصویر شاخص", type: "image", wide: true },
       { key: "excerpt", label: "خلاصه", type: "textarea", wide: true },
-      { key: "body", label: "متن کامل مقاله", type: "textarea", wide: true },
+      {
+        key: "body",
+        label: "متن کامل مقاله",
+        type: "markdown",
+        wide: true,
+        hint: "مارک‌داون — عکس با دکمه‌ی «درج عکس در متن»",
+      },
       { key: "published", label: "منتشر شده", type: "bool" },
     ],
   },
@@ -282,6 +288,12 @@ export const ADMIN_NAV: {
     ],
   },
   {
+    group: "صفحات فرود سئو",
+    items: [
+      { path: "/admin/landing", label: "صفحات فرود (۴ صفحه)", icon: "Globe" },
+    ],
+  },
+  {
     group: "درباره دکتر",
     items: [
       { path: "/admin/education", label: "تحصیلات", icon: "GraduationCap" },
@@ -302,6 +314,7 @@ export const ADMIN_NAV: {
   {
     group: "سیستم",
     items: [
+      { path: "/admin/media", label: "کتابخانه رسانه", icon: "ImagePlus" },
       { path: "/admin/messages", label: "پیام‌های تماس", icon: "Mail" },
       { path: "/admin/settings", label: "تنظیمات و متن‌ها", icon: "Settings" },
     ],

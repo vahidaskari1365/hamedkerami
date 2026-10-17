@@ -161,3 +161,25 @@ model BeforeAfterPair {
   after  String
   label  String @default("")
 }
+
+/* ---------- صفحات فرود سئو (قابل ویرایش از پنل) ---------- */
+model LandingPage {
+  id              String   @id @default(cuid())
+  slug            String   @unique // jaw-surgery | chin-surgery | dental-implant | implant-pasdaran
+  label           String // نام نمایشی در پنل
+  metaTitle       String   @default("")
+  metaDescription String   @default("")
+  keywords        String   @default("[]") // JSON: string[]
+  eyebrow         String   @default("")
+  h1              String   @default("")
+  heroDesc        String   @default("")
+  heroImage       String   @default("")
+  heroImageAlt    String   @default("")
+  sections        String   @default("[]") // JSON: [{title, paragraphs[], cards[{title,desc}], steps[], bullets[]}]
+  ctaTitle        String   @default("")
+  ctaDesc         String   @default("")
+  faqs            String   @default("[]") // JSON: [{q,a}]
+  related         String   @default("[]") // JSON: [{href,label}]
+  published       Boolean  @default(true)
+  updatedAt       DateTime @updatedAt
+}

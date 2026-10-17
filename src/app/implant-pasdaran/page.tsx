@@ -1,72 +1,31 @@
 import type { Metadata } from "next";
-import {
-  LandingHeader,
-  LandingHero,
-  LandingSection,
-  LandingCards,
-  LandingSteps,
-  LandingFaq,
-  LandingCtaBand,
-  LandingFooter,
-} from "@/components/landing/landing-chrome";
+import { notFound } from "next/navigation";
+import { LandingPageView, landingOgImage } from "@/components/landing/landing-view";
+import { getLanding, LANDING_URLS } from "@/lib/landing-data";
 
-const URL = "https://dromfs.com/implant-pasdaran";
-const HERO = "/images/landing/implant-pasdaran-hero.jpg";
+export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "ایمپلنت دندان در تهران | دسترسی آسان از پاسداران و شمال تهران",
-  description:
-    "ایمپلنت دندان با متخصص جراحی فک و صورت — بیش از ۵۰۰۰ ایمپلنت و ۳۴۷ پیوند استخوان موفق. مطب در مرکز تهران با دسترسی آسان از پاسداران، نیاوران و مناطق شمالی. تماس: ۰۲۱-۶۶۹۲۱۵۰۰",
-  keywords: [
-    "ایمپلنت پاسداران",
-    "ایمپلنت دندان تهران",
-    "دکتر ایمپلنت شمال تهران",
-    "کاشت دندان پاسداران",
-    "هزینه ایمپلنت تهران",
-    "ایمپلنت دیجیتال تهران",
-  ],
-  alternates: { canonical: "/implant-pasdaran" },
-  openGraph: {
-    title: "ایمپلنت دندان در تهران | دسترسی از پاسداران",
-    description: "۵۰۰۰+ ایمپلنت موفق توسط متخصص جراحی فک و صورت — دسترسی آسان از پاسداران و شمال تهران",
-    url: URL,
-    images: [{ url: HERO, width: 1600, height: 890, alt: "ایمپلنت دندان در تهران" }],
-  },
-};
-
-const FAQ = [
-  {
-    q: "مطب دکتر کرمانی کجاست و از پاسداران چطور بروم؟",
-    a: "مطب در بلوار کشاورز، تقاطع جمالزاده، ساختمان پزشکان کوثر، طبقه ۳ واحد ۱۲ قرار دارد؛ از مناطق پاسداران، نیاوران و الهیه با خودرو در زمان ترافیک معمول حدود ۲۰ تا ۳۵ دقیقه فاصله دارید و امکان ارسال رادیوگرافی اولیه در واتسپ وجود دارد تا سفرهای تکراری کم شود.",
-  },
-  {
-    q: "قبل از مراجعه حضوری چه چیزی را بفرستم؟",
-    a: "رادیوگرافی پانورامیک یا CBCT و عکس ناحیه بدون دندان را در واتسپ مطب (۰۹۳۸-۲۰۸۰۲۷۰) ارسال کنید. پیش بررسی رایگان انجام می شود و در جلسه حضوری مستقیم وارد طرح درمان و زمان‌بندی می شوید.",
-  },
-  {
-    q: "ایمپلنت با پیوند استخوان چند روز وقت می گیرد؟",
-    a: "خود کاشت ایمپلنت معمولا کمتر از یک ساعت برای چند واحد است. اگر پیوند استخوان یا سینوس لیفت لازم باشد، دوره جوش خوردن ۴ تا ۶ ماه اضافه می شود. در تحلیل شدید فک بالا، ایمپلنت زایگوماتیک بدون پیوند استخوان و با نقاهت کوتاه تر انجام می شود.",
-  },
-  {
-    q: "برای چند دندان از دست رفته هم ایمپلنت می شود؟",
-    a: "بله؛ از تک دندان تا بازسازی کامل فک. برای چند دندان متوالی، پل ایمپلنت‌پایه تعداد ایمپلنت موردنیاز را کاهش می دهد و برای بی دندانی کامل، درمان های فیکس ثابت یا پروتز متحرک روی ایمپلنت ارائه می شود.",
-  },
-  {
-    q: "هزینه ایمپلنت در تهران چقدر است؟",
-    a: "هر واحد ایمپلنت طبق تعرفه های همین سایت حدود ۲۴ تا ۱۱۰ میلیون تومان است که به برند ایمپلنت، نیاز به پیوند استخوان و جنس روکش بستگی دارد. قیمت ها به روزرسانی می شوند؛ استعلام دقیق با مطب تماس بگیرید.",
-  },
-];
-
-export default function ImplantPasdaranPage() {
-  const faqLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: FAQ.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getLanding("implant-pasdaran");
+  if (!data) return {};
+  return {
+    title: data.metaTitle,
+    description: data.metaDescription,
+    keywords: data.keywords,
+    alternates: { canonical: "/implant-pasdaran" },
+    openGraph: {
+      title: data.metaTitle,
+      description: data.metaDescription,
+      url: LANDING_URLS["implant-pasdaran"],
+      images: landingOgImage(data),
+    },
   };
+}
+
+export default async function ImplantPasdaranPage() {
+  const data = await getLanding("implant-pasdaran");
+  if (!data) notFound();
+
   const serviceLd = {
     "@context": "https://schema.org",
     "@type": "Dentist",
@@ -83,79 +42,5 @@ export default function ImplantPasdaranPage() {
     priceRange: "۲۴ تا ۱۱۰ میلیون تومان به ازای هر واحد ایمپلنت",
   };
 
-  return (
-    <div className="flex min-h-screen flex-col bg-white">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd).replace(/</g, "\\u003c") }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd).replace(/</g, "\\u003c") }} />
-
-      <LandingHeader />
-
-      <main className="flex-1">
-        <LandingHero
-          eyebrow="ایمپلنت دندان در تهران"
-          h1="ایمپلنت دندان؛ متخصص جراحی فک و صورت، دسترسی آسان از پاسداران و شمال تهران"
-          desc="بیش از ۵۰۰۰ ایمپلنت موفق و ۳۴۷ پیوند استخوان توسط دکتر حامد کرمانی. پیش بررسی رایگان رادیوگرافی در واتسپ، طرح درمان شفاف و برندهای معتبر آلمانی، سوئیسی و آمریکایی."
-          image={HERO}
-          imageAlt="ایمپلنت دندان در تهران"
-        />
-
-        <LandingSection title="ایمپلنت دندان را به چه جراحی بسپاریم؟">
-          <p>
-            ایمپلنت یک عمل <strong>جراحی</strong> است، نه صرفا یک کار دندانپزشکی؛ به همین دلیل جراح آن باید
-            تسلط کامل بر آناتومی استخوان فک، عصب‌ها و سینوس ها داشته باشد. دکتر حامد کرمانی، متخصص جراحی فک
-            و صورت (OMFS) و دارنده فلوشیپ جراحی های کرانیوفاسیال از دانشگاه علوم پزشکی تهران، علاوه بر
-            ایمپلنت‌های معمول، <strong>موارد پیچیده</strong> — تحلیل شدید استخوان، ایمپلنت زایگوماتیک،
-            پیوند استخوان، سینوس لیفت و بازسازی پس از تومور و ضربه — را نیز با تجربه بین المللی انجام می دهد.
-          </p>
-          <p>
-            مطب در تقاطع جمالزاده (بلوار کشاورز) قرار دارد و برای ساکنان پاسداران، نیاوران، الهیه و مناطق
-            شمالی تهران با یک مسیر مستقیم قابل دسترسی است. برای کاهش مراجعات تکراری، رادیوگرافی شما پیش از
-            حضور در واتسپ بررسی می شود.
-          </p>
-        </LandingSection>
-
-        <LandingSection title="خدمات ایمپلنت در این مطب" alt>
-          <LandingCards
-            items={[
-              { title: "ایمپلنت تک دندان", desc: "جایگزینی یک دندان بدون تراش دندان های مجاور — نتیجه طبیعی و ماندگار." },
-              { title: "پل ایمپلنت‌پایه", desc: "بازسازی چند دندان متوالی با تعداد کمتر ایمپلنت و هزینه بهینه." },
-              { title: "بازسازی بی دندانی کامل", desc: "پروتز ثابت روی ایمپلنت یا پروتز قابل جدا شدن — بازگشت قدرت جویدن." },
-              { title: "ایمپلنت زایگوماتیک", desc: "راه حل فک بالا با تحلیل شدید — لنگر در استخوان گونه، بدون پیوند استخوان و با نقاهت کوتاه." },
-              { title: "پیوند استخوان و سینوس لیفت", desc: "ساخت بستر مناسب برای ایمپلنت در نواحی تحلیل رفته — بیش از ۳۴۷ پیوند موفق." },
-              { title: "ایمپلنت فوری", desc: "در موارد مناسب، همزمان با کشیدن دندان ایمپلنت گذاشته می شود تا ماه ها صبر حذف شود." },
-            ]}
-          />
-        </LandingSection>
-
-        <LandingSection title="مسیر درمان شما">
-          <LandingSteps
-            steps={[
-              "ارسال رادیوگرافی در واتسپ — پیش بررسی رایگان و پاسخ شفاف درباره امکان درمان.",
-              "جلسه مشاوره و CBCT در مطب — طراحی دقیق تعداد، موقعیت و برند ایمپلنت با اعلام هزینه کتبی.",
-              "جراحی کاشت — زیر بی حسی موضعی و در موارد کلینیک‌پسند با آرام بخشی.",
-              "دوره جوش خوردن ۲ تا ۴ ماهه با کنترل دوره ای.",
-              "روکش نهایی و پیگیری سلامت ایمپلنت در ویزیت های شش ماهه.",
-            ]}
-          />
-        </LandingSection>
-
-        <LandingSection title="سوالات متداول" alt>
-          <LandingFaq items={FAQ} />
-        </LandingSection>
-
-        <LandingCtaBand
-          title="رادیوگرافی خود را بفرستید؛ پاسخ تخصصی بگیرید"
-          desc="تصویر پانورامیک یا CBCT خود را در واتسپ ارسال کنید تا پیش بررسی شود؛ سپس برای جلسه مشاوره حضوری و طرح درمان دقیق وقت بگیرید."
-        />
-      </main>
-
-      <LandingFooter
-        related={[
-          { href: "/dental-implant", label: "ایمپلنت دندان در تهران" },
-          { href: "/jaw-surgery", label: "جراحی فک (ارتوگناتیک)" },
-          { href: "/chin-surgery", label: "جراحی چانه" },
-        ]}
-      />
-    </div>
-  );
+  return <LandingPageView data={data} url={LANDING_URLS["implant-pasdaran"]} serviceLd={serviceLd} />;
 }

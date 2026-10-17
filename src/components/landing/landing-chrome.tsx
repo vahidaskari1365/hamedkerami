@@ -18,13 +18,21 @@ export const SITE_INFO = {
   instagram: "https://www.instagram.com/dr.hamedkermani.omfs/",
 };
 
-export function LandingHeader() {
+export async function LandingHeader() {
+  /* لوگو از تنظیمات دیتابیس — با fallback امن */
+  let logo = "/images/logo.png";
+  try {
+    const { getBrandLogo } = await import("@/lib/landing-data");
+    logo = await getBrandLogo();
+  } catch {
+    /* fallback */
+  }
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-ink/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-3" aria-label="بازگشت به صفحه اصلی">
           <span className="h-11 w-11 overflow-hidden rounded-xl ring-1 ring-white/15">
-            <img src="/images/logo.png" alt="لوگوی دکتر حامد کرمانی" className="h-full w-full object-cover" />
+            <img src={logo} alt="لوگوی دکتر حامد کرمانی" className="h-full w-full object-cover" />
           </span>
           <span className="leading-tight">
             <span className="block text-sm font-black text-white sm:text-base">دکتر حامد کرمانی</span>

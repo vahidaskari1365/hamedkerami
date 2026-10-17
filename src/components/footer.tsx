@@ -6,7 +6,7 @@ import { useContent } from "@/lib/content-context";
 import { NAV } from "@/lib/data";
 
 export function Footer() {
-  const { site: SITE, hours: HOURS } = useContent();
+  const { site: SITE, hours: HOURS, brand } = useContent();
   const pathname = usePathname();
   return (
     <footer className="mt-auto bg-ink text-white">
@@ -16,7 +16,7 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-3">
               <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full ring-1 ring-white/20">
-                <Image src="/images/logo.png" alt="لوگوی دکتر حامد کرمانی" fill sizes="56px" className="object-cover" />
+                <Image src={brand?.logoImage || "/images/logo.png"} alt="لوگوی دکتر حامد کرمانی" fill sizes="56px" className="object-cover" />
               </span>
               <div>
                 <p className="text-lg font-extrabold">دکتر حامد کرمانی</p>

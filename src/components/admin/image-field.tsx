@@ -45,9 +45,10 @@ export function ImageField({
   async function openLibrary() {
     setLibraryOpen(true);
     try {
-      const res = await fetch("/api/admin/upload");
+      const res = await fetch("/api/admin/media");
       const data = await res.json();
-      if (data.ok) setLibrary(data.images || []);
+      if (data.ok)
+        setLibrary([...(data.uploads ?? []), ...(data.site ?? [])]);
     } catch {
       /* noop */
     }
@@ -105,7 +106,7 @@ export function ImageField({
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/avif"
+        accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
         className="hidden"
         onChange={(e) => {
           const f = e.target.files?.[0];

@@ -33,6 +33,7 @@ import {
    ============================================================ */
 
 const FALLBACK: SiteContent = {
+  brand: { logoImage: "/images/logo.png" },
   site: SITE,
   hero: HERO,
   about: BIO,

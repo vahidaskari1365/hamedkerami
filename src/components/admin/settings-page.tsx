@@ -24,6 +24,13 @@ interface FieldSpec {
 
 const GROUPS: { key: string; title: string; fields: FieldSpec[] }[] = [
   {
+    key: "brand",
+    title: "برند و لوگو",
+    fields: [
+      { key: "logoImage", label: "لوگوی سایت (نوبار، فوتر و صفحات فرود)", type: "image" },
+    ],
+  },
+  {
     key: "site",
     title: "اطلاعات تماس و برند",
     fields: [

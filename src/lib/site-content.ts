@@ -36,6 +36,9 @@ function parse<T>(raw: string | undefined, fallback: T): T {
   }
 }
 
+/* لوگوی پیش‌فرض — قابل تغییر از تنظیمات (brand.logoImage) */
+const BRAND = { logoImage: "/images/logo.png" };
+
 export async function getSiteContent() {
   try {
     const [
@@ -95,6 +98,7 @@ export async function getSiteContent() {
 
     if (empty) {
       return {
+        brand: BRAND,
         site: SITE,
         hero: HERO,
         about: BIO,
@@ -120,6 +124,7 @@ export async function getSiteContent() {
     }
 
     return {
+      brand: { ...BRAND, ...(settingMap.brand as object | undefined) },
       site: { ...SITE, ...(settingMap.site as object | undefined) },
       hero: { ...HERO, ...(settingMap.hero as object | undefined) },
       about: { ...BIO, ...(settingMap.about as object | undefined) },
@@ -184,6 +189,7 @@ export async function getSiteContent() {
   } catch {
     /* خطای دیتابیس — سایت با محتوای ثابت بالا می‌آید */
     return {
+      brand: BRAND,
       site: SITE,
       hero: HERO,
       about: BIO,

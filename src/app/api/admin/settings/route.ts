@@ -28,7 +28,7 @@ export async function PUT(req: NextRequest) {
   }
   try {
     const body = (await req.json()) as Record<string, unknown>;
-    const allowed = ["site", "hero", "about", "videos"];
+    const allowed = ["site", "hero", "about", "videos", "brand"];
     for (const [key, value] of Object.entries(body)) {
       if (!allowed.includes(key)) continue;
       if (typeof value !== "object" || value === null) continue;

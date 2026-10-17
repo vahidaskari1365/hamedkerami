@@ -17,6 +17,8 @@ import { EntityPage } from "@/components/admin/entity-page";
 import { Dashboard } from "@/components/admin/dashboard";
 import { SettingsPage } from "@/components/admin/settings-page";
 import { MessagesPage } from "@/components/admin/messages-page";
+import { LandingPagesPage, LandingEditor } from "@/components/admin/landing-pages";
+import { MediaPage } from "@/components/admin/media-page";
 import {
   Award,
   BadgeDollarSign,
@@ -24,6 +26,7 @@ import {
   Clock,
   ExternalLink,
   FlipHorizontal2,
+  Globe,
   GraduationCap,
   HelpCircle,
   Images,
@@ -34,6 +37,7 @@ import {
   Menu,
   Newspaper,
   Orbit,
+  ImagePlus,
   Settings,
   Sparkles,
   Stethoscope,
@@ -60,6 +64,8 @@ const ICONS: Record<string, React.ComponentType<{ size?: number }>> = {
   Clock,
   Mail,
   Settings,
+  Globe,
+  ImagePlus,
 };
 
 const PAGE_TITLES: Record<string, string> = {
@@ -134,6 +140,9 @@ function AdminLayout({ username, children }: { username: string; children: React
 
   const title =
     PAGE_TITLES[path] ??
+    (path.startsWith("/admin/landing/")
+      ? "ویرایش صفحه فرود"
+      : null) ??
     ADMIN_NAV.flatMap((g) => g.items).find((i) => i.path === path)?.label ??
     "پنل مدیریت";
 
@@ -280,6 +289,13 @@ export function AdminRoot() {
     content = <SettingsPage />;
   } else if (sub === "messages") {
     content = <MessagesPage />;
+  } else if (sub === "media") {
+    content = <MediaPage />;
+  } else if (sub === "landing") {
+    content = <LandingPagesPage />;
+  } else if (sub.startsWith("landing/")) {
+    const slug = sub.slice("landing/".length);
+    content = <LandingEditor key={slug} slug={slug} />;
   } else if (ENTITY_CONFIGS[sub]) {
     content = <EntityPage key={sub} config={ENTITY_CONFIGS[sub]} />;
   } else {

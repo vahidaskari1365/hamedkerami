@@ -1,72 +1,31 @@
 import type { Metadata } from "next";
-import {
-  LandingHeader,
-  LandingHero,
-  LandingSection,
-  LandingCards,
-  LandingSteps,
-  LandingFaq,
-  LandingCtaBand,
-  LandingFooter,
-} from "@/components/landing/landing-chrome";
+import { notFound } from "next/navigation";
+import { LandingPageView, landingOgImage } from "@/components/landing/landing-view";
+import { getLanding, LANDING_URLS } from "@/lib/landing-data";
 
-const URL = "https://dromfs.com/chin-surgery";
-const HERO = "/images/landing/chin-surgery-hero.jpg";
+export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "جراحی چانه | اصلاح چانه عقب‌رفته و جلوآمده با جنیوپلاستی",
-  description:
-    "جراحی چانه با دکتر حامد کرمانی — اصلاح چانه عقب‌رفته، جلوآمده، کوتاه و نامتقارن با جنیوپلاستی استخوانی و پروتز. بیش از ۲۴۸ اصلاح چانه موفق. رزرو مشاوره: ۰۲۱-۶۶۹۲۱۵۰۰",
-  keywords: [
-    "جراحی چانه",
-    "عمل چانه",
-    "اصلاح فرم چانه",
-    "چانه عقب‌رفته",
-    "پروتز چانه",
-    "جراحی زیبایی چانه",
-  ],
-  alternates: { canonical: "/chin-surgery" },
-  openGraph: {
-    title: "جراحی چانه | دکتر حامد کرمانی",
-    description: "اصلاح چانه عقب‌رفته و جلوآمده با جنیوپلاستی — بیش از ۲۴۸ اصلاح چانه موفق",
-    url: URL,
-    images: [{ url: HERO, width: 1190, height: 997, alt: "جراحی چانه" }],
-  },
-};
-
-const FAQ = [
-  {
-    q: "جراحی چانه چه تفاوتی با تزریق فیلر دارد؟",
-    a: "فیلر موقتی است (۶ تا ۱۸ ماه) و فقط حجم می دهد؛ جنیوپلاستی استخوان چانه را با استخوان خودتان جابجا و تثبیت می کند و نتیجه دائمی و طبیعی دارد. برای اصلاح اسکلتی واقعی پروفایل، جراحی تنها راهحل قطعی است.",
-  },
-  {
-    q: "جراحی چانه چند روز نقاهت دارد؟",
-    a: "تورم روزهای ۲ تا ۴ حداکثر است و طی ۲ هفته عمدتا فرو می نشیند. اکثر بیماران پس از ۷ تا ۱۰ روز می توانند فعالیت اجتماعی عادی داشته باشند؛ برش کاملا داخل دهانی است و جای جراحی دیده نمی شود.",
-  },
-  {
-    q: "آیا جراحی چانه بی خطر است؟",
-    a: "در دست جراح متخصص فک و صورت، عوارض جدی بسیار نادر است. بی حسی موقت ناحیه چانه به دلیل نزدیکی به عصب ذهنی ممکن است چند هفته طول بکشد و در اکثریت قریب به اتفاق موارد کاملا برطرف می شود.",
-  },
-  {
-    q: "چانه عقب‌رفته فقط با جراحی چانه حل می شود؟",
-    a: "بستگی به علت دارد. اگر مشکل فقط از استخوان چانه باشد، جنیوپلاستی کافی است؛ اما اگر عقب‌رفتگی از فک پایین باشد، اصلاح کامل پروفایل ممکن است نیاز به جراحی فک پایین یا ترکیب آن با جنیوپلاستی داشته باشد که در معاینه مشخص می شود.",
-  },
-  {
-    q: "قیمت جراحی چانه چقدر است؟",
-    a: "هزینه به نوع عمل (جنیوپلاستی استخوانی، پروتز یا ترکیب با جراحی فک) و بیمارستان بستگی دارد. تعرفه های به روز را با تماس با مطب ۰۲۱-۶۶۹۲۱۵۰۰ استعلام کنید.",
-  },
-];
-
-export default function ChinSurgeryPage() {
-  const faqLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: FAQ.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getLanding("chin-surgery");
+  if (!data) return {};
+  return {
+    title: data.metaTitle,
+    description: data.metaDescription,
+    keywords: data.keywords,
+    alternates: { canonical: "/chin-surgery" },
+    openGraph: {
+      title: data.metaTitle,
+      description: data.metaDescription,
+      url: LANDING_URLS["chin-surgery"],
+      images: landingOgImage(data),
+    },
   };
+}
+
+export default async function ChinSurgeryPage() {
+  const data = await getLanding("chin-surgery");
+  if (!data) notFound();
+
   const serviceLd = {
     "@context": "https://schema.org",
     "@type": "MedicalProcedure",
@@ -83,78 +42,5 @@ export default function ChinSurgeryPage() {
     },
   };
 
-  return (
-    <div className="flex min-h-screen flex-col bg-white">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd).replace(/</g, "\\u003c") }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd).replace(/</g, "\\u003c") }} />
-
-      <LandingHeader />
-
-      <main className="flex-1">
-        <LandingHero
-          eyebrow="جراحی زیبایی چانه"
-          h1="جراحی چانه؛ فرم و هارمونی پروفایل شما را بازتعریف می کنیم"
-          desc="چانه ستون فرج پروفایل است. چانه عقب‌رفته یا جلوآمده هارمونی کل صورت را به هم می زند. با جنیوپلاستی استخوانی و بیش از ۲۴۸ اصلاح چانه موفق، نتیجه ای دائمی و طبیعی دریافت کنید."
-          image={HERO}
-          imageAlt="جراحی چانه و پروفایل"
-        />
-
-        <LandingSection title="چرا چانه اهمیت دارد؟">
-          <p>
-            <strong>جراحی چانه</strong> یکی از پرتأثیرترین جراحی های زیبایی ساختاری صورت است؛ چانه با وجود
-            اندازه کوچک، قاب پایینی صورت را تعیین می کند. چانه عقب‌رفته باعث می شود بینی بزرگ تر دیده شود،
-            زاویه گردن و فک محو شود و زیرچانه پر از چربی به نظر برسد. چانه جلوآمده هم پروفایل را مردانه و
-            خشمگین نشان می دهد. اصلاح دقیق موقعیت چانه، کل هارمونی صورت را بدون دست زدن به سایر اجزا تغییر
-            می دهد.
-          </p>
-          <p>
-            علاوه بر زیبایی، در موارد عدم تقارن یا کمبود استخوان چانه، اصلاح آن روی عملکرد لب پایین و
-            تعادل عضلات ناحیه هم اثر مثبت می گذارد.
-          </p>
-        </LandingSection>
-
-        <LandingSection title="گزینه های جراحی چانه؛ کدام برای شما مناسب است؟" alt>
-          <LandingCards
-            items={[
-              { title: "جنیوپلاستی اسلایدینگ (استخوانی)", desc: "استخوان چانه خودتان برش خورده و به موقعیت ایده آل جابجا و با صفحه و پیچ تثبیت می شود؛ نتیجه دائمی، بدون خطر جابجایی یا دفع بدن." },
-              { title: "پروتز چانه", desc: "ایمپلنت سازگار با بدن روی استخوان چانه قرار می گیرد؛ مناسب کمبودهای خفیف تا متوسط حجم که نیازی به جابجایی استخوان ندارند." },
-              { title: "اصلاح عمودی چانه", desc: "چانه های خیلی کوتاه یا بلند با کاهش یا افزایش ارتفاع استخوان اصلاح می شوند و نسبت طلایی یک سوم پایینی صورت بازسازی می گردد." },
-              { title: "اصلاح عدم تقارن", desc: "انحراف چانه به یک سمت با برش و جابجایی سه بعدی اصلاح و خط میانی صورت بازگردانده می شود." },
-              { title: "ترکیب با لیپوساکشن زیرچانه", desc: "در بیمارانی که زیرچانه چربی اضافه دارند، در همان جلسه چربی جمع می شود تا زاویه فک و گردن شارپ شود." },
-              { title: "ترکیب با جراحی دو فک", desc: "در اصلاحات کامل پروفایل، جنیوپلاستی در همان جلسه جراحی فک انجام می شود تا هارمونی سه بعدی صورت کامل گردد." },
-            ]}
-          />
-        </LandingSection>
-
-        <LandingSection title="مسیر شما تا پروفایل جدید">
-          <LandingSteps
-            steps={[
-              "مشاوره و آنالیز پروفایل — بررسی یک سوم پایینی صورت از نمای روبه‌رو و نیمرخ.",
-              "تصویربرداری — سفالومتری برای تعیین میزان دقیق جابجایی (ملی‌متر به ملی‌متر).",
-              "عمل زیر بیهوشی عمومی یا بیهوشی موضعی+آرام بخشی (برای پروتز ساده) — برش کاملا داخل دهانی.",
-              "بهبودی — تورم ۱۰ تا ۱۴ روزه، رژیم نرم چند روزه و بازگشت به اجتماعات پس از حدود ۱۰ روز.",
-              "کنترل و رادیوگرافی پیگیری برای اطمینان از جوش خوردن استخوان.",
-            ]}
-          />
-        </LandingSection>
-
-        <LandingSection title="سوالات متداول جراحی چانه" alt>
-          <LandingFaq items={FAQ} />
-        </LandingSection>
-
-        <LandingCtaBand
-          title="پروفایل خود را با مشاوره تخصصی بسنجید"
-          desc="عکس نیمرخ خود را در واتسپ ارسال کنید یا برای معاینه حضوری تماس بگیرید؛ طرح درمان دقیق پس از بررسی تصاویر و معاینه ارائه می شود."
-        />
-      </main>
-
-      <LandingFooter
-        related={[
-          { href: "/jaw-surgery", label: "جراحی فک (ارتوگناتیک)" },
-          { href: "/dental-implant", label: "ایمپلنت دندان" },
-          { href: "/implant-pasdaran", label: "ایمپلنت دندان در تهران" },
-        ]}
-      />
-    </div>
-  );
+  return <LandingPageView data={data} url={LANDING_URLS["chin-surgery"]} serviceLd={serviceLd} />;
 }

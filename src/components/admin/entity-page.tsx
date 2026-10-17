@@ -28,6 +28,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { refreshSiteContent } from "@/lib/content-context";
 import { ImageField } from "@/components/admin/image-field";
+import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import type { EntityConfig, FieldDef } from "@/components/admin/entity-configs";
 
@@ -88,6 +89,14 @@ function FieldInput({
         <ImageField
           value={typeof value === "string" ? value : ""}
           onChange={onChange}
+        />
+      );
+    case "markdown":
+      return (
+        <MarkdownEditor
+          value={typeof value === "string" ? value : ""}
+          onChange={(v) => onChange(v)}
+          placeholder={field.placeholder}
         />
       );
     case "bool":
