@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { readdir } from "node:fs/promises";
+import { mkdir, readdir } from "node:fs/promises";
 import path from "node:path";
 import { requireAdmin } from "@/lib/admin-guard";
+import { uploadsDir } from "@/lib/uploads-dir";
 
 /* ============================================================
    کتابخانه رسانه — فهرست همه تصاویر سایت
@@ -35,10 +36,12 @@ export async function GET() {
     return NextResponse.json({ ok: false, error: "دسترسی ندارید" }, { status: 401 });
   }
   const pub = path.join(process.cwd(), "public");
+  const uploads: { url: string; name: string; dir: string }[] = [];
+  const site: { url: string; name: string; dir: string }[] = [];
   try {
-    const uploads: { url: string; name: string; dir: string }[] = [];
-    const site: { url: string; name: string; dir: string }[] = [];
-    await walk(path.join(pub, "uploads"), path.join(pub, "uploads"), uploads);
+    const up = uploadsDir();
+    await mkdir(up, { recursive: true }).catch(() => {});
+    await walk(up, up, uploads);
     await walk(path.join(pub, "images"), path.join(pub, "images"), site);
     uploads.sort((a, b) => (a.name < b.name ? 1 : -1));
     site.sort((a, b) => (a.dir < b.dir ? -1 : a.dir > b.dir ? 1 : a.name < b.name ? -1 : 1));

@@ -3,6 +3,7 @@ import { mkdir, readdir, unlink, writeFile } from "node:fs/promises";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { requireAdmin } from "@/lib/admin-guard";
+import { uploadsDir } from "@/lib/uploads-dir";
 
 /* ============================================================
    آپلود تصویر — فقط برای ادمین
@@ -10,7 +11,6 @@ import { requireAdmin } from "@/lib/admin-guard";
    SVG ممنوع (ذخیره‌ی XSS)، نام فایل تصادفی سمت سرور
    ============================================================ */
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 
 const SIGNATURES: { type: string; ext: string; test: (b: Buffer) => boolean }[] = [
@@ -65,9 +65,9 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    await mkdir(UPLOAD_DIR, { recursive: true });
+    await mkdir(uploadsDir(), { recursive: true });
     const name = `${randomUUID()}${sig.ext}`;
-    await writeFile(path.join(UPLOAD_DIR, name), buf);
+    await writeFile(path.join(uploadsDir(), name), buf);
     return NextResponse.json({ ok: true, url: `/uploads/${name}`, type: sig.type });
   } catch {
     return NextResponse.json({ ok: false, error: "خطای آپلود" }, { status: 500 });
@@ -81,8 +81,8 @@ export async function GET() {
     return NextResponse.json({ ok: false, error: "دسترسی ندارید" }, { status: 401 });
   }
   try {
-    await mkdir(UPLOAD_DIR, { recursive: true });
-    const files = await readdir(UPLOAD_DIR);
+    await mkdir(uploadsDir(), { recursive: true });
+    const files = await readdir(uploadsDir());
     const images = files
       .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f))
       .map((f) => ({ url: `/uploads/${f}`, name: f }))
@@ -108,7 +108,7 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "نام فایل نامعتبر است" }, { status: 400 });
   }
   try {
-    await unlink(path.join(UPLOAD_DIR, name));
+    await unlink(path.join(uploadsDir(), name));
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ ok: false, error: "حذف فایل ممکن نشد" }, { status: 500 });

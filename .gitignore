@@ -61,8 +61,7 @@ db/custom.db
 /scripts/
 /worklog.md
 /agent-ctx/tool-results/
-public/uploads/*
-!public/uploads/.gitkeep
+data/uploads/*
 download/
 tool-results/
 

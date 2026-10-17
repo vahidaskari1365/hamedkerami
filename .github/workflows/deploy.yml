@@ -1,0 +1,87 @@
+name: Build & Deploy to IranHost (cPanel)
+
+# هر push به main → بیلد در گیت‌هاب → آپلود به هاست اشتراکی
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # اجرای دستی از تب Actions
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate Prisma Client (با موتورهای لینوکسی هاست)
+        run: bunx prisma generate
+        env:
+          DATABASE_URL: "file:/tmp/build.db"
+
+      - name: Build Next.js (standalone)
+        run: bun run build
+        env:
+          DATABASE_URL: "file:/tmp/build.db"
+          NEXT_TELEMETRY_DISABLED: "1"
+
+      # ---------- بسته‌بندی فایل‌هایی که باید روی هاست بروند ----------
+      - name: Assemble deploy package
+        run: |
+          set -e
+          mkdir -p deploy/db deploy/tmp
+          # سرور standalone + فایل‌های استاتیک (build script خودش کپی کرده)
+          mv .next/standalone deploy/.next-standalone
+          mkdir -p deploy/.next
+          mv deploy/.next-standalone deploy/.next/standalone
+          # ورودی Passenger + اسکیما + دیتابیس آماده + اسکریپت راه‌اندازی
+          cp server.js deploy/server.js
+          cp -r prisma deploy/prisma
+          cp db/init.db deploy/db/init.db
+          cp deploy/setup.sh deploy/setup.sh
+          # restart.txt با محتوای متفاوت در هر اجرا → آپلود می‌شود → Passenger ری‌استارت می‌شود
+          echo "restart-$(date +%s)" > deploy/tmp/restart.txt
+          # حذف آرتیفکت‌های سنگین بی‌استفاده از node_modules standalone
+          rm -rf deploy/.next/standalone/node_modules/.cache || true
+          echo "---- deploy tree (top) ----"
+          du -sh deploy/* 2>/dev/null || true
+
+      # ---------- آپلود به هاست (FTP سی‌پنل ایران‌هاست) ----------
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftp
+          local-dir: deploy/
+          # مسیر روی هاست نسبت به home اکانت cPanel (مثلاً kermani-app/)
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          # هرگز فایل‌های هاست حذف نشوند — دیتابیس و آپلودها امن می‌مانند
+          dangerous-cleaner: false
+          log-level: minimal
+
+      # ---------- (اختیاری) ری‌استارت خودکار با SSH ----------
+      # اگر ایران‌هاست SSH فعال کرده، دو خط زیر را از کامنت خارج کنید و
+      # چهار Secret مربوطه را بسازید؛ آن‌وقت حتی نیازی به زدن setup.sh نیست:
+      # - name: Remote setup & restart via SSH
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     password: ${{ secrets.SSH_PASSWORD }}
+      #     port: ${{ secrets.SSH_PORT }}
+      #     script: |
+      #       cd $HOME/${{ secrets.FTP_SERVER_DIR }}
+      #       bash setup.sh
+
+      - name: Done
+        run: echo "سایت بیلد و به هاست منتقل شد. اگر SSH ندارید، فقط یک بار در ترمینال سی‌پنل bash setup.sh را اجرا کنید."
