@@ -9,6 +9,9 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    env:
+      # تا یوزرنیم SSH ست نشده، مرحله‌ی دیپلوی skip می‌شود (بیلد سبز می‌ماند)
+      DEPLOY_READY: ${{ secrets.SSH_USERNAME != '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,7 +48,7 @@ jobs:
           cp server.js deploy/server.js
           cp -r prisma deploy/prisma
           cp db/init.db deploy/db/init.db
-          cp deploy/setup.sh deploy/setup.sh
+          # (setup.sh از قبل داخل deploy/ هست — کپی روی خودش ممنوع)
           # restart.txt با محتوای متفاوت در هر اجرا → آپلود می‌شود → Passenger ری‌استارت می‌شود
           echo "restart-$(date +%s)" > deploy/tmp/restart.txt
           # حذف آرتیفکت‌های سنگین بی‌استفاده از node_modules standalone
@@ -55,6 +58,7 @@ jobs:
 
       # ---------- دیپلوی امن با SSH (کلید، بدون رمز عبور) ----------
       - name: Deploy via SSH (rsync + remote setup)
+        if: env.DEPLOY_READY == 'true'
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
