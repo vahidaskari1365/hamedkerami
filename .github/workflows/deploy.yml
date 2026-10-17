@@ -1,6 +1,6 @@
-name: Build & Deploy to IranHost (cPanel)
+name: Build & Deploy to IranHost (cPanel over SSH)
 
-# هر push به main → بیلد در گیت‌هاب → آپلود به هاست اشتراکی
+# هر push به main → بیلد در گیت‌هاب → rsync امن با کلید SSH به هاست → ری‌استارت خودکار
 on:
   push:
     branches: [main]
@@ -53,35 +53,38 @@ jobs:
           echo "---- deploy tree (top) ----"
           du -sh deploy/* 2>/dev/null || true
 
-      # ---------- آپلود به هاست (FTP سی‌پنل ایران‌هاست) ----------
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      # ---------- دیپلوی امن با SSH (کلید، بدون رمز عبور) ----------
+      - name: Deploy via SSH (rsync + remote setup)
+        uses: easingthemes/ssh-deploy@v5.1.0
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          protocol: ftp
-          local-dir: deploy/
-          # مسیر روی هاست نسبت به home اکانت cPanel (مثلاً kermani-app/)
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
-          # هرگز فایل‌های هاست حذف نشوند — دیتابیس و آپلودها امن می‌مانند
-          dangerous-cleaner: false
-          log-level: minimal
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USERNAME }}
+          REMOTE_PORT: ${{ secrets.SSH_PORT }}
+          SOURCE: "deploy/"
+          # مقصد نسبت به home اکانت cPanel — پوشه‌ی اپ
+          TARGET: "kermani-app/"
+          # ⚠️ بدون --delete — دیتابیس (db/) و آپلودها (data/) هرگز حذف نمی‌شوند
+          ARGS: "-rlgoDzvc -i"
+          # بعد از rsync: دیتابیس/آپلودها آماده و Passenger ری‌استارت می‌شود
+          SCRIPT_AFTER: |
+            cd ~/kermani-app
+            bash setup.sh
 
-      # ---------- (اختیاری) ری‌استارت خودکار با SSH ----------
-      # اگر ایران‌هاست SSH فعال کرده، دو خط زیر را از کامنت خارج کنید و
-      # چهار Secret مربوطه را بسازید؛ آن‌وقت حتی نیازی به زدن setup.sh نیست:
-      # - name: Remote setup & restart via SSH
-      #   uses: appleboy/ssh-action@v1.0.3
+      # ---------- پلن جایگزین: FTP (اگر روزی SSH غیرفعال شد) ----------
+      # Secrets لازم: FTP_SERVER / FTP_USERNAME / FTP_PASSWORD / FTP_SERVER_DIR
+      # - name: Deploy via FTP
+      #   uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       #   with:
-      #     host: ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USERNAME }}
-      #     password: ${{ secrets.SSH_PASSWORD }}
-      #     port: ${{ secrets.SSH_PORT }}
-      #     script: |
-      #       cd $HOME/${{ secrets.FTP_SERVER_DIR }}
-      #       bash setup.sh
+      #     server: ${{ secrets.FTP_SERVER }}
+      #     username: ${{ secrets.FTP_USERNAME }}
+      #     password: ${{ secrets.FTP_PASSWORD }}
+      #     port: 21
+      #     protocol: ftp
+      #     local-dir: deploy/
+      #     server-dir: ${{ secrets.FTP_SERVER_DIR }}
+      #     dangerous-cleaner: false
+      #     log-level: minimal
 
       - name: Done
-        run: echo "سایت بیلد و به هاست منتقل شد. اگر SSH ندارید، فقط یک بار در ترمینال سی‌پنل bash setup.sh را اجرا کنید."
+        run: echo "بیلد + rsync + setup.sh + ری‌استارت Passenger انجام شد."
