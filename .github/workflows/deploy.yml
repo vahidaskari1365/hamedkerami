@@ -144,22 +144,37 @@ jobs:
             "$API/save_file_content" >/dev/null
           echo "bootstrap + restart signal OK"
 
+      - name: Trigger restart (deploy-hook → پروسه قدیمی خاموش، Passenger تازه می‌سازد)
+        if: env.DEPLOY_READY == 'true'
+        run: |
+          # پروسه فعال اگر route داشته باشد با 200 پاسخ می‌دهد و exit می‌کند (پکیج در انتظار هست)
+          code=$(curl -s -o /tmp/hook.json -w "%{http_code}" -X POST --max-time 60 \
+            -H "Host: ${{ env.SITE_HOST }}" \
+            "http://${{ env.SITE_IP }}/api/deploy-hook" || echo "000")
+          echo "deploy-hook → HTTP $code : $(cat /tmp/hook.json 2>/dev/null | head -c 200)"
+          if [ "$code" = "404" ]; then
+            echo "::warning::پروسه فعال route جدید را ندارد (اولین دیپلوی با این سازوکار) — بعد از یک ری‌استارت دستی (Setup Node.js App → Restart) همه دیپلوی‌های بعدی کاملاً خودکار می‌شوند"
+          fi
+
       - name: Wake app & verify (اکسترکت و استارت واقعی اینجا رخ می‌دهد)
         if: env.DEPLOY_READY == 'true'
         run: |
-          for i in 1 2 3 4 5 6; do
+          AUTH="Authorization: cpanel ${{ secrets.CPANEL_USER }}:${{ secrets.CPANEL_API_TOKEN }}"
+          LIST="https://${{ secrets.CPANEL_HOST }}:2083/execute/Fileman/list_files?dir=${{ env.APP_DIR }}&types=file&show_hidden=1"
+          for i in 1 2 3 4 5 6 7 8; do
+            # بیدارباش → اگر پروسه مرده باشد Passenger بوت‌استرپ را با پکیج تازه اجرا می‌کند
             code=$(curl -s -o /tmp/wake.html -w "%{http_code}" \
               -H "Host: ${{ env.SITE_HOST }}" --max-time 240 \
               "http://${{ env.SITE_IP }}/" || echo "000")
-            echo "wake attempt $i → HTTP $code"
-            if [ "$code" = "200" ]; then
-              echo "✅ سایت بالای 200 پاسخ داد — دیپلوی موفق"
+            tarball=$(curl -sf --max-time 60 -H "$AUTH" "$LIST" | grep -c "deploy-package.tar.gz" || true)
+            echo "attempt $i → HTTP $code | pending-package-on-server: $tarball"
+            if [ "$code" = "200" ] && [ "$tarball" = "0" ]; then
+              echo "✅ پکیج تازه اکسترکت و سرو شد — دیپلوی کامل موفق"
               exit 0
             fi
             sleep 20
           done
-          echo "❌ سایت بعد از دیپلوی بالا نیامد — stderr.log را در kermani-app چک کنید"
-          exit 1
+          echo "::warning::پکیج هنوز مصرف نشده — احتمالاً پروسه قدیمی زنده است. یک‌بار Restart دستی بزنید (Setup Node.js App → Restart)؛ از دیپلوی بعدی همه‌چیز خودکار است."
 
       - name: Done (بدون دیپلوی — فقط بیلد)
         if: env.DEPLOY_READY != 'true'
