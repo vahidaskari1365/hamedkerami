@@ -1,17 +1,23 @@
-name: Build & Deploy to IranHost (cPanel over SSH)
+name: Build & Deploy to IranHost (cPanel UAPI)
 
-# هر push به main → بیلد در گیت‌هاب → rsync امن با کلید SSH به هاست → ری‌استارت خودکار
+# هر push به main → بیلد در گیت‌هاب → آپلود پکیج فشرده با UAPI → بوت‌استرپ اکسترکت و ری‌استارت
+# (FTP این هاست کانال دیتایش فایروال است و SSH هم بسته — پس همه‌چیز از HTTPS پورت 2083 می‌گذرد)
 on:
   push:
     branches: [main]
   workflow_dispatch: # اجرای دستی از تب Actions
 
+env:
+  APP_DIR: /home/drkerman/kermani-app
+  SITE_HOST: dr-kermani.com
+  SITE_IP: 213.176.126.162
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
     env:
-      # تا یوزرنیم FTP ست نشده، مرحله‌ی دیپلوی skip می‌شود (بیلد سبز می‌ماند)
-      DEPLOY_READY: ${{ secrets.FTP_USERNAME != '' }}
+      # تا توکن cPanel ست نشده، فقط بیلد سبز می‌شود و دیپلوی skip است
+      DEPLOY_READY: ${{ secrets.CPANEL_API_TOKEN != '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,70 +41,126 @@ jobs:
           DATABASE_URL: "file:/tmp/build.db"
           NEXT_TELEMETRY_DISABLED: "1"
 
-      # ---------- بسته‌بندی فایل‌هایی که باید روی هاست بروند ----------
+      # ---------- بسته‌بندی ----------
       - name: Assemble deploy package
         run: |
           set -e
-          mkdir -p deploy/db deploy/tmp
-          # سرور standalone + فایل‌های استاتیک (build script خودش کپی کرده)
-          mv .next/standalone deploy/.next-standalone
-          mkdir -p deploy/.next
-          mv deploy/.next-standalone deploy/.next/standalone
-          # ورودی Passenger + اسکیما + دیتابیس آماده + اسکریپت راه‌اندازی
+          rm -rf deploy/.next deploy/server.js deploy/prisma deploy/db deploy/tmp
+          mkdir -p deploy/db deploy/tmp deploy/.next
+          cp -r .next/standalone deploy/.next/standalone
           cp server.js deploy/server.js
           cp -r prisma deploy/prisma
           cp db/init.db deploy/db/init.db
-          # (setup.sh از قبل داخل deploy/ هست — کپی روی خودش ممنوع)
-          # restart.txt با محتوای متفاوت در هر اجرا → آپلود می‌شود → Passenger ری‌استارت می‌شود
           echo "restart-$(date +%s)" > deploy/tmp/restart.txt
-          # حذف آرتیفکت‌های سنگین بی‌استفاده از node_modules standalone
-          rm -rf deploy/.next/standalone/node_modules/.cache || true
-          echo "---- deploy tree (top) ----"
+          rm -rf deploy/.next/standalone/node_modules/.cache 2>/dev/null || true
           du -sh deploy/* 2>/dev/null || true
 
-      # ---------- دیپلوی با FTP (SSH در این هاست بسته است) ----------
-      # کش وضعیت → فقط فایل‌های تغییرکرده آپلود می‌شوند (دفعات بعد چند دقیقه)
-      - name: Restore FTP state cache
+      - name: Create tarball
+        run: tar -czf /tmp/deploy-package.tar.gz -C deploy . && ls -lh /tmp/deploy-package.tar.gz
+
+      # ---------- دیپلوی با cPanel UAPI (HTTPS:2083) ----------
+      - name: Upload package via UAPI
         if: env.DEPLOY_READY == 'true'
-        uses: actions/cache@v4
-        with:
-          path: deploy/.ftp-deploy-sync-state.json
-          key: ftp-state-${{ github.run_id }}
-          restore-keys: |
-            ftp-state-
+        run: |
+          curl -sf --retry 3 --retry-delay 5 --max-time 1800 \
+            -H "Authorization: cpanel ${{ secrets.CPANEL_USER }}:${{ secrets.CPANEL_API_TOKEN }}" \
+            -F "dir=${{ env.APP_DIR }}" \
+            -F "overwrite=1" \
+            -F "file=@/tmp/deploy-package.tar.gz" \
+            "https://${{ secrets.CPANEL_HOST }}:2083/execute/Fileman/upload_files" \
+            | head -c 300; echo
 
-      - name: Deploy via FTP
+      - name: Install bootstrap server.js + restart Passenger via UAPI
         if: env.DEPLOY_READY == 'true'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          protocol: ftpes
-          local-dir: deploy/
-          # مسیر روی هاست نسبت به home اکانت cPanel
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
-          # ⚠️ هرگز فایل‌های هاست حذف نشوند — دیتابیس و آپلودها امن می‌مانند
-          dangerous-cleaner: false
-          log-level: minimal
+        run: |
+          AUTH="Authorization: cpanel ${{ secrets.CPANEL_USER }}:${{ secrets.CPANEL_API_TOKEN }}"
+          API="https://${{ secrets.CPANEL_HOST }}:2083/execute/Fileman"
+          # بوت‌استرپ: در هر شروع، اگر پکیج تازه هست اکسترکت می‌کند و بعد standalone را اجرا می‌کند
+          cat > /tmp/bootstrap.js <<'BOOTSTRAP'
+          /* CI bootstrap — اکسترکت پکیج دیپلوی + اجرای standalone (نوشته‌شده توسط پایپ‌لاین گیت‌هاب) */
+          const { execFileSync } = require("child_process");
+          const path = require("path");
+          const fs = require("fs");
 
-      # ---------- پلن جایگزین: SSH (اگر روزی هاست فعالش کرد) ----------
-      # کلید ed25519 از قبل آماده و در cPanel authorized شده (scripts/deploy_ed25519)
-      # Secrets لازم: SSH_HOST / SSH_PORT / SSH_PRIVATE_KEY / SSH_USERNAME
-      # - name: Deploy via SSH (rsync + remote setup)
-      #   uses: easingthemes/ssh-deploy@v5.1.0
-      #   with:
-      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     REMOTE_HOST: ${{ secrets.SSH_HOST }}
-      #     REMOTE_USER: ${{ secrets.SSH_USERNAME }}
-      #     REMOTE_PORT: ${{ secrets.SSH_PORT }}
-      #     SOURCE: "deploy/"
-      #     TARGET: "kermani-app/"
-      #     ARGS: "-rlgoDzvc -i"
-      #     SCRIPT_AFTER: |
-      #       cd ~/kermani-app
-      #       bash setup.sh
+          const ROOT = __dirname;
+          process.chdir(ROOT);
 
-      - name: Done
-        run: echo "بیلد + آپلود FTP + ری‌استارت Passenger انجام شد (db در اولین بوت خودکار ساخته می‌شود)."
+          const PKG = path.join(ROOT, "deploy-package.tar.gz");
+          if (fs.existsSync(PKG)) {
+            try {
+              console.log("[bootstrap] extracting deploy package…");
+              execFileSync("tar", ["-xzf", PKG, "-C", ROOT, "--overwrite"], { stdio: "inherit" });
+              fs.unlinkSync(PKG);
+              console.log("[bootstrap] extracted OK");
+            } catch (e) {
+              console.error("[bootstrap] extract FAILED:", e.message);
+            }
+          }
+
+          // پاکسازی فایل‌های موقتی تست‌های قدیمی (یک‌بار برای همه)
+          for (const junk of ["ci-pkg.tar.gz", "probe.txt", "ci-write-test.txt", "ci-test-1.txt", "ci-test-2.txt", "ci-test-3.txt"]) {
+            try { fs.unlinkSync(path.join(ROOT, junk)); } catch {}
+          }
+
+          process.env.NODE_ENV = "production";
+          process.env.NEXT_TELEMETRY_DISABLED = "1";
+          process.env.HOSTNAME = "0.0.0.0";
+          if (!process.env.PORT) process.env.PORT = "3000";
+
+          const DB_FILE = path.join(ROOT, "db", "custom.db");
+          const INIT_FILE = path.join(ROOT, "db", "init.db");
+          if (!fs.existsSync(DB_FILE) && fs.existsSync(INIT_FILE)) {
+            fs.mkdirSync(path.join(ROOT, "db"), { recursive: true });
+            fs.copyFileSync(INIT_FILE, DB_FILE);
+            console.log("[bootstrap] db/custom.db created from init.db");
+          }
+          process.env.DATABASE_URL = process.env.DATABASE_URL || "file:" + DB_FILE;
+          process.env.UPLOAD_DIR = path.join(ROOT, "data", "uploads");
+          try { fs.mkdirSync(process.env.UPLOAD_DIR, { recursive: true }); } catch {}
+
+          const STANDALONE = path.join(ROOT, ".next", "standalone", "server.js");
+          if (!fs.existsSync(STANDALONE)) {
+            console.error("[bootstrap] standalone missing — package extract failed?");
+            process.exit(1);
+          }
+          console.log("[bootstrap] starting standalone Next.js…");
+          require(STANDALONE);
+          BOOTSTRAP
+          # نوشتن بوت‌استرپ به‌جای server.js
+          curl -sf --retry 3 --retry-delay 5 --max-time 120 \
+            -H "$AUTH" \
+            -F "dir=${{ env.APP_DIR }}" \
+            -F "file=server.js" \
+            -F "overwrite=1" \
+            -F "content=</tmp/bootstrap.js" \
+            "$API/save_file_content" >/dev/null
+          # سیگنال ری‌استارت Passenger
+          curl -sf --retry 3 --retry-delay 5 --max-time 120 \
+            -H "$AUTH" \
+            -F "dir=${{ env.APP_DIR }}/tmp" \
+            -F "file=restart.txt" \
+            -F "overwrite=1" \
+            -F "content=restart-$(date +%s)" \
+            "$API/save_file_content" >/dev/null
+          echo "bootstrap + restart signal OK"
+
+      - name: Wake app & verify (اکسترکت و استارت واقعی اینجا رخ می‌دهد)
+        if: env.DEPLOY_READY == 'true'
+        run: |
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -s -o /tmp/wake.html -w "%{http_code}" \
+              -H "Host: ${{ env.SITE_HOST }}" --max-time 240 \
+              "http://${{ env.SITE_IP }}/" || echo "000")
+            echo "wake attempt $i → HTTP $code"
+            if [ "$code" = "200" ]; then
+              echo "✅ سایت بالای 200 پاسخ داد — دیپلوی موفق"
+              exit 0
+            fi
+            sleep 20
+          done
+          echo "❌ سایت بعد از دیپلوی بالا نیامد — stderr.log را در kermani-app چک کنید"
+          exit 1
+
+      - name: Done (بدون دیپلوی — فقط بیلد)
+        if: env.DEPLOY_READY != 'true'
+        run: echo "بیلد سبز بود؛ دیپلوی skip شد چون CPANEL_API_TOKEN ست نیست."
