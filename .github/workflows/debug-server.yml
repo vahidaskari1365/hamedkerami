@@ -1,13 +1,13 @@
-name: Deploy fix v9 — read .htaccess + stderr.log via /uploads copy trick
+name: Cleanup diag files
 
 on:
   workflow_dispatch:
 
 jobs:
-  fix:
+  cleanup:
     runs-on: ubuntu-latest
     steps:
-      - name: Copy key files into data/uploads with image names, then read them
+      - name: Neutralize diagnostic copies exposed under /uploads
         env:
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
@@ -19,32 +19,8 @@ jobs:
           HOMEQ=$(printf '%%2Fhome%%2F%s' "$CPANEL_USER")
           APP="$HOMEQ%2Fkermani-app"
           UP="$APP%2Fdata%2Fuploads"
-
-          echo "===== 1) copy files as .png into data/uploads ====="
-          echo "-- .htaccess:"
-          call "$J/execute/Fileman/copy_file?source=$HOMEQ%2Fpublic_html%2F.htaccess&destination=$UP%2Fdeadbeef-a.png" | head -c 200; echo
-          echo "-- stderr.log:"
-          call "$J/execute/Fileman/copy_file?source=$APP%2Fstderr.log&destination=$UP%2Fdeadbeef-b.png" | head -c 200; echo
-          echo "-- server.js:"
-          call "$J/execute/Fileman/copy_file?source=$APP%2Fserver.js&destination=$UP%2Fdeadbeef-c.png" | head -c 200; echo
-          echo "-- tmp/restart.txt:"
-          call "$J/execute/Fileman/copy_file?source=$APP%2Ftmp%2Frestart.txt&destination=$UP%2Fdeadbeef-d.png" | head -c 200; echo
-
-          echo "===== 2) read them via the live app ====="
-          sleep 2
-          echo "############ .htaccess ############"
-          curl -s --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/deadbeef-a.png" || echo "(fetch failed)"
-          echo
-          echo "############ stderr.log (tail 3500) ############"
-          curl -s --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/deadbeef-b.png" | tail -c 3500 || echo "(fetch failed)"
-          echo
-          echo "############ server.js (head 600) ############"
-          curl -s --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/deadbeef-c.png" | head -c 600 || echo "(fetch failed)"
-          echo
-          echo "############ restart.txt ############"
-          curl -s --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/deadbeef-d.png" || echo "(fetch failed)"
-          echo
-
-          echo "===== 3) rename always_restart.txt within tmp (same-dir) ====="
-          call "$J/execute/Fileman/rename_file?source=$APP%2Ftmp%2Falways_restart.txt&destination=$APP%2Ftmp%2Falways_restart.txt.bak" | head -c 250; echo
-          call "$J/execute/Fileman/list_files?dir=$APP%2Ftmp&show_hidden=1" | jq -r '.data[]? | "\(.file)"' 2>/dev/null
+          for F in deadbeef-a.png deadbeef-b.png deadbeef-c.png deadbeef-d.png; do
+            call "$J/execute/Fileman/save_file_content?dir=$UP&file=$F&content=cleaned" >/dev/null && echo "neutralized: $F"
+          done
+          echo "-- dummy tarball in HOME root (from cwd oracle):"
+          call "$J/execute/Fileman/save_file_content?dir=$HOMEQ&file=deploy-package.tar.gz&content=x" >/dev/null && echo "shrunk"
