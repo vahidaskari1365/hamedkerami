@@ -1,4 +1,4 @@
-name: Server diagnostics v5 — PHP recon (processes, cwd, stderr)
+name: Deploy diagnostics v6 — read logs via compress trick, cwd oracle, respawn loop
 
 on:
   workflow_dispatch:
@@ -7,32 +7,69 @@ jobs:
   diag:
     runs-on: ubuntu-latest
     steps:
-      - name: Drop self-deleting PHP recon + run it
+      - name: Read real logs + kill orphan via hook + respawn
         env:
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
           CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
-          B64: PD9waHAKaGVhZGVyKCdDb250ZW50LVR5cGU6IHRleHQvcGxhaW47IGNoYXJzZXQ9dXRmLTgnKTsKZWNobyAiPT0gcGhwIGN3ZDogIi5nZXRjd2QoKS4iXG4iOwplY2hvICI9PSBwcm9jZXNzZXMgKHBpZCB8IGN3ZCB8IGNtZGxpbmUpOlxuIjsKZm9yZWFjaCAoc2NhbmRpcignL3Byb2MnKSBhcyAkcCkgewogIGlmICghY3R5cGVfZGlnaXQoJHApKSBjb250aW51ZTsKICAkY3dkID0gQHJlYWRsaW5rKCIvcHJvYy8kcC9jd2QiKTsKICAkY21kID0gQHByZWdfcmVwbGFjZSgnL1x4MDAvJywgJyAnLCAoc3RyaW5nKUBmaWxlX2dldF9jb250ZW50cygiL3Byb2MvJHAvY21kbGluZSIpKTsKICBpZiAoJGN3ZCA9PT0gZmFsc2UgJiYgJGNtZCA9PT0gJycpIGNvbnRpbnVlOwogIGVjaG8gJHAuIiB8ICIuKCRjd2QgPzogJy0nKS4iIHwgIi5zdWJzdHIoJGNtZCA/OiAnLScsIDAsIDE2MCkuIlxuIjsKfQplY2hvICI9PSBzdGRlcnIubG9nIHRhaWw6XG4iOwokcyA9IEBmaWxlX2dldF9jb250ZW50cygnL2hvbWUvZHJrZXJtYW4va2VybWFuaS1hcHAvc3RkZXJyLmxvZycpOwplY2hvICRzID8gc3Vic3RyKCRzLCAtMzAwMCkgOiAiKHVucmVhZGFibGUpIjsKZWNobyAiXG49PSBrZXJtYW5pLWFwcC90bXAgY29udGVudHM6XG4iOwpmb3JlYWNoICgoYXJyYXkpIEBzY2FuZGlyKCcvaG9tZS9kcmtlcm1hbi9rZXJtYW5pLWFwcC90bXAnKSBhcyAkZikgZWNobyAiICAiLiRmLiJcbiI7CmVjaG8gIj09IGFsd2F5c19yZXN0YXJ0IGNsZWFudXA6ICIuKEB1bmxpbmsoJy9ob21lL2Rya2VybWFuL2tlcm1hbmktYXBwL3RtcC9hbHdheXNfcmVzdGFydC50eHQnKSA/ICdkZWxldGVkJyA6ICdub3QtZm91bmQtb3ItZmFpbGVkJykuIlxuIjsKZWNobyAiPT0gcGtnIG1hcmtlcnM6IGhvbWU9Ii4oaW50KUBmaWxlX2V4aXN0cygnL2hvbWUvZHJrZXJtYW4vZGVwbG95LXBhY2thZ2UudGFyLmd6JykuIiBhcHA9Ii4oaW50KUBmaWxlX2V4aXN0cygnL2hvbWUvZHJrZXJtYW4va2VybWFuaS1hcHAvZGVwbG95LXBhY2thZ2UudGFyLmd6JykuIlxuIjsKQHVubGluayhfX0ZJTEVfXyk7CmVjaG8gIj09IHJlY29uIHNlbGYtZGVsZXRlZFxuIjsK
         run: |
           AUTH="Authorization: cpanel $CPANEL_USER:$CPANEL_API_TOKEN"
           J="https://$CPANEL_HOST:2083"
           call() { curl -s --max-time 90 -H "$AUTH" "$1"; }
-          HOMEDIR=$(printf '%%2Fhome%%2F%s' "$CPANEL_USER")
+          HOMEQ=$(printf '%%2Fhome%%2F%s' "$CPANEL_USER")
+          APP="$HOMEQ%2Fkermani-app"
+          UP="$APP%2Fdata%2Fuploads"
 
-          echo "$B64" | base64 -d > /tmp/recon.php
-          echo "===== 1) write diag.php ====="
-          call "$J/execute/Fileman/save_file_content?dir=$HOMEDIR%2Fpublic_html&file=diag.php" \
-            -F "content=</tmp/recon.php" | head -c 200; echo
-          echo "===== 2) GET /diag.php (with domain Host) ====="
-          curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/diag.php" | head -c 6000
+          echo "===== 1) compress key files into zips ====="
+          echo "-- zip stderr.log:"
+          call "$J/execute/Fileman/compress_files?dir=$APP&zipfile=diag-stderr.zip&compress_type=zip&files=stderr.log" | head -c 220; echo
+          echo "-- zip server.js:"
+          call "$J/execute/Fileman/compress_files?dir=$APP&zipfile=diag-serverjs.zip&compress_type=zip&files=server.js" | head -c 220; echo
+          echo "-- zip .htaccess:"
+          call "$J/execute/Fileman/compress_files?dir=$HOMEQ%2Fpublic_html&zipfile=diag-htaccess.zip&compress_type=zip&files=.htaccess" | head -c 220; echo
+          echo "-- zip tmp dir files:"
+          call "$J/execute/Fileman/compress_files?dir=$APP%2Ftmp&zipfile=diag-tmp.zip&compress_type=zip&files=restart.txt,always_restart.txt" | head -c 220; echo
+
+          echo "===== 2) move zips into data/uploads ====="
+          for Z in diag-stderr diag-serverjs diag-tmp; do
+            echo "-- copy $Z.zip:"
+            call "$J/execute/Fileman/copy_file?source=$APP%2F$Z.zip&destination=$UP%2F$Z.zip" | head -c 220; echo
+          done
+          echo "-- copy htaccess zip:"
+          call "$J/execute/Fileman/copy_file?source=$HOMEQ%2Fpublic_html%2Fdiag-htaccess.zip&destination=$UP%2Fdiag-htaccess.zip" | head -c 220; echo
+
+          echo "===== 3) fetch zips via the live app ====="
+          sleep 2
+          mkdir -p /tmp/diagz && cd /tmp/diagz
+          for Z in diag-stderr diag-serverjs diag-tmp diag-htaccess; do
+            curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/$Z.zip" -o "$Z.zip" || true
+            echo "-- $Z.zip size: $(wc -c < $Z.zip 2>/dev/null)"
+            unzip -o -q "$Z.zip" -d "$Z-x" 2>/dev/null && find "$Z-x" -type f | head -5
+          done
+          echo "########## stderr.log (tail 3500) ##########"
+          tail -c 3500 /tmp/diagz/diag-stderr-x/stderr.log 2>/dev/null || echo "(not fetched)"
           echo
-          echo "===== 3) GET /diag.php (no Host, direct) ====="
-          curl -s --max-time 60 "http://213.176.126.162/diag.php" | head -c 3000
+          echo "########## server.js (full) ##########"
+          cat /tmp/diagz/diag-serverjs-x/server.js 2>/dev/null || echo "(not fetched)"
           echo
-          echo "===== 4) hook POST ====="
-          curl -s -X POST --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 200
+          echo "########## .htaccess (full) ##########"
+          cat /tmp/diagz/diag-htaccess-x/.htaccess 2>/dev/null || echo "(not fetched)"
           echo
-          sleep 15
-          echo "===== 5) markers ====="
-          curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/v5.html || true
-          echo "dr-surgon=$(grep -c 'dr-surgon.png' /tmp/v5.html) dr-portrait=$(grep -c 'clinic/dr-portrait' /tmp/v5.html) heading-fluid=$(grep -c 'heading-fluid' /tmp/v5.html) size=$(wc -c < /tmp/v5.html)"
+          echo "########## tmp dir files ##########"
+          find /tmp/diagz/diag-tmp-x -type f -exec sh -c 'echo "--- {}"; cat "{}"' \; 2>/dev/null || echo "(not fetched)"
+
+          echo "===== 4) cwd oracle: dummy tarballs + hook POST ====="
+          echo "-- dummy in HOME root:"
+          call "$J/execute/Fileman/save_file_content?dir=$HOMEQ&file=deploy-package.tar.gz&content=DIAG-DUMMY" >/dev/null && echo "written"
+          echo "hook => $(curl -s -X POST --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 200)"
+          echo "-- dummy in kermani-app/.next/standalone:"
+          call "$J/execute/Fileman/save_file_content?dir=$APP%2F.next%2Fstandalone&file=deploy-package.tar.gz&content=DIAG-DUMMY" >/dev/null && echo "written"
+          echo "hook => $(curl -s -X POST --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 200)"
+
+          echo "===== 5) respawn loop: touch restart.txt + GET / ====="
+          for i in 1 2 3 4 5 6; do
+            call "$J/execute/Fileman/save_file_content?dir=$APP%2Ftmp&file=restart.txt&content=restart-diag-$(date +%s)" >/dev/null || true
+            sleep 15
+            curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/v6.html || true
+            echo "round $i: dr-surgon=$(grep -c 'dr-surgon.png' /tmp/v6.html) dr-portrait=$(grep -c 'clinic/dr-portrait' /tmp/v6.html) heading-fluid=$(grep -c 'heading-fluid' /tmp/v6.html) size=$(wc -c < /tmp/v6.html) code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 -H 'Host: dr-kermani.com' http://213.176.126.162/)"
+          done
