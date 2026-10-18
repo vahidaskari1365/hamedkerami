@@ -9,52 +9,38 @@ on:
 jobs:
   diag:
     runs-on: ubuntu-latest
-    env:
-      CPANEL_USER: ${{ secrets.CPANEL_USER }}
-      CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
     steps:
       - name: Probe cPanel UAPI + site state
+        env:
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
         run: |
           AUTH="Authorization: cpanel $CPANEL_USER:$CPANEL_API_TOKEN"
-          J="https://${{ secrets.CPANEL_HOST }}:2083"
+          J="https://$CPANEL_HOST:2083"
           api() { curl -sf --max-time 90 -H "$AUTH" "$1"; echo; }
 
           echo "===== 1) quota ====="
-          api "$J/execute/Quota/get_quota_info" | head -c 500; echo
+          api "$J/execute/Quota/get_quota_info" | head -c 500 || echo "(quota call failed)"
           echo "===== 2) home dir listing (dirs) ====="
-          api "$J/execute/Fileman/list_files?dir=%2Fhome%2Fdrkerman&types=dir&show_hidden=1" | head -c 2500; echo
+          api "$J/execute/Fileman/list_files?dir=%2Fhome%2Fdrkerman&types=dir&show_hidden=1" | head -c 2500 || echo "(home listing failed)"
           echo "===== 3) kermani-app full listing ====="
-          api "$J/execute/Fileman/list_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&show_hidden=1" | python3 -c "
-import json,sys
-try:
-    d=json.load(sys.stdin)
-    for f in d.get('data',{}).get('files',[]):
-        print(f.get('type'), f.get('mtime'), f.get('size'), f.get('file'))
-except Exception as e:
-    print('LIST PARSE ERR', e)
-" ; echo
+          api "$J/execute/Fileman/list_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&show_hidden=1" | jq -r '.data.files[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' || echo "(app listing failed)"
           echo "===== 4) Node.js Selector listapps (API2) ====="
-          curl -sk --max-time 90 -H "$AUTH" "$J/json-api/cpanel?cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=NodeJSMgmt&cpanel_jsonapi_func=listapps" | head -c 3000; echo
+          curl -sk --max-time 90 -H "$AUTH" "$J/json-api/cpanel?cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=NodeJSMgmt&cpanel_jsonapi_func=listapps" | head -c 3000 || echo "(listapps failed)"
           echo "===== 5) kermani-app/server.js (first 700 bytes) ====="
-          curl -sk --max-time 90 -H "$AUTH" "$J/execute/Fileman/download_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&file=server.js" | head -c 700; echo
+          curl -sk --max-time 90 -H "$AUTH" "$J/execute/Fileman/download_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&file=server.js" | head -c 700 || echo "(server.js read failed)"
           echo "===== 6) kermani-app/stderr.log (last 2500 bytes) ====="
-          curl -sk --max-time 90 -H "$AUTH" "$J/execute/Fileman/download_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&file=stderr.log" | tail -c 2500; echo
+          curl -sk --max-time 90 -H "$AUTH" "$J/execute/Fileman/download_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&file=stderr.log" | tail -c 2500 || echo "(stderr.log missing/failed)"
           echo "===== 7) POST deploy-hook ====="
-          curl -s -X POST --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 300; echo
+          curl -s -X POST --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 300 || true
+          echo
           sleep 30
           echo "===== 8) site markers after hook ====="
-          curl -s --max-time 90 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/site.html
+          curl -s --max-time 90 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/site.html || true
           echo "bg-ink py-24 count: $(grep -c 'bg-ink py-24' /tmp/site.html || true)"
           echo "heading-fluid count: $(grep -c 'heading-fluid' /tmp/site.html || true)"
           echo "dr-surgon count: $(grep -c 'dr-surgon.png' /tmp/site.html || true)"
           echo "dr-portrait count: $(grep -c 'clinic/dr-portrait' /tmp/site.html || true)"
           echo "===== 9) kermani-app listing after hook ====="
-          api "$J/execute/Fileman/list_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&show_hidden=1" | python3 -c "
-import json,sys
-try:
-    d=json.load(sys.stdin)
-    for f in d.get('data',{}).get('files',[]):
-        print(f.get('type'), f.get('mtime'), f.get('size'), f.get('file'))
-except Exception as e:
-    print('LIST PARSE ERR', e)
-" ; echo
+          api "$J/execute/Fileman/list_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&show_hidden=1" | jq -r '.data.files[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' || echo "(app listing failed)"
