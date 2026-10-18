@@ -47,7 +47,7 @@ function usePrefersReducedMotion() {
 export function AuroraText({
   children,
   className,
-  colors = ["#0f8a8d", "#5eead4", "#0d6e70", "#f4fdff"],
+  colors = ["#c9a13b", "#e9cf87", "#a5822c", "#f6f3ea"],
   speed = 1,
 }: {
   children: ReactNode;
@@ -208,9 +208,9 @@ export function MagicCard({
   children,
   className,
   gradientSize = 220,
-  gradientFrom = "rgba(15, 138, 141, 0.55)",
-  gradientTo = "rgba(94, 234, 212, 0.35)",
-  glowColor = "rgba(15, 138, 141, 0.07)",
+  gradientFrom = "rgba(201, 161, 59, 0.55)",
+  gradientTo = "rgba(92, 158, 139, 0.3)",
+  glowColor = "rgba(201, 161, 59, 0.07)",
   surface = "#ffffff",
 }: {
   children: ReactNode;
@@ -274,7 +274,7 @@ export function MagicCard({
 /* Conic highlight travelling around the border ring */
 export function BorderBeam({
   className,
-  color = "rgba(15, 138, 141, 0.95)",
+  color = "rgba(201, 161, 59, 0.95)",
   width = 2,
   speed = 6,
 }: {
@@ -302,7 +302,7 @@ export function BorderBeam({
 /* Static SVG dot grid — subtle section background */
 export function DotPattern({
   className,
-  dotColor = "rgba(15, 138, 141, 0.22)",
+  dotColor = "rgba(201, 161, 59, 0.22)",
   size = 22,
   radius = 1.1,
 }: {
@@ -332,7 +332,7 @@ export function DotPattern({
 export function Particles({
   className,
   quantity = 60,
-  color = "#5eead4",
+  color = "#e9cf87",
   maxOpacity = 0.45,
   minSize = 0.8,
   maxSize = 2.2,

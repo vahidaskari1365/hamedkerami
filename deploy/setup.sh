@@ -31,6 +31,19 @@ echo "==> پوشه‌ی آپلودها آماده است (data/uploads)"
 rm -f public/sitemap.xml
 echo "==> فایل‌های کهنه پاک شدند"
 
+# ---------- ۲.۶) seed مقالات وبلاگ (فاز ۱ — idempotent) ----------
+# اگر sqlite3 روی هاست موجود باشد و مقاله جدیدی در فایل seed باشد، اضافه می‌شود.
+# INSERT OR REPLACE با slug یکتاست و رکوردهای ادمین را خراب نمی‌کند.
+if command -v sqlite3 >/dev/null 2>&1 && [ -f db/blog-seed.sql ]; then
+  if sqlite3 db/custom.db < db/blog-seed.sql 2>/dev/null; then
+    echo "==> مقالات وبلاگ با دیتابیس همگام شد (blog-seed.sql)"
+  else
+    echo "==> اجرای blog-seed.sql ناموفق بود — مقالات از fallback سایت نمایش داده می‌شوند"
+  fi
+else
+  echo "==> sqlite3 یافت نشد — مقالات از fallback سایت نمایش داده می‌شوند"
+fi
+
 # ---------- ۳) ری‌استارت Passenger ----------
 mkdir -p tmp
 touch tmp/restart.txt

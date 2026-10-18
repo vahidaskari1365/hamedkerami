@@ -111,7 +111,7 @@ export async function getSiteContent() {
         team: TEAM.map((t) => ({ ...t, image: t.image ?? "" })),
         jawCosts: JAW_COSTS,
         implantCosts: IMPLANT_COSTS,
-        blogPosts: BLOG_POSTS.map((b) => ({ ...b, cover: "" })),
+        blogPosts: BLOG_POSTS,
         beforeAfter: BEFORE_AFTER,
         galleryCases: GALLERY_CASES,
         galleryCats: GALLERY_CATS,
@@ -135,14 +135,16 @@ export async function getSiteContent() {
       successRates: successRates.length
         ? successRates.map((s) => ({ rate: s.rate, title: s.title, detail: s.detail }))
         : SUCCESS_RATES,
-      services: services.map((s) => ({
-        slug: s.slug,
-        title: s.title,
-        latin: s.latin,
-        desc: s.desc,
-        image: s.image,
-        points: points(s),
-      })),
+      services: services.length
+        ? services.map((s) => ({
+            slug: s.slug,
+            title: s.title,
+            latin: s.latin,
+            desc: s.desc,
+            image: s.image,
+            points: points(s),
+          }))
+        : SERVICES.map((s) => ({ ...s, points: s.points })),
       serviceExtras: extras.length
         ? extras.map((e) => ({ title: e.title, desc: e.desc }))
         : SERVICE_EXTRAS,
@@ -152,16 +154,23 @@ export async function getSiteContent() {
       team: team.length
         ? team.map((t) => ({ name: t.name, role: t.role, image: t.image || null }))
         : TEAM,
-      jawCosts: jawCosts.map((c) => ({ item: c.item, price: c.price })),
-      implantCosts: implantCosts.map((c) => ({ item: c.item, price: c.price })),
-      blogPosts: blogPosts.map((b) => ({
-        slug: b.slug,
-        title: b.title,
-        date: b.date,
-        excerpt: b.excerpt,
-        body: b.body,
-        cover: b.cover,
-      })),
+      jawCosts: jawCosts.length
+        ? jawCosts.map((c) => ({ item: c.item, price: c.price }))
+        : JAW_COSTS,
+      implantCosts: implantCosts.length
+        ? implantCosts.map((c) => ({ item: c.item, price: c.price }))
+        : IMPLANT_COSTS,
+      /* fallback بخش‌به‌بخش — اگر فقط وبلاگ خالی بود، مقالات ثابت نمایش داده شوند */
+      blogPosts: blogPosts.length
+        ? blogPosts.map((b) => ({
+            slug: b.slug,
+            title: b.title,
+            date: b.date,
+            excerpt: b.excerpt,
+            body: b.body,
+            cover: b.cover,
+          }))
+        : BLOG_POSTS,
       beforeAfter: {
         bimax: bimax
           ? { before: bimax.before, after: bimax.after, label: bimax.label }
@@ -173,13 +182,17 @@ export async function getSiteContent() {
           ? { before: main.before, after: main.after, label: main.label }
           : BEFORE_AFTER.main,
       },
-      galleryCases: cases.map((c) => ({ src: c.src, cat: c.cat, title: c.title })),
-      galleryCats: [
-        "همه",
-        ...Array.from(new Set(cases.map((c) => c.cat).filter(Boolean))),
-      ],
-      portfolioCovers: covers.map((c) => ({ src: c.src, title: c.title })),
-      certificates: certificates.map((c) => ({ src: c.src, title: c.title })),
+      galleryCases: cases.length ? cases.map((c) => ({ src: c.src, cat: c.cat, title: c.title })) : GALLERY_CASES,
+      galleryCats:
+        cases.length
+          ? ["همه", ...Array.from(new Set(cases.map((c) => c.cat).filter(Boolean)))]
+          : GALLERY_CATS,
+      portfolioCovers: covers.length
+        ? covers.map((c) => ({ src: c.src, title: c.title }))
+        : PORTFOLIO_COVERS,
+      certificates: certificates.length
+        ? certificates.map((c) => ({ src: c.src, title: c.title }))
+        : CERTIFICATES,
       faq: faq.length ? faq.map((f) => ({ q: f.q, a: f.a })) : FAQ,
       hours: hours.length
         ? hours.map((h) => ({ day: h.day, doctor: h.doctor, time: h.time }))
@@ -202,7 +215,7 @@ export async function getSiteContent() {
       team: TEAM,
       jawCosts: JAW_COSTS,
       implantCosts: IMPLANT_COSTS,
-      blogPosts: BLOG_POSTS.map((b) => ({ ...b, cover: "" })),
+      blogPosts: BLOG_POSTS,
       beforeAfter: BEFORE_AFTER,
       galleryCases: GALLERY_CASES,
       galleryCats: GALLERY_CATS,

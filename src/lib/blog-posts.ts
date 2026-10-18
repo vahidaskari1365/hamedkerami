@@ -40,7 +40,6 @@ export async function getPublishedPosts(): Promise<BlogArticle[]> {
   }
   return BLOG_POSTS.map((b) => ({
     ...b,
-    cover: "",
     publishedAt: null,
     updatedAt: null,
   }));
@@ -66,6 +65,6 @@ export async function getBlogPost(slug: string): Promise<BlogArticle | null> {
   }
   const fb = BLOG_POSTS.find((p) => p.slug === slug);
   return fb
-    ? { ...fb, cover: "", publishedAt: null, updatedAt: null }
+    ? { ...fb, publishedAt: null, updatedAt: null }
     : null;
 }

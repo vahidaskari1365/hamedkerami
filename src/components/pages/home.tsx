@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/accordion";
 import { useContent } from "@/lib/content-context";
 
-/* ================= HERO ================= */
+/* ================= HERO — Kinpaku lacquer ================= */
 function Hero() {
   const { site: SITE, hero: HERO, stats: STATS } = useContent();
   const ref = useRef<HTMLElement>(null);
@@ -45,10 +45,10 @@ function Hero() {
   return (
     <section
       ref={ref}
-      className="relative flex min-h-[100dvh] items-end overflow-hidden bg-ink pb-16 pt-32 text-white sm:pb-20"
+      className="relative flex min-h-[100dvh] items-end overflow-hidden bg-ink pb-14 pt-32 text-white sm:pb-20"
       aria-label="معرفی دکتر حامد کرمانی"
     >
-      {/* clinic backdrop with Ken Burns */}
+      {/* lacquer surgical suite backdrop with Ken Burns */}
       <div className="absolute inset-0" aria-hidden>
         <motion.div style={{ y: imgY }} className="absolute inset-0">
           <div className="kenburns relative h-[115%] w-full">
@@ -58,20 +58,27 @@ function Hero() {
               fill
               priority
               sizes="100vw"
-              className="object-cover opacity-35"
+              className="object-cover opacity-55"
             />
           </div>
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/30" />
-        <div className="absolute inset-0 bg-gradient-to-l from-ink/80 via-transparent to-ink/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/10" />
+        <div className="absolute inset-0 bg-gradient-to-l from-ink/85 via-ink/20 to-ink/55" />
+        {/* Kinpaku aurora orbs */}
+        <span className="aurora-orb left-[-8%] top-[8%] h-72 w-72 bg-[#c9a13b]/25" aria-hidden />
+        <span
+          className="aurora-orb right-[14%] top-[42%] h-56 w-56 bg-[#5c9e8b]/20"
+          style={{ animationDelay: "-8s" }}
+          aria-hidden
+        />
         <DotPattern
           className="opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
-          dotColor="rgba(94, 234, 212, 0.14)"
+          dotColor="rgba(233, 207, 135, 0.16)"
           size={26}
         />
         <Particles
-          quantity={48}
-          color="#5eead4"
+          quantity={44}
+          color="#e9cf87"
           maxOpacity={0.4}
           className="[mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)]"
         />
@@ -87,7 +94,7 @@ function Hero() {
             className="mb-5 flex items-center gap-3"
           >
             <span className="h-px w-10 bg-teal" aria-hidden />
-            <span className="rounded-full border border-teal/35 bg-teal/10 px-4 py-1.5 text-sm font-semibold text-teal">
+            <span className="rounded-full border border-teal/40 bg-teal/10 px-4 py-1.5 text-sm font-semibold text-gold-soft">
               <AnimatedShinyText shinyWidth={140}>
                 {HERO.eyebrow}
               </AnimatedShinyText>
@@ -134,7 +141,7 @@ function Hero() {
             <ShimmerButton
               href={`tel:${SITE.phone}`}
               ariaLabel="رزرو نوبت و مشاوره — تماس با مطب"
-              className="px-8 py-4 text-base font-bold text-white shadow-xl shadow-teal/30"
+              className="px-8 py-4 text-base font-bold text-ink shadow-xl shadow-teal/25"
             >
               رزرو نوبت و مشاوره
             </ShimmerButton>
@@ -154,6 +161,25 @@ function Hero() {
           >
             «{HERO.quote}»
           </motion.blockquote>
+
+          {/* trust strip */}
+          <motion.ul
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 1.3 }}
+            className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3 text-[13px] text-white/65"
+          >
+            {["بورد تخصصی جراحی فک و صورت", "فلوشیپ کرانیوفاسیال — دانشگاه تهران", "بیش از ۱۰۰۰ جراحی موفق"].map(
+              (t) => (
+                <li key={t} className="flex items-center gap-2">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" className="text-teal" aria-hidden>
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  {t}
+                </li>
+              ),
+            )}
+          </motion.ul>
         </motion.div>
 
         {/* doctor portrait */}
@@ -163,7 +189,7 @@ function Hero() {
           transition={{ duration: 1.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="relative mx-auto w-full max-w-[270px] sm:max-w-xs lg:max-w-sm"
         >
-          <div className="vignette relative aspect-[4/5] overflow-hidden rounded-3xl ring-1 ring-white/15">
+          <div className="vignette relative aspect-[4/5] overflow-hidden rounded-3xl ring-1 ring-teal/40">
             <Image
               src={HERO.image}
               alt="دکتر حامد کرمانی، متخصص جراحی فک و صورت"
@@ -178,13 +204,23 @@ function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.4, duration: 0.8 }}
-            className="absolute -bottom-5 right-6 left-6 rounded-2xl bg-white/10 p-4 text-center backdrop-blur-xl ring-1 ring-white/20"
+            className="absolute -bottom-5 right-6 left-6 rounded-2xl bg-white/10 p-4 text-center backdrop-blur-xl ring-1 ring-teal/30"
           >
             <p className="text-sm font-extrabold">دکتر حامد کرمانی</p>
             <p className="mt-0.5 text-[11px] text-white/70">
               فلوشیپ جراحی های کرانیوفیشال — دانشگاه تهران
             </p>
           </motion.div>
+          {/* floating gold stat chip */}
+          <div
+            className="float-y absolute -top-4 -left-3 rounded-2xl border border-teal/40 bg-ink/70 px-4 py-3 text-center backdrop-blur-md sm:-left-6"
+            aria-hidden
+          >
+            <p className="text-xl font-black text-teal">
+              <Counter to={1000} suffix="+" />
+            </p>
+            <p className="text-[10px] text-white/70">جراحی فک و صورت</p>
+          </div>
         </motion.div>
       </div>
 
@@ -208,7 +244,6 @@ function Hero() {
 }
 
 /* ================= STATS ================= */
-/* ================= STATS ================= */
 function Stats() {
   const { stats: STATS } = useContent();
   return (
@@ -228,7 +263,7 @@ function Stats() {
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px overflow-hidden px-4 py-14 sm:px-6 lg:grid-cols-4">
         {STATS.map((s, i) => (
           <Reveal key={s.label} delay={i * 0.08} className="text-center">
-            <p className="text-4xl font-black text-teal sm:text-5xl">
+            <p className="gold-text text-4xl font-black sm:text-5xl">
               <Counter to={s.value} suffix={s.suffix} />
             </p>
             <p className="mt-2 text-sm text-white/65">{s.label}</p>
@@ -246,7 +281,7 @@ function AboutTeaser() {
     <section className="bg-bone py-24" aria-label="درباره دکتر">
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2">
         <Reveal className="relative order-2 lg:order-1">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl shadow-ink/15">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl shadow-ink/15 ring-1 ring-ink/10">
             <Parallax speed={0.08} className="h-full w-full">
               <Image
                 src="/images/clinic/dr-portrait.jpg"
@@ -257,7 +292,7 @@ function AboutTeaser() {
               />
             </Parallax>
           </div>
-          <div className="absolute -bottom-8 -left-2 hidden rounded-2xl bg-ink p-6 text-white shadow-xl sm:block lg:-left-8">
+          <div className="absolute -bottom-8 -left-2 hidden rounded-2xl bg-ink p-6 text-white shadow-xl ring-1 ring-teal/30 sm:block lg:-left-8">
             <p className="text-3xl font-black text-teal">
               <Counter to={16} suffix="+" />
             </p>
@@ -292,7 +327,7 @@ function AboutTeaser() {
             </ul>
             <Link
               href="/about"
-              className="mt-9 inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm font-bold text-white transition hover:bg-ink-3"
+              className="mt-9 inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm font-bold text-white transition hover:bg-ink-3 hover:text-teal"
             >
               اطلاعات بیشتر درباره دکتر
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
@@ -306,7 +341,7 @@ function AboutTeaser() {
   );
 }
 
-/* ================= SERVICES ================= */
+/* ================= SERVICES — premium light cards ================= */
 function ServicesSection() {
   const { services: SERVICES, serviceExtras: SERVICE_EXTRAS } = useContent();
   return (
@@ -337,10 +372,10 @@ function ServicesSection() {
             <Reveal key={s.slug} delay={(i % 3) * 0.1}>
               <Link
                 href="/services"
-                className="group relative block overflow-hidden rounded-2xl bg-ink text-white"
                 aria-label={s.title}
+                className="group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card ring-1 ring-ink/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-teal/20 hover:ring-teal/40"
               >
-                <div className="relative aspect-[4/3] overflow-hidden">
+                <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
                     src={s.image}
                     alt={s.title}
@@ -348,19 +383,26 @@ function ServicesSection() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover object-top transition-transform duration-[1.2s] ease-out group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/35 to-transparent" />
-                </div>
-                <div className="relative p-6 pt-2">
-                  <p className="text-[11px] tracking-wide text-teal" dir="ltr">
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent" />
+                  {/* gold index chip */}
+                  <span
+                    className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-xl bg-ink/60 text-sm font-black text-teal backdrop-blur-md ring-1 ring-teal/40"
+                    aria-hidden
+                  >
+                    {["۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸"][i] ?? i + 1}
+                  </span>
+                  <p className="absolute bottom-3 right-5 text-[11px] font-bold tracking-wide text-gold-soft" dir="ltr">
                     {s.latin}
                   </p>
-                  <h3 className="mt-1 text-xl font-extrabold">{s.title}</h3>
-                  <p className="mt-2 line-clamp-2 text-sm leading-7 text-white/65">
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="text-xl font-extrabold transition-colors group-hover:text-teal-2">{s.title}</h3>
+                  <p className="mt-2 line-clamp-2 flex-1 text-sm leading-7 text-foreground/60">
                     {s.desc}
                   </p>
-                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-teal opacity-0 transition-all duration-300 group-hover:opacity-100">
+                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-teal-2">
                     جزئیات خدمت
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="transition-transform duration-300 group-hover:-translate-x-1" aria-hidden>
                       <path d="M19 12H5m6-6l-6 6 6 6" />
                     </svg>
                   </span>
@@ -374,7 +416,7 @@ function ServicesSection() {
           <div className="grid gap-4 rounded-2xl bg-bone p-6 sm:grid-cols-2 lg:grid-cols-4">
             {SERVICE_EXTRAS.map((x) => (
               <MagicCard key={x.title} className="rounded-xl" surface="var(--color-bone)">
-                <div className="h-full border-r-2 border-teal/50 py-2 pr-4">
+                <div className="h-full border-r-2 border-teal/60 py-2 pr-4">
                   <p className="text-sm font-extrabold">{x.title}</p>
                   <p className="mt-1 text-xs leading-6 text-foreground/60">{x.desc}</p>
                 </div>
@@ -387,6 +429,80 @@ function ServicesSection() {
   );
 }
 
+/* ================= BLOG TEASER — latest articles ================= */
+function BlogTeaser() {
+  const { blogPosts: BLOG_POSTS } = useContent();
+  const latest = BLOG_POSTS.slice(0, 3);
+  if (!latest.length) return null;
+  return (
+    <section className="bg-bone py-24" aria-label="آخرین مقالات وبلاگ">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <Reveal>
+            <p className="flex items-center gap-3 text-sm font-bold text-teal-2">
+              <span className="h-px w-10 bg-teal" aria-hidden />
+              وبلاگ آموزشی
+            </p>
+            <h2 className="mt-4 max-w-xl text-3xl font-black leading-snug sm:text-4xl">
+              آخرین مقالات جراحی فک و صورت
+            </h2>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <Link
+              href="/blog"
+              className="rounded-full border border-ink/15 px-6 py-3 text-sm font-bold transition hover:border-teal hover:text-teal-2"
+            >
+              همه مقالات
+            </Link>
+          </Reveal>
+        </div>
+
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
+          {latest.map((p, i) => (
+            <Reveal key={p.slug} delay={(i % 3) * 0.1}>
+              <Link
+                href={`/blog/${p.slug}`}
+                aria-label={`خواندن مقاله: ${p.title}`}
+                className="group flex h-full flex-col overflow-hidden rounded-3xl bg-card ring-1 ring-ink/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-teal/20 hover:ring-teal/40"
+              >
+                {p.cover ? (
+                  <div className="relative aspect-[16/9] w-full overflow-hidden">
+                    <Image
+                      src={p.cover}
+                      alt={p.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover transition duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/45 to-transparent opacity-60" />
+                  </div>
+                ) : null}
+                <div className="flex flex-1 flex-col p-6">
+                  <span className="w-fit rounded-full bg-teal/10 px-3 py-1 text-xs font-bold text-teal-3">
+                    {p.date}
+                  </span>
+                  <h3 className="mt-3 text-base font-black leading-7 transition-colors group-hover:text-teal-2 sm:text-lg">
+                    {p.title}
+                  </h3>
+                  <p className="mt-2 line-clamp-2 flex-1 text-sm leading-7 text-foreground/60">
+                    {p.excerpt}
+                  </p>
+                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-teal-2">
+                    ادامه مطلب
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="transition-transform duration-300 group-hover:-translate-x-1" aria-hidden>
+                      <path d="M19 12H5m6-6l-6 6 6 6" />
+                    </svg>
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ================= BEFORE / AFTER ================= */
 function BeforeAfterSection() {
   const { beforeAfter: BEFORE_AFTER } = useContent();
@@ -394,7 +510,7 @@ function BeforeAfterSection() {
     <section className="spotlight-sweep relative overflow-hidden bg-white py-24" aria-label="نمونه جراحی های انجام شده">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <p className="flex items-center justify-center gap-3 text-sm font-bold text-teal">
+          <p className="flex items-center justify-center gap-3 text-sm font-bold text-teal-2">
             <span className="h-px w-10 bg-teal" aria-hidden />
             نمونه جراحی های انجام شده
             <span className="h-px w-10 bg-teal" aria-hidden />
@@ -428,7 +544,7 @@ function BeforeAfterSection() {
         <Reveal delay={0.15} className="mt-12 text-center">
           <Link
             href="/gallery"
-            className="inline-block rounded-full bg-teal px-8 py-4 text-sm font-bold text-white shadow-lg shadow-teal/25 transition hover:bg-teal-2"
+            className="inline-block rounded-full bg-teal px-8 py-4 text-sm font-bold text-ink shadow-lg shadow-teal/30 transition hover:bg-teal-2 hover:text-white"
           >
             مشاهده گالری کامل
           </Link>
@@ -457,12 +573,15 @@ function SuccessRates() {
           {SUCCESS_RATES.map((s, i) => (
             <Reveal key={s.title} delay={i * 0.1}>
               <MagicCard
-                className="h-full rounded-2xl"
-                surface="#ffffff"
+                className="h-full rounded-3xl"
+                surface="#fffdf7"
                 gradientSize={260}
               >
-                <div className="relative h-full overflow-hidden rounded-2xl bg-white p-8">
-                  <p className="text-5xl font-black text-teal">{s.rate}</p>
+                <div className="relative h-full overflow-hidden rounded-3xl bg-card p-8 ring-1 ring-ink/5">
+                  <p className="gold-text text-5xl font-black">{s.rate}</p>
+                  <div className="mt-4 h-1.5 w-24 overflow-hidden rounded-full bg-ink/8" aria-hidden>
+                    <div className="h-full rounded-full bg-gradient-to-l from-teal to-sand" />
+                  </div>
                   <h3 className="mt-4 font-extrabold leading-7">{s.title}</h3>
                   <p className="mt-2 text-sm text-foreground/60">{s.detail}</p>
                   <span
@@ -497,7 +616,7 @@ function TeamSection() {
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {TEAM.map((m, i) => (
             <Reveal key={m.name} delay={i * 0.08}>
-              <div className="group overflow-hidden rounded-2xl bg-bone transition-shadow hover:shadow-xl hover:shadow-ink/10">
+              <div className="group overflow-hidden rounded-3xl bg-bone ring-1 ring-ink/8 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-teal/15 hover:ring-teal/40">
                 <div className="relative aspect-square overflow-hidden bg-ink-3">
                   {m.image ? (
                     <Image
@@ -562,7 +681,7 @@ function FaqSection() {
               <AccordionItem
                 key={i}
                 value={`faq-${i}`}
-                className="rounded-2xl border border-ink/10 bg-white px-6 shadow-sm"
+                className="rounded-2xl border border-ink/10 bg-card px-6 shadow-sm"
               >
                 <AccordionTrigger className="text-right text-base font-bold leading-7 hover:no-underline">
                   {f.q}
@@ -579,25 +698,26 @@ function FaqSection() {
   );
 }
 
-/* ================= CTA ================= */
+/* ================= CTA — golden silk backdrop ================= */
 function CtaSection() {
   const { site: SITE } = useContent();
   return (
-    <section className="relative overflow-hidden bg-teal-3 py-20 text-white" aria-label="تماس با ما">
+    <section className="relative overflow-hidden bg-ink py-20 text-white" aria-label="تماس با ما">
       <div
         aria-hidden
-        className="absolute inset-0 opacity-25"
+        className="absolute inset-0 opacity-45"
         style={{
-          backgroundImage: "url(/images/clinic-2.jpg)",
+          backgroundImage: "url(/images/hero-lacquer-2.jpg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
-      <div aria-hidden className="absolute inset-0 bg-gradient-to-l from-teal-3 via-teal-3/80 to-teal-3" />
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-l from-ink via-ink/70 to-ink/85" />
+      <span className="aurora-orb left-[10%] bottom-[-20%] h-64 w-64 bg-[#c9a13b]/20" aria-hidden />
       <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
         <Reveal>
           <h2 className="text-3xl font-black leading-snug sm:text-4xl">
-            مسیر درمان شما از یک مشاوره ساده شروع می شود
+            مسیر درمان شما از یک <span className="gold-text">مشاوره ساده</span> شروع می شود
           </h2>
           <p className="mx-auto mt-5 max-w-[58ch] text-base leading-8 text-white/80">
             مشاوره تلفنی در تمام ایام هفته پاسخگوی شماست. برای رزرو نوبت یا
@@ -607,7 +727,7 @@ function CtaSection() {
             <PulsatingButton
               href={`tel:${SITE.phone}`}
               ariaLabel={`تماس با مطب — ${SITE.phoneDisplay}`}
-              className="bg-white px-9 py-4 text-base font-black text-teal-3 shadow-xl transition hover:bg-bone"
+              className="bg-teal px-9 py-4 text-base font-black text-ink shadow-xl transition hover:bg-gold-soft"
             >
               <span dir="ltr">{SITE.phoneDisplay}</span>
             </PulsatingButton>
@@ -634,6 +754,7 @@ export function HomePage() {
       <ServicesSection />
       <BeforeAfterSection />
       <SuccessRates />
+      <BlogTeaser />
       <TeamSection />
       <FaqSection />
       <CtaSection />

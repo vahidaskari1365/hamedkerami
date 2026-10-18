@@ -10,8 +10,8 @@
   "orientation": "portrait-primary",
   "dir": "rtl",
   "lang": "fa-IR",
-  "background_color": "#0d1114",
-  "theme_color": "#0d1114",
+  "background_color": "#0d0e0b",
+  "theme_color": "#0d0e0b",
   "categories": ["health", "medical", "lifestyle"],
   "icons": [
     {

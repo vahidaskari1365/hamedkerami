@@ -85,16 +85,20 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* ============ Brand tokens — surgical teal on ink & bone ============ */
-  --color-ink: #0d1114;
-  --color-ink-2: #13181d;
-  --color-ink-3: #1b2229;
-  --color-bone: #f6f5f1;
-  --color-bone-2: #edece6;
-  --color-teal: #0f8a8d;
-  --color-teal-2: #0d6e70;
-  --color-teal-3: #0a5759;
-  --color-sand: #c8b48c;
+  /* ============ Brand tokens — Kinpaku: gold & verdigris on warm lacquer
+     (design language from impeccable skill — restraint in chrome,
+     brilliance in texture; gold is the action color, verdigris the state color) ============ */
+  --color-ink: #0d0e0b;
+  --color-ink-2: #13140f;
+  --color-ink-3: #1c1d16;
+  --color-bone: #f6f3ea;
+  --color-bone-2: #ece8db;
+  --color-teal: #c9a13b;
+  --color-teal-2: #a5822c;
+  --color-teal-3: #7c6120;
+  --color-sand: #5c9e8b;
+  --color-gold-soft: #e9cf87;
+  --color-verdigris: #5c9e8b;
 }
 
 /* framer-motion useScroll: scroll container (scrollingElement) must be non-static */
@@ -104,58 +108,58 @@ html {
 
 :root {
   --radius: 0.5rem;
-  --background: #f6f5f1;
-  --foreground: #0d1114;
-  --card: #ffffff;
-  --card-foreground: #0d1114;
-  --popover: #ffffff;
-  --popover-foreground: #0d1114;
-  --primary: #0f8a8d;
-  --primary-foreground: #f6f5f1;
-  --secondary: #edece6;
-  --secondary-foreground: #0d1114;
-  --muted: #edece6;
-  --muted-foreground: #5c636a;
-  --accent: #e4f2f2;
-  --accent-foreground: #0a5759;
+  --background: #f6f3ea;
+  --foreground: #171812;
+  --card: #fffdf7;
+  --card-foreground: #171812;
+  --popover: #fffdf7;
+  --popover-foreground: #171812;
+  --primary: #c9a13b;
+  --primary-foreground: #171812;
+  --secondary: #ece8db;
+  --secondary-foreground: #171812;
+  --muted: #ece8db;
+  --muted-foreground: #6b6a5c;
+  --accent: #e9f0ea;
+  --accent-foreground: #2f6353;
   --destructive: #b3392f;
-  --border: #e2e0d8;
-  --input: #e2e0d8;
-  --ring: #0f8a8d;
-  --chart-1: #0f8a8d;
-  --chart-2: #c8b48c;
-  --chart-3: #0a5759;
-  --chart-4: #5c636a;
-  --chart-5: #13181d;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #0d1114;
-  --sidebar-primary: #0f8a8d;
-  --sidebar-primary-foreground: #f6f5f1;
-  --sidebar-accent: #edece6;
-  --sidebar-accent-foreground: #0d1114;
-  --sidebar-border: #e2e0d8;
-  --sidebar-ring: #0f8a8d;
+  --border: #e3ddca;
+  --input: #e3ddca;
+  --ring: #c9a13b;
+  --chart-1: #c9a13b;
+  --chart-2: #5c9e8b;
+  --chart-3: #7c6120;
+  --chart-4: #6b6a5c;
+  --chart-5: #13140f;
+  --sidebar: #fffdf7;
+  --sidebar-foreground: #171812;
+  --sidebar-primary: #c9a13b;
+  --sidebar-primary-foreground: #171812;
+  --sidebar-accent: #ece8db;
+  --sidebar-accent-foreground: #171812;
+  --sidebar-border: #e3ddca;
+  --sidebar-ring: #c9a13b;
 }
 
 .dark {
-  --background: #0d1114;
-  --foreground: #f6f5f1;
-  --card: #13181d;
-  --card-foreground: #f6f5f1;
-  --popover: #13181d;
-  --popover-foreground: #f6f5f1;
-  --primary: #0f8a8d;
-  --primary-foreground: #f6f5f1;
-  --secondary: #1b2229;
-  --secondary-foreground: #f6f5f1;
-  --muted: #1b2229;
-  --muted-foreground: #9aa3ab;
-  --accent: #1b2229;
-  --accent-foreground: #f6f5f1;
+  --background: #0d0e0b;
+  --foreground: #f6f3ea;
+  --card: #13140f;
+  --card-foreground: #f6f3ea;
+  --popover: #13140f;
+  --popover-foreground: #f6f3ea;
+  --primary: #d3ac48;
+  --primary-foreground: #171812;
+  --secondary: #1c1d16;
+  --secondary-foreground: #f6f3ea;
+  --muted: #1c1d16;
+  --muted-foreground: #a5a291;
+  --accent: #1c1d16;
+  --accent-foreground: #f6f3ea;
   --destructive: #e0574c;
-  --border: #232b33;
-  --input: #232b33;
-  --ring: #0f8a8d;
+  --border: #272820;
+  --input: #272820;
+  --ring: #c9a13b;
 }
 
 @layer base {
@@ -173,8 +177,8 @@ html {
     text-rendering: optimizeLegibility;
   }
   ::selection {
-    background: #0f8a8d;
-    color: #f6f5f1;
+    background: #c9a13b;
+    color: #171812;
   }
 }
 
@@ -201,7 +205,7 @@ html {
   top: 0;
   bottom: 0;
   width: 28%;
-  background: linear-gradient(90deg, transparent, rgba(15, 138, 141, 0.07), transparent);
+  background: linear-gradient(90deg, transparent, rgba(201, 161, 59, 0.09), transparent);
   animation: sweep 9s ease-in-out infinite;
   pointer-events: none;
 }
@@ -238,7 +242,7 @@ html {
 /* Thin scrollbar for galleries */
 .thin-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
 .thin-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.thin-scrollbar::-webkit-scrollbar-thumb { background: #0f8a8d55; border-radius: 3px; }
+.thin-scrollbar::-webkit-scrollbar-thumb { background: #c9a13b66; border-radius: 3px; }
 
 /* ============ 3D ring carousel — portfolio covers ============ */
 .ring-stage {
@@ -250,7 +254,7 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 .ring-stage:focus-visible {
-  box-shadow: 0 0 0 2px #0f8a8d, 0 0 40px -8px #0f8a8d66;
+  box-shadow: 0 0 0 2px #c9a13b, 0 0 40px -8px #c9a13b88;
   border-radius: 2rem;
 }
 .ring-stage.dragging { cursor: grabbing; }
@@ -269,7 +273,7 @@ html {
 .ring-card.is-active figure {
   box-shadow:
     0 44px 90px -28px rgba(0, 0, 0, 0.8),
-    0 0 0 1.5px rgba(15, 138, 141, 0.65);
+    0 0 0 1.5px rgba(201, 161, 59, 0.75);
 }
 @media (prefers-reduced-motion: reduce) {
   .ring-card { transition-duration: 0.2s; }
@@ -314,7 +318,7 @@ html {
   background: linear-gradient(
     110deg,
     transparent 20%,
-    var(--shiny-color, rgba(15, 138, 141, 0.9)) 50%,
+    var(--shiny-color, rgba(201, 161, 59, 0.9)) 50%,
     transparent 80%
   );
   background-size: var(--shiny-width) 100%;
@@ -362,7 +366,7 @@ html {
   background: conic-gradient(
     from var(--beam-angle),
     transparent 0deg 285deg,
-    var(--beam-color, rgba(15, 138, 141, 0.95)) 330deg,
+    var(--beam-color, rgba(201, 161, 59, 0.95)) 330deg,
     rgba(255, 255, 255, 0.55) 345deg,
     transparent 360deg
   );
@@ -372,9 +376,9 @@ html {
 
 /* Pulsating halo for CTA */
 @keyframes pulse-halo {
-  0% { box-shadow: 0 0 0 0 rgba(15, 138, 141, 0.45); }
-  70% { box-shadow: 0 0 0 16px rgba(15, 138, 141, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(15, 138, 141, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(201, 161, 59, 0.45); }
+  70% { box-shadow: 0 0 0 16px rgba(201, 161, 59, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(201, 161, 59, 0); }
 }
 .pulse-cta {
   animation: pulse-halo 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -397,8 +401,49 @@ html {
   .shimmer-spark,
   .border-beam,
   .pulse-cta,
-  .pulse-cta-white {
+  .pulse-cta-white,
+  .aurora-orb,
+  .float-y {
     animation: none !important;
   }
   html { scroll-behavior: auto; }
+}
+
+/* ============ Kinpaku motion graphics (aurora orbs + float) ============ */
+@keyframes orb-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(4%, -6%, 0) scale(1.08); }
+  66% { transform: translate3d(-5%, 4%, 0) scale(0.94); }
+}
+.aurora-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  animation: orb-drift 16s ease-in-out infinite;
+  pointer-events: none;
+  will-change: transform;
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.float-y {
+  animation: float-y 5s ease-in-out infinite;
+}
+
+/* Gold gradient text for dark sections */
+.gold-text {
+  background: linear-gradient(115deg, #e9cf87 0%, #c9a13b 45%, #f2dfa5 70%, #a5822c 100%);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Dotted leader row for pricing tables */
+.price-leader {
+  flex: 1;
+  border-bottom: 2px dotted #c9a13b55;
+  margin: 0 0.75rem;
+  transform: translateY(-4px);
 }

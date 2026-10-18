@@ -46,7 +46,7 @@ const FALLBACK: SiteContent = {
   team: TEAM,
   jawCosts: JAW_COSTS,
   implantCosts: IMPLANT_COSTS,
-  blogPosts: BLOG_POSTS.map((b) => ({ ...b, cover: "" })),
+  blogPosts: BLOG_POSTS,
   beforeAfter: BEFORE_AFTER,
   galleryCases: GALLERY_CASES,
   galleryCats: GALLERY_CATS,

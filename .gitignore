@@ -67,3 +67,7 @@ tool-results/
 
 # admin session signing secret (auto-generated, must never be committed)
 db/.admin-secret
+
+# research clones + local test screenshots
+/skills-research/
+/.screenshots/
