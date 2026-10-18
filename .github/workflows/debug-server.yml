@@ -1,4 +1,4 @@
-name: Server diagnostics v3
+name: Server diagnostics v4 — stderr via /uploads + always_restart test
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ jobs:
   diag:
     runs-on: ubuntu-latest
     steps:
-      - name: Find the real Passenger app behind dr-kermani.com
+      - name: Expose server logs through the app and test always_restart
         env:
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
@@ -16,29 +16,42 @@ jobs:
           AUTH="Authorization: cpanel $CPANEL_USER:$CPANEL_API_TOKEN"
           J="https://$CPANEL_HOST:2083"
           api() { curl -sf --max-time 90 -H "$AUTH" "$1"; }
+          call() { curl -s --max-time 90 -H "$AUTH" "$1"; }
           HOMEDIR=$(printf '%%2Fhome%%2F%s' "$CPANEL_USER")
-          lsj() { echo "--- $1 ---"; api "$J/execute/Fileman/list_files?dir=$2&show_hidden=1" > /tmp/lx.json || echo "(fetch failed)"; jq -r '.data[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' /tmp/lx.json 2>/dev/null | head -50; [ -s /tmp/lx.json ] || echo "(empty)"; }
+          APP="$HOMEDIR%2Fkermani-app"
 
-          echo "===== 1) public_html ====="
-          lsj public_html "$HOMEDIR%2Fpublic_html"
-          echo "===== 2) nodevenv (registered selector apps) ====="
-          lsj nodevenv "$HOMEDIR%2Fnodevenv"
-          echo "===== 3) kermani-app/.next (top) ====="
-          lsj kermani-app/.next "$HOMEDIR%2Fkermani-app%2F.next"
-          echo "===== 4) kermani-app/tmp ====="
-          lsj kermani-app/tmp "$HOMEDIR%2Fkermani-app%2Ftmp"
-          echo "===== 5) read stderr.log attempts ====="
-          for FN in readfile viewfile; do
-            echo "-- UAPI Fileman/$FN:"
-            api "$J/execute/Fileman/$FN?dir=$HOMEDIR%2Fkermani-app&file=stderr.log" | head -c 500 || echo "(failed)"
-            echo
+          echo "===== 1) ensure data/uploads exists ====="
+          call "$J/execute/Fileman/mkdir?path=$APP%2Fdata%2Fuploads" | head -c 200; echo
+
+          echo "===== 2) copy diag files into data/uploads ====="
+          echo "-- stderr.log:"
+          call "$J/execute/Fileman/copy_file?dir=$APP&file=stderr.log&destdir=$APP%2Fdata%2Fuploads&destname=diag-stderr.log" | head -c 250; echo
+          echo "-- server.js:"
+          call "$J/execute/Fileman/copy_file?dir=$APP&file=server.js&destdir=$APP%2Fdata%2Fuploads&destname=diag-serverjs.txt" | head -c 250; echo
+          echo "-- public_html/.htaccess:"
+          call "$J/execute/Fileman/copy_file?dir=$HOMEDIR%2Fpublic_html&file=.htaccess&destdir=$APP%2Fdata%2Fuploads&destname=diag-htaccess.txt" | head -c 250; echo
+
+          echo "===== 3) read them via the live app ====="
+          sleep 2
+          echo "---------- stderr.log (tail 3500) ----------"
+          curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/diag-stderr.log" | tail -c 3500
+          echo
+          echo "---------- server.js (head 500) ----------"
+          curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/diag-serverjs.txt" | head -c 500
+          echo
+          echo "---------- .htaccess (full) ----------"
+          curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/diag-htaccess.txt" | head -c 1200
+          echo
+
+          echo "===== 4) always_restart.txt test ====="
+          call "$J/execute/Fileman/save_file_content?dir=$APP%2Ftmp&file=always_restart.txt&content=diag" >/dev/null && echo "always_restart.txt created"
+          for i in 1 2 3; do
+            sleep 12
+            curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/ar.html || true
+            echo "try $i: dr-surgon=$(grep -c 'dr-surgon.png' /tmp/ar.html) dr-portrait=$(grep -c 'clinic/dr-portrait' /tmp/ar.html) heading-fluid=$(grep -c 'heading-fluid' /tmp/ar.html) size=$(wc -c < /tmp/ar.html)"
           done
-          echo "-- API2 Fileman/fmviewfile:"
-          curl -sk --max-time 60 -H "$AUTH" "$J/json-api/cpanel?cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=Fileman&cpanel_jsonapi_func=fmviewfile&dir=$HOMEDIR%2Fkermani-app&file=stderr.log" | head -c 600 || echo "(failed)"
-          echo
-          echo "===== 6) hook POST now ====="
-          curl -s -X POST --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 300 || true
-          echo
-          echo "===== 7) markers ====="
-          curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/s.html || true
-          echo "dr-surgon=$(grep -c 'dr-surgon.png' /tmp/s.html) dr-portrait=$(grep -c 'clinic/dr-portrait' /tmp/s.html) heading-fluid=$(grep -c 'heading-fluid' /tmp/s.html)"
+          echo "-- cleanup always_restart.txt:"
+          call "$J/execute/Fileman/unlink_file?dir=$APP%2Ftmp&file=always_restart.txt" | head -c 200; echo
+          echo "===== 5) kermani-app listing after test ====="
+          api "$J/execute/Fileman/list_files?dir=$APP&show_hidden=1" > /tmp/lf.json || true
+          jq -r '.data[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' /tmp/lf.json 2>/dev/null | head -20
