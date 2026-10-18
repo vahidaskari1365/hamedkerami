@@ -2,7 +2,7 @@
 
 سیر کار (تماماً خودکار — مثل ورسل):
 **هر push به main → گیت‌هاب بیلد می‌کند → پکیج فشرده با cPanel API (HTTPS) آپلود می‌شود →
-server.js بوت‌استرپی پکیج را اکسترکت و اپ را ری‌استارت می‌کند → سایت با نسخه تازه بالا می‌آید.**
+هوک پروسه فعال را خاموش می‌کند → Passenger بوت‌استرپ را اجرا می‌کند → پکیج اکسترکت و سایت تازه سرو می‌شود → کش صفحه LiteSpeed هم خودکار پاک می‌شود.**
 
 - دیتابیس **SQLite** است (فایل db/custom.db — با هر دیپلوی حفظ می‌شود؛ اولین بار خودکار از init.db ساخته می‌شود)
 - آپلودهای ادمین در data/uploads می‌مانند و هرگز با دیپلوی پاک نمی‌شوند
@@ -18,19 +18,18 @@ server.js بوت‌استرپی پکیج را اکسترکت و اپ را ری�
 |---|---|
 | `CPANEL_HOST` | `linux502.centraldnserver.com` |
 | `CPANEL_USER` | `drkerman` |
-| `CPANEL_API_TOKEN` | توکن API سی‌پنل (Settings → Manage API Tokens) |
+| `CPANEL_API_TOKEN` | توکن API سی‌پنل (cPanel → Manage API Tokens) |
 
 Secretهای قدیمی FTP_*/SSH_* دیگر استفاده نمی‌شوند (می‌توانند حذف شوند).
 
 ---
 
-## بخش ۲ — آنچه روی هاست یک‌بار انجام شد
+## بخش ۲ — توپولوژی هاست (مهم — دست کاری نکنید)
 
-1. **Setup Node.js App**: Application root = `kermani-app` ، startup file = `server.js` (انجام شد)
-2. دامنه **dr-kermani.com** روی این اکانت است و DNS به سرور اشاره می‌کند (انجام شده)
-3. AutoSSL فعال است (https کار می‌کند)
-
-> نکته: دیگر نیازی به اجرای دستی setup.sh یا Restart نیست — server.js بوت‌استرپی هر دیپلوی را خودش نصب و ری‌استارت می‌کند.
+- سرور cPanel واقعی: `linux502.centraldnserver.com` = **213.176.126.132**
+- IP عمومی سایت: **213.176.126.162** (همان سرور است؛ IP اختصاصی vhost — DNS دامنه درست است، تغییرش ندهید)
+- وب‌سرور: **LiteSpeed** + CloudLinux Passenger (کانفیگ در `public_html/.htaccess`: PassengerAppRoot=kermani-app، startup=server.js، Node 24)
+- اپ Node.js در Setup Node.js App: فقط یک اپ ثبت‌شده = `kermani-app`
 
 ---
 
@@ -39,21 +38,29 @@ Secretهای قدیمی FTP_*/SSH_* دیگر استفاده نمی‌شوند (�
 هر اجرای workflow این مراحل است:
 
 1. **بیلد**: bun install → prisma generate → next build (standalone) → پکیج: `.next/standalone` + `server.js` + `prisma/` + `db/init.db`
-2. **آپلود**: tar.gz (حدود ۶۶MB) با `Fileman::upload_files` به `/home/drkerman/kermani-app/deploy-package.tar.gz`
+2. **آپلود**: tar.gz (حدود ۶۹MB) با `Fileman::upload_files` به `/home/drkerman/kermani-app/deploy-package.tar.gz`
 3. **بوت‌استرپ**: `Fileman::save_file_content` نسخه بوت‌استرپی server.js را می‌نویسد — در شروع، اگر پکیج تازه موجود باشد آن را با `tar` اکسترکت می‌کند، بعد standalone را اجرا می‌کند
-4. **ری‌استارت**: `POST /api/deploy-hook` روی پروسه فعال → اگر پکیج در انتظار باشد پروسه exit می‌کند → Passenger پروسه تازه می‌سازد → بوت‌استرپ اجرا می‌شود
-5. **تأیید**: workflow با UAPI چک می‌کند پکیج مصرف شده و سایت 200 می‌دهد
+4. **ری‌استارت تضمینی**: `POST /api/deploy-hook` — چون Next standalone بعد از استارت `process.chdir` به `.next/standalone` می‌زند و فایل کلید-کشنده `deploy-package.tar.gz` (محتوای تزئینی) همیشه در همان پوشه هست، هوک **همیشه** `ok:true` برمی‌گرداند و پروسه فعال exit می‌کند → Passenger بوت‌استرپ را با پکیج تازه اجرا می‌کند. (این فایل را حذف نکنید!)
+5. **تأیید**: workflow با UAPI چک می‌کند پکیج مصرف شده و سایت 200 می‌دهد (اگر خود listing شکست بخورد، «مصرف‌نشده» فرض می‌شود — نه موفقیت کاذب)
+6. **پاک‌سازی کش صفحه**: `GET /__cache-purge` → middleware با هدر `X-LiteSpeed-Purge: *` کل کش صفحات LiteSpeed را خالی می‌کند
+
+### چرا force-dynamic؟
+
+صفحه اصلی `export const dynamic = "force-dynamic"` دارد چون:
+- محتوا از پنل ادمین و روی SQLite مدیریت می‌شود؛ نسخه استاتیک/ISR تغییرات ادمین را با تأخیر نشان می‌داد
+- فایل‌های کش ISR قدیمی روی دیسک با اکسترکت پاک نمی‌شدند (tar فقط overwrite می‌کند) و هر پروسه تازه شل کهنه را HIT می‌کرد
+- middleware برای HTML پاسخ `Cache-Control: no-cache` می‌فرستد (فایل‌های immutable مثل `/_next/static` و `/uploads` مستثنا هستند)
 
 ### عیب‌یابی سریع
 
 | علامت | معنی | کار |
 |---|---|---|
-| مرحله Wake/verify با هشدار پاس شد | پروسه فعال route هوک را ندارد (فقط بار اول) | cPanel → Setup Node.js App → دکمه **Restart** یک‌بار |
-| سایت 500/پایین | خطای اجرای اپ | فایل `~/kermani-app/stderr.log` را ببینید |
-| دیپلوی انجام شد ولی تغییری نمی‌بینید | کش مرورگر | رفرش سخت (Ctrl+Shift+R) |
+| deploy-hook پاسخ نداد | اپ پایین است | `~/kermani-app/stderr.log` (با copy_file به data/uploads + نام png از `/uploads/` قابل خواندن است) |
+| دیپلوی شد ولی تغییری نمی‌بینید | کش مرورگر | رفرش سخت (Ctrl+Shift+R) |
 | ران گیت‌هاب قرمز در آپلود | انقضای توکن cPanel | توکن جدید بسازید و Secret را آپدیت کنید |
+| ورک‌فلوی `debug-server.yml` | ابزار تشخیصی فقط-خواندنی/cleanup | دستی از تب Actions با workflow_dispatch اجرا کنید |
 
 ### نکات امنیتی
 
 - توکن cPanel = دسترسی کامل اکانت. اگر لازم شد: cPanel → Manage API Tokens → توکن جدید بسازید و Secret گیت‌هاب را عوض کنید (و توکن قبلی را Revoke).
-- اکانت FTP مخصوص CI (`cideploy@dr-kermani.com`) ساخته شده ولی فعلاً بلااستفاده است (کانال دیتای FTP فایروال است).
+- endpoint ‏`/__cache-purge` فقط کش می‌خواهد (پاک می‌کند) — خطر ندارد؛ اما در صورت تمایل می‌توان به آن یک هدر مخفی اضافه کرد.
