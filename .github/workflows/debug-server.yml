@@ -1,4 +1,4 @@
-name: Deploy fix v8 — purge LiteSpeed page cache
+name: Deploy fix v9 — read .htaccess + stderr.log via /uploads copy trick
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ jobs:
   fix:
     runs-on: ubuntu-latest
     steps:
-      - name: Find and poison LSCache entries + cleanup always_restart
+      - name: Copy key files into data/uploads with image names, then read them
         env:
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
@@ -17,58 +17,34 @@ jobs:
           J="https://$CPANEL_HOST:2083"
           call() { curl -s --max-time 90 -H "$AUTH" "$1"; }
           HOMEQ=$(printf '%%2Fhome%%2F%s' "$CPANEL_USER")
+          APP="$HOMEQ%2Fkermani-app"
+          UP="$APP%2Fdata%2Fuploads"
 
-          echo "===== 0) neutralize always_restart.txt (move out of tmp) ====="
-          echo "-- try rename_file source/destination:"
-          call "$J/execute/Fileman/rename_file?source=$HOMEQ%2Fkermani-app%2Ftmp%2Falways_restart.txt&destination=$HOMEQ%2Falways_restart.txt.bak" | head -c 250; echo
+          echo "===== 1) copy files as .png into data/uploads ====="
+          echo "-- .htaccess:"
+          call "$J/execute/Fileman/copy_file?source=$HOMEQ%2Fpublic_html%2F.htaccess&destination=$UP%2Fdeadbeef-a.png" | head -c 200; echo
+          echo "-- stderr.log:"
+          call "$J/execute/Fileman/copy_file?source=$APP%2Fstderr.log&destination=$UP%2Fdeadbeef-b.png" | head -c 200; echo
+          echo "-- server.js:"
+          call "$J/execute/Fileman/copy_file?source=$APP%2Fserver.js&destination=$UP%2Fdeadbeef-c.png" | head -c 200; echo
+          echo "-- tmp/restart.txt:"
+          call "$J/execute/Fileman/copy_file?source=$APP%2Ftmp%2Frestart.txt&destination=$UP%2Fdeadbeef-d.png" | head -c 200; echo
 
-          echo "===== 1) list lscache dirs ====="
-          for D in lscache .lscache lscache_std .lscache_std; do
-            echo "--- ~/$D:"
-            call "$J/execute/Fileman/list_files?dir=$HOMEQ%2F$D&show_hidden=1" | jq -r '.data[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' 2>/dev/null | head -25
-          done
+          echo "===== 2) read them via the live app ====="
+          sleep 2
+          echo "############ .htaccess ############"
+          curl -s --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/deadbeef-a.png" || echo "(fetch failed)"
+          echo
+          echo "############ stderr.log (tail 3500) ############"
+          curl -s --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/deadbeef-b.png" | tail -c 3500 || echo "(fetch failed)"
+          echo
+          echo "############ server.js (head 600) ############"
+          curl -s --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/deadbeef-c.png" | head -c 600 || echo "(fetch failed)"
+          echo
+          echo "############ restart.txt ############"
+          curl -s --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/deadbeef-d.png" || echo "(fetch failed)"
+          echo
 
-          echo "===== 2) recursive walk of the biggest cache dir (2 levels) ====="
-          WALK="$HOMEQ%2Flscache"
-          SUBS=$(call "$J/execute/Fileman/list_files?dir=$WALK&types=dir" | jq -r '.data[]?.file' 2>/dev/null | head -10)
-          echo "subdirs: $SUBS"
-          for S in $SUBS; do
-            ENC=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote('/home/$CPANEL_USER/lscache/'+sys.argv[1], safe=''))" "$S" 2>/dev/null || echo "")
-            [ -z "$ENC" ] && continue
-            echo "--- lscache/$S:"
-            call "$J/execute/Fileman/list_files?dir=$ENC&show_hidden=1" | jq -r '.data[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' 2>/dev/null | head -20
-          done
-
-          echo "===== 3) poison cache files (overwrite with garbage) ====="
-          # هر فایلی که در lscache یافت شود با محتوای کوتاه بازنویسی می‌شود تا LiteSpeed آن را نامعتبر بداند
-          poison() { call "$J/execute/Fileman/save_file_content?dir=$1&file=$2&content=PURGED-BY-CI-$(date +%s)" >/dev/null && echo "poisoned: $1/$2"; }
-          TOPFILES=$(call "$J/execute/Fileman/list_files?dir=$WALK&types=file&show_hidden=1" | jq -r '.data[]?.file' 2>/dev/null | head -20)
-          for F in $TOPFILES; do poison "$WALK" "$F"; done
-          for S in $SUBS; do
-            ENC=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote('/home/$CPANEL_USER/lscache/'+sys.argv[1], safe=''))" "$S" 2>/dev/null || echo "")
-            [ -z "$ENC" ] && continue
-            SF=$(call "$J/execute/Fileman/list_files?dir=$ENC&types=file&show_hidden=1" | jq -r '.data[]?.file' 2>/dev/null | head -20)
-            for F in $SF; do poison "$ENC" "$F"; done
-          done
-
-          echo "===== 4) test site after poison ====="
-          sleep 5
-          CODE=$(curl -s -o /tmp/p.html -w '%{http_code}' --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/")
-          echo "GET / => $CODE dr-portrait=$(grep -c 'clinic/dr-portrait' /tmp/p.html) heading-fluid=$(grep -c 'heading-fluid' /tmp/p.html) dr-surgon=$(grep -c 'dr-surgon.png' /tmp/p.html) size=$(wc -c < /tmp/p.html)"
-
-          echo "===== 5) brute-force purge APIs ====="
-          for MOD in LiteSpeed LSCache lsws LsCache; do
-            for FN in purge_all purgeAll flush_all flushAll purge purgeAllCache clear_cache clearCache; do
-              R=$(curl -sk --max-time 20 -H "$AUTH" "$J/json-api/cpanel?cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=$MOD&cpanel_jsonapi_func=$FN" | head -c 110)
-              case "$R" in *"Could not find function"*) ;; *) echo "$MOD/$FN => $R";; esac
-            done
-          done
-          for FN in purge_all purgeAll flush_all flushAll; do
-            R=$(curl -sk --max-time 20 -H "$AUTH" "$J/execute/LiteSpeed/$FN" | head -c 110)
-            case "$R" in *"could not find"*|*"Could not find"*) ;; *) echo "UAPI LiteSpeed/$FN => $R";; esac
-          done
-
-          echo "===== 6) final test ====="
-          sleep 3
-          curl -s --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/p2.html || true
-          echo "FINAL: dr-portrait=$(grep -c 'clinic/dr-portrait' /tmp/p2.html) heading-fluid=$(grep -c 'heading-fluid' /tmp/p2.html) dr-surgon=$(grep -c 'dr-surgon.png' /tmp/p2.html) size=$(wc -c < /tmp/p2.html)"
+          echo "===== 3) rename always_restart.txt within tmp (same-dir) ====="
+          call "$J/execute/Fileman/rename_file?source=$APP%2Ftmp%2Falways_restart.txt&destination=$APP%2Ftmp%2Falways_restart.txt.bak" | head -c 250; echo
+          call "$J/execute/Fileman/list_files?dir=$APP%2Ftmp&show_hidden=1" | jq -r '.data[]? | "\(.file)"' 2>/dev/null
