@@ -94,7 +94,7 @@ function Hero() {
             </span>
           </motion.div>
 
-          <h1 className="text-4xl font-black leading-[1.15] tracking-tight sm:text-6xl lg:text-[4.2rem]">
+          <h1 className="heading-fluid-1 font-black tracking-tight">
             <LineReveal lines={HERO.headline} startDelay={0.25} />
           </h1>
 

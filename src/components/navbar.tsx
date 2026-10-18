@@ -12,11 +12,28 @@ export function Navbar() {
   const { site: SITE, brand } = useContent();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const [prevPath, setPrevPath] = useState(pathname);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    // ناوبری سیال: مخفی با اسکرول به پایین، ظاهر با اسکرول به بالا
+    // فقط transform تغییر می‌کند (لایه کامپوزیت — بدون reflow)
+    let lastY = window.scrollY;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        setScrolled(y > 40);
+        if (Math.abs(y - lastY) > 6) {
+          setHidden(y > lastY && y > 320);
+          lastY = y;
+        }
+        ticking = false;
+      });
+    };
     const raf = requestAnimationFrame(onScroll);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
@@ -33,10 +50,12 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 right-0 left-0 z-[80] transition-all duration-500 ${
+      className={`fixed top-0 right-0 left-0 z-[80] transition-[transform,background-color,padding,box-shadow] duration-500 ease-out ${
         scrolled
-          ? "bg-ink/85 backdrop-blur-xl shadow-lg shadow-black/20 py-2"
+          ? "bg-ink/85 shadow-lg shadow-black/20 backdrop-blur-xl py-2"
           : "bg-transparent py-4"
+      } ${
+        hidden && !open ? "-translate-y-full" : "translate-y-0"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6">
@@ -83,7 +102,7 @@ export function Navbar() {
 
         {/* Mobile burger */}
         <button
-          className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur lg:hidden"
+          className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal lg:hidden"
           onClick={() => setOpen((o) => !o)}
           aria-label={open ? "بستن منو" : "باز کردن منو"}
           aria-expanded={open}

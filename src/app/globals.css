@@ -280,6 +280,18 @@ html {
   font-variant-numeric: normal;
 }
 
+/* ============ Fluid type scale — clamp() based (premium-frontend-ui §4) ============
+   مقیاس نرم بین بریک‌پوینت‌ها؛ به‌جای پرش‌های پله‌ای، اندازه با عرض viewport پیوسته رشد می‌کند */
+.heading-fluid-1 {
+  font-size: clamp(2.25rem, 4.6vw + 0.55rem, 4.2rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.heading-fluid-2 {
+  font-size: clamp(1.5rem, 1.5vw + 1.05rem, 2.25rem);
+  line-height: 1.35;
+}
+
 /* ============ Magic UI animations (adapted for brand) ============ */
 
 /* Aurora gradient text */
