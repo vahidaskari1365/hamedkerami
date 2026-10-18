@@ -1,7 +1,4 @@
-name: Server diagnostics (read-only)
-
-# عیب‌یابی: چرا پکیج آپلود می‌شود ولی نسخه جدید فعال نمی‌شود؟
-# فقط-خواندنی به‌جز یک POST به deploy-hook (اثرش فقط وقتی پکیج در انتظار باشد فعال‌سازی است)
+name: Server diagnostics v2
 
 on:
   workflow_dispatch:
@@ -10,7 +7,7 @@ jobs:
   diag:
     runs-on: ubuntu-latest
     steps:
-      - name: Probe cPanel UAPI + site state
+      - name: Probe server state
         env:
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
@@ -18,29 +15,29 @@ jobs:
         run: |
           AUTH="Authorization: cpanel $CPANEL_USER:$CPANEL_API_TOKEN"
           J="https://$CPANEL_HOST:2083"
-          api() { curl -sf --max-time 90 -H "$AUTH" "$1"; echo; }
+          api() { curl -sf --max-time 90 -H "$AUTH" "$1"; }
+          HOMEDIR=$(printf '%%2Fhome%%2F%s' "$CPANEL_USER")
 
-          echo "===== 1) quota ====="
-          api "$J/execute/Quota/get_quota_info" | head -c 500 || echo "(quota call failed)"
-          echo "===== 2) home dir listing (dirs) ====="
-          api "$J/execute/Fileman/list_files?dir=%2Fhome%2Fdrkerman&types=dir&show_hidden=1" | head -c 2500 || echo "(home listing failed)"
-          echo "===== 3) kermani-app full listing ====="
-          api "$J/execute/Fileman/list_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&show_hidden=1" | jq -r '.data.files[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' || echo "(app listing failed)"
-          echo "===== 4) Node.js Selector listapps (API2) ====="
-          curl -sk --max-time 90 -H "$AUTH" "$J/json-api/cpanel?cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=NodeJSMgmt&cpanel_jsonapi_func=listapps" | head -c 3000 || echo "(listapps failed)"
-          echo "===== 5) kermani-app/server.js (first 700 bytes) ====="
-          curl -sk --max-time 90 -H "$AUTH" "$J/execute/Fileman/download_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&file=server.js" | head -c 700 || echo "(server.js read failed)"
-          echo "===== 6) kermani-app/stderr.log (last 2500 bytes) ====="
-          curl -sk --max-time 90 -H "$AUTH" "$J/execute/Fileman/download_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&file=stderr.log" | tail -c 2500 || echo "(stderr.log missing/failed)"
-          echo "===== 7) POST deploy-hook ====="
-          curl -s -X POST --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 300 || true
-          echo
-          sleep 30
-          echo "===== 8) site markers after hook ====="
-          curl -s --max-time 90 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/site.html || true
-          echo "bg-ink py-24 count: $(grep -c 'bg-ink py-24' /tmp/site.html || true)"
-          echo "heading-fluid count: $(grep -c 'heading-fluid' /tmp/site.html || true)"
-          echo "dr-surgon count: $(grep -c 'dr-surgon.png' /tmp/site.html || true)"
-          echo "dr-portrait count: $(grep -c 'clinic/dr-portrait' /tmp/site.html || true)"
-          echo "===== 9) kermani-app listing after hook ====="
-          api "$J/execute/Fileman/list_files?dir=%2Fhome%2Fdrkerman%2Fkermani-app&show_hidden=1" | jq -r '.data.files[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' || echo "(app listing failed)"
+          echo "===== A) kermani-app listing (fixed jq) ====="
+          api "$J/execute/Fileman/list_files?dir=$HOMEDIR%2Fkermani-app&show_hidden=1" > /tmp/l1.json || echo "(fetch failed)"
+          jq -r '.data[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' /tmp/l1.json 2>/dev/null | sort -k4 | head -40
+          echo "raw head: $(head -c 300 /tmp/l1.json)"
+
+          echo "===== B) home listing (files top-level) ====="
+          api "$J/execute/Fileman/list_files?dir=$HOMEDIR&show_hidden=1" > /tmp/l2.json || echo "(fetch failed)"
+          jq -r '.data[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' /tmp/l2.json 2>/dev/null | sort -k4 | head -40
+
+          echo "===== C) nested-dir hypothesis: home/home/USER ====="
+          api "$J/execute/Fileman/list_files?dir=$HOMEDIR%2Fhome%2F$CPANEL_USER%2Fkermani-app&show_hidden=1" > /tmp/l3.json || echo "(fetch failed)"
+          jq -r '.data[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' /tmp/l3.json 2>/dev/null | head -30
+          echo "raw head: $(head -c 300 /tmp/l3.json)"
+
+          echo "===== D) NodeJSMgmt function discovery ====="
+          for FN in listapps list_apps lsapps getapps app_list restartapp restart_app startapp stopapp stateapp statusapp status; do
+            R=$(curl -sk --max-time 30 -H "$AUTH" "$J/json-api/cpanel?cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=NodeJSMgmt&cpanel_jsonapi_func=$FN" | head -c 200)
+            echo "$FN => $R"
+          done
+
+          echo "===== E) site marker now ====="
+          curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/site.html || true
+          echo "dr-surgon=$(grep -c 'dr-surgon.png' /tmp/site.html) heading-fluid=$(grep -c 'heading-fluid' /tmp/site.html) bg-ink24=$(grep -c 'bg-ink py-24' /tmp/site.html)"
