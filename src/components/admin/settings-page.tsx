@@ -6,6 +6,7 @@
    ============================================================ */
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -124,6 +125,7 @@ function GroupField({
 }
 
 export function SettingsPage() {
+  const router = useRouter();
   const { toast } = useToast();
   const [settings, setSettings] = useState<Record<string, Group>>({});
   const [loading, setLoading] = useState(true);
@@ -195,8 +197,7 @@ export function SettingsPage() {
 
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" }).catch(() => {});
-    window.location.hash = "#/admin";
-    window.location.reload();
+    router.push("/admin");
   }
 
   if (loading) {

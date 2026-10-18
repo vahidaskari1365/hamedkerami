@@ -113,8 +113,8 @@ export function LandingFooter({ related }: { related: { href: string; label: str
                   <Link href={r.href} className="transition hover:text-white">{r.label}</Link>
                 </li>
               ))}
-              <li><Link href="/#/blog" className="transition hover:text-white">وبلاگ آموزشی</Link></li>
-              <li><Link href="/#/contact" className="transition hover:text-white">تماس و رزرو نوبت</Link></li>
+              <li><Link href="/blog" className="transition hover:text-white">وبلاگ آموزشی</Link></li>
+              <li><Link href="/contact" className="transition hover:text-white">تماس و رزرو نوبت</Link></li>
             </ul>
           </div>
         </div>

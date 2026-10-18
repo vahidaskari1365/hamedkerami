@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { AppShell } from "@/components/app-shell";
 import { PwaRegister } from "@/components/pwa-register";
 import { getSiteContent } from "@/lib/site-content";
 
@@ -52,7 +51,8 @@ export async function generateMetadata(): Promise<Metadata> {
   authors: [{ name: "دکتر حامد کرمانی", url: SITE.url }],
   creator: "دکتر حامد کرمانی",
   publisher: "دکتر حامد کرمانی",
-  alternates: { canonical: "/" },
+  /* نکته سئو: canonical سراسری حذف شد — هر صفحه canonical خودش را دارد
+     (اگر اینجا canonical="/" می‌ماند، صفحاتی که تعریف نمی‌کردند duplicate معرفی می‌شدند) */
   category: "Health",
   manifest: "/manifest.json",
   appleWebApp: {
@@ -77,10 +77,10 @@ export async function generateMetadata(): Promise<Metadata> {
     description: SITE.metaDescription,
     images: [
       {
-        url: "/images/dr-photo.png",
+        url: "/images/og-cover.jpg",
         width: 1200,
-        height: 1200,
-        alt: "دکتر حامد کرمانی، متخصص جراحی فک و صورت",
+        height: 630,
+        alt: "دکتر حامد کرمانی، متخصص جراحی فک و صورت و فلوشیپ کرانیوفاسیال",
       },
     ],
   },
@@ -88,7 +88,7 @@ export async function generateMetadata(): Promise<Metadata> {
     card: "summary_large_image",
     title: "دکتر حامد کرمانی | متخصص جراحی فک و صورت",
     description: SITE.metaDescription,
-    images: ["/images/dr-photo.png"],
+    images: ["/images/og-cover.jpg"],
   },
   robots: {
     index: true,
@@ -213,6 +213,7 @@ async function JsonLd() {
   const safeJsonLd = (obj: unknown) =>
     JSON.stringify(obj).replace(/</g, "\\u003c");
 
+  /* رندر idiomatik به‌صورت کامپوننت (await خودکار توسط RSC) */
   return (
     <>
       <script
@@ -241,7 +242,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body className="antialiased">
-        {JsonLd()}
+        <JsonLd />
         {children}
         <Toaster />
         <PwaRegister />

@@ -25,6 +25,12 @@ fi
 mkdir -p data/uploads
 echo "==> پوشه‌ی آپلودها آماده است (data/uploads)"
 
+# ---------- ۲.۵) حذف فایل‌های کهنه که حالا مسیر داینامیک دارند ----------
+# sitemap.xml حالا توسط Next (app/sitemap.ts) با URLهای واقعی ساخته می‌شود؛
+# نسخه استاتیک قدیمی روی LiteSpeed جلوی نسخه داینامیک را می‌گرفت
+rm -f public/sitemap.xml
+echo "==> فایل‌های کهنه پاک شدند"
+
 # ---------- ۳) ری‌استارت Passenger ----------
 mkdir -p tmp
 touch tmp/restart.txt

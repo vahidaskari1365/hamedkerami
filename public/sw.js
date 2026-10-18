@@ -6,7 +6,7 @@
  *  - Static assets (images/fonts/css/js): stale-while-revalidate
  *  - Never cache: /api/*, cross-origin
  */
-const VERSION = "v1.0.0";
+const VERSION = "v1.1.0";
 const SHELL_CACHE = `shell-${VERSION}`;
 const RUNTIME_CACHE = `runtime-${VERSION}`;
 

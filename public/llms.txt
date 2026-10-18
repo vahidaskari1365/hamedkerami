@@ -58,25 +58,25 @@
 - ایمپلنت دندان تهران (دسترسی از پاسداران): https://dromfs.com/implant-pasdaran
 
 ## کتابخانه مقالات آموزشی (۱۴۰۵)
-مقالات ۱۵۰۰+ کلمه‌ای در وبلاگ (https://dromfs.com/#/blog) — هر مقاله با «پاسخ کوتاه» برای موتورهای پاسخ‌محور شروع می‌شود:
-- جراحی فک: راهنمای جامع انواع، مراحل و نقاهت
-- هزینه جراحی فک ۱۴۰۵: عوامل موثر و رنج قیمت
-- جراحی زیبایی صورت: بلفاروپلاستی و جنیوپلاستی
-- ارتوسرجری و جراحی ارتوگناتیک فک و صورت
-- جراحی دو فک و چانه (بایمکس)
-- مونومکس یا جراحی تک‌فک و تفاوت آن با بایمکس
-- جراحی چانه: اصلاح فرم و هارمونی پروفایل
-- جنیوپلاستی: جابجایی استخوان چانه
-- فک جا موند (دررفتگی مفصل فک): علائم و اقدام فوری
-- ایمپلنت دندان: مراحل، برندها و قیمت ۱۴۰۵
-- ایمپلنت زایگوماتیک: راه‌حل فک بالا با تحلیل استخوان
-- پروتز مفصل فک (TMJ): از تشخیص تا جایگزینی
+هر مقاله URL اختصاصی دارد و با «پاسخ کوتاه» برای موتورهای پاسخ‌محور شروع می‌شود:
+- ارتوسرجری چیست؟ راهنمای کامل جراحی اصلاحی فک و صورت: https://dromfs.com/blog/orthognathic-surgery
+- جراحی فک؛ راهنمای جامع انواع، مراحل و نقاهت: https://dromfs.com/blog/jaw-surgery-guide
+- هزینه جراحی فک ۱۴۰۵؛ قیمت ها و عوامل موثر: https://dromfs.com/blog/jaw-surgery-cost
+- جراحی دو فک و چانه (بایمکس) چیست؟: https://dromfs.com/blog/bimax-surgery
+- مونومکس یا جراحی تک فک؛ تفاوت با بایمکس: https://dromfs.com/blog/monomax-surgery
+- جراحی چانه؛ راهنمای کامل اصلاح فرم و هارمونی: https://dromfs.com/blog/chin-surgery
+- جنیوپلاستی چیست؟ جابجایی استخوان چانه: https://dromfs.com/blog/genioplasty
+- جراحی زیبایی صورت؛ بلفاروپلاستی و جنیوپلاستی: https://dromfs.com/blog/facial-cosmetic-surgery
+- فک جا موند؛ علائم دررفتگی فک و اقدام فوری: https://dromfs.com/blog/jaw-dislocation
+- ایمپلنت دندان چیست؟ مراحل، برندها و قیمت ۱۴۰۵: https://dromfs.com/blog/dental-implant
+- ایمپلنت زایگوماتیک؛ راه حل فک بالا با استخوان تحلیل رفته: https://dromfs.com/blog/zygomatic-implant
+- پروتز مفصل فک (TMJ)؛ از تشخیص تا جایگزینی: https://dromfs.com/blog/tmj-prosthesis
 
 ## صفحات سایت
 - خانه: https://dromfs.com/
-- درباره دکتر: https://dromfs.com/#/about
-- خدمات: https://dromfs.com/#/services
-- هزینه ها: https://dromfs.com/#/costs
-- گالری: https://dromfs.com/#/gallery
-- وبلاگ: https://dromfs.com/#/blog
-- تماس: https://dromfs.com/#/contact
+- درباره دکتر: https://dromfs.com/about
+- خدمات: https://dromfs.com/services
+- هزینه ها: https://dromfs.com/costs
+- گالری نمونه جراحی ها: https://dromfs.com/gallery
+- وبلاگ آموزشی: https://dromfs.com/blog
+- تماس و رزرو نوبت: https://dromfs.com/contact

@@ -1,4 +1,6 @@
-import { AppShell } from "@/components/app-shell";
+import type { Metadata } from "next";
+import { SiteShell } from "@/components/site-chrome";
+import { HomePage } from "@/components/pages/home";
 
 /* ------------------------------------------------------------
    رندر داینامیک اجباری — دلایل:
@@ -12,6 +14,14 @@ import { AppShell } from "@/components/app-shell";
    ------------------------------------------------------------ */
 export const dynamic = "force-dynamic";
 
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
+
 export default function Page() {
-  return <AppShell />;
+  return (
+    <SiteShell>
+      <HomePage />
+    </SiteShell>
+  );
 }
