@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import {
   Counter,
+  FilmGrain,
   LineReveal,
   Marquee,
   Parallax,
@@ -12,6 +13,7 @@ import {
 } from "@/components/cinematic";
 import { BeforeAfter } from "@/components/before-after";
 import { Link } from "@/components/hash-router";
+import { waLink } from "@/lib/data";
 import {
   AnimatedShinyText,
   BorderBeam,
@@ -39,6 +41,7 @@ function Hero() {
     offset: ["start start", "end start"],
   });
   const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+  const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "45%"]);
   const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
@@ -50,7 +53,7 @@ function Hero() {
     >
       {/* lacquer surgical suite backdrop with Ken Burns */}
       <div className="absolute inset-0" aria-hidden>
-        <motion.div style={{ y: imgY }} className="absolute inset-0">
+        <motion.div style={{ y: imgY, scale: imgScale }} className="absolute inset-0">
           <div className="kenburns relative h-[115%] w-full">
             <Image
               src={HERO.clinicImage}
@@ -64,6 +67,7 @@ function Hero() {
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/10" />
         <div className="absolute inset-0 bg-gradient-to-l from-ink/85 via-ink/20 to-ink/55" />
+        <FilmGrain opacity={0.055} />
         {/* Kinpaku aurora orbs */}
         <span className="aurora-orb left-[-8%] top-[8%] h-72 w-72 bg-[#c9a13b]/25" aria-hidden />
         <span
@@ -670,7 +674,7 @@ function FaqSection() {
             <a href={`tel:${SITE.phone}`} className="rounded-full bg-ink px-7 py-3.5 text-sm font-bold text-white transition hover:bg-ink-3">
               تماس با مطب
             </a>
-            <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener noreferrer" className="rounded-full border border-ink/15 px-7 py-3.5 text-sm font-bold transition hover:border-teal hover:text-teal-2">
+            <a href={waLink(SITE.whatsapp)} target="_blank" rel="noopener noreferrer" className="rounded-full border border-ink/15 px-7 py-3.5 text-sm font-bold transition hover:border-teal hover:text-teal-2">
               پیام در واتسپ
             </a>
           </div>
@@ -713,6 +717,7 @@ function CtaSection() {
         }}
       />
       <div aria-hidden className="absolute inset-0 bg-gradient-to-l from-ink via-ink/70 to-ink/85" />
+      <FilmGrain opacity={0.06} />
       <span className="aurora-orb left-[10%] bottom-[-20%] h-64 w-64 bg-[#c9a13b]/20" aria-hidden />
       <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
         <Reveal>

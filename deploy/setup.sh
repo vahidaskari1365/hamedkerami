@@ -44,6 +44,27 @@ else
   echo "==> sqlite3 یافت نشد — مقالات از fallback سایت نمایش داده می‌شوند"
 fi
 
+# ---------- ۲.۷) اصلاح شماره تماس/واتسپ (idempotent) ----------
+# شماره ها فقط اگر با مقدار درست فرق داشته باشند اصلاح می شوند؛
+# بقیه تنظیمات ادمین (قیمت ها، متون و ...) دست نخورده می مانند.
+# wa.me فقط فرمت بین المللی بدون صفر را می پذیرد: 09382080270 → 989382080270
+if command -v sqlite3 >/dev/null 2>&1 && [ -f db/custom.db ]; then
+  sqlite3 db/custom.db <<'SQLFIX' 2>/dev/null \
+    && echo "==> شماره تماس/واتسپ دیتابیس بررسی و اصلاح شد" \
+    || echo "==> اصلاح شماره ها ناموفق بود — fallback سایت با شماره درست کار می کند"
+UPDATE Setting SET value = json_set(value,
+  '$.phone', '02166921500',
+  '$.phoneDisplay', '۰۲۱-۶۶۹۲۱۵۰۰',
+  '$.whatsapp', '09382080270',
+  '$.whatsappDisplay', '۰۹۳۸-۲۰۸۰۲۷۰')
+WHERE key = 'site'
+  AND (json_extract(value, '$.phone') IS NOT '02166921500'
+    OR json_extract(value, '$.whatsapp') IS NOT '09382080270');
+SQLFIX
+else
+  echo "==> sqlite3 یافت نشد — شماره ها از fallback سایت خوانده می شوند"
+fi
+
 # ---------- ۳) ری‌استارت Passenger ----------
 mkdir -p tmp
 touch tmp/restart.txt

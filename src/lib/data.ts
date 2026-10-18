@@ -23,6 +23,25 @@ export const SITE = {
   geo: { lat: 35.7079, lng: 51.3913 },
 };
 
+/* ============================================================
+   لینک واتسپ — wa.me فرمت بین المللی بدون صفر ابتدا می خواهد
+   "09382080270"  →  "https://wa.me/989382080270"
+   (اگر ادمین در پنل، شماره را با +98 یا 98 وارد کند هم درست کار می کند)
+   ============================================================ */
+export function waLink(whatsapp: string): string {
+  const digits = whatsapp.replace(/\D/g, "");
+  let intl = digits;
+  if (intl.startsWith("0098")) intl = intl.slice(4);
+  else if (intl.startsWith("098")) intl = intl.slice(3);
+  else if (intl.startsWith("98")) intl = intl.slice(2);
+  else if (intl.startsWith("0")) intl = intl.slice(1);
+  intl = `98${intl}`;
+  const text = encodeURIComponent(
+    "سلام، از وب‌سایت شما می آیم و برای مشاوره پیام می دم.",
+  );
+  return `https://wa.me/${intl}?text=${text}`;
+}
+
 export const HERO = {
   eyebrow: "متخصص جراحی های فک و صورت",
   name: "دکتر حامد کرمانی",

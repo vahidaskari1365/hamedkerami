@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Reveal } from "@/components/cinematic";
 import { PageHero } from "@/components/pages/about";
 import { useContent } from "@/lib/content-context";
+import { waLink } from "@/lib/data";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -72,7 +73,7 @@ export function ContactPage() {
                     {SITE.phoneDisplay}
                   </p>
                 </a>
-                <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener noreferrer" className="group rounded-2xl bg-white p-7 shadow-sm ring-1 ring-ink/5 transition hover:shadow-xl hover:shadow-teal/10">
+                <a href={waLink(SITE.whatsapp)} target="_blank" rel="noopener noreferrer" className="group rounded-2xl bg-white p-7 shadow-sm ring-1 ring-ink/5 transition hover:shadow-xl hover:shadow-teal/10">
                   <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal/12 text-teal-3" aria-hidden>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 11.5a8.5 8.5 0 01-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z"/></svg>
                   </span>
@@ -127,7 +128,7 @@ export function ContactPage() {
                   ))}
                 </ul>
                 <p className="mt-5 rounded-xl bg-teal/12 p-4 text-xs leading-6 text-white/80">
-                  رزرو نوبت: {SITE.phoneDisplay} — مشاوره تلفنی در تمام ایام هفته
+                  رزرو نوبت: <span dir="ltr">{SITE.phoneDisplay}</span> — مشاوره تلفنی در تمام ایام هفته
                 </p>
               </div>
             </Reveal>

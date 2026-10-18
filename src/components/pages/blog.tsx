@@ -45,6 +45,7 @@ export function BlogPage() {
                       className="object-cover transition duration-700 group-hover:scale-105"
                       priority
                     />
+                    <span className="sweep-hover" aria-hidden />
                     <div className="absolute inset-0 bg-gradient-to-t from-ink/40 to-transparent" />
                   </div>
                 ) : null}
@@ -89,6 +90,7 @@ export function BlogPage() {
                           sizes="(max-width: 768px) 100vw, 400px"
                           className="object-cover transition duration-700 group-hover:scale-105"
                         />
+                        <span className="sweep-hover" aria-hidden />
                         <div className="absolute inset-0 bg-gradient-to-t from-ink/40 to-transparent opacity-70" />
                       </div>
                     ) : null}

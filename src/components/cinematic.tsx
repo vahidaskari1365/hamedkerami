@@ -10,6 +10,7 @@ import {
   type Variants,
 } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import Image from "next/image";
 
 /* ---------- Scroll progress bar (cinematic top bar) ---------- */
 export function ScrollProgress() {
@@ -217,5 +218,186 @@ export function Marquee({ items }: { items: string[] }) {
         ))}
       </div>
     </div>
+  );
+}
+
+/* ============================================================
+   موشن گرافیک سینمایی — لایه سینما روی کل سایت
+   CinematicImage (ken-burns + نور سینمایی) / TiltCard (عمق ۳بعدی)
+   FilmGrain (دانه فیلم) / CinemaIntro (پرده افتتاحیه)
+   همگی با prefers-reduced-motion و لمس سازگارند.
+   ============================================================ */
+
+const REDUCED = "(prefers-reduced-motion: reduce)";
+
+/* ---------- CinematicImage: ken-burns آرام + جرقه نور طلایی ---------- */
+export function CinematicImage({
+  src,
+  alt,
+  className,
+  sizes,
+  priority = false,
+  sweep = true,
+  kenburns = true,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  sizes?: string;
+  priority?: boolean;
+  sweep?: boolean;
+  kenburns?: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  return (
+    <div ref={ref} className="relative h-full w-full overflow-hidden">
+      <motion.div
+        className="absolute inset-0"
+        initial={kenburns ? { scale: 1.14 } : false}
+        animate={inView ? { scale: 1 } : undefined}
+        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          priority={priority}
+          sizes={sizes ?? "100vw"}
+          className={`object-cover ${className ?? ""}`}
+        />
+      </motion.div>
+      {sweep && (
+        <motion.span
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 -left-3/4 w-1/2 -skew-x-12 bg-gradient-to-l from-transparent via-white/18 to-transparent"
+          initial={{ x: "-140%" }}
+          animate={inView ? { x: "340%" } : undefined}
+          transition={{ duration: 1.7, delay: 0.35, ease: "easeInOut" }}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ---------- TiltCard: عمق سه‌بعدی با درخشش طلایی دنبال‌کننده ---------- */
+export function TiltCard({
+  children,
+  className,
+  max = 7,
+}: {
+  children: ReactNode;
+  className?: string;
+  max?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const gx = useMotionValue(50);
+  const gy = useMotionValue(50);
+  const srx = useSpring(rx, { stiffness: 260, damping: 24 });
+  const sry = useSpring(ry, { stiffness: 260, damping: 24 });
+  const gxStyle = useTransform(gx, (v) => `${v}%`);
+  const gyStyle = useTransform(gy, (v) => `${v}%`);
+  const [on, setOn] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia(REDUCED).matches) return;
+    if (!window.matchMedia("(hover: hover)").matches) return; // لمس — غیرفعال
+    const t = setTimeout(() => setOn(true), 0);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (!on) return <div className={className}>{children}</div>;
+
+  const move = (e: React.MouseEvent) => {
+    const r = ref.current?.getBoundingClientRect();
+    if (!r) return;
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    ry.set((px - 0.5) * max * 2);
+    rx.set(-(py - 0.5) * max * 2);
+    gx.set(px * 100);
+    gy.set(py * 100);
+  };
+  const leave = () => {
+    rx.set(0);
+    ry.set(0);
+    gx.set(50);
+    gy.set(50);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      className={`${className ?? ""} relative [transform-style:preserve-3d]`}
+      style={{ rotateX: srx, rotateY: sry, perspective: 900 }}
+      onMouseMove={move}
+      onMouseLeave={leave}
+    >
+      {children}
+      <motion.span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-[inherit] bg-[radial-gradient(circle_at_var(--gx)_var(--gy),rgba(233,207,135,0.14),transparent_55%)]"
+        style={{ "--gx": gxStyle, "--gy": gyStyle } as React.CSSProperties}
+      />
+    </motion.div>
+  );
+}
+
+/* ---------- FilmGrain: دانه فیلم روی بخش‌های تیره ---------- */
+export function FilmGrain({ opacity = 0.05 }: { opacity?: number }) {
+  return (
+    <span
+      aria-hidden
+      className="film-grain pointer-events-none absolute inset-0 z-[5]"
+      style={{ opacity }}
+    />
+  );
+}
+
+/* ---------- CinemaIntro: پرده افتتاحیه (هر نشست یک بار) ---------- */
+export function CinemaIntro() {
+  const [show, setShow] = useState(false);
+  const [gone, setGone] = useState(true);
+
+  useEffect(() => {
+    if (window.matchMedia(REDUCED).matches) return;
+    try {
+      if (sessionStorage.getItem("cinema-intro") === "1") return;
+      sessionStorage.setItem("cinema-intro", "1");
+    } catch {
+      /* private mode */
+    }
+    const t1 = setTimeout(() => {
+      setGone(false);
+      setShow(true);
+    }, 0);
+    const t = setTimeout(() => {
+      setShow(false);
+      setTimeout(() => setGone(true), 700);
+    }, 1500);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t);
+    };
+  }, []);
+
+  if (gone) return null;
+  return (
+    <motion.div
+      aria-hidden
+      className="fixed inset-0 z-[200] flex items-center justify-center bg-ink"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: show ? 1 : 0 }}
+      transition={{ duration: 0.65, ease: "easeInOut" }}
+    >
+      <motion.span
+        className="block h-px bg-gradient-to-l from-transparent via-teal to-transparent"
+        initial={{ width: 0 }}
+        animate={show ? { width: "min(360px, 60vw)" } : { width: "min(360px, 60vw)" }}
+        transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
+      />
+    </motion.div>
   );
 }

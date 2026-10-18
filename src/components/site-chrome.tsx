@@ -11,9 +11,10 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { ScrollProgress } from "@/components/cinematic";
+import { ScrollProgress, CinemaIntro } from "@/components/cinematic";
 import { LegacyHashRedirect } from "@/components/hash-router";
 import { ContentProvider, useContent } from "@/lib/content-context";
+import { waLink } from "@/lib/data";
 
 /* ---------- آمار بازدید: هر مسیر واقعی یک view ثبت می‌کند ---------- */
 function Tracker() {
@@ -47,7 +48,7 @@ function FloatingActions() {
         </svg>
       </a>
       <a
-        href={`https://wa.me/${SITE.whatsapp}`}
+        href={waLink(SITE.whatsapp)}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="گفتگو در واتسپ"
@@ -66,6 +67,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
     <ContentProvider>
       <LegacyHashRedirect />
       <div className="flex min-h-screen flex-col">
+        <CinemaIntro />
         <ScrollProgress />
         <Navbar />
         <main className="flex-1">{children}</main>

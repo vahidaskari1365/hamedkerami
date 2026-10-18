@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Link, usePathname } from "@/components/hash-router";
 import { useContent } from "@/lib/content-context";
-import { NAV } from "@/lib/data";
+import { NAV, waLink } from "@/lib/data";
 
 export function Footer() {
   const { site: SITE, hours: HOURS, brand } = useContent();
@@ -88,7 +88,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 transition hover:text-white" dir="ltr">
+                <a href={waLink(SITE.whatsapp)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 transition hover:text-white" dir="ltr">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 11.5a8.5 8.5 0 01-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z"/></svg>
                   واتسپ: {SITE.whatsappDisplay}
                 </a>

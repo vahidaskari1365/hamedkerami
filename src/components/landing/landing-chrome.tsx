@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { waLink } from "@/lib/data";
 
 /* ============================================================
-   چارچوب مشترک صفحات فرود سئو — سرور رندر، بدون SPA shell
+   چارچوب مشترک صفحات فرود سئو (واتسپ بین الملل) — سرور رندر، بدون SPA shell
    فوتر چسبیده: min-h-screen flex flex-col + mt-auto
    ============================================================ */
 
@@ -44,7 +45,7 @@ export async function LandingHeader() {
             href={`tel:${SITE_INFO.phone}`}
             className="hidden rounded-full bg-teal px-5 py-2.5 text-xs font-bold text-white transition hover:bg-teal-2 sm:block"
           >
-            رزرو مشاوره: {SITE_INFO.phoneDisplay}
+            رزرو مشاوره: <span dir="ltr">{SITE_INFO.phoneDisplay}</span>
           </a>
           <Link
             href="/"
@@ -69,10 +70,10 @@ export function LandingCtaBand({ title, desc }: { title: string; desc: string })
             href={`tel:${SITE_INFO.phone}`}
             className="rounded-full bg-white px-8 py-4 text-sm font-black text-teal-3 shadow-lg transition hover:scale-[1.03]"
           >
-            تماس با مطب: {SITE_INFO.phoneDisplay}
+            تماس با مطب: <span dir="ltr">{SITE_INFO.phoneDisplay}</span>
           </a>
           <a
-            href={`https://wa.me/${SITE_INFO.whatsapp}`}
+            href={waLink(SITE_INFO.whatsapp)}
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-full bg-ink px-8 py-4 text-sm font-black text-white shadow-lg transition hover:scale-[1.03]"
@@ -100,7 +101,7 @@ export function LandingFooter({ related }: { related: { href: string; label: str
             <p className="text-sm font-black text-white">اطلاعات تماس</p>
             <ul className="mt-3 space-y-2 text-xs leading-7">
               <li>تلفن مطب: <a href={`tel:${SITE_INFO.phone}`} className="font-bold text-teal transition hover:text-teal-2" dir="ltr">{SITE_INFO.phoneDisplay}</a></li>
-              <li>واتسپ: <a href={`https://wa.me/${SITE_INFO.whatsapp}`} target="_blank" rel="noopener noreferrer" className="font-bold text-teal transition hover:text-teal-2" dir="ltr">{SITE_INFO.whatsappDisplay}</a></li>
+              <li>واتسپ: <a href={waLink(SITE_INFO.whatsapp)} target="_blank" rel="noopener noreferrer" className="font-bold text-teal transition hover:text-teal-2" dir="ltr">{SITE_INFO.whatsappDisplay}</a></li>
               <li>{SITE_INFO.address}</li>
               <li>{SITE_INFO.hours}</li>
             </ul>
@@ -158,7 +159,7 @@ export function LandingHero({
             href={`tel:${SITE_INFO.phone}`}
             className="rounded-full bg-teal px-7 py-3.5 text-sm font-black text-white shadow-lg shadow-teal/30 transition hover:bg-teal-2"
           >
-            رزرو مشاوره: {SITE_INFO.phoneDisplay}
+            رزرو مشاوره: <span dir="ltr">{SITE_INFO.phoneDisplay}</span>
           </a>
           <a
             href="#details"

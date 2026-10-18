@@ -142,7 +142,7 @@ export function Navbar() {
                 href={`tel:${SITE.phone}`}
                 className="mt-2 rounded-xl bg-teal px-4 py-3 text-center text-sm font-bold text-white"
               >
-                رزرو نوبت: {SITE.phoneDisplay}
+                رزرو نوبت: <span dir="ltr">{SITE.phoneDisplay}</span>
               </a>
             </div>
           </motion.nav>

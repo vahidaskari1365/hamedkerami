@@ -155,6 +155,7 @@ export function GalleryPage() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover object-top transition-transform duration-[1.1s] ease-out group-hover:scale-108"
                   />
+                  <span className="sweep-hover" aria-hidden />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-100" />
                   <figcaption className="absolute bottom-0 right-0 left-0 p-5 text-white">
                     <p className="text-[11px] font-bold text-teal">{c.cat}</p>

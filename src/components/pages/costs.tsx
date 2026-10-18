@@ -1,13 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { Reveal } from "@/components/cinematic";
+import { motion } from "framer-motion";
+import { Reveal, TiltCard, CinematicImage, FilmGrain } from "@/components/cinematic";
 import { PageHero } from "@/components/pages/about";
+import { AnimatedShinyText } from "@/components/magicui";
 import { useContent } from "@/lib/content-context";
+import { waLink } from "@/lib/data";
 
 /* ============================================================
-   صفحه هزینه ها — جدول قیمت پرمیوم Kinpaku
-   دسکتاپ: جدول با ردیف های zivory + هایلایت پرتقاضاترین
+   صفحه هزینه ها — جدول قیمت سینمایی Kinpaku
+   دسکتاپ: ردیف های شماره‌دار با leader dots، ورود پله‌ای،
+   هاور طلایی و ردیف هایلایت «پرتقاضاترین» با بج براق
    موبایل: کارت های فشرده با خط نقطه چین (leader dots)
    ============================================================ */
 
@@ -24,6 +28,16 @@ const toFa = (n: number) =>
     .map((d) => FA_DIGITS[Number(d)] ?? d)
     .join("");
 
+const rowVariants = {
+  hidden: { opacity: 0, x: 32, filter: "blur(4px)" },
+  show: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.65, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] as const },
+  }),
+};
+
 function PriceRow({
   item,
   price,
@@ -36,34 +50,53 @@ function PriceRow({
   highlight: boolean;
 }) {
   return (
-    <div
-      className={`flex flex-col gap-2 rounded-2xl p-4 transition-colors sm:flex-row sm:items-center sm:gap-0 sm:rounded-none sm:px-6 ${
+    <motion.div
+      custom={index % 6}
+      variants={rowVariants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-40px" }}
+      className={`group relative flex flex-col gap-2 rounded-2xl transition-colors duration-300 sm:flex-row sm:items-center sm:gap-0 sm:rounded-none sm:px-6 ${
         highlight
-          ? "bg-gradient-to-l from-teal/12 via-teal/5 to-transparent ring-1 ring-teal/35 sm:ring-0"
-          : index % 2
-            ? "bg-bone/50"
-            : ""
-      }`}
+          ? "bg-gradient-to-l from-teal/14 via-teal/6 to-transparent sm:ring-1 sm:ring-inset sm:ring-teal/30"
+          : "hover:bg-teal/[0.045]"
+      } ${index % 2 && !highlight ? "bg-bone/50 sm:bg-bone/40" : ""} ${!highlight && index % 2 ? "sm:hover:bg-teal/[0.05]" : ""}`}
     >
-      <div className="flex flex-1 items-start gap-3">
+      {/* خط طلایی کنار ردیف در هاور — دسکتاپ */}
+      <span
+        aria-hidden
+        className="absolute inset-y-2 right-0 hidden w-[3px] rounded-full bg-gradient-to-b from-gold-soft via-teal to-teal-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:block"
+      />
+      <div className="flex flex-1 items-start gap-3 sm:items-center">
+        {/* شماره ردیف */}
+        <span
+          aria-hidden
+          className={`mt-0.5 hidden h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[11px] font-black tabular-nums sm:flex ${
+            highlight ? "bg-teal text-ink shadow-sm shadow-teal/40" : "bg-ink/6 text-foreground/45 group-hover:bg-teal/15 group-hover:text-teal-3"
+          } transition-colors`}
+        >
+          {toFa(index + 1).padStart(2, "۰")}
+        </span>
         {highlight ? (
-          <span className="mt-0.5 shrink-0 rounded-full bg-teal px-2.5 py-0.5 text-[10px] font-black text-ink">
-            پرتقاضاترین
+          <span className="mt-0.5 shrink-0 rounded-full bg-teal px-2.5 py-1 text-[10px] font-black text-ink shadow-sm shadow-teal/40 sm:mt-0">
+            <AnimatedShinyText className="text-[10px] font-black text-ink">
+              پرتقاضاترین ✦
+            </AnimatedShinyText>
           </span>
         ) : null}
         <span className="text-[15px] font-semibold leading-7 sm:font-bold">{item}</span>
       </div>
       <span className="price-leader hidden sm:block" aria-hidden />
       <span
-        className={`w-fit rounded-full px-4 py-1.5 text-sm font-black ${
+        className={`w-fit rounded-full px-4 py-1.5 text-sm font-black tabular-nums transition-all duration-300 ${
           highlight
-            ? "bg-teal text-ink shadow-sm shadow-teal/40"
-            : "bg-teal/10 text-teal-3"
+            ? "bg-gradient-to-l from-gold-soft via-teal to-teal-2 text-ink shadow-md shadow-teal/40 group-hover:scale-[1.04] group-hover:shadow-lg group-hover:shadow-teal/50"
+            : "bg-teal/10 text-teal-3 group-hover:bg-teal group-hover:text-ink group-hover:shadow-md group-hover:shadow-teal/30"
         }`}
       >
         {price}
       </span>
-    </div>
+    </motion.div>
   );
 }
 
@@ -78,16 +111,27 @@ function CostTable({
 }) {
   const highlights = HIGHLIGHTS[category] ?? [];
   return (
-    <div className="overflow-hidden rounded-3xl bg-card shadow-sm ring-1 ring-ink/10" role="table" aria-label={caption}>
+    <div
+      className="relative overflow-hidden rounded-3xl bg-card shadow-xl shadow-ink/5 ring-1 ring-ink/10"
+      role="table"
+      aria-label={caption}
+    >
+      {/* خط طلایی بالای جدول */}
+      <span aria-hidden className="absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-l from-transparent via-teal to-transparent" />
       {/* header strip */}
       <div className="relative flex items-center justify-between bg-ink px-6 py-4 text-white">
-        <span className="flex items-center gap-2.5 text-sm font-bold">
-          <span className="h-px w-7 bg-teal" aria-hidden />
+        <FilmGrain opacity={0.07} />
+        <span className="relative flex items-center gap-2.5 text-sm font-bold">
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal/15 ring-1 ring-teal/40" aria-hidden>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e9cf87" strokeWidth="2" strokeLinecap="round">
+              <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+            </svg>
+          </span>
           نوع خدمت
         </span>
-        <span className="text-sm font-bold">هزینه تقریبی</span>
+        <span className="relative text-sm font-bold text-gold-soft">هزینه تقریبی (تومان)</span>
       </div>
-      <div className="divide-y divide-ink/6 sm:divide-y-0" role="rowgroup">
+      <div className="divide-y divide-ink/6 py-1 sm:divide-y-0" role="rowgroup">
         {rows.map((r, i) => (
           <PriceRow
             key={r.item}
@@ -98,7 +142,10 @@ function CostTable({
           />
         ))}
       </div>
-      <div className="border-t border-dashed border-ink/15 px-6 py-3.5 text-center text-xs leading-6 text-foreground/50">
+      <div className="flex items-center justify-center gap-2 border-t border-dashed border-ink/15 bg-bone/40 px-6 py-3.5 text-center text-xs leading-6 text-foreground/50">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="shrink-0 text-teal-2" aria-hidden>
+          <circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" />
+        </svg>
         {caption} — هزینه دقیق پس از معاینه و بررسی رادیوگرافی اعلام می شود
       </div>
     </div>
@@ -155,17 +202,15 @@ export function CostsPage() {
             </div>
             <div className="grid gap-8 lg:grid-cols-[1.4fr_0.6fr]">
               <CostTable rows={IMPLANT_COSTS} caption="هزینه ایمپلنت و جراحی های دندانی" category="implant" />
-              <div className="relative min-h-[280px] overflow-hidden rounded-3xl shadow-sm ring-1 ring-ink/10">
-                <Image
+              <div className="relative min-h-[280px] overflow-hidden rounded-3xl shadow-xl shadow-ink/5 ring-1 ring-ink/10">
+                <CinematicImage
                   src="/images/implant-cost.jpg"
                   alt="نمایش هزینه کاشت دندان و ایمپلنت"
-                  fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 30vw"
-                  className="object-cover object-top"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/60 to-transparent" aria-hidden />
-                <div className="absolute bottom-4 right-4 left-4 rounded-2xl bg-ink/70 p-4 text-white backdrop-blur-md ring-1 ring-teal/30">
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent" aria-hidden />
+                <div className="absolute bottom-4 right-4 left-4 rounded-2xl bg-ink/75 p-4 text-white ring-1 ring-teal/30 backdrop-blur-md">
                   <p className="text-xs leading-6 text-white/85">
                     برای مقایسه برندها و انتخاب گزینه متناسب با بودجه، رادیوگرافی
                     خود را ارسال کنید تا نظر اولیه رایگان اعلام شود.
@@ -175,7 +220,7 @@ export function CostsPage() {
             </div>
           </Reveal>
 
-          {/* نکات مهم قبل از تصمیم */}
+          {/* نکات مهم قبل از تصمیم — کارت های سه بعدی */}
           <Reveal>
             <div className="grid gap-4 sm:grid-cols-3">
               {[
@@ -192,19 +237,22 @@ export function CostsPage() {
                   d: "پرداخت معمولا در دو مرحله انجام می شود (قبل و بعد از جراحی). جزئیات دقیق در مشاوره حضوری هماهنگ می شود.",
                 },
               ].map((n, i) => (
-                <div key={n.t} className="rounded-3xl bg-card p-6 ring-1 ring-ink/10">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal/12 text-sm font-black text-teal-3" aria-hidden>
-                    {toFa(i + 1)}
-                  </span>
-                  <h3 className="mt-4 text-sm font-black leading-6">{n.t}</h3>
-                  <p className="mt-2 text-xs leading-6 text-foreground/60">{n.d}</p>
-                </div>
+                <TiltCard key={n.t} className="rounded-3xl" max={6}>
+                  <div className="h-full rounded-3xl bg-card p-6 ring-1 ring-ink/10 transition-shadow duration-300 hover:shadow-xl hover:shadow-teal/10">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-teal/18 to-teal/6 text-sm font-black text-teal-3 ring-1 ring-teal/25" aria-hidden>
+                      {toFa(i + 1)}
+                    </span>
+                    <h3 className="mt-4 text-sm font-black leading-6">{n.t}</h3>
+                    <p className="mt-2 text-xs leading-6 text-foreground/60">{n.d}</p>
+                  </div>
+                </TiltCard>
               ))}
             </div>
           </Reveal>
 
           <Reveal>
             <div className="relative overflow-hidden rounded-3xl bg-ink p-8 text-white sm:p-12">
+              <FilmGrain opacity={0.06} />
               <span className="aurora-orb right-[-6%] top-[-30%] h-56 w-56 bg-[#c9a13b]/25" aria-hidden />
               <div className="relative">
                 <h3 className="text-xl font-black sm:text-2xl">
@@ -220,7 +268,7 @@ export function CostsPage() {
                     {SITE.phoneDisplay}
                   </a>
                   <a
-                    href={`https://wa.me/${SITE.whatsapp}`}
+                    href={waLink(SITE.whatsapp)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="rounded-full border border-white/25 px-8 py-4 text-sm font-bold transition hover:bg-white/10"
