@@ -195,7 +195,7 @@ export const TEAM = [
   {
     name: "دکتر حامد کرمانی",
     role: "متخصص جراحی فک و صورت",
-    image: "/images/dr-surgon.png",
+    image: "/images/clinic/dr-portrait.jpg",
   },
   {
     name: "دکتر فاطمه رستم خانی",

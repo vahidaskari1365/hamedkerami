@@ -161,7 +161,7 @@ function Hero() {
           initial={{ opacity: 0, scale: 1.08, x: -30 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
           transition={{ duration: 1.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto hidden w-full max-w-sm lg:block"
+          className="relative mx-auto w-full max-w-[270px] sm:max-w-xs lg:max-w-sm"
         >
           <div className="vignette relative aspect-[4/5] overflow-hidden rounded-3xl ring-1 ring-white/15">
             <Image
@@ -169,7 +169,7 @@ function Hero() {
               alt="دکتر حامد کرمانی، متخصص جراحی فک و صورت"
               fill
               priority
-              sizes="(max-width: 1024px) 0px, 384px"
+              sizes="(max-width: 640px) 270px, (max-width: 1024px) 330px, 384px"
               className="object-cover object-top"
             />
             <BorderBeam width={2.5} speed={7} />
@@ -249,8 +249,8 @@ function AboutTeaser() {
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl shadow-ink/15">
             <Parallax speed={0.08} className="h-full w-full">
               <Image
-                src="/images/dr-surgon.png"
-                alt="دکتر حامد کرمانی در محیط کار"
+                src="/images/clinic/dr-portrait.jpg"
+                alt="عکس دکتر حامد کرمانی، جراح فک و صورت و فلوشیپ کرانیوفاسیال"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover object-top"
@@ -391,7 +391,7 @@ function ServicesSection() {
 function BeforeAfterSection() {
   const { beforeAfter: BEFORE_AFTER } = useContent();
   return (
-    <section className="spotlight-sweep relative overflow-hidden bg-ink py-24 text-white" aria-label="نمونه جراحی های انجام شده">
+    <section className="spotlight-sweep relative overflow-hidden bg-white py-24" aria-label="نمونه جراحی های انجام شده">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="flex items-center justify-center gap-3 text-sm font-bold text-teal">
@@ -402,7 +402,7 @@ function BeforeAfterSection() {
           <h2 className="mt-4 text-3xl font-black leading-snug sm:text-4xl">
             نتیجه واقعی، در تصاویر واقعی
           </h2>
-          <p className="mt-4 text-sm leading-7 text-white/60">
+          <p className="mt-4 text-sm leading-7 text-foreground/60">
             دستگیره وسط تصویر را به طرفین بکشید تا تفاوت قبل و بعد از جراحی را
             ببینید.
           </p>
@@ -428,7 +428,7 @@ function BeforeAfterSection() {
         <Reveal delay={0.15} className="mt-12 text-center">
           <Link
             href="/gallery"
-            className="inline-block rounded-full bg-teal px-8 py-4 text-sm font-bold shadow-lg shadow-teal/25 transition hover:bg-teal-2"
+            className="inline-block rounded-full bg-teal px-8 py-4 text-sm font-bold text-white shadow-lg shadow-teal/25 transition hover:bg-teal-2"
           >
             مشاهده گالری کامل
           </Link>

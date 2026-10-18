@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Reveal } from "@/components/cinematic";
 import { PageHero } from "@/components/pages/about";
 import { BeforeAfter } from "@/components/before-after";
-import { CoverCarousel } from "@/components/cover-carousel";
 import { useContent } from "@/lib/content-context";
 
 export function GalleryPage() {
@@ -31,11 +30,11 @@ export function GalleryPage() {
       />
 
       {/* before-after sliders */}
-      <section className="bg-ink py-20 text-white" aria-label="مقایسه قبل و بعد">
+      <section className="bg-white py-20" aria-label="مقایسه قبل و بعد">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <Reveal className="mb-12">
             <h2 className="text-2xl font-black sm:text-3xl">قبل و بعد جراحی</h2>
-            <p className="mt-3 text-sm text-white/60">
+            <p className="mt-3 text-sm text-foreground/60">
               دستگیره وسط تصویر را به طرفین بکشید.
             </p>
           </Reveal>
@@ -59,12 +58,12 @@ export function GalleryPage() {
       </section>
 
       {/* portfolio covers — کاور نمونه کارها */}
-      <section className="bg-ink py-20 text-white" aria-label="کاور نمونه کارها">
+      <section className="bg-white py-20" aria-label="کاور نمونه کارها">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <Reveal className="flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-2xl">
               <h2 className="text-2xl font-black sm:text-3xl">کاور نمونه کارها</h2>
-              <p className="mt-3 text-sm leading-7 text-white/60">
+              <p className="mt-3 text-sm leading-7 text-foreground/60">
                 مجموعه کاور نتایج جراحی های ارتوگناتیک فک و صورت (قبل و بعد) — از استوری های
                 اینستاگرام دکتر کرمانی.
               </p>
@@ -73,17 +72,48 @@ export function GalleryPage() {
               href="https://www.instagram.com/dr.hamedkermani.omfs/"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-white/10 px-6 py-3 text-xs font-bold text-white ring-1 ring-white/20 transition hover:bg-teal hover:ring-teal"
+              className="rounded-full bg-ink px-6 py-3 text-xs font-bold text-white transition hover:bg-teal"
             >
               مشاهده اینستاگرام
             </a>
           </Reveal>
+
+          {/* گرید مستقیم کاورها — بدون چرخش */}
+          <div className="mt-12 grid grid-cols-3 gap-3 sm:grid-cols-4 sm:gap-4 lg:grid-cols-5">
+            {PORTFOLIO_COVERS.map((c, i) => (
+              <Reveal key={c.src} delay={(i % 5) * 0.05}>
+                <figure
+                  tabIndex={0}
+                  aria-label={`${c.title} — برای نمایش بزرگ کلیک کنید`}
+                  className="group relative aspect-[9/16] cursor-zoom-in overflow-hidden rounded-xl bg-bone-2 shadow-md ring-1 ring-ink/10 transition-shadow hover:shadow-xl hover:ring-teal/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal"
+                  onClick={() => setLightbox(c.src)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setLightbox(c.src);
+                    }
+                  }}
+                >
+                  <Image
+                    src={c.src}
+                    alt={`${c.title} — نمونه کار جراحی فک و صورت دکتر کرمانی`}
+                    fill
+                    sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 20vw"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
+                  <figcaption className="absolute bottom-0 right-0 left-0 p-3 text-[11px] font-extrabold leading-5 text-white">
+                    {c.title}
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </div>
         </div>
-        <CoverCarousel covers={PORTFOLIO_COVERS} onSelect={setLightbox} />
       </section>
 
       {/* filterable grid */}
-      <section className="bg-bone py-20" aria-label="نمونه ها">
+      <section className="bg-white py-20" aria-label="نمونه ها">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <Reveal>
             <h2 className="text-2xl font-black sm:text-3xl">گالری نمونه ها</h2>
@@ -115,7 +145,7 @@ export function GalleryPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.94 }}
                   transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden rounded-2xl bg-ink"
+                  className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden rounded-2xl bg-bone-2"
                   onClick={() => setLightbox(c.src)}
                 >
                   <Image
