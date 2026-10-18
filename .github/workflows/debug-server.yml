@@ -1,4 +1,4 @@
-name: Server diagnostics v2
+name: Server diagnostics v3
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ jobs:
   diag:
     runs-on: ubuntu-latest
     steps:
-      - name: Probe server state
+      - name: Find the real Passenger app behind dr-kermani.com
         env:
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
@@ -17,27 +17,28 @@ jobs:
           J="https://$CPANEL_HOST:2083"
           api() { curl -sf --max-time 90 -H "$AUTH" "$1"; }
           HOMEDIR=$(printf '%%2Fhome%%2F%s' "$CPANEL_USER")
+          lsj() { echo "--- $1 ---"; api "$J/execute/Fileman/list_files?dir=$2&show_hidden=1" > /tmp/lx.json || echo "(fetch failed)"; jq -r '.data[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' /tmp/lx.json 2>/dev/null | head -50; [ -s /tmp/lx.json ] || echo "(empty)"; }
 
-          echo "===== A) kermani-app listing (fixed jq) ====="
-          api "$J/execute/Fileman/list_files?dir=$HOMEDIR%2Fkermani-app&show_hidden=1" > /tmp/l1.json || echo "(fetch failed)"
-          jq -r '.data[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' /tmp/l1.json 2>/dev/null | sort -k4 | head -40
-          echo "raw head: $(head -c 300 /tmp/l1.json)"
-
-          echo "===== B) home listing (files top-level) ====="
-          api "$J/execute/Fileman/list_files?dir=$HOMEDIR&show_hidden=1" > /tmp/l2.json || echo "(fetch failed)"
-          jq -r '.data[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' /tmp/l2.json 2>/dev/null | sort -k4 | head -40
-
-          echo "===== C) nested-dir hypothesis: home/home/USER ====="
-          api "$J/execute/Fileman/list_files?dir=$HOMEDIR%2Fhome%2F$CPANEL_USER%2Fkermani-app&show_hidden=1" > /tmp/l3.json || echo "(fetch failed)"
-          jq -r '.data[]? | "\(.type)\t\(.mtime)\t\(.size)\t\(.file)"' /tmp/l3.json 2>/dev/null | head -30
-          echo "raw head: $(head -c 300 /tmp/l3.json)"
-
-          echo "===== D) NodeJSMgmt function discovery ====="
-          for FN in listapps list_apps lsapps getapps app_list restartapp restart_app startapp stopapp stateapp statusapp status; do
-            R=$(curl -sk --max-time 30 -H "$AUTH" "$J/json-api/cpanel?cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=NodeJSMgmt&cpanel_jsonapi_func=$FN" | head -c 200)
-            echo "$FN => $R"
+          echo "===== 1) public_html ====="
+          lsj public_html "$HOMEDIR%2Fpublic_html"
+          echo "===== 2) nodevenv (registered selector apps) ====="
+          lsj nodevenv "$HOMEDIR%2Fnodevenv"
+          echo "===== 3) kermani-app/.next (top) ====="
+          lsj kermani-app/.next "$HOMEDIR%2Fkermani-app%2F.next"
+          echo "===== 4) kermani-app/tmp ====="
+          lsj kermani-app/tmp "$HOMEDIR%2Fkermani-app%2Ftmp"
+          echo "===== 5) read stderr.log attempts ====="
+          for FN in readfile viewfile; do
+            echo "-- UAPI Fileman/$FN:"
+            api "$J/execute/Fileman/$FN?dir=$HOMEDIR%2Fkermani-app&file=stderr.log" | head -c 500 || echo "(failed)"
+            echo
           done
-
-          echo "===== E) site marker now ====="
-          curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/site.html || true
-          echo "dr-surgon=$(grep -c 'dr-surgon.png' /tmp/site.html) heading-fluid=$(grep -c 'heading-fluid' /tmp/site.html) bg-ink24=$(grep -c 'bg-ink py-24' /tmp/site.html)"
+          echo "-- API2 Fileman/fmviewfile:"
+          curl -sk --max-time 60 -H "$AUTH" "$J/json-api/cpanel?cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=Fileman&cpanel_jsonapi_func=fmviewfile&dir=$HOMEDIR%2Fkermani-app&file=stderr.log" | head -c 600 || echo "(failed)"
+          echo
+          echo "===== 6) hook POST now ====="
+          curl -s -X POST --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 300 || true
+          echo
+          echo "===== 7) markers ====="
+          curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/s.html || true
+          echo "dr-surgon=$(grep -c 'dr-surgon.png' /tmp/s.html) dr-portrait=$(grep -c 'clinic/dr-portrait' /tmp/s.html) heading-fluid=$(grep -c 'heading-fluid' /tmp/s.html)"
