@@ -166,7 +166,11 @@ jobs:
             code=$(curl -s -o /tmp/wake.html -w "%{http_code}" \
               -H "Host: ${{ env.SITE_HOST }}" --max-time 240 \
               "http://${{ env.SITE_IP }}/" || echo "000")
-            tarball=$(curl -sf --max-time 60 -H "$AUTH" "$LIST" | grep -c "deploy-package.tar.gz" || true)
+            # فهرست پوشه اپ — اگر خود فراخوانی شکست بخورد، «مصرف‌نشده» فرض می‌شود (نه موفقیت کاذب)
+            tarball=1
+            if curl -sf --max-time 60 -H "$AUTH" "$LIST" -o /tmp/list.json; then
+              tarball=$(grep -c "deploy-package.tar.gz" /tmp/list.json || true)
+            fi
             echo "attempt $i → HTTP $code | pending-package-on-server: $tarball"
             if [ "$code" = "200" ] && [ "$tarball" = "0" ]; then
               echo "✅ پکیج تازه اکسترکت و سرو شد — دیپلوی کامل موفق"
@@ -175,6 +179,16 @@ jobs:
             sleep 20
           done
           echo "::warning::پکیج هنوز مصرف نشده — احتمالاً پروسه قدیمی زنده است. یک‌بار Restart دستی بزنید (Setup Node.js App → Restart)؛ از دیپلوی بعدی همه‌چیز خودکار است."
+
+      # LSCache صفحه را با s-maxage یک‌ساله کش می‌کند؛ این endpoint با هدر
+      # X-LiteSpeed-Purge: * کل کش صفحات vhost را خالی می‌کند تا نسخه تازه فوراً دیده شود
+      - name: Purge LiteSpeed page cache
+        if: env.DEPLOY_READY == 'true'
+        run: |
+          code=$(curl -s -o /tmp/purge.txt -w "%{http_code}" --max-time 60 \
+            -H "Host: ${{ env.SITE_HOST }}" \
+            "http://${{ env.SITE_IP }}/__cache-purge" || echo "000")
+          echo "purge → HTTP $code : $(head -c 100 /tmp/purge.txt)"
 
       - name: Done (بدون دیپلوی — فقط بیلد)
         if: env.DEPLOY_READY != 'true'
