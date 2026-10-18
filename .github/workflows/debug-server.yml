@@ -1,13 +1,13 @@
-name: Deploy diagnostics v6 — read logs via compress trick, cwd oracle, respawn loop
+name: Deploy fix — kill all stale app instances, respawn fresh
 
 on:
   workflow_dispatch:
 
 jobs:
-  diag:
+  fix:
     runs-on: ubuntu-latest
     steps:
-      - name: Read real logs + kill orphan via hook + respawn
+      - name: Kill every stale instance via deploy-hook, then respawn and verify
         env:
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
@@ -18,58 +18,32 @@ jobs:
           call() { curl -s --max-time 90 -H "$AUTH" "$1"; }
           HOMEQ=$(printf '%%2Fhome%%2F%s' "$CPANEL_USER")
           APP="$HOMEQ%2Fkermani-app"
-          UP="$APP%2Fdata%2Fuploads"
 
-          echo "===== 1) compress key files into zips ====="
-          echo "-- zip stderr.log:"
-          call "$J/execute/Fileman/compress_files?dir=$APP&zipfile=diag-stderr.zip&compress_type=zip&files=stderr.log" | head -c 220; echo
-          echo "-- zip server.js:"
-          call "$J/execute/Fileman/compress_files?dir=$APP&zipfile=diag-serverjs.zip&compress_type=zip&files=server.js" | head -c 220; echo
-          echo "-- zip .htaccess:"
-          call "$J/execute/Fileman/compress_files?dir=$HOMEQ%2Fpublic_html&zipfile=diag-htaccess.zip&compress_type=zip&files=.htaccess" | head -c 220; echo
-          echo "-- zip tmp dir files:"
-          call "$J/execute/Fileman/compress_files?dir=$APP%2Ftmp&zipfile=diag-tmp.zip&compress_type=zip&files=restart.txt,always_restart.txt" | head -c 220; echo
+          echo "===== 0) ensure kill-switch dummy exists in .next/standalone (hook cwd) ====="
+          call "$J/execute/Fileman/save_file_content?dir=$APP%2F.next%2Fstandalone&file=deploy-package.tar.gz&content=KILL-SWITCH" >/dev/null && echo "dummy present"
 
-          echo "===== 2) move zips into data/uploads ====="
-          for Z in diag-stderr diag-serverjs diag-tmp; do
-            echo "-- copy $Z.zip:"
-            call "$J/execute/Fileman/copy_file?source=$APP%2F$Z.zip&destination=$UP%2F$Z.zip" | head -c 220; echo
+          echo "===== 1) kill loop: POST deploy-hook x8 ====="
+          for i in 1 2 3 4 5 6 7 8; do
+            R=$(curl -s -X POST --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 120)
+            echo "kill #$i => ${R:-<no response>}"
+            sleep 2
           done
-          echo "-- copy htaccess zip:"
-          call "$J/execute/Fileman/copy_file?source=$HOMEQ%2Fpublic_html%2Fdiag-htaccess.zip&destination=$UP%2Fdiag-htaccess.zip" | head -c 220; echo
 
-          echo "===== 3) fetch zips via the live app ====="
-          sleep 2
-          mkdir -p /tmp/diagz && cd /tmp/diagz
-          for Z in diag-stderr diag-serverjs diag-tmp diag-htaccess; do
-            curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/uploads/$Z.zip" -o "$Z.zip" || true
-            echo "-- $Z.zip size: $(wc -c < $Z.zip 2>/dev/null)"
-            unzip -o -q "$Z.zip" -d "$Z-x" 2>/dev/null && find "$Z-x" -type f | head -5
+          echo "===== 2) respawn loop: touch restart.txt + GET / ====="
+          for i in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            call "$J/execute/Fileman/save_file_content?dir=$APP%2Ftmp&file=restart.txt&content=respawn-$(date +%s)" >/dev/null || true
+            sleep 12
+            CODE=$(curl -s -o /tmp/f.html -w '%{http_code}' --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/")
+            P=$(grep -c 'clinic/dr-portrait' /tmp/f.html || true)
+            H=$(grep -c 'heading-fluid' /tmp/f.html || true)
+            S=$(grep -c 'dr-surgon.png' /tmp/f.html || true)
+            echo "round $i: code=$CODE dr-portrait=$P heading-fluid=$H dr-surgon=$S size=$(wc -c < /tmp/f.html)"
+            if [ "$P" != "0" ] || [ "$H" != "0" ]; then
+              echo "NEW VERSION IS LIVE"
+              break
+            fi
           done
-          echo "########## stderr.log (tail 3500) ##########"
-          tail -c 3500 /tmp/diagz/diag-stderr-x/stderr.log 2>/dev/null || echo "(not fetched)"
-          echo
-          echo "########## server.js (full) ##########"
-          cat /tmp/diagz/diag-serverjs-x/server.js 2>/dev/null || echo "(not fetched)"
-          echo
-          echo "########## .htaccess (full) ##########"
-          cat /tmp/diagz/diag-htaccess-x/.htaccess 2>/dev/null || echo "(not fetched)"
-          echo
-          echo "########## tmp dir files ##########"
-          find /tmp/diagz/diag-tmp-x -type f -exec sh -c 'echo "--- {}"; cat "{}"' \; 2>/dev/null || echo "(not fetched)"
 
-          echo "===== 4) cwd oracle: dummy tarballs + hook POST ====="
-          echo "-- dummy in HOME root:"
-          call "$J/execute/Fileman/save_file_content?dir=$HOMEQ&file=deploy-package.tar.gz&content=DIAG-DUMMY" >/dev/null && echo "written"
-          echo "hook => $(curl -s -X POST --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 200)"
-          echo "-- dummy in kermani-app/.next/standalone:"
-          call "$J/execute/Fileman/save_file_content?dir=$APP%2F.next%2Fstandalone&file=deploy-package.tar.gz&content=DIAG-DUMMY" >/dev/null && echo "written"
-          echo "hook => $(curl -s -X POST --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 200)"
-
-          echo "===== 5) respawn loop: touch restart.txt + GET / ====="
-          for i in 1 2 3 4 5 6; do
-            call "$J/execute/Fileman/save_file_content?dir=$APP%2Ftmp&file=restart.txt&content=restart-diag-$(date +%s)" >/dev/null || true
-            sleep 15
-            curl -s --max-time 60 -H "Host: dr-kermani.com" "http://213.176.126.162/" -o /tmp/v6.html || true
-            echo "round $i: dr-surgon=$(grep -c 'dr-surgon.png' /tmp/v6.html) dr-portrait=$(grep -c 'clinic/dr-portrait' /tmp/v6.html) heading-fluid=$(grep -c 'heading-fluid' /tmp/v6.html) size=$(wc -c < /tmp/v6.html) code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 -H 'Host: dr-kermani.com' http://213.176.126.162/)"
-          done
+          echo "===== 3) final state ====="
+          curl -s -X POST --max-time 45 -H "Host: dr-kermani.com" "http://213.176.126.162/api/deploy-hook" | head -c 120
+          echo
