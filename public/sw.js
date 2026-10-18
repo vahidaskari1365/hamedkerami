@@ -6,12 +6,13 @@
  *  - Static assets (images/fonts/css/js): stale-while-revalidate
  *  - Never cache: /api/*, cross-origin
  */
-const VERSION = "v1.3.0";
+const VERSION = "v1.4.0";
 const SHELL_CACHE = `shell-${VERSION}`;
 const RUNTIME_CACHE = `runtime-${VERSION}`;
 
 const SHELL_ASSETS = [
   "/",
+  "/offline.html",
   "/manifest.json",
   "/favicon-32.png",
   "/favicon-192.png",
@@ -73,8 +74,11 @@ self.addEventListener("fetch", (event) => {
           caches.open(SHELL_CACHE).then((c) => c.put("/", copy));
           return response;
         })
-        .catch(() =>
-          caches.match("/").then((shell) => shell || Response.error()),
+        .catch(async () =>
+          // اول شِل کش‌شده، بعد صفحه اختصاصی آفلاین
+          (await caches.match("/")) ||
+          (await caches.match("/offline.html")) ||
+          Response.error(),
         ),
     );
     return;

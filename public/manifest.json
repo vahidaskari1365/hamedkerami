@@ -13,6 +13,16 @@
   "background_color": "#0d0e0b",
   "theme_color": "#0d0e0b",
   "categories": ["health", "medical", "lifestyle"],
+  "launch_handler": { "client_mode": "navigate-existing" },
+  "screenshots": [
+    {
+      "src": "/images/og-cover.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "وب‌سایت دکتر حامد کرمانی — جراحی فک و صورت"
+    }
+  ],
   "icons": [
     {
       "src": "/pwa-96.png",
@@ -50,21 +60,28 @@
       "name": "رزرو نوبت و مشاوره",
       "short_name": "رزرو نوبت",
       "description": "تماس مستقیم با مطب برای رزرو نوبت",
-      "url": "/#/contact",
+      "url": "/contact",
       "icons": [{ "src": "/pwa-96.png", "sizes": "96x96" }]
     },
     {
       "name": "گالری نمونه جراحی ها",
       "short_name": "گالری",
       "description": "تصاویر قبل و بعد از جراحی ها",
-      "url": "/#/gallery",
+      "url": "/gallery",
       "icons": [{ "src": "/pwa-96.png", "sizes": "96x96" }]
     },
     {
       "name": "تعرفه خدمات",
       "short_name": "تعرفه ها",
       "description": "هزینه جراحی فک و ایمپلنت",
-      "url": "/#/costs",
+      "url": "/costs",
+      "icons": [{ "src": "/pwa-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "مقالات وبلاگ",
+      "short_name": "مقالات",
+      "description": "راهنمای جامع جراحی فک و زیبایی صورت",
+      "url": "/blog",
       "icons": [{ "src": "/pwa-96.png", "sizes": "96x96" }]
     }
   ]
