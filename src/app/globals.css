@@ -490,3 +490,44 @@ html {
   margin: 0 0.75rem;
   transform: translateY(-4px);
 }
+
+/* ============================================================
+   PWA bottom tab bar — فقط وقتی سایت به‌صورت اپ نصب‌شده
+   اجرا شود نمایش داده می‌شود؛ در مرورگر عادی display:none
+   است و هیچ اثری روی چیدمان ندارد.
+   دو کلید فعال‌سازی: media query استاندارد + کلاس
+   html.pwa-standalone (پوشش iOS قدیمی و مرورگرهای بدون
+   پشتیبانی کامل media query).
+   ============================================================ */
+.pwa-tabbar {
+  display: none;
+}
+@media (display-mode: standalone), (display-mode: minimal-ui) {
+  .pwa-tabbar {
+    display: flex;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  /* جلوگیری از پنهان شدن فوتر زیر نوار */
+  body.pwa-tabbar-on {
+    padding-bottom: calc(4.6rem + env(safe-area-inset-bottom, 0px));
+  }
+  /* دکمه‌های شناور تماس بالای نوار بروند */
+  body.pwa-tabbar-on .floating-actions {
+    bottom: calc(5.1rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+html.pwa-standalone .pwa-tabbar {
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html.pwa-standalone body.pwa-tabbar-on {
+  padding-bottom: calc(4.6rem + env(safe-area-inset-bottom, 0px));
+}
+html.pwa-standalone body.pwa-tabbar-on .floating-actions {
+  bottom: calc(5.1rem + env(safe-area-inset-bottom, 0px)) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pwa-tabbar {
+    animation: none;
+  }
+}

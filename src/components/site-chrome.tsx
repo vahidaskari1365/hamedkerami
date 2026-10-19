@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ScrollProgress, CinemaIntro } from "@/components/cinematic";
+import { PwaTabbar } from "@/components/pwa-tabbar";
 import { LegacyHashRedirect } from "@/components/hash-router";
 import { ContentProvider, useContent } from "@/lib/content-context";
 import { waLink } from "@/lib/data";
@@ -37,7 +38,7 @@ function FloatingActions() {
   const { site: SITE } = useContent();
   if (path.startsWith("/admin")) return null;
   return (
-    <div className="fixed bottom-5 left-5 z-[85] flex flex-col gap-3">
+    <div className="floating-actions fixed bottom-5 left-5 z-[85] flex flex-col gap-3">
       <a
         href={`tel:${SITE.phone}`}
         aria-label="تماس تلفنی با مطب"
@@ -73,6 +74,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         <main className="flex-1">{children}</main>
         <Footer />
         <FloatingActions />
+        <PwaTabbar />
         <Tracker />
       </div>
     </ContentProvider>

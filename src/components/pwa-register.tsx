@@ -41,6 +41,18 @@ if (typeof window !== "undefined") {
       /* noop */
     }
   });
+  /* کلاس standalone روی <html> — علاوه بر media query، iOS قدیمی
+     (که (display-mode: standalone) در CSS ندارد) را هم با
+     navigator.standalone پوشش می‌دهد و منوی پایین اپ را فعال می‌کند */
+  try {
+    const standalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.matchMedia("(display-mode: minimal-ui)").matches ||
+      (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
+    if (standalone) document.documentElement.classList.add("pwa-standalone");
+  } catch {
+    /* noop */
+  }
 }
 
 const DISMISS_KEY = "pwa-install-dismissed-at";
