@@ -110,8 +110,12 @@ jobs:
           const STALE_ARTIFACTS = [
             "public/robots.txt", // حالا route داینامیک src/app/robots.ts است
             "public/sitemap.xml", // حالا route داینامیک src/app/sitemap.ts است — فایل استاتیک قدیمی روی route اولویت داشت!
+            "public/llms.txt", // حالا route داینامیک src/app/llms.txt/route.ts است (AIO)
+            "public/llms-full.txt", // حالا route داینامیک src/app/llms-full.txt/route.ts است (AIO)
             ".next/standalone/public/robots.txt",
             ".next/standalone/public/sitemap.xml",
+            ".next/standalone/public/llms.txt",
+            ".next/standalone/public/llms-full.txt",
             ".next/server/app/sitemap.xml.body",
             ".next/server/app/sitemap.xml.meta",
             ".next/server/app/sitemap.xml.rsc",

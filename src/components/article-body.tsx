@@ -3,12 +3,29 @@
 /* ============================================================
    ArticleBody — رندر بدنه مقاله (مارک‌داون با استایل اختصاصی سایت)
    بلاک‌کوت ابتدایی = باکس «پاسخ کوتاه» برای موتورهای پاسخ‌محور (AEO)
-   در صفحه وبلاگ و صفحه اختصاصی هر مقاله استفاده می‌شود.
+   H2ها با id انکر دار می‌شوند تا فهرست مطالب چسبان (SXO) به آن‌ها
+   لینک بدهد. در صفحه وبلاگ و صفحه اختصاصی هر مقاله استفاده می‌شود.
    ============================================================ */
 
+import { ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
+import { headingId } from "@/lib/article-extras";
+
+/** تبدیل children ری‌اکت به متن ساده (برای ساخت id هدینگ) */
+function childText(children: ReactNode): string {
+  if (children === null || children === undefined) return "";
+  if (typeof children === "string" || typeof children === "number") return String(children);
+  if (Array.isArray(children)) return children.map(childText).join("");
+  if (typeof children === "object" && "props" in (children as object)) {
+    return childText((children as { props: { children?: ReactNode } }).props?.children);
+  }
+  return "";
+}
+
+/** id هدینگ — پیاده‌سازی مشترک با article-extras (پارس TOC) */
 
 export function ArticleBody({ body }: { body: string }) {
+  let h2Count = -1;
   return (
     <div className="article-md">
       <ReactMarkdown
@@ -18,12 +35,18 @@ export function ArticleBody({ body }: { body: string }) {
               {children}
             </p>
           ),
-          h2: ({ children }) => (
-            <h2 className="mt-10 flex items-start gap-3 text-lg font-black leading-8 text-ink sm:text-xl">
-              <span className="mt-2.5 h-2.5 w-2.5 shrink-0 rounded-full bg-teal" aria-hidden />
-              {children}
-            </h2>
-          ),
+          h2: ({ children }) => {
+            h2Count += 1;
+            return (
+              <h2
+                id={headingId(childText(children), h2Count)}
+                className="mt-10 flex scroll-mt-28 items-start gap-3 text-lg font-black leading-8 text-ink sm:text-xl"
+              >
+                <span className="mt-2.5 h-2.5 w-2.5 shrink-0 rounded-full bg-teal" aria-hidden />
+                {children}
+              </h2>
+            );
+          },
           h3: ({ children }) => (
             <h3 className="mt-7 text-base font-black text-ink/85 sm:text-lg">{children}</h3>
           ),

@@ -12,6 +12,7 @@ import {
   Reveal,
 } from "@/components/cinematic";
 import { BeforeAfter } from "@/components/before-after";
+import { masonryAspect } from "@/components/masonry";
 import { Link } from "@/components/hash-router";
 import { waLink } from "@/lib/data";
 import {
@@ -464,11 +465,12 @@ function BlogTeaser() {
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {latest.map((p, i) => (
             <Reveal key={p.slug} delay={(i % 3) * 0.1}>
-              <Link
-                href={`/blog/${p.slug}`}
-                aria-label={`خواندن مقاله: ${p.title}`}
-                className="group flex h-full flex-col overflow-hidden rounded-3xl bg-card ring-1 ring-ink/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-teal/20 hover:ring-teal/40"
-              >
+              <MagicCard className="h-full rounded-3xl" surface="#fffdf7" gradientSize={280}>
+                <Link
+                  href={`/blog/${p.slug}`}
+                  aria-label={`خواندن مقاله: ${p.title}`}
+                  className="group flex h-full flex-col overflow-hidden rounded-3xl bg-card ring-1 ring-ink/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-teal/20 hover:ring-teal/40"
+                >
                 {p.cover ? (
                   <div className="relative aspect-[16/9] w-full overflow-hidden">
                     <Image
@@ -498,7 +500,8 @@ function BlogTeaser() {
                     </svg>
                   </span>
                 </div>
-              </Link>
+                </Link>
+              </MagicCard>
             </Reveal>
           ))}
         </div>
@@ -507,11 +510,15 @@ function BlogTeaser() {
   );
 }
 
-/* ================= BEFORE / AFTER ================= */
-function BeforeAfterSection() {
-  const { beforeAfter: BEFORE_AFTER } = useContent();
+/* ================= نمونه کارها — چیدمان Pinterest ================= */
+function PortfolioSection() {
+  const { beforeAfter: BEFORE_AFTER, portfolioCovers: PORTFOLIO_COVERS } = useContent();
+  const pins = PORTFOLIO_COVERS.slice(0, 10);
   return (
-    <section className="spotlight-sweep relative overflow-hidden bg-white py-24" aria-label="نمونه جراحی های انجام شده">
+    <section
+      className="spotlight-sweep relative overflow-hidden bg-white py-24"
+      aria-label="نمونه جراحی های انجام شده"
+    >
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="flex items-center justify-center gap-3 text-sm font-bold text-teal-2">
@@ -523,27 +530,51 @@ function BeforeAfterSection() {
             نتیجه واقعی، در تصاویر واقعی
           </h2>
           <p className="mt-4 text-sm leading-7 text-foreground/60">
+            هر کارت، یک نتیجه واقعی از جراحی های انجام شده است — روی کارت کلیک کنید
+            تا در گالری کامل بزرگ تر ببینید.
+          </p>
+        </Reveal>
+
+        {/* کارت های آبشاری به سبک پینترست — ارتفاع های متنوع */}
+        <div className="mt-14 columns-2 gap-3 sm:columns-3 sm:gap-4 lg:columns-5 [&>*]:mb-3 sm:[&>*]:mb-4">
+          {pins.map((c, i) => (
+            <Reveal key={c.src} delay={(i % 5) * 0.05}>
+              <Link
+                href="/gallery"
+                aria-label={`${c.title} — مشاهده در گالری`}
+                className={`group relative block ${masonryAspect(i)} cursor-pointer overflow-hidden rounded-xl bg-bone-2 shadow-md ring-1 ring-ink/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:ring-teal/40`}
+              >
+                <Image
+                  src={c.src}
+                  alt={`${c.title} — نمونه کار جراحی فک و صورت دکتر کرمانی`}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent opacity-90 transition-opacity group-hover:opacity-100"
+                  aria-hidden
+                />
+                <span className="absolute bottom-0 right-0 left-0 block p-3 text-[11px] font-extrabold leading-5 text-white">
+                  {c.title}
+                </span>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* مقایسه تعاملی قبل و بعد */}
+        <Reveal className="mx-auto mt-16 max-w-2xl">
+          <BeforeAfter
+            before={BEFORE_AFTER.bimax.before}
+            after={BEFORE_AFTER.bimax.after}
+            label={`${BEFORE_AFTER.bimax.label} — دکتر حامد کرمانی`}
+          />
+          <p className="mt-4 text-center text-xs leading-6 text-foreground/50">
             دستگیره وسط تصویر را به طرفین بکشید تا تفاوت قبل و بعد از جراحی را
             ببینید.
           </p>
         </Reveal>
-
-        <div className="mt-14 grid items-center gap-12 lg:grid-cols-2">
-          <Reveal>
-            <BeforeAfter
-              before={BEFORE_AFTER.bimax.before}
-              after={BEFORE_AFTER.bimax.after}
-              label={`${BEFORE_AFTER.bimax.label} — دکتر حامد کرمانی`}
-            />
-          </Reveal>
-          <Reveal delay={0.12}>
-            <BeforeAfter
-              before={BEFORE_AFTER.blepharo.before}
-              after={BEFORE_AFTER.blepharo.after}
-              label="بلفاروپلاستی — نمونه انجام شده"
-            />
-          </Reveal>
-        </div>
 
         <Reveal delay={0.15} className="mt-12 text-center">
           <Link
@@ -707,7 +738,7 @@ export function HomePage() {
       <Stats />
       <AboutTeaser />
       <ServicesSection />
-      <BeforeAfterSection />
+      <PortfolioSection />
       <SuccessRates />
       <BlogTeaser />
       <FaqSection />

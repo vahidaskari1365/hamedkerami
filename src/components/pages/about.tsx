@@ -82,7 +82,7 @@ export function AboutPage() {
             <div className="vignette relative aspect-[4/5] overflow-hidden rounded-3xl shadow-2xl shadow-ink/15">
               <Parallax speed={0.06} className="h-full w-full">
                 <Image
-                  src="/images/dr-kermani-xl.png"
+                  src="/images/dr-photo.png"
                   alt="دکتر حامد کرمانی متخصص جراحی فک و صورت"
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"

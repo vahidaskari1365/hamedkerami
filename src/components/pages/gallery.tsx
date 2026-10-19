@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Reveal } from "@/components/cinematic";
+import { MasonryGrid, masonryAspect } from "@/components/masonry";
 import { PageHero } from "@/components/pages/about";
 import { BeforeAfter } from "@/components/before-after";
 import { useContent } from "@/lib/content-context";
@@ -78,14 +79,14 @@ export function GalleryPage() {
             </a>
           </Reveal>
 
-          {/* گرید مستقیم کاورها — بدون چرخش */}
-          <div className="mt-12 grid grid-cols-3 gap-3 sm:grid-cols-4 sm:gap-4 lg:grid-cols-5">
+          {/* چیدمان Pinterest — آبشاری با ارتفاع‌های متنوع */}
+          <MasonryGrid className="mt-12" cols="columns-2 sm:columns-3 lg:columns-5" gap="gap-3 sm:gap-4">
             {PORTFOLIO_COVERS.map((c, i) => (
               <Reveal key={c.src} delay={(i % 5) * 0.05}>
                 <figure
                   tabIndex={0}
                   aria-label={`${c.title} — برای نمایش بزرگ کلیک کنید`}
-                  className="group relative aspect-[9/16] cursor-zoom-in overflow-hidden rounded-xl bg-bone-2 shadow-md ring-1 ring-ink/10 transition-shadow hover:shadow-xl hover:ring-teal/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal"
+                  className={`group relative ${masonryAspect(i)} cursor-zoom-in overflow-hidden rounded-xl bg-bone-2 shadow-md ring-1 ring-ink/10 transition-shadow hover:shadow-xl hover:ring-teal/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal`}
                   onClick={() => setLightbox(c.src)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -98,7 +99,7 @@ export function GalleryPage() {
                     src={c.src}
                     alt={`${c.title} — نمونه کار جراحی فک و صورت دکتر کرمانی`}
                     fill
-                    sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 20vw"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
@@ -108,7 +109,7 @@ export function GalleryPage() {
                 </figure>
               </Reveal>
             ))}
-          </div>
+          </MasonryGrid>
         </div>
       </section>
 
@@ -135,24 +136,23 @@ export function GalleryPage() {
             ))}
           </div>
 
-          <motion.div layout className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <MasonryGrid className="mt-10">
             <AnimatePresence mode="popLayout">
-              {cases.map((c) => (
+              {cases.map((c, i) => (
                 <motion.figure
-                  layout
                   key={c.src}
                   initial={{ opacity: 0, scale: 0.94 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.94 }}
                   transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden rounded-2xl bg-bone-2"
+                  className={`group relative ${masonryAspect(i + 2)} cursor-zoom-in overflow-hidden rounded-2xl bg-bone-2`}
                   onClick={() => setLightbox(c.src)}
                 >
                   <Image
                     src={c.src}
                     alt={`${c.title} — ${c.cat}`}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 33vw"
                     className="object-cover object-top transition-transform duration-[1.1s] ease-out group-hover:scale-108"
                   />
                   <span className="sweep-hover" aria-hidden />
@@ -164,7 +164,7 @@ export function GalleryPage() {
                 </motion.figure>
               ))}
             </AnimatePresence>
-          </motion.div>
+          </MasonryGrid>
         </div>
       </section>
 

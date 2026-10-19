@@ -7,6 +7,7 @@ import { ArticleBody } from "@/components/article-body";
 import { JsonLdScript, breadcrumbLd } from "@/components/schema";
 import { LandingCtaBand } from "@/components/landing/landing-chrome";
 import { getBlogPost, getPublishedPosts } from "@/lib/blog-posts";
+import { parseArticle } from "@/lib/article-extras";
 import { SITE } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -56,31 +57,72 @@ export default async function BlogArticlePage({ params }: Props) {
   const related = all.filter((p) => p.slug !== slug).slice(0, 3);
   const url = `${SITE.url}/blog/${slug}`;
 
-  const articleLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "@id": `${url}#article`,
-    headline: post.title,
-    description: post.excerpt,
-    image: `${SITE.url}${post.cover || "/images/og-cover.jpg"}`,
-    inLanguage: "fa-IR",
-    datePublished: post.publishedAt ?? undefined,
-    dateModified: post.updatedAt ?? post.publishedAt ?? undefined,
-    author: {
-      "@type": "Person",
-      name: "دکتر حامد کرمانی",
-      url: SITE.url,
-      jobTitle: "متخصص جراحی فک و صورت",
-      "@id": `${SITE.url}/#physician`,
-    },
-    publisher: { "@id": `${SITE.url}/#physician` },
-    mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    about: "جراحی فک و صورت",
+  /* تحلیل ساختاری — AEO/GEO/SXO */
+  const extras = parseArticle(post.body);
+
+  const authorEntity = {
+    "@type": "Person",
+    name: "دکتر حامد کرمانی",
+    url: SITE.url,
+    jobTitle: "متخصص جراحی فک و صورت",
+    description:
+      "متخصص جراحی فک و صورت و فلوشیپ جراحی های کرانیوفاسیال از دانشگاه علوم پزشکی تهران",
+    "@id": `${SITE.url}/#physician`,
   };
+
+  /* گراف کامل — BlogPosting + MedicalWebPage + FAQPage (AEO) */
+  const articleGraph = [
+    {
+      "@type": "BlogPosting",
+      "@id": `${url}#article`,
+      headline: post.title,
+      description: post.excerpt,
+      ...(extras.answer ? { alternativeHeadline: extras.answer.slice(0, 160) } : {}),
+      image: `${SITE.url}${post.cover || "/images/og-cover.jpg"}`,
+      inLanguage: "fa-IR",
+      wordCount: extras.wordCount,
+      timeRequired: `PT${extras.readMinutes}M`,
+      datePublished: post.publishedAt ?? undefined,
+      dateModified: post.updatedAt ?? post.publishedAt ?? undefined,
+      author: authorEntity,
+      publisher: { "@id": `${SITE.url}/#physician` },
+      mainEntityOfPage: { "@type": "WebPage", "@id": url },
+      about: "جراحی فک و صورت",
+      ...(extras.faq.length
+        ? { mainEntity: { "@id": `${url}#faq` } }
+        : {}),
+    },
+    {
+      "@type": "MedicalWebPage",
+      "@id": `${url}#webpage`,
+      url,
+      name: post.title,
+      description: post.excerpt,
+      inLanguage: "fa-IR",
+      specialty: "https://schema.org/OralAndMaxillofacialSurgery",
+      about: { "@id": `${url}#article` },
+      lastReviewed: post.updatedAt ?? post.publishedAt ?? undefined,
+      reviewedBy: { "@id": `${SITE.url}/#physician` },
+      author: { "@id": `${SITE.url}/#physician` },
+    },
+    ...(extras.faq.length
+      ? [
+          {
+            "@type": "FAQPage",
+            "@id": `${url}#faq`,
+            mainEntity: extras.faq.map((f) => ({
+              "@type": "Question",
+              name: f.q,
+              acceptedAnswer: { "@type": "Answer", text: f.a },
+            })),
+          },
+        ]
+      : []),
+  ];
 
   return (
     <SiteShell>
-      <JsonLdScript data={articleLd} />
+      <JsonLdScript data={{ "@context": "https://schema.org", "@graph": articleGraph }} />
       <JsonLdScript
         data={breadcrumbLd([
           { name: "وبلاگ", path: "/blog" },
@@ -105,6 +147,7 @@ export default async function BlogArticlePage({ params }: Props) {
             <span className="rounded-full bg-teal/15 px-4 py-1.5 font-bold text-teal">
               {post.date}
             </span>
+            <span className="rounded-full bg-white/10 px-4 py-1.5">زمان مطالعه: {extras.readMinutes} دقیقه</span>
             <span>نویسنده: دکتر حامد کرمانی — متخصص جراحی فک و صورت</span>
           </div>
         </div>
@@ -127,34 +170,57 @@ export default async function BlogArticlePage({ params }: Props) {
         </div>
       ) : null}
 
-      {/* بدنه مقاله */}
+      {/* بدنه مقاله + فهرست مطالب چسبان (SXO) */}
       <article className="bg-white py-10 sm:py-14">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <ArticleBody body={post.body} />
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 xl:grid-cols-[260px_1fr]">
+          {/* فهرست مطالب — فقط دسکتاپ بزرگ */}
+          {extras.toc.length > 2 ? (
+            <aside className="hidden xl:block" aria-label="فهرست مطالب">
+              <nav className="sticky top-24 rounded-2xl bg-bone p-5 ring-1 ring-ink/8">
+                <p className="text-xs font-black text-ink">فهرست مطالب</p>
+                <ol className="mt-3 space-y-2 border-r border-ink/10 pr-3">
+                  {extras.toc.map((t) => (
+                    <li key={t.id}>
+                      <a
+                        href={`#${t.id}`}
+                        className="block text-[12px] leading-6 text-foreground/60 transition hover:text-teal-3"
+                      >
+                        {t.title}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            </aside>
+          ) : null}
 
-          {/* باکس نویسنده — E-E-A-T */}
-          <div className="mt-12 flex items-start gap-4 rounded-2xl bg-bone p-6">
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-2 ring-teal/30">
-              <Image
-                src="/images/clinic/dr-portrait.jpg"
-                alt="دکتر حامد کرمانی"
-                fill
-                sizes="64px"
-                className="object-cover"
-              />
-            </div>
-            <div>
-              <p className="text-sm font-black text-ink">دکتر حامد کرمانی</p>
-              <p className="mt-1 text-xs leading-6 text-foreground/60">
-                متخصص جراحی فک و صورت و فلوشیپ جراحی های کرانیوفاسیال از دانشگاه علوم پزشکی
-                تهران — بیش از ۱۰۶۷ جراحی موفق فک و صورت و ۵۰۰۰ ایمپلنت دندان.
-              </p>
-              <Link
-                href="/about"
-                className="mt-2 inline-block text-xs font-bold text-teal-3 transition hover:opacity-80"
-              >
-                مشاهده رزومه کامل →
-              </Link>
+          <div className="mx-auto w-full max-w-3xl">
+            <ArticleBody body={post.body} />
+
+            {/* باکس نویسنده — E-E-A-T */}
+            <div className="mt-12 flex items-start gap-4 rounded-2xl bg-bone p-6">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-2 ring-teal/30">
+                <Image
+                  src="/images/clinic/dr-portrait.jpg"
+                  alt="دکتر حامد کرمانی"
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <p className="text-sm font-black text-ink">دکتر حامد کرمانی</p>
+                <p className="mt-1 text-xs leading-6 text-foreground/60">
+                  متخصص جراحی فک و صورت و فلوشیپ جراحی های کرانیوفاسیال از دانشگاه علوم پزشکی
+                  تهران — بیش از ۱۰۶۷ جراحی موفق فک و صورت و ۵۰۰۰ ایمپلنت دندان.
+                </p>
+                <Link
+                  href="/about"
+                  className="mt-2 inline-block text-xs font-bold text-teal-3 transition hover:opacity-80"
+                >
+                  مشاهده رزومه کامل →
+                </Link>
+              </div>
             </div>
           </div>
         </div>
