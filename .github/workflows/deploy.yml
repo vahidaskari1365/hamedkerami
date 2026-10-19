@@ -102,6 +102,32 @@ jobs:
             try { fs.unlinkSync(path.join(ROOT, junk)); } catch {}
           }
 
+          /* پاکسازی آرتیفکت‌های جامانده از بیلدهای قدیمی —
+             tar فقط overwrite می کند؛ فایل‌هایی که در بسته جدید نیستند
+             روی سرور می مانند و Next نسخه استاتیک قدیمی را به جای
+             route داینامیک سرو می کند (مثال: sitemap.xml قدیمی با
+             دامنه قبلی که تا یک سال کش می ماند) */
+          const STALE_ARTIFACTS = [
+            "public/robots.txt", // حالا route داینامیک src/app/robots.ts است
+            ".next/standalone/public/robots.txt",
+            ".next/server/app/sitemap.xml.body",
+            ".next/server/app/sitemap.xml.meta",
+            ".next/server/app/sitemap.xml.rsc",
+            ".next/standalone/.next/server/app/sitemap.xml.body",
+            ".next/standalone/.next/server/app/sitemap.xml.meta",
+            ".next/standalone/.next/server/app/sitemap.xml.rsc",
+            ".next/server/app/robots.txt.body",
+            ".next/server/app/robots.txt.meta",
+            ".next/standalone/.next/server/app/robots.txt.body",
+            ".next/standalone/.next/server/app/robots.txt.meta",
+          ];
+          for (const f of STALE_ARTIFACTS) {
+            try {
+              fs.unlinkSync(path.join(ROOT, f));
+              console.log("[bootstrap] removed stale artifact:", f);
+            } catch { /* نبود — مشکلی نیست */ }
+          }
+
           process.env.NODE_ENV = "production";
           process.env.NEXT_TELEMETRY_DISABLED = "1";
           process.env.HOSTNAME = "0.0.0.0";
