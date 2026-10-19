@@ -8,6 +8,14 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 // Link comes from hash-router (preview-safe client routing)
 
+/* ============================================================
+   Navbar — پیل شیشه‌ای شناور بالای صفحه (سبک سایت‌های مدرن)
+   همیشه شیشه‌ای (backdrop-blur) با فاصله از لبه‌ها، لوگو و CTA
+   داخل خود پیل، آیتم فعال با قرص متحرک (layoutId) و منوی
+   موبایل به‌صورت کارت شیشه‌ای شناور زیر پیل.
+   ناوبری سیال: مخفی با اسکرول پایین، ظاهر با اسکرول بالا.
+   ============================================================ */
+
 export function Navbar() {
   const { site: SITE, brand } = useContent();
   const pathname = usePathname();
@@ -17,8 +25,6 @@ export function Navbar() {
   const [prevPath, setPrevPath] = useState(pathname);
 
   useEffect(() => {
-    // ناوبری سیال: مخفی با اسکرول به پایین، ظاهر با اسکرول به بالا
-    // فقط transform تغییر می‌کند (لایه کامپوزیت — بدون reflow)
     let lastY = window.scrollY;
     let ticking = false;
     const onScroll = () => {
@@ -50,104 +56,139 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 right-0 left-0 z-[80] transition-[transform,background-color,padding,box-shadow] duration-500 ease-out ${
-        scrolled
-          ? "bg-ink/85 shadow-lg shadow-black/20 backdrop-blur-xl py-2"
-          : "bg-transparent py-4"
-      } ${
-        hidden && !open ? "-translate-y-full" : "translate-y-0"
+      className={`fixed top-3 right-0 left-0 z-[80] flex justify-center px-4 transition-transform duration-500 ease-out ${
+        hidden && !open ? "-translate-y-[130%]" : "translate-y-0"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-3" aria-label="صفحه اصلی دکتر حامد کرمانی">
-          <span className="relative h-11 w-11 overflow-hidden rounded-full shadow-md ring-1 ring-white/25">
-            <Image src={brand?.logoImage || "/images/logo.png"} alt="لوگوی دکتر حامد کرمانی" fill sizes="44px" className="object-cover" />
-          </span>
-          <span className={`leading-tight transition-colors duration-500 ${scrolled ? "text-white" : "text-white"}`}>
-            <span className="block text-sm font-extrabold sm:text-base">دکتر حامد کرمانی</span>
-            <span className="block text-[11px] text-white/70">متخصص جراحی فک و صورت</span>
-          </span>
-        </Link>
-
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="منوی اصلی">
-          {NAV.map((item) => {
-            const active = pathname === item.path;
-            return (
-              <Link
-                key={item.path}
-                href={item.path}
-                className={`relative rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-                  active ? "text-teal" : "text-white/85 hover:text-white"
-                }`}
-              >
-                {item.label}
-                {active && (
-                  <motion.span
-                    layoutId="nav-pill"
-                    className="absolute inset-0 -z-10 rounded-full bg-white/10 ring-1 ring-teal/40"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                  />
-                )}
-              </Link>
-            );
-          })}
-          <a
-            href={`tel:${SITE.phone}`}
-            className="mr-2 rounded-full bg-teal px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-teal/30 transition hover:bg-teal-2 hover:shadow-teal/50"
-          >
-            رزرو نوبت
-          </a>
-        </nav>
-
-        {/* Mobile burger */}
-        <button
-          className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal lg:hidden"
-          onClick={() => setOpen((o) => !o)}
-          aria-label={open ? "بستن منو" : "باز کردن منو"}
-          aria-expanded={open}
+      <div className="w-full max-w-5xl">
+        <motion.nav
+          initial={{ y: -64, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className={`flex items-center gap-1 rounded-full py-2 pr-2 pl-4 ring-1 backdrop-blur-xl transition-[background-color,box-shadow] duration-500 ${
+            scrolled
+              ? "bg-ink/90 shadow-xl shadow-black/40 ring-white/10"
+              : "bg-ink/60 shadow-lg shadow-black/25 ring-white/10"
+          }`}
+          aria-label="ناوبری اصلی"
         >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
-          </svg>
-        </button>
-      </div>
-
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {open && (
-          <motion.nav
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden bg-ink/95 backdrop-blur-xl lg:hidden"
-            aria-label="منوی موبایل"
+          {/* لوگو + نام — داخل پیل */}
+          <Link
+            href="/"
+            className="group flex shrink-0 items-center gap-2.5 rounded-full py-1 pl-1"
+            aria-label="صفحه اصلی دکتر حامد کرمانی"
           >
-            <div className="flex flex-col gap-1 px-4 py-4">
-              {NAV.map((item) => (
-                <Link
-                  key={item.path}
-                  href={item.path}
-                  className={`rounded-xl px-4 py-3 text-sm font-semibold transition ${
-                    pathname === item.path
-                      ? "bg-teal/15 text-teal"
-                      : "text-white/85 hover:bg-white/5"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+            <span className="relative h-9 w-9 overflow-hidden rounded-full shadow-md ring-1 ring-white/25 transition-transform duration-500 group-hover:scale-105">
+              <Image
+                src={brand?.logoImage || "/images/logo.png"}
+                alt="لوگوی دکتر حامد کرمانی"
+                fill
+                sizes="36px"
+                className="object-cover"
+              />
+            </span>
+            <span className="hidden min-[420px]:flex flex-col leading-none">
+              <span className="whitespace-nowrap text-[13px] font-extrabold text-white">
+                دکتر حامد کرمانی
+              </span>
+              <span className="mt-1 whitespace-nowrap text-[10px] text-white/60">
+                متخصص جراحی فک و صورت
+              </span>
+            </span>
+          </Link>
+
+          {/* منوی دسکتاپ */}
+          <ul className="mr-auto hidden items-center gap-0.5 lg:flex">
+            {NAV.map((item) => {
+              const active = pathname === item.path;
+              return (
+                <li key={item.path}>
+                  <Link
+                    href={item.path}
+                    aria-current={active ? "page" : undefined}
+                    className={`relative block whitespace-nowrap rounded-full px-2.5 py-2 text-[12.5px] font-medium transition-colors duration-300 xl:px-3.5 xl:text-[13px] ${
+                      active ? "text-white" : "text-white/60 hover:text-white"
+                    }`}
+                  >
+                    {active && (
+                      <motion.span
+                        layoutId="nav-pill"
+                        className="absolute inset-0 rounded-full bg-white/12 ring-1 ring-teal/35"
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      />
+                    )}
+                    <span className="relative z-10">{item.label}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* CTA تماس + برگر موبایل */}
+          <div className="mr-auto flex items-center gap-2 lg:mr-2">
+            <a
+              href={`tel:${SITE.phone}`}
+              className="hidden items-center gap-1.5 rounded-full bg-teal px-4 py-2 text-[13px] font-black text-ink shadow-lg shadow-teal/25 transition-all duration-300 hover:scale-[1.04] hover:bg-gold-soft active:scale-95 sm:flex"
+              aria-label={`تماس با مطب — ${SITE.phoneDisplay}`}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
+              </svg>
+              رزرو نوبت
+            </a>
+            <button
+              type="button"
+              onClick={() => setOpen((o) => !o)}
+              aria-label={open ? "بستن منو" : "باز کردن منو"}
+              aria-expanded={open}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal lg:hidden"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+              </svg>
+            </button>
+          </div>
+        </motion.nav>
+
+        {/* منوی موبایل — کارت شیشه‌ای شناور زیر پیل */}
+        <AnimatePresence>
+          {open && (
+            <motion.nav
+              initial={{ opacity: 0, y: -12, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -12, scale: 0.98 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-2 overflow-hidden rounded-3xl bg-ink/95 p-2 shadow-2xl shadow-black/50 ring-1 ring-white/10 backdrop-blur-xl lg:hidden"
+              aria-label="منوی موبایل"
+            >
+              {NAV.map((item) => {
+                const active = pathname === item.path;
+                return (
+                  <Link
+                    key={item.path}
+                    href={item.path}
+                    className={`flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition ${
+                      active ? "bg-white/10 text-gold-soft" : "text-white/85 hover:bg-white/5"
+                    }`}
+                  >
+                    {item.label}
+                    {active && <span className="h-1.5 w-1.5 rounded-full bg-teal" aria-hidden />}
+                  </Link>
+                );
+              })}
               <a
                 href={`tel:${SITE.phone}`}
-                className="mt-2 rounded-xl bg-teal px-4 py-3 text-center text-sm font-bold text-white"
+                className="mt-1 flex items-center justify-center gap-2 rounded-2xl bg-teal px-4 py-3.5 text-sm font-black text-ink"
               >
-                رزرو نوبت: <span dir="ltr">{SITE.phoneDisplay}</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
+                </svg>
+                رزرو نوبت — <span dir="ltr">{SITE.phoneDisplay}</span>
               </a>
-            </div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+            </motion.nav>
+          )}
+        </AnimatePresence>
+      </div>
     </header>
   );
 }

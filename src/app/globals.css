@@ -539,7 +539,8 @@ html.pwa-standalone body.pwa-tabbar-on .floating-actions {
    ============================================================ */
 .pwa-pill {
   position: fixed;
-  bottom: 1.25rem;
+  /* بالای داک تماس شناور (58px + فاصله) — در موبایل هر دو پایین صفحه‌اند */
+  bottom: 5.75rem;
   left: 50%;
   opacity: 0;
   transform: translateX(-50%) translateY(18px);
