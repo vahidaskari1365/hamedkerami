@@ -7,10 +7,10 @@ import { LANDING_DEFAULTS, type LandingData } from "./landing-defaults";
    ============================================================ */
 
 export const LANDING_URLS: Record<string, string> = {
-  "jaw-surgery": "https://dromfs.com/jaw-surgery",
-  "chin-surgery": "https://dromfs.com/chin-surgery",
-  "dental-implant": "https://dromfs.com/dental-implant",
-  "implant-pasdaran": "https://dromfs.com/implant-pasdaran",
+  "jaw-surgery": "https://dr-kermani.com/jaw-surgery",
+  "chin-surgery": "https://dr-kermani.com/chin-surgery",
+  "dental-implant": "https://dr-kermani.com/dental-implant",
+  "implant-pasdaran": "https://dr-kermani.com/implant-pasdaran",
 };
 
 function parseJson<T>(raw: string, fallback: T): T {

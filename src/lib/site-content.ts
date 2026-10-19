@@ -125,7 +125,9 @@ export async function getSiteContent() {
 
     return {
       brand: { ...BRAND, ...(settingMap.brand as object | undefined) },
-      site: { ...SITE, ...(settingMap.site as object | undefined) },
+      /* url همیشه از build می آید — دیتابیس سرورهای قدیمی دامنه قبلی دارند؛
+         تغییر دامنه فقط با دیپلوی معنا دارد نه از پنل ادمین */
+      site: { ...SITE, ...(settingMap.site as object | undefined), url: SITE.url },
       hero: { ...HERO, ...(settingMap.hero as object | undefined) },
       about: { ...BIO, ...(settingMap.about as object | undefined) },
       videos: { ...VIDEOS, ...(settingMap.videos as object | undefined) },

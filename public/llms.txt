@@ -52,37 +52,37 @@
 - جراحی اکسپوز دندان نهفته: ۱۷ تا ۲۹ میلیون تومان
 
 ## صفحات فرود تخصصی (سئو)
-- جراحی فک (ارتوگناتیک): https://dromfs.com/jaw-surgery
-- جراحی چانه (جنیوپلاستی): https://dromfs.com/chin-surgery
-- ایمپلنت دندان: https://dromfs.com/dental-implant
-- ایمپلنت دندان تهران (دسترسی از پاسداران): https://dromfs.com/implant-pasdaran
+- جراحی فک (ارتوگناتیک): https://dr-kermani.com/jaw-surgery
+- جراحی چانه (جنیوپلاستی): https://dr-kermani.com/chin-surgery
+- ایمپلنت دندان: https://dr-kermani.com/dental-implant
+- ایمپلنت دندان تهران (دسترسی از پاسداران): https://dr-kermani.com/implant-pasdaran
 
 ## کتابخانه مقالات آموزشی (۱۴۰۵)
 هر مقاله URL اختصاصی دارد و با «پاسخ کوتاه» برای موتورهای پاسخ‌محور شروع می‌شود:
-- ارتوسرجری چیست؟ راهنمای کامل جراحی اصلاحی فک و صورت: https://dromfs.com/blog/orthognathic-surgery
-- جراحی فک؛ راهنمای جامع انواع، مراحل و نقاهت: https://dromfs.com/blog/jaw-surgery-guide
-- هزینه جراحی فک ۱۴۰۵؛ قیمت ها و عوامل موثر: https://dromfs.com/blog/jaw-surgery-cost
-- جراحی دو فک و چانه (بایمکس) چیست؟: https://dromfs.com/blog/bimax-surgery
-- مونومکس یا جراحی تک فک؛ تفاوت با بایمکس: https://dromfs.com/blog/monomax-surgery
-- جراحی چانه؛ راهنمای کامل اصلاح فرم و هارمونی: https://dromfs.com/blog/chin-surgery
-- جنیوپلاستی چیست؟ جابجایی استخوان چانه: https://dromfs.com/blog/genioplasty
-- جراحی زیبایی صورت؛ بلفاروپلاستی و جنیوپلاستی: https://dromfs.com/blog/facial-cosmetic-surgery
-- فک جا موند؛ علائم دررفتگی فک و اقدام فوری: https://dromfs.com/blog/jaw-dislocation
-- ایمپلنت دندان چیست؟ مراحل، برندها و قیمت ۱۴۰۵: https://dromfs.com/blog/dental-implant
-- ایمپلنت زایگوماتیک؛ راه حل فک بالا با استخوان تحلیل رفته: https://dromfs.com/blog/zygomatic-implant
-- پروتز مفصل فک (TMJ)؛ از تشخیص تا جایگزینی: https://dromfs.com/blog/tmj-prosthesis
-- جراحی فک قبل و بعد؛ تغییر واقعی چهره در نمونه های کلینیکی: https://dromfs.com/blog/jaw-surgery-before-after
-- عوارض جراحی فک؛ از بی حسی موقت تا خطرات نادر و راه های پیشگیری: https://dromfs.com/blog/jaw-surgery-complications
-- مراقبت بعد از جراحی فک؛ تقویم روز به روز ریکاوری: https://dromfs.com/blog/jaw-surgery-recovery-care
-- فک کج (نامتقارنی) چیست و چگونه اصلاح می شود؟: https://dromfs.com/blog/jaw-asymmetry
-- بهترین جراح فک و صورت در تهران؛ ۹ معیار انتخاب: https://dromfs.com/blog/best-jaw-surgeon-tehran
-- لبخند لثه ای چیست و بهترین درمان آن کدام است؟: https://dromfs.com/blog/gummy-smile-treatment
+- ارتوسرجری چیست؟ راهنمای کامل جراحی اصلاحی فک و صورت: https://dr-kermani.com/blog/orthognathic-surgery
+- جراحی فک؛ راهنمای جامع انواع، مراحل و نقاهت: https://dr-kermani.com/blog/jaw-surgery-guide
+- هزینه جراحی فک ۱۴۰۵؛ قیمت ها و عوامل موثر: https://dr-kermani.com/blog/jaw-surgery-cost
+- جراحی دو فک و چانه (بایمکس) چیست؟: https://dr-kermani.com/blog/bimax-surgery
+- مونومکس یا جراحی تک فک؛ تفاوت با بایمکس: https://dr-kermani.com/blog/monomax-surgery
+- جراحی چانه؛ راهنمای کامل اصلاح فرم و هارمونی: https://dr-kermani.com/blog/chin-surgery
+- جنیوپلاستی چیست؟ جابجایی استخوان چانه: https://dr-kermani.com/blog/genioplasty
+- جراحی زیبایی صورت؛ بلفاروپلاستی و جنیوپلاستی: https://dr-kermani.com/blog/facial-cosmetic-surgery
+- فک جا موند؛ علائم دررفتگی فک و اقدام فوری: https://dr-kermani.com/blog/jaw-dislocation
+- ایمپلنت دندان چیست؟ مراحل، برندها و قیمت ۱۴۰۵: https://dr-kermani.com/blog/dental-implant
+- ایمپلنت زایگوماتیک؛ راه حل فک بالا با استخوان تحلیل رفته: https://dr-kermani.com/blog/zygomatic-implant
+- پروتز مفصل فک (TMJ)؛ از تشخیص تا جایگزینی: https://dr-kermani.com/blog/tmj-prosthesis
+- جراحی فک قبل و بعد؛ تغییر واقعی چهره در نمونه های کلینیکی: https://dr-kermani.com/blog/jaw-surgery-before-after
+- عوارض جراحی فک؛ از بی حسی موقت تا خطرات نادر و راه های پیشگیری: https://dr-kermani.com/blog/jaw-surgery-complications
+- مراقبت بعد از جراحی فک؛ تقویم روز به روز ریکاوری: https://dr-kermani.com/blog/jaw-surgery-recovery-care
+- فک کج (نامتقارنی) چیست و چگونه اصلاح می شود؟: https://dr-kermani.com/blog/jaw-asymmetry
+- بهترین جراح فک و صورت در تهران؛ ۹ معیار انتخاب: https://dr-kermani.com/blog/best-jaw-surgeon-tehran
+- لبخند لثه ای چیست و بهترین درمان آن کدام است؟: https://dr-kermani.com/blog/gummy-smile-treatment
 
 ## صفحات سایت
-- خانه: https://dromfs.com/
-- درباره دکتر: https://dromfs.com/about
-- خدمات: https://dromfs.com/services
-- هزینه ها: https://dromfs.com/costs
-- گالری نمونه جراحی ها: https://dromfs.com/gallery
-- وبلاگ آموزشی: https://dromfs.com/blog
-- تماس و رزرو نوبت: https://dromfs.com/contact
+- خانه: https://dr-kermani.com/
+- درباره دکتر: https://dr-kermani.com/about
+- خدمات: https://dr-kermani.com/services
+- هزینه ها: https://dr-kermani.com/costs
+- گالری نمونه جراحی ها: https://dr-kermani.com/gallery
+- وبلاگ آموزشی: https://dr-kermani.com/blog
+- تماس و رزرو نوبت: https://dr-kermani.com/contact
