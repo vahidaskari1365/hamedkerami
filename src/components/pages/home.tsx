@@ -560,7 +560,7 @@ function BeforeAfterSection() {
 
 /* ================= SUCCESS RATES ================= */
 function SuccessRates() {
-  const { successRates: SUCCESS_RATES, team: TEAM } = useContent();
+  const { successRates: SUCCESS_RATES } = useContent();
   return (
     <section className="bg-bone py-24" aria-label="آمار نتایج درمان ها">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -602,61 +602,11 @@ function SuccessRates() {
   );
 }
 
-/* ================= TEAM ================= */
-function TeamSection() {
-  const { team: TEAM, faq: FAQ } = useContent();
-  return (
-    <section className="bg-white py-24" aria-label="اعضای مجموعه">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <Reveal className="max-w-2xl">
-          <p className="flex items-center gap-3 text-sm font-bold text-teal-2">
-            <span className="h-px w-10 bg-teal" aria-hidden />
-            اعضای مجموعه
-          </p>
-          <h2 className="mt-4 text-3xl font-black leading-snug sm:text-4xl">
-            تیم درمان و پشتیبانی
-          </h2>
-        </Reveal>
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {TEAM.map((m, i) => (
-            <Reveal key={m.name} delay={i * 0.08}>
-              <div className="group overflow-hidden rounded-3xl bg-bone ring-1 ring-ink/8 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-teal/15 hover:ring-teal/40">
-                <div className="relative aspect-square overflow-hidden bg-ink-3">
-                  {m.image ? (
-                    <Image
-                      src={m.image}
-                      alt={m.name}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 25vw"
-                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                    />
-                  ) : (
-                    <span className="absolute inset-0 flex items-center justify-center">
-                      <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-white/25" aria-hidden>
-                        <circle cx="12" cy="8" r="4" />
-                        <path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5" />
-                      </svg>
-                    </span>
-                  )}
-                </div>
-                <div className="p-5">
-                  <h3 className="font-extrabold">{m.name}</h3>
-                  <p className="mt-1 text-sm text-foreground/60">{m.role}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ================= FAQ (AEO) ================= */
 function FaqSection() {
   const { site: SITE, faq: FAQ } = useContent();
   return (
-    <section className="bg-bone py-24" aria-label="سوالات متداول">
+    <section className="bg-white py-24" aria-label="سوالات متداول">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr]">
         <Reveal>
           <p className="flex items-center gap-3 text-sm font-bold text-teal-2">
@@ -760,7 +710,6 @@ export function HomePage() {
       <BeforeAfterSection />
       <SuccessRates />
       <BlogTeaser />
-      <TeamSection />
       <FaqSection />
       <CtaSection />
     </>
