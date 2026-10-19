@@ -131,6 +131,9 @@ export async function generateMetadata(): Promise<Metadata> {
     "geo.placename": "Tehran",
     "geo.position": `${SITE.geo.lat};${SITE.geo.lng}`,
     ICBM: `${SITE.geo.lat}, ${SITE.geo.lng}`,
+    /* iOS قدیمی (قبل از ۱۷.۴) فقط متای با پیشوند apple را می شناسد —
+       بدون آن «افزودن به صفحه اصلی» به جای اپ تمام صفحه، تب سافاری باز می کند */
+    "apple-mobile-web-app-capable": "yes",
   },
   };
 }

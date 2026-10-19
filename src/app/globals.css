@@ -532,21 +532,44 @@ html.pwa-standalone body.pwa-tabbar-on .floating-actions {
   }
 }
 
-/* برق متحرک روی نوارهای پرتقاضاترین نمودار قیمت */
-.shimmer-x {
-  background: linear-gradient(
-    100deg,
-    transparent 25%,
-    rgba(255, 255, 255, 0.4) 50%,
-    transparent 75%
-  );
-  background-size: 220% 100%;
-  animation: shimmer-x 2.8s linear infinite;
+/* ============================================================
+   پیل نصب PWA — شیشه ای تیره با حلقه طلایی، ورود نرم از پایین
+   (جای‌گذاری: fixed + left 50% + transform فقط در همین قوانین —
+    تا با translate تیلویند تداخل نکند)
+   ============================================================ */
+.pwa-pill {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  opacity: 0;
+  transform: translateX(-50%) translateY(18px);
+  pointer-events: none;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
-@keyframes shimmer-x {
-  from { background-position: 220% 0; }
-  to { background-position: -120% 0; }
+.pwa-pill.pwa-pill-in {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+/* در حالت نصب‌شده هرگز نمایش داده نمی شود (دوجانبه با JS) */
+html.pwa-standalone .pwa-pill {
+  display: none !important;
+}
+@media (display-mode: standalone) {
+  .pwa-pill { display: none !important; }
+}
+@media (display-mode: minimal-ui) {
+  .pwa-pill { display: none !important; }
+}
+.pwa-sheet {
+  animation: pwa-sheet-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes pwa-sheet-up {
+  from { opacity: 0; transform: translateY(22px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .shimmer-x { animation: none; }
+  .pwa-pill { transition: none; }
+  .pwa-sheet { animation: none; }
 }

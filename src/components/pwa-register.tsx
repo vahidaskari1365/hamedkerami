@@ -11,6 +11,7 @@
    ============================================================ */
 
 import { useEffect } from "react";
+import type { InstallPromptEvent } from "@/components/pwa-install-pill";
 
 /* ---------- تشخیص standalone قبل از هیدریشن (در سطح ماژول) ---------- */
 if (typeof window !== "undefined") {
@@ -26,6 +27,19 @@ if (typeof window !== "undefined") {
 }
 
 export function PwaRegister() {
+  /* ---------- گرفتن beforeinstallprompt برای پیل نصب ---------- */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onBeforeInstall = (e: Event) => {
+      e.preventDefault(); // جلوی پرامپت خودکار مرورگر را بگیر — کاربر از پیل ما نصب می کند
+      (window as Window & { __pwaInstallPrompt?: InstallPromptEvent }).__pwaInstallPrompt =
+        e as InstallPromptEvent;
+      window.dispatchEvent(new Event("pwa-installable"));
+    };
+    window.addEventListener("beforeinstallprompt", onBeforeInstall);
+    return () => window.removeEventListener("beforeinstallprompt", onBeforeInstall);
+  }, []);
+
   /* ---------- ثبت Service Worker + فعال‌سازی خودکار نسخه جدید ---------- */
   useEffect(() => {
     if (typeof window === "undefined") return;

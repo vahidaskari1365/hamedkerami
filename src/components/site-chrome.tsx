@@ -13,6 +13,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ScrollProgress, CinemaIntro } from "@/components/cinematic";
 import { PwaTabbar } from "@/components/pwa-tabbar";
+import { PwaInstallPill } from "@/components/pwa-install-pill";
 import { LegacyHashRedirect } from "@/components/hash-router";
 import { ContentProvider, useContent } from "@/lib/content-context";
 import { waLink } from "@/lib/data";
@@ -74,6 +75,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         <main className="flex-1">{children}</main>
         <Footer />
         <FloatingActions />
+        <PwaInstallPill />
         <PwaTabbar />
         <Tracker />
       </div>
