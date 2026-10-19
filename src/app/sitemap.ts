@@ -1,15 +1,21 @@
 import type { MetadataRoute } from "next";
 import { getPublishedPosts } from "@/lib/blog-posts";
+import { SITE } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
 /* ============================================================
-   Sitemap داینامیک — همه URLهای واقعی سایت
-   شامل صفحات اصلی، صفحات فرود سئو و تک‌تک مقالات وبلاگ.
-   (فایل استاتیک قبلی URLهای هش‌دار داشت که گوگل نادیده می‌گرفت)
+   Sitemap داینامیک — آماده برای Google Search Console
+   force-dynamic: هر بار که گوگل /sitemap.xml را می خواند،
+   لیست از دیتابیس خوانده می شود — یعنی به محض انتشار یک
+   مقاله جدید، URL آن خودکار در سایت مپ ظاهر می شود و
+   نیازی به آپدیت دستی نیست. فقط یک بار در سرچ کنسول آدرس
+   https://dromfs.com/sitemap.xml را Submit کنید؛ بعد از آن
+   گوگل خودش به صورت دوره ای دوباره می خواند.
+   lastmod مقالات = تاریخ واقعی آخرین ویرایش هر پست
    ============================================================ */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = "https://dromfs.com";
+  const base = SITE.url;
   const now = new Date();
 
   const posts = await getPublishedPosts();
@@ -28,9 +34,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.7 },
   ];
 
+  /* مقالات: lastmod واقعی — تاریخ آخرین ویرایش هر مقاله در پنل */
   const blog: MetadataRoute.Sitemap = posts.map((p) => ({
     url: `${base}/blog/${p.slug}`,
-    lastModified: now,
+    lastModified: p.updatedAt ?? p.publishedAt ?? now,
     changeFrequency: "monthly",
     priority: 0.7,
   }));
