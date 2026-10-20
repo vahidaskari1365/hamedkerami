@@ -90,7 +90,10 @@ export function Footer() {
               <li>
                 <a href={waLink(SITE.whatsapp)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 transition hover:text-white" dir="ltr">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 11.5a8.5 8.5 0 01-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z"/></svg>
-                  واتسپ: {SITE.whatsappDisplay}
+                  {/* bidi: لیبل و شماره باید ران‌های ایزوله جدا باشند — وگرنه
+                     الگوریتم bidi ترتیب سگمنت‌های شماره را برعکس می‌کند */}
+                  <span dir="rtl">واتسپ:</span>
+                  <span dir="ltr">{SITE.whatsappDisplay}</span>
                 </a>
               </li>
               <li className="flex items-start gap-3 leading-6">
