@@ -264,7 +264,8 @@ async function JsonLd() {
 }
 
 /* ---------------- Google Analytics 4 ----------------
-   استریم رسمی: dr-kermani.com — Measurement ID: G-39ZLX16WH2
+   استریم رسمی: dr-kermani.com — Stream ID: 16163934366
+   Measurement ID: G-BN9YBGCWSY
    (analytics.google.com > Admin > Data Streams > Web)
    ID به‌صورت fallback در کد هست تا با هر بیلدی فعال بماند؛
    اگر خواستید عوض شود: متغیر محیطی NEXT_PUBLIC_GA_MEASUREMENT_ID
@@ -272,7 +273,7 @@ async function JsonLd() {
    ناوبری hash-based سایت با Enhanced Measurement (history change
    events) خودکار به‌عنوان page_view ثبت می‌شود. */
 const GA_MEASUREMENT_ID =
-  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-39ZLX16WH2";
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-BN9YBGCWSY";
 
 export default function RootLayout({
   children,
