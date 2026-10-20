@@ -1,10 +1,10 @@
 generator client {
   provider = "prisma-client-js"
-  /* موتورهای لینوکسی برای هاست اشتراکی (CloudLinux/cPanel):
-     rhel-openssl-1.0.x → CentOS 7 / CloudLinux 6-7
-     rhel-openssl-3.0.x → AlmaLinux 8/9 / CloudLinux 8/9
-     native             → همان پلتفرم بیلد (CI) */
-  binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
+  /* Engines for shared hosting (cPanel):
+     debian-openssl-1.0.x = current IranHost host (Debian + OpenSSL 1.0)
+     rhel-openssl-1.0.x / rhel-openssl-3.0.x = CloudLinux / AlmaLinux
+     native = CI build machine */
+  binaryTargets = ["native", "debian-openssl-1.0.x", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
