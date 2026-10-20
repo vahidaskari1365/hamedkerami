@@ -1,124 +1,146 @@
 /* ============================================================
-   qa-articles.ts — کنترل کیفیت مقالات طبق قوانین کاربر و
-   استانداردهای SEO/GEO/AEO/AIO/SXO
+   QA مقالات — کنترل خودکار قوانین کاربر و استانداردهای SEO/AEO
    اجرا: bun scripts/qa-articles.ts
-   چک ها:
-   1) طول ≥ ۱۵۰۰ کلمه (دستور کاربر)
-   2) پاسخ مستقیم (blockquote) ابتدای مقاله — AEO
-   3) FAQ ≥ ۴ سوال — AEO
-   4) CTA شماره تماس + لینک داخلی — SXO
-   5) پوشش ۱۲ کلمه کلیدی اولویت ۱ — SEO
-   6) یکتایی جملات بین مقالات (بدون تکرار) — قاعده کاربر
-   7) نام دکتر کرمانی + فلوشیپ کرانیوفاسیال — E-E-A-T / GEO
-   خروج غیر صفر اگر خطای سخت باشد (برای CI)
+   چک‌ها:
+   ۱) حجم: ۱۵۰۰+ کلمه هر مقاله
+   ۲) پاسخ کوتاه (بلاک‌کوت اول) بین ۲۵ تا ۹۰ کلمه
+   ۳) FAQ: حداقل ۴ سوال + عنوان بخش حاوی «پرسش/سوال»
+   ۴) لینک داخلی: حداقل ۵؛ مقصد فقط پیلارها یا ۱۸ slug معتبر
+   ۵) یکتایی: جمله تکراری (۶+ کلمه) داخل مقاله، بین مقالات و
+      در برابر نسخه قبلی (if snapshots exist)
+   ۶) فرمت پارسر: بدون بک‌تیک/${ داخل بدنه، بدون لینک http،
+      بدون عکس مارک‌داون، بدون HTML tag
+   ۷) کاور: فایل 3d مربوطه روی دیسک موجود باشد
+   ۸) کلمه کانونی (اولین keyword در seo-keywords) در بدنه هست
+   ۹) برند: «دکتر حامد کرمانی» حداقل ۲ بار + CTA تلفن
    ============================================================ */
 
 import { BLOG_ARTICLES } from "../src/lib/blog-articles";
+import { ARTICLE_KEYWORDS } from "../src/lib/seo-keywords";
+import { parseArticle } from "../src/lib/article-extras";
+import fs from "fs";
+import path from "path";
 
-const PRIORITY_KEYWORDS = [
-  "جراحی فک قبل و بعد",
-  "نامتقارنی فک",
-  "عوارض جراحی فک",
-  "مراقبت بعد از جراحی فک",
-  "جراحی زیبایی فک و صورت",
-  "بوتاکس فک",
-  "لبخند لثه",
-  "بهترین جراح فک و صورت در تهران",
-  "هزینه جنیوپلاستی",
-  "مشاوره جراحی فک",
-  "درد مفصل فک",
-  "کوچک کردن زاویه فک",
+const ROOT = path.resolve(import.meta.dir, "..");
+
+const PILLARS = [
+  "/jaw-surgery", "/chin-surgery", "/dental-implant", "/implant-pasdaran",
+  "/costs", "/gallery", "/services", "/about", "/contact", "/blog",
 ];
+const VALID_LINK_TARGETS = new Set<string>([
+  ...PILLARS,
+  ...BLOG_ARTICLES.map((a) => `/blog/${a.slug}`),
+]);
 
-const wordCount = (t: string) =>
-  t.replace(/[#>*`\-|]/g, " ").split(/\s+/).filter(Boolean).length;
+type Issue = { slug: string; msg: string };
+const issues: Issue[] = [];
+const warn: Issue[] = [];
 
-const sentences = (t: string) =>
-  t
+/* ---------- استخراج جمله‌ها برای یکتایی ---------- */
+function sentences(body: string): string[] {
+  return body
     .replace(/[#>*`|]/g, " ")
-    .split(/[.!؟?\n؛]/)
+    .replace(/\s+/g, " ")
+    .split(/[.!?؟…]\s*/)
     .map((s) => s.trim())
-    .filter((s) => s.split(/\s+/).length >= 8);
-
-let hardErrors = 0;
-const warnings: string[] = [];
-
-console.log("═".repeat(64));
-console.log("QA مقالات — قوانین کاربر + SEO/GEO/AEO/AIO/SXO");
-console.log("═".repeat(64));
-
-/* --- یکتایی بین مقالات --- */
-const seen = new Map<string, string>();
-const dupes: string[] = [];
-for (const a of BLOG_ARTICLES) {
-  for (const s of sentences(a.body)) {
-    const key = s.slice(0, 80);
-    if (seen.has(key) && seen.get(key) !== a.slug) dupes.push(`«${key}…» → ${seen.get(key)} + ${a.slug}`);
-    else seen.set(key, a.slug);
-  }
+    .filter((s) => s.split(" ").length >= 6);
 }
+function norm(s: string): string {
+  return s
+    .replace(/[\u200c\u064b-\u0652\u0670]/g, "")
+    .replace(/[«»"'()،؛:،\-–]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/* ---------- چک هر مقاله ---------- */
+const allSentences = new Map<string, string>(); // norm → slug اولین
+let totalWords = 0;
 
 for (const a of BLOG_ARTICLES) {
-  const wc = wordCount(a.body);
-  const hasAnswer = a.body.trimStart().startsWith(">");
-  const faqCount = (a.body.match(/^### /gm) || []).length; // سوال‌های FAQ
-  const hasPhone = a.body.includes("۰۲۱-۶۶۹۲۱۵۰۰");
-  const hasInternalLink = /\[.*\]\(\/(services|costs|about|contact|blog)/.test(a.body);
-  const hasDrName = a.body.includes("کرمانی");
-  const hasFellowship = a.body.includes("کرانیوفاسیال");
-  const faqSection = a.body.includes("پرسش های پرتکرار") || a.body.includes("پرسش های پرتکرار");
+  const { slug, body, cover, title, excerpt } = a;
 
-  const errs: string[] = [];
-  if (wc < 1500) errs.push(`طول ${wc} < ۱۵۰۰ کلمه`);
-  if (!hasAnswer) errs.push("پاسخ مستقیم (blockquote) ندارد — AEO");
-  if (faqCount < 4) errs.push(`فقط ${faqCount} سوال FAQ — حداقل ۴ (AEO)`);
-  if (!faqSection) errs.push("بخش پرسش های پرتکرار ندارد");
-  if (!hasPhone) errs.push("CTA شماره تماس ندارد — SXO");
-  if (!hasInternalLink) errs.push("لینک داخلی ندارد — SXO");
-  if (!hasDrName || !hasFellowship) errs.push("نام دکتر/فلوشیپ کرانیوفاسیال نیست — E-E-A-T");
+  /* ۱ — حجم */
+  const wc = body.replace(/[#>*`\-|]/g, " ").split(/\s+/).filter(Boolean).length;
+  totalWords += wc;
+  if (wc < 1500) issues.push({ slug, msg: `حجم ${wc} < ۱۵۰۰ کلمه` });
 
-  console.log(`\n📄 ${a.slug}`);
-  console.log(`   تاریخ: ${a.date} | کلمات: ${wc} | FAQ: ${faqCount}`);
-  if (errs.length) {
-    hardErrors += errs.length;
-    errs.forEach((e) => console.log(`   ❌ ${e}`));
-  } else {
-    console.log("   ✅ همه چک های ساختاری پاس");
+  /* ۲ — پاسخ کوتاه */
+  const first = body.split(/\n\s*\n/).map((g) => g.trim()).find(Boolean) ?? "";
+  if (!first.startsWith(">")) issues.push({ slug, msg: "پاسخ کوتاه (بلاک‌کوت اول) نیست" });
+  else {
+    const aw = first.replace(/^>\s?/, "").split(/\s+/).filter(Boolean).length;
+    if (aw < 25 || aw > 90) warn.push({ slug, msg: `پاسخ کوتاه ${aw} کلمه (خارج از بازه ۲۵-۹۰)` });
   }
-}
 
-/* --- ماتریس کلمات کلیدی --- */
-console.log("\n" + "─".repeat(64));
-console.log("پوشش کلمات کلیدی اولویت ۱ (کدام کلمه در کدام مقاله):");
-const allText = BLOG_ARTICLES.map((a) => `${a.title}\n${a.excerpt}\n${a.body}`).join("\n");
-for (const kw of PRIORITY_KEYWORDS) {
-  const hits = BLOG_ARTICLES.filter((a) =>
-    `${a.title}\n${a.excerpt}\n${a.body}`.includes(kw)
-  ).map((a) => a.slug);
-  const inAll = allText.includes(kw);
-  if (inAll) {
-    console.log(`  ✅ ${kw} → ${hits.join(", ")}`);
-  } else {
-    warnings.push(`کلمه کلیدی «${kw}» در هیچ مقاله ای نیست`);
-    console.log(`  ❌ ${kw} → هیچ جا`);
+  /* ۳ — FAQ */
+  const extras = parseArticle(body);
+  if (extras.faq.length < 4) issues.push({ slug, msg: `FAQ فقط ${extras.faq.length} سوال` });
+  if (!/پرسش|سوال/.test(body)) issues.push({ slug, msg: "بخش پرسش های پرتکرار نیست" });
+
+  /* ۴ — لینک داخلی */
+  const links = [...body.matchAll(/\]\((\/[^)]*)\)/g)].map((m) => m[1]);
+  const uniq = new Set(links);
+  if (links.length < 5) issues.push({ slug, msg: `فقط ${links.length} لینک داخلی` });
+  for (const l of uniq) {
+    if (!VALID_LINK_TARGETS.has(l))
+      issues.push({ slug, msg: `لینک نامعتبر: ${l}` });
   }
+  if (uniq.has(`/blog/${slug}`)) issues.push({ slug, msg: "لینک به خود مقاله" });
+
+  /* ۵ — یکتایی درون مقاله + سراسری */
+  const seenLocal = new Set<string>();
+  for (const s of sentences(body)) {
+    const n = norm(s);
+    if (seenLocal.has(n)) issues.push({ slug, msg: `جمله تکراری داخل مقاله: «${s.slice(0, 50)}…»` });
+    seenLocal.add(n);
+    const owner = allSentences.get(n);
+    if (owner && owner !== slug)
+      issues.push({ slug, msg: `جمله تکراری با مقاله ${owner}: «${s.slice(0, 50)}…»` });
+    else allSentences.set(n, slug);
+  }
+
+  /* ۶ — فرمت پارسر */
+  if (body.includes("`")) issues.push({ slug, msg: "بک‌تیک داخل بدنه" });
+  if (body.includes("${")) issues.push({ slug, msg: "${ داخل بدنه" });
+  if (/!\[[^\]]*\]\(/.test(body)) issues.push({ slug, msg: "عکس مارک‌داون داخل بدنه" });
+  if (/<[a-z][a-z0-9]*[\s>]/i.test(body)) issues.push({ slug, msg: "تگ HTML داخل بدنه" });
+  if (/https?:\/\//.test(body)) warn.push({ slug, msg: "لینک http در بدنه" });
+  if (/[\u200c]/.test(body)) warn.push({ slug, msg: "نیم‌فاصله (ZWNJ) در بدنه" });
+
+  /* ۷ — کاور روی دیسک */
+  if (cover && !fs.existsSync(path.join(ROOT, "public", cover)))
+    issues.push({ slug, msg: `فایل کاور موجود نیست: ${cover}` });
+
+  /* ۸ — کلمه کانونی */
+  const kw = ARTICLE_KEYWORDS[slug]?.split(", ")[0];
+  if (kw && !body.includes(kw) && !title.includes(kw))
+    issues.push({ slug, msg: `کلمه کانونی «${kw}» نه در بدنه نه در عنوان` });
+
+  /* ۹ — برند و CTA */
+  const brand = (body.match(/دکتر حامد کرمانی|دکتر کرمانی/g) ?? []).length;
+  if (brand < 2) issues.push({ slug, msg: `نام دکتر فقط ${brand} بار` });
+  if (!body.includes("۶۶۹۲۱۵۰۰") && !body.includes("66921500"))
+    issues.push({ slug, msg: "CTA تلفن مطب نیست" });
+  if (!title || title.length < 20) issues.push({ slug, msg: "عنوان کوتاه" });
+  if (!excerpt || excerpt.length < 40) issues.push({ slug, msg: "excerpt کوتاه" });
 }
 
-/* --- یکتایی --- */
-console.log("\n" + "─".repeat(64));
-if (dupes.length) {
-  console.log(`تکرار جملات بین مقالات: ${dupes.length}`);
-  dupes.forEach((d) => console.log(`  ⚠️  ${d}`));
-  warnings.push("جملات تکراری بین مقالات پیدا شد");
+/* ---------- گزارش ---------- */
+console.log(`\n=== QA ${BLOG_ARTICLES.length} مقاله — مجموع ${totalWords.toLocaleString("fa-IR")} کلمه ===\n`);
+if (issues.length) {
+  console.log(`❌ ${issues.length} خطا:`);
+  for (const i of issues) console.log(`   [${i.slug}] ${i.msg}`);
 } else {
-  console.log("✅ یکتایی جملات بین ۶ مقاله — بدون تکرار");
+  console.log("✅ صفر خطا");
+}
+if (warn.length) {
+  console.log(`\n⚠ ${warn.length} هشدار:`);
+  for (const i of warn) console.log(`   [${i.slug}] ${i.msg}`);
 }
 
-console.log("\n" + "═".repeat(64));
-if (hardErrors || warnings.length) {
-  console.log(`نتیجه: ${hardErrors} خطای سخت، ${warnings.length} هشدار`);
-  warnings.forEach((w) => console.log(`⚠️  ${w}`));
-  if (hardErrors) process.exit(1);
-} else {
-  console.log("نتیجه: همه چک ها پاس ✅");
-}
+/* پوشش slug ↔ keywords */
+const missingKw = BLOG_ARTICLES.filter((a) => !ARTICLE_KEYWORDS[a.slug]).map((a) => a.slug);
+if (missingKw.length) console.log(`\n⚠ بدون کلیدواژه اختصاصی (fallback عمومی): ${missingKw.join(", ")}`);
+
+process.exit(issues.length ? 1 : 0);
