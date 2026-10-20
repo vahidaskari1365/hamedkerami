@@ -12,6 +12,7 @@ export async function register(): Promise<void> {
   try {
     const { db } = await import("@/lib/db");
     const { BLOG_ARTICLES } = await import("@/lib/blog-articles");
+    const { jalaliDisplayToIso } = await import("@/lib/jalali");
 
     /* خودترمیمی جدول BlogPost — دیتابیس سرور از دیپلوی‌های اول مانده و
        ممکن است جدول BlogPost نداشته باشد یا ستون‌هایش با مدل فعلی نخواند؛
@@ -53,6 +54,10 @@ export async function register(): Promise<void> {
       try {
         const existing = await db.blogPost.findUnique({ where: { slug: a.slug } });
         if (!existing) {
+          /* تاریخ ساخت ردیف = تاریخ تحریری مقاله (شمسی → میلادی)
+             تا datePublished اسکیما و lastmod سایت‌مپ با تاریخ نمایشی
+             مقاله یکی باشد، نه لحظه‌ی insert */
+          const iso = jalaliDisplayToIso(a.date);
           await db.blogPost.create({
             data: {
               slug: a.slug,
@@ -62,6 +67,7 @@ export async function register(): Promise<void> {
               cover: a.cover,
               date: a.date,
               published: true,
+              ...(iso ? { createdAt: new Date(`${iso}T09:00:00.000Z`) } : {}),
             },
           });
           seeded++;
