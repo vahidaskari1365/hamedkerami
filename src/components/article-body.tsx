@@ -83,7 +83,7 @@ function Markdown({ children }: { children: string }) {
           <strong className="font-black text-ink">{children}</strong>
         ),
         blockquote: ({ children }) => (
-          <div className="rounded-2xl border-r-4 border-teal bg-gradient-to-l from-teal/12 to-teal/4 p-5 sm:p-6">
+          <div data-answer="true" className="rounded-2xl border-r-4 border-teal bg-gradient-to-l from-teal/12 to-teal/4 p-5 sm:p-6">
             <p className="flex items-center gap-2 text-sm font-black text-teal-3">
               <span aria-hidden>✦</span> پاسخ کوتاه
             </p>

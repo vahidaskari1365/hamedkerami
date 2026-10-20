@@ -485,7 +485,7 @@ function BlogTeaser() {
                 ) : null}
                 <div className="flex flex-1 flex-col p-6">
                   <span className="w-fit rounded-full bg-teal/10 px-3 py-1 text-xs font-bold text-teal-3">
-                    {p.date}
+                    جراحی فک و صورت
                   </span>
                   <h3 className="mt-3 text-base font-black leading-7 transition-colors group-hover:text-teal-2 sm:text-lg">
                     {p.title}

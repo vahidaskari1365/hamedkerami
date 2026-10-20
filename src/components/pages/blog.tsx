@@ -52,7 +52,7 @@ export function BlogPage() {
                 <div className="flex flex-col justify-center p-7 sm:p-10">
                   <span className="flex w-fit items-center gap-2 rounded-full bg-teal/12 px-3.5 py-1.5 text-xs font-bold text-teal-3">
                     <span className="h-1.5 w-1.5 rounded-full bg-teal" aria-hidden />
-                    مقاله جدید — {featured.date}
+                    مقاله ویژه
                   </span>
                   <h2 className="mt-4 text-xl font-black leading-9 transition-colors group-hover:text-teal-2 sm:text-2xl sm:leading-10">
                     {featured.title}
@@ -97,7 +97,7 @@ export function BlogPage() {
                     <div className="flex flex-1 flex-col p-6">
                       <div className="flex items-center gap-3 text-xs">
                         <span className="rounded-full bg-teal/10 px-3 py-1 font-bold text-teal-3">
-                          {p.date}
+                          جراحی فک و صورت
                         </span>
                         <span className="text-foreground/50">دکتر حامد کرمانی</span>
                       </div>

@@ -14,6 +14,7 @@ import { JsonLdScript, breadcrumbLd } from "@/components/schema";
 import { LandingCtaBand } from "@/components/landing/landing-chrome";
 import { getBlogPost, getPublishedPosts } from "@/lib/blog-posts";
 import { parseArticle } from "@/lib/article-extras";
+import { keywordsForSlug } from "@/lib/seo-keywords";
 import { db } from "@/lib/db";
 import { SITE } from "@/lib/data";
 
@@ -97,6 +98,15 @@ export default async function BlogArticlePage({ params }: Props) {
       inLanguage: "fa-IR",
       wordCount: extras.wordCount,
       timeRequired: `PT${extras.readMinutes}M`,
+      /* کلمات کلیدی هدف مقاله — SEO/GEO: entity روشن برای گوگل و
+         مدل‌های زبانی (ChatGPT/Perplexity) — منبع: keyword-plan */
+      keywords: keywordsForSlug(slug),
+      /* Speakable — GEO/AEO: بخش‌های قابل نقل‌قول صوتی/متنی برای
+         دستیارهای هوشمند (پاسخ کوتاه + عنوان) */
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["h1", "[data-answer]"],
+      },
       datePublished: post.publishedAt ?? undefined,
       dateModified: post.updatedAt ?? post.publishedAt ?? undefined,
       author: authorEntity,
@@ -162,7 +172,7 @@ export default async function BlogArticlePage({ params }: Props) {
           </h1>
           <div className="mt-5 flex flex-wrap items-center gap-3 text-xs text-white/60">
             <span className="rounded-full bg-teal/15 px-4 py-1.5 font-bold text-teal">
-              {post.date}
+              جراحی فک و صورت
             </span>
             <span className="rounded-full bg-white/10 px-4 py-1.5">زمان مطالعه: {extras.readMinutes} دقیقه</span>
             {views > 0 ? (
