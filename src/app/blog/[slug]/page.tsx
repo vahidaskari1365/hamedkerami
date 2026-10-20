@@ -4,10 +4,17 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site-chrome";
 import { ArticleBody } from "@/components/article-body";
+import {
+  ArticleToc,
+  ArticleTocMobile,
+  BackToTop,
+  ReadingProgress,
+} from "@/components/article-reader";
 import { JsonLdScript, breadcrumbLd } from "@/components/schema";
 import { LandingCtaBand } from "@/components/landing/landing-chrome";
 import { getBlogPost, getPublishedPosts } from "@/lib/blog-posts";
 import { parseArticle } from "@/lib/article-extras";
+import { db } from "@/lib/db";
 import { SITE } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -59,6 +66,14 @@ export default async function BlogArticlePage({ params }: Props) {
 
   /* تحلیل ساختاری — AEO/GEO/SXO */
   const extras = parseArticle(post.body);
+
+  /* شمارش بازدید واقعی (PageView) — خطا نادیده گرفته می‌شود */
+  let views = 0;
+  try {
+    views = await db.pageView.count({ where: { path: `/blog/${slug}` } });
+  } catch {
+    /* دیتابیس در دسترس نیست — شمارش نمایش داده نمی‌شود */
+  }
 
   const authorEntity = {
     "@type": "Person",
@@ -122,6 +137,8 @@ export default async function BlogArticlePage({ params }: Props) {
 
   return (
     <SiteShell>
+      <ReadingProgress />
+      <BackToTop />
       <JsonLdScript data={{ "@context": "https://schema.org", "@graph": articleGraph }} />
       <JsonLdScript
         data={breadcrumbLd([
@@ -148,8 +165,19 @@ export default async function BlogArticlePage({ params }: Props) {
               {post.date}
             </span>
             <span className="rounded-full bg-white/10 px-4 py-1.5">زمان مطالعه: {extras.readMinutes} دقیقه</span>
+            {views > 0 ? (
+              <span className="rounded-full bg-white/10 px-4 py-1.5">
+                {views.toLocaleString("fa-IR")} بازدید
+              </span>
+            ) : null}
             <span>نویسنده: دکتر حامد کرمانی — متخصص جراحی فک و صورت</span>
           </div>
+          {/* خلاصه عنوان‌ها — دید اولیه به ساختار مقاله (SXO) */}
+          {extras.toc.length ? (
+            <p className="mt-4 text-xs leading-6 text-white/45">
+              در این مقاله بخوانید: {extras.toc.map((t) => t.title).join(" • ")}
+            </p>
+          ) : null}
         </div>
       </header>
 
@@ -171,34 +199,21 @@ export default async function BlogArticlePage({ params }: Props) {
       ) : null}
 
       {/* بدنه مقاله + فهرست مطالب چسبان (SXO) */}
-      <article className="bg-white py-10 sm:py-14">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 xl:grid-cols-[260px_1fr]">
-          {/* فهرست مطالب — فقط دسکتاپ بزرگ */}
+      <article className="bg-bone py-10 sm:py-14">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 sm:px-6 xl:grid-cols-[260px_minmax(0,1fr)]">
+          {/* فهرست مطالب — فقط دسکتاپ بزرگ، با هایلایت بخش فعال */}
           {extras.toc.length > 2 ? (
             <aside className="hidden xl:block" aria-label="فهرست مطالب">
-              <nav className="sticky top-24 rounded-2xl bg-bone p-5 ring-1 ring-ink/8">
-                <p className="text-xs font-black text-ink">فهرست مطالب</p>
-                <ol className="mt-3 space-y-2 border-r border-ink/10 pr-3">
-                  {extras.toc.map((t) => (
-                    <li key={t.id}>
-                      <a
-                        href={`#${t.id}`}
-                        className="block text-[12px] leading-6 text-foreground/60 transition hover:text-teal-3"
-                      >
-                        {t.title}
-                      </a>
-                    </li>
-                  ))}
-                </ol>
-              </nav>
+              <ArticleToc items={extras.toc} />
             </aside>
           ) : null}
 
-          <div className="mx-auto w-full max-w-3xl">
-            <ArticleBody body={post.body} />
+          <div className="mx-auto w-full min-w-0 max-w-3xl">
+            <ArticleTocMobile items={extras.toc} />
+            <ArticleBody sections={extras.sections} />
 
             {/* باکس نویسنده — E-E-A-T */}
-            <div className="mt-12 flex items-start gap-4 rounded-2xl bg-bone p-6">
+            <div className="mt-8 flex items-start gap-4 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-ink/6">
               <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-2 ring-teal/30">
                 <Image
                   src="/images/clinic/dr-portrait.jpg"

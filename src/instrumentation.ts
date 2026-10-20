@@ -52,6 +52,26 @@ export async function register(): Promise<void> {
     }
     if (seeded) console.log(`[seed] ${seeded} مقاله در دیتابیس sync شد`);
 
+    /* پاکسازی مقالات جامانده — دیپلوی‌های اول ۱۶ مقاله قدیمی
+       (اسلاگ‌هایی مثل orthognathic-surgery با تاریخ ۱۴۰۱) در
+       دیتابیس سرور گذاشته بودند. اگر این ردیف‌ها بمانند:
+       ۱) پنل ادمین مقالات غیرواقعی نشان می‌دهد
+       ۲) اگر دیتابیس یک روز در دسترس شود، سایت ناگهان ۱۶ مقاله
+          قدیمی/حذف‌شده را نمایش می‌دهد و سایت‌مپ URLهای ۴۰۴ می‌گیرد
+       منبع حقیقت = BLOG_ARTICLES در کد */
+    const canonicalSlugs = BLOG_ARTICLES.map((a) => a.slug);
+    try {
+      const removed = await db.blogPost.deleteMany({
+        where: { slug: { notIn: canonicalSlugs } },
+      });
+      if (removed.count) {
+        console.log(`[seed] ${removed.count} مقاله قدیمی از دیتابیس حذف شد`);
+        /* بدون حذف قدیمی‌ها، findMany ردیف‌های قدیمی را هم برمی‌گرداند */
+      }
+    } catch (e) {
+      console.error("[seed] cleanup:", (e as Error).message);
+    }
+
     /* زمان‌بند ایجنت‌ها */
     const { startBlogScheduler } = await import("@/lib/agents/scheduler");
     startBlogScheduler();

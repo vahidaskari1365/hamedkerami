@@ -35,6 +35,29 @@ const SECURITY_HEADERS = [
 const nextConfig: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
+  /* ریدایرکت ۳۰۱ مقاله‌های قدیمی حذف‌شده → نزدیک‌ترین صفحه موضوعی.
+     این اسلاگ‌ها در دیپلوی‌های اول روی سایت بودند و ممکن است گوگل
+     ایندکس‌شان کرده باشد؛ ۴۰۴ دادن سیگنال منفی سئو است. */
+  async redirects() {
+    return [
+      { source: "/blog/orthognathic-surgery", destination: "/jaw-surgery", permanent: true },
+      { source: "/blog/jaw-surgery-guide", destination: "/jaw-surgery", permanent: true },
+      { source: "/blog/bimax-surgery", destination: "/jaw-surgery", permanent: true },
+      { source: "/blog/monomax-surgery", destination: "/jaw-surgery", permanent: true },
+      { source: "/blog/jaw-dislocation", destination: "/blog/jaw-asymmetry", permanent: true },
+      { source: "/blog/tmj-prosthesis", destination: "/blog/jaw-surgery-complications", permanent: true },
+      { source: "/blog/jaw-surgery-cost", destination: "/costs", permanent: true },
+      { source: "/blog/genioplasty", destination: "/chin-surgery", permanent: true },
+      { source: "/blog/chin-surgery", destination: "/chin-surgery", permanent: true },
+      { source: "/blog/dental-implant", destination: "/dental-implant", permanent: true },
+      { source: "/blog/zygomatic-implant", destination: "/dental-implant", permanent: true },
+      { source: "/blog/root-nerve-meaning", destination: "/dental-implant", permanent: true },
+      { source: "/blog/wisdom-root-nerve", destination: "/dental-implant", permanent: true },
+      { source: "/blog/wisdom-teeth-recovery", destination: "/dental-implant", permanent: true },
+      { source: "/blog/facial-cosmetic-surgery", destination: "/services", permanent: true },
+      { source: "/blog/google-scholar", destination: "/about", permanent: true },
+    ];
+  },
   async headers() {
     return [{ source: "/:path*", headers: SECURITY_HEADERS }];
   },
