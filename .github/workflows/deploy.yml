@@ -146,7 +146,9 @@ jobs:
             fs.copyFileSync(INIT_FILE, DB_FILE);
             console.log("[bootstrap] db/custom.db created from init.db");
           }
-          process.env.DATABASE_URL = process.env.DATABASE_URL || "file:" + DB_FILE;
+          /* همیشه دیتابیس خودِ اپ — اگر cPanel/env قدیمی DATABASE_URL دیگری
+             ست کرده باشد، مسیر اشتباه زنده می‌ماند و همه کوئری‌ها خطا می‌دهند */
+          process.env.DATABASE_URL = "file:" + DB_FILE;
           process.env.UPLOAD_DIR = path.join(ROOT, "data", "uploads");
           try { fs.mkdirSync(process.env.UPLOAD_DIR, { recursive: true }); } catch {}
 
