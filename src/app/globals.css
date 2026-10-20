@@ -576,3 +576,26 @@ html.pwa-standalone .pwa-pill {
   .pwa-pill { transition: none; }
   .pwa-sheet { animation: none; }
 }
+
+/* ============ English pages (/en) — LTR + فونت لاتین ============
+   ریشه html همچنان rtl/فارسی است؛ هر محتوای /en داخل .en-root
+   با dir="ltr" رندر می‌شود. فونت: استک سیستمی لاتین (خوانا و
+   بدون دانلود جدید) — Estedad فقط به‌عنوان fallback می‌ماند.
+   ================================================================ */
+.en-root {
+  direction: ltr;
+  text-align: left;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-feature-settings: "liga" 1, "kern" 1;
+}
+.en-root h1,
+.en-root h2,
+.en-root h3 {
+  letter-spacing: -0.015em;
+}
+/* اعداد و شماره تلفن‌ها در متن انگلیسی LTR بمانند */
+.en-root .ltr-num {
+  direction: ltr;
+  unicode-bidi: embed;
+}

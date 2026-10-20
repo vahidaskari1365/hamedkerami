@@ -10,6 +10,8 @@ import { jalaliDisplay, tehranToday } from "@/lib/jalali";
    اعتبارسنجی سمت سرور: دکتر معتبر، روز فعال همان دکتر،
    ممنوعیت پنجشنبه/جمعه و روزهای گذشته، محدودیت آینده.
    نوبت با status=pending ذخیره می‌شود؛ تأیید نهایی در پنل ادمین.
+   شماره تماس: موبایل ایران (09…) یا بین‌المللی (+…) — فرم
+   انگلیسی /en/contact هم به همین API متصل است.
    ============================================================ */
 
 /* روز هفته ممنوع — مطب پنجشنبه و جمعه تعطیل است (مبنای HOURS) */
@@ -25,8 +27,13 @@ const appointmentSchema = z.object({
   name: z.string().min(2, "نام باید حداقل ۲ حرف باشد").max(120),
   phone: z
     .string()
-    .transform((s) => faToEnDigits(s).replace(/[\s-]/g, ""))
-    .pipe(z.string().regex(/^0\d{10}$/, "شماره موبایل معتبر نیست (مثل ۰۹۱۲۳۴۵۶۷۸۹)")),
+    .transform((s) => faToEnDigits(s).replace(/[\s()-]/g, ""))
+    .pipe(
+      z.string().regex(
+        /^(\+\d{8,15}|0\d{10})$/,
+        "شماره تماس معتبر نیست — موبایل ایران مثل ۰۹۱۲۳۴۵۶۷۸۹ یا بین‌المللی با +98 و…",
+      ),
+    ),
   doctor: z.string().max(120),
   dayIso: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "روز نامعتبر است"),
   slot: z.string().max(60).optional().default(""),

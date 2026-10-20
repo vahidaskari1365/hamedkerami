@@ -10,7 +10,10 @@ export const metadata: Metadata = {
   title: { absolute: "درباره دکتر حامد کرمانی | رزومه، سوابق و مدارک جراح فک و صورت" },
   description:
     "رزومه دکتر حامد کرمانی، متخصص جراحی فک و صورت و فلوشیپ جراحی های کرانیوفاسیال از دانشگاه علوم پزشکی تهران؛ بیش از ۱۰۶۷ جراحی فک، ۵۰۰۰ ایمپلنت، ۱۸ مقاله علمی و سابقه استادی دانشگاه.",
-  alternates: { canonical: "/about" },
+  alternates: {
+    canonical: "/about",
+    languages: { fa: "/about", en: "/en/about", "x-default": "/about" },
+  },
   openGraph: {
     title: "درباره دکتر حامد کرمانی | جراح فک و صورت",
     description:

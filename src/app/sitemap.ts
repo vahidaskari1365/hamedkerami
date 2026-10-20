@@ -71,20 +71,85 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const mainDay = days.length ? days[days.length - 1] : FALLBACK_DAY;
 
   const main: MetadataRoute.Sitemap = [
-    { url: base, lastModified: mainDay, changeFrequency: "weekly", priority: 1 },
+    {
+      url: base,
+      lastModified: mainDay,
+      changeFrequency: "weekly",
+      priority: 1,
+      alternates: { languages: { fa: base, en: `${base}/en`, "x-default": base } },
+    },
     { url: `${base}/jaw-surgery`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/chin-surgery`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/dental-implant`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/implant-pasdaran`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/about`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/services`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.8 },
+    {
+      url: `${base}/about`,
+      lastModified: mainDay,
+      changeFrequency: "monthly",
+      priority: 0.8,
+      alternates: { languages: { fa: `${base}/about`, en: `${base}/en/about`, "x-default": `${base}/about` } },
+    },
+    {
+      url: `${base}/services`,
+      lastModified: mainDay,
+      changeFrequency: "monthly",
+      priority: 0.8,
+      alternates: { languages: { fa: `${base}/services`, en: `${base}/en/services`, "x-default": `${base}/services` } },
+    },
     { url: `${base}/costs`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/gallery`, lastModified: mainDay, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/blog`, lastModified: mainDay, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/appointment`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/privacy`, lastModified: mainDay, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${base}/contact`, lastModified: mainDay, changeFrequency: "yearly", priority: 0.7 },
+    {
+      url: `${base}/contact`,
+      lastModified: mainDay,
+      changeFrequency: "yearly",
+      priority: 0.7,
+      alternates: { languages: { fa: `${base}/contact`, en: `${base}/en/contact`, "x-default": `${base}/contact` } },
+    },
   ];
 
-  return [...main, ...blog];
+  /* ---------- نسخه انگلیسی (/en) — hreflang در sitemap ----------
+     لندینگ jaw-surgery-in-iran معادل فارسی ندارد؛ فقط en.
+     بقیه با alternates بالا دوسویه fa↔en می‌شوند. */
+  const en: MetadataRoute.Sitemap = [
+    {
+      url: `${base}/en`,
+      lastModified: mainDay,
+      changeFrequency: "weekly",
+      priority: 0.9,
+      alternates: { languages: { fa: base, en: `${base}/en`, "x-default": base } },
+    },
+    {
+      url: `${base}/en/about`,
+      lastModified: mainDay,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: { fa: `${base}/about`, en: `${base}/en/about`, "x-default": `${base}/about` } },
+    },
+    {
+      url: `${base}/en/services`,
+      lastModified: mainDay,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: { fa: `${base}/services`, en: `${base}/en/services`, "x-default": `${base}/services` } },
+    },
+    {
+      url: `${base}/en/jaw-surgery-in-iran`,
+      lastModified: mainDay,
+      changeFrequency: "monthly",
+      priority: 0.9,
+      alternates: { languages: { en: `${base}/en/jaw-surgery-in-iran` } },
+    },
+    {
+      url: `${base}/en/contact`,
+      lastModified: mainDay,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: { fa: `${base}/contact`, en: `${base}/en/contact`, "x-default": `${base}/contact` } },
+    },
+  ];
+
+  return [...main, ...en, ...blog];
 }

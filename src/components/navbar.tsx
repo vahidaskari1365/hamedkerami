@@ -123,8 +123,17 @@ export function Navbar() {
             })}
           </ul>
 
-          {/* CTA نوبت‌دهی + برگر موبایل */}
+          {/* CTA نوبت‌دهی + سوییچر زبان انگلیسی + برگر موبایل */}
           <div className="mr-auto flex items-center gap-2 lg:mr-2">
+            <Link
+              href="/en"
+              hrefLang="en"
+              className="hidden h-9 items-center rounded-full border border-white/15 bg-white/5 px-3 text-[11px] font-black tracking-wide text-white/80 transition hover:bg-white/10 hover:text-white md:flex"
+              aria-label="English version"
+              title="English version"
+            >
+              EN
+            </Link>
             <Link
               href="/appointment"
               className="hidden items-center gap-1.5 rounded-full bg-teal px-4 py-2 text-[13px] font-black text-ink shadow-lg shadow-teal/25 transition-all duration-300 hover:scale-[1.04] hover:bg-gold-soft active:scale-95 sm:flex"
@@ -175,6 +184,14 @@ export function Navbar() {
                   </Link>
                 );
               })}
+              <Link
+                href="/en"
+                hrefLang="en"
+                className="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-white/85 transition hover:bg-white/5"
+              >
+                English
+                <span className="rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[10px] font-black">EN</span>
+              </Link>
               <Link
                 href="/appointment"
                 className="mt-1 flex items-center justify-center gap-2 rounded-2xl bg-teal px-4 py-3.5 text-sm font-black text-ink"

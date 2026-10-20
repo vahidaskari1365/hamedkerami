@@ -10,7 +10,10 @@ export const metadata: Metadata = {
   title: { absolute: "تماس و رزرو نوبت | مطب دکتر حامد کرمانی — تهران، کشاورز" },
   description:
     "رزرو نوبت مطب دکتر حامد کرمانی، متخصص جراحی فک و صورت: تهران، بلوار کشاورز، تقاطع جمالزاده، ساختمان پزشکان کوثر، طبقه ۳. تلفن ۰۲۱-۶۶۹۲۱۵۰۰ — شنبه تا چهارشنبه ۱۵ تا ۱۹.",
-  alternates: { canonical: "/contact" },
+  alternates: {
+    canonical: "/contact",
+    languages: { fa: "/contact", en: "/en/contact", "x-default": "/contact" },
+  },
   openGraph: {
     title: "تماس و رزرو نوبت مطب دکتر حامد کرمانی",
     description:

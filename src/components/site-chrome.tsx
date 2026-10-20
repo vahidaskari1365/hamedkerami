@@ -17,6 +17,7 @@ import { PwaInstallPill } from "@/components/pwa-install-pill";
 import { ContactDock } from "@/components/contact-dock";
 import { LegacyHashRedirect } from "@/components/hash-router";
 import { ContentProvider } from "@/lib/content-context";
+import { HtmlLang } from "@/components/html-lang";
 
 /* ---------- آمار بازدید: هر مسیر واقعی یک view ثبت می‌کند ---------- */
 function Tracker() {
@@ -36,6 +37,7 @@ function Tracker() {
 export function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <ContentProvider>
+      <HtmlLang lang="fa" dir="rtl" />
       <LegacyHashRedirect />
       <div className="flex min-h-screen flex-col">
         <CinemaIntro />

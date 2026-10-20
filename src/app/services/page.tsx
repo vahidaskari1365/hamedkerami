@@ -10,7 +10,10 @@ export const metadata: Metadata = {
   title: { absolute: "خدمات جراحی فک و صورت | ارتوگناتیک، جنیوپلاستی، بلفاروپلاستی و ایمپلنت" },
   description:
     "خدمات تخصصی دکتر حامد کرمانی در تهران: جراحی ارتوگناتیک یک فک و دو فک (بایمکس)، جنیوپلاستی (جراحی چانه)، بلفاروپلاستی، ایمپلنت دندان و ایمپلنت زایگوماتیک، بازسازی فک و پروتز مفصل گیجگاهی.",
-  alternates: { canonical: "/services" },
+  alternates: {
+    canonical: "/services",
+    languages: { fa: "/services", en: "/en/services", "x-default": "/services" },
+  },
   openGraph: {
     title: "خدمات جراحی فک و صورت دکتر حامد کرمانی",
     description:

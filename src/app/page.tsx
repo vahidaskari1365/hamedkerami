@@ -17,7 +17,10 @@ import { VIDEOS } from "@/lib/data";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    languages: { fa: "/", en: "/en", "x-default": "/" },
+  },
 };
 
 export default function Page() {
