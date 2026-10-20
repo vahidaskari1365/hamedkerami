@@ -1,0 +1,30 @@
+name: Keep warm (anti cold-start)
+
+# هاست شِیرد (cPanel/Passenger) پروسه Node را بعد از چند دقیقه بیکاری
+# می‌کشد؛ درخواست بعدی کول‌استارت سنگین دارد (بوت کامل Next + seed
+# دیتابیس در instrumentation). اگر آن درخواستِ بعدی مالِ گوگل‌بات یا
+# فرچر سرچ‌کنسول باشد → تایم‌اوت → خطای بازگشتی «Couldn't fetch» در
+# گزارش Sitemap. این ورک‌فلو هر ۱۰ دقیقه سایت را پینگ می‌کند تا
+# پروسه همیشه گرم باشد و گوگل همیشه پاسخ سریع بگیرد.
+# (curl جاوااسکریپت اجرا نمی‌کند → روی GA4 هیچ اثری ندارد)
+
+on:
+  schedule:
+    - cron: "*/10 * * * *" # حداقل مجاز گیت‌هاب ۵ دقیقه است؛ ۱۰ دقیقه امن است
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: keep-warm
+      cancel-in-progress: true
+    steps:
+      - name: Ping homepage + sitemap + robots
+        run: |
+          for path in "/" "/sitemap.xml" "/robots.txt"; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 240 \
+              -A "Mozilla/5.0 (keep-warm; site-monitor)" \
+              "https://dr-kermani.com${path}" || echo "000")
+            echo "${path} → HTTP ${code}"
+          done
