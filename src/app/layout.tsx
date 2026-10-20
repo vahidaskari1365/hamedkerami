@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { PwaRegister } from "@/components/pwa-register";
@@ -262,6 +263,13 @@ async function JsonLd() {
   );
 }
 
+/* ---------------- Google Analytics 4 (اختیاری) ----------------
+   وقتی متغیر محیطی NEXT_PUBLIC_GA_MEASUREMENT_ID (فرمت G-XXXXXXXXXX)
+   در .env سرور ست شود، gtag.js خودکار فعال می شود؛ بدون آن هیچ
+   اسکریپت آنالیتیکس لود نمی شود (سرعت و حریم خصوصی حفظ می شود).
+   راهنما: analytics.google.com > Admin > Data Streams > Web */
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -272,6 +280,22 @@ export default function RootLayout({
         {children}
         <Toaster />
         <PwaRegister />
+        {GA_MEASUREMENT_ID ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}', { send_page_view: true });
+              `}
+            </Script>
+          </>
+        ) : null}
       </body>
     </html>
   );

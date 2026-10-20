@@ -109,7 +109,7 @@ export function Footer() {
 
         <div className="border-t border-white/10">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-5 text-xs text-white/50 sm:px-6">
-            <p>کپی رایت © ۱۴۰۴ — دکتر حامد کرمانی، متخصص جراحی فک و صورت</p>
+            <p>کپی رایت © ۱۴۰۵ — دکتر حامد کرمانی، متخصص جراحی فک و صورت</p>
             <p dir="ltr" className="tracking-wide">dr-kermani.com — OMFS Craniofacial Surgery</p>
           </div>
         </div>
