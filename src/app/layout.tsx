@@ -263,12 +263,16 @@ async function JsonLd() {
   );
 }
 
-/* ---------------- Google Analytics 4 (اختیاری) ----------------
-   وقتی متغیر محیطی NEXT_PUBLIC_GA_MEASUREMENT_ID (فرمت G-XXXXXXXXXX)
-   در .env سرور ست شود، gtag.js خودکار فعال می شود؛ بدون آن هیچ
-   اسکریپت آنالیتیکس لود نمی شود (سرعت و حریم خصوصی حفظ می شود).
-   راهنما: analytics.google.com > Admin > Data Streams > Web */
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+/* ---------------- Google Analytics 4 ----------------
+   استریم رسمی: dr-kermani.com — Measurement ID: G-39ZLX16WH2
+   (analytics.google.com > Admin > Data Streams > Web)
+   ID به‌صورت fallback در کد هست تا با هر بیلدی فعال بماند؛
+   اگر خواستید عوض شود: متغیر محیطی NEXT_PUBLIC_GA_MEASUREMENT_ID
+   موقع build (در deploy.yml یا .env) مقدار جدید می‌گیرد.
+   ناوبری hash-based سایت با Enhanced Measurement (history change
+   events) خودکار به‌عنوان page_view ثبت می‌شود. */
+const GA_MEASUREMENT_ID =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-39ZLX16WH2";
 
 export default function RootLayout({
   children,

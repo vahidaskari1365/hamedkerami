@@ -8,11 +8,13 @@ const SECURITY_HEADERS = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      /* gtag.js گوگل آنالیتیکس — مستندات رسمی GA4:
+         script: *.googletagmanager | connect: *.google-analytics + *.analytics.google */
+      "script-src 'self' 'unsafe-inline' https://*.googletagmanager.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self'",
-      "connect-src 'self'",
+      "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
       "media-src 'self'",
       "frame-src 'self'",
       "object-src 'none'",

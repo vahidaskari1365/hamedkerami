@@ -40,6 +40,8 @@ jobs:
         env:
           DATABASE_URL: "file:/tmp/build.db"
           NEXT_TELEMETRY_DISABLED: "1"
+          # Google Analytics 4 — استریم dr-kermani (بیلدتایم اینلاین می‌شود)
+          NEXT_PUBLIC_GA_MEASUREMENT_ID: "G-39ZLX16WH2"
 
       # ---------- بسته‌بندی ----------
       - name: Assemble deploy package
