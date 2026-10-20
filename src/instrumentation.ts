@@ -48,6 +48,46 @@ export async function register(): Promise<void> {
       console.error("[seed] self-heal BlogPost:", (e as Error).message);
     }
 
+    /* خودترمیمی جدول‌های نوبت‌دهی و نظرات — سرور از دیپلوی‌های قبل
+       دیتابیس کهنه دارد که این جدول‌ها را ندارد؛ بدون ساخت خودکار،
+       هر POST نوبت/نظر خطا می‌دهد. CREATE IF NOT EXISTS بی‌خطر است. */
+    try {
+      await db.$executeRawUnsafe(`CREATE TABLE IF NOT EXISTS "Appointment" (
+          "id" TEXT NOT NULL PRIMARY KEY,
+          "name" TEXT NOT NULL,
+          "phone" TEXT NOT NULL,
+          "doctor" TEXT NOT NULL,
+          "dayIso" TEXT NOT NULL,
+          "dayJalali" TEXT NOT NULL,
+          "slot" TEXT NOT NULL DEFAULT '',
+          "note" TEXT NOT NULL DEFAULT '',
+          "status" TEXT NOT NULL DEFAULT 'pending',
+          "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )`);
+      await db.$executeRawUnsafe(`CREATE TABLE IF NOT EXISTS "ArticleComment" (
+          "id" TEXT NOT NULL PRIMARY KEY,
+          "slug" TEXT NOT NULL,
+          "name" TEXT NOT NULL,
+          "body" TEXT NOT NULL,
+          "approved" BOOLEAN NOT NULL DEFAULT false,
+          "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )`);
+      await db.$executeRawUnsafe(
+        `CREATE INDEX IF NOT EXISTS "Appointment_dayIso_idx" ON "Appointment"("dayIso")`,
+      );
+      await db.$executeRawUnsafe(
+        `CREATE INDEX IF NOT EXISTS "Appointment_status_idx" ON "Appointment"("status")`,
+      );
+      await db.$executeRawUnsafe(
+        `CREATE INDEX IF NOT EXISTS "ArticleComment_slug_idx" ON "ArticleComment"("slug")`,
+      );
+      await db.$executeRawUnsafe(
+        `CREATE INDEX IF NOT EXISTS "ArticleComment_approved_idx" ON "ArticleComment"("approved")`,
+      );
+    } catch (e) {
+      console.error("[seed] self-heal Appointment/ArticleComment:", (e as Error).message);
+    }
+
     /* seed/upsert مقالات شاخه ثابت — فقط اگر محتوایشان عوض شده باشد */
     let seeded = 0;
     for (const a of BLOG_ARTICLES) {

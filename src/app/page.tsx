@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { SiteShell } from "@/components/site-chrome";
 import { HomePage } from "@/components/pages/home";
+import { JsonLdScript, videoLd } from "@/components/schema";
+import { VIDEOS } from "@/lib/data";
 
 /* ------------------------------------------------------------
    رندر داینامیک اجباری — دلایل:
@@ -21,6 +23,11 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <SiteShell>
+      {/* اسکیمای ویدئو — هر ویدئویی که در VIDEOS.items اضافه شود
+          خودکار VideoObject می‌گیرد (AIO/GEO) */}
+      {VIDEOS.items.map((v) => (
+        <JsonLdScript key={v.id} data={videoLd(v)} />
+      ))}
       <HomePage />
     </SiteShell>
   );

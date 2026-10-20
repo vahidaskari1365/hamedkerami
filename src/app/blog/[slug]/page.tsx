@@ -10,6 +10,7 @@ import {
   BackToTop,
   ReadingProgress,
 } from "@/components/article-reader";
+import { ArticleComments } from "@/components/article-comments";
 import { JsonLdScript, breadcrumbLd } from "@/components/schema";
 import { LandingCtaBand } from "@/components/landing/landing-chrome";
 import { getBlogPost, getPublishedPosts } from "@/lib/blog-posts";
@@ -247,6 +248,9 @@ export default async function BlogArticlePage({ params }: Props) {
                 </Link>
               </div>
             </div>
+
+            {/* نظرات خوانندگان — SXO + سیگنال تعامل */}
+            <ArticleComments slug={slug} />
           </div>
         </div>
       </article>

@@ -357,7 +357,44 @@ export const CERTIFICATES = [
 export const VIDEOS = {
   aparat: "https://www.aparat.com/dromfs",
   note: "فیلم های جراحی در کانال آپارات قابل مشاهده است",
+  /* ویدئوها برای اسکیمای VideoObject — وقتی ویدئوی جدید آپلود شد،
+     اینجا اضافه کنید تا JSON-LD خودکار در صفحه اصلی تزریق شود (AIO/GEO):
+     { id, title, description, thumb, upload: "2026-10-20", embed: "https://www.aparat.com/v/xxxx?..." } */
+  items: [] as {
+    id: string;
+    title: string;
+    description: string;
+    thumb: string;
+    upload: string;
+    embed: string;
+  }[],
 };
+
+/* ---------- نوبت‌دهی آنلاین ----------
+   پزشکان حاضر در مطب + روزهای هفته حضور (دو مبنای HOURS بالا)
+   dow مطابق getDay جاوااسکریپت: 0=یکشنبه، 1=دوشنبه، 2=سه‌شنبه،
+   3=چهارشنبه، 4=پنجشنبه، 5=جمعه، 6=شنبه */
+export const APPOINTMENT_DOCTORS = [
+  {
+    name: "دکتر حامد کرمانی",
+    role: "متخصص جراحی فک و صورت",
+    image: "/images/clinic/dr-portrait.jpg",
+    days: [0, 2, 3], // یکشنبه، سه‌شنبه، چهارشنبه
+  },
+  {
+    name: "دکتر فاطمه رستم خانی",
+    role: "متخصص پروتزهای دندانی",
+    image: "/images/team-rostamkhani.jpg",
+    days: [6, 1], // شنبه، دوشنبه
+  },
+];
+
+/* بازه‌های ساعت مطب (۱۵ تا ۱۹) برای فرم نوبت‌دهی */
+export const APPOINTMENT_SLOTS = [
+  "۱۵:۰۰ تا ۱۷:۰۰",
+  "۱۷:۰۰ تا ۱۹:۰۰",
+  "فرقی نمی‌کند",
+];
 
 export const FAQ = [
   {
@@ -393,6 +430,7 @@ export const NAV = [
   { path: "/costs", label: "هزینه ها" },
   { path: "/gallery", label: "گالری" },
   { path: "/blog", label: "وبلاگ" },
+  { path: "/appointment", label: "نوبت‌دهی" },
   { path: "/contact", label: "تماس با ما" },
 ];
 

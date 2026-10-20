@@ -63,6 +63,18 @@ const TABS = [
     ),
   },
   {
+    path: "/appointment",
+    label: "نوبت",
+    icon: (
+      <>
+        <path d="M8 2v4M16 2v4" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="3" y="4" width="18" height="18" rx="2" />
+        <path d="M3 10h18" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M9 16l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
+      </>
+    ),
+  },
+  {
     path: "/contact",
     label: "تماس",
     icon: (

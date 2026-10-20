@@ -33,3 +33,35 @@ export function breadcrumbLd(crumbs: Crumb[]) {
     ],
   };
 }
+
+/* ============================================================
+   VideoObject — آماده‌سازی ویدئو (AIO/GEO)
+   هر ویدئوی آپارات/یوتیوب که به VIDEOS.items در data.ts اضافه
+   شود، با این سازنده JSON-LD معتبر می‌گیرد و شانس اسنیپت ویدئو
+   و نقل‌قول در دستیارهای هوشمند بالا می‌رود.
+   ============================================================ */
+export interface VideoItem {
+  id: string;
+  title: string;
+  description: string;
+  thumb: string; // تصویر بندانگشتی (مسیر سایت یا URL کامل)
+  upload: string; // تاریخ انتشار «YYYY-MM-DD»
+  embed: string; // لینک پخش/ embed آپارات یا یوتیوب
+}
+
+export function videoLd(v: VideoItem) {
+  const thumb = v.thumb.startsWith("http") ? v.thumb : `${SITE.url}${v.thumb}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "@id": `${SITE.url}/#video-${v.id}`,
+    name: v.title,
+    description: v.description,
+    thumbnailUrl: [thumb],
+    uploadDate: v.upload,
+    embedUrl: v.embed,
+    contentUrl: v.embed,
+    inLanguage: "fa-IR",
+    publisher: { "@id": `${SITE.url}/#physician` },
+  };
+}

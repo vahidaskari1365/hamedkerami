@@ -17,6 +17,8 @@ import { EntityPage } from "@/components/admin/entity-page";
 import { Dashboard } from "@/components/admin/dashboard";
 import { SettingsPage } from "@/components/admin/settings-page";
 import { MessagesPage } from "@/components/admin/messages-page";
+import { AppointmentsPage } from "@/components/admin/appointments-page";
+import { CommentsPage } from "@/components/admin/comments-page";
 import { LandingPagesPage, LandingEditor } from "@/components/admin/landing-pages";
 import { MediaPage } from "@/components/admin/media-page";
 import {
@@ -44,6 +46,8 @@ import {
   TrendingUp,
   Users,
   X,
+  CalendarClock,
+  MessagesSquare,
 } from "lucide-react";
 
 const ICONS: Record<string, React.ComponentType<{ size?: number }>> = {
@@ -66,6 +70,8 @@ const ICONS: Record<string, React.ComponentType<{ size?: number }>> = {
   Settings,
   Globe,
   ImagePlus,
+  CalendarClock,
+  MessagesSquare,
 };
 
 const PAGE_TITLES: Record<string, string> = {
@@ -289,6 +295,10 @@ export function AdminRoot() {
     content = <SettingsPage />;
   } else if (sub === "messages") {
     content = <MessagesPage />;
+  } else if (sub === "appointments") {
+    content = <AppointmentsPage />;
+  } else if (sub === "comments") {
+    content = <CommentsPage />;
   } else if (sub === "media") {
     content = <MediaPage />;
   } else if (sub === "landing") {

@@ -1854,3 +1854,29 @@ CREATE UNIQUE INDEX "BeforeAfterPair_key_key" ON "BeforeAfterPair"("key");
 CREATE UNIQUE INDEX "LandingPage_slug_key" ON "LandingPage"("slug");
 COMMIT;
 COMMIT;
+
+/* ---------- نوبت‌دهی آنلاین و نظرات مقاله‌ها (idempotent) ---------- */
+CREATE TABLE IF NOT EXISTS "Appointment" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "doctor" TEXT NOT NULL,
+    "dayIso" TEXT NOT NULL,
+    "dayJalali" TEXT NOT NULL,
+    "slot" TEXT NOT NULL DEFAULT '',
+    "note" TEXT NOT NULL DEFAULT '',
+    "status" TEXT NOT NULL DEFAULT 'pending',
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS "ArticleComment" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "slug" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "body" TEXT NOT NULL,
+    "approved" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS "Appointment_dayIso_idx" ON "Appointment"("dayIso");
+CREATE INDEX IF NOT EXISTS "Appointment_status_idx" ON "Appointment"("status");
+CREATE INDEX IF NOT EXISTS "ArticleComment_slug_idx" ON "ArticleComment"("slug");
+CREATE INDEX IF NOT EXISTS "ArticleComment_approved_idx" ON "ArticleComment"("approved");

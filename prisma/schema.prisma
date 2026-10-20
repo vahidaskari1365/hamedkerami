@@ -21,6 +21,37 @@ model ContactMessage {
   createdAt DateTime @default(now())
 }
 
+/* ---------- نوبت‌دهی آنلاین ---------- */
+model Appointment {
+  id        String   @id @default(cuid())
+  name      String // نام بیمار
+  phone     String
+  doctor    String // دکتر انتخابی
+  dayIso    String // روز انتخابی — ISO میلادی «2026-11-08» برای مرتب‌سازی
+  dayJalali String // همان روز به شمسی «یکشنبه ۱۷ آبان ۱۴۰۵» — نمایش در پنل
+  slot      String   @default("") // بازه ساعت دلخواه
+  note      String   @default("")
+  status    String   @default("pending") // pending | confirmed | done | canceled
+  createdAt DateTime @default(now())
+
+  @@index([dayIso])
+  @@index([status])
+  @@index([createdAt])
+}
+
+/* ---------- نظرات مقاله‌ها (مدیریت‌شده) ---------- */
+model ArticleComment {
+  id        String   @id @default(cuid())
+  slug      String // اسلاگ مقاله
+  name      String
+  body      String
+  approved  Boolean  @default(false) // فقط تأییدشده‌ها در سایت نمایش داده می‌شوند
+  createdAt DateTime @default(now())
+
+  @@index([slug])
+  @@index([approved])
+}
+
 /* ---------- ادمین ---------- */
 model AdminUser {
   id           String   @id @default(cuid())

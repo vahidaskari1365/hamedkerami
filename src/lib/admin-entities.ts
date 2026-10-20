@@ -122,6 +122,21 @@ export const ADMIN_ENTITIES: Record<string, EntityDef> = {
     orderBy: { createdAt: "desc" },
     required: [],
   },
+  /* نوبت‌ها و نظرات فقط از صفحه‌های اختصاصی خودشان مدیریت می‌شوند؛
+     این تعریف فقط PUT (تغییر وضعیت/تأیید) و DELETE و GET را از
+     API عمومی ادمین فعال می‌کند */
+  appointments: {
+    model: "appointment",
+    fields: { status: "string" },
+    orderBy: { createdAt: "desc" },
+    required: [],
+  },
+  comments: {
+    model: "articleComment",
+    fields: { approved: "bool" },
+    orderBy: { createdAt: "desc" },
+    required: [],
+  },
 };
 
 /** تبدیل و پالایش بدنه درخواست به داده‌ی معتبر برای Prisma */

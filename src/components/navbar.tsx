@@ -6,7 +6,6 @@ import { useContent } from "@/lib/content-context";
 import { NAV } from "@/lib/data";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-// Link comes from hash-router (preview-safe client routing)
 
 /* ============================================================
    Navbar — پیل شیشه‌ای شناور بالای صفحه (سبک سایت‌های مدرن)
@@ -17,7 +16,7 @@ import { AnimatePresence, motion } from "framer-motion";
    ============================================================ */
 
 export function Navbar() {
-  const { site: SITE, brand } = useContent();
+  const { brand } = useContent();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -124,18 +123,18 @@ export function Navbar() {
             })}
           </ul>
 
-          {/* CTA تماس + برگر موبایل */}
+          {/* CTA نوبت‌دهی + برگر موبایل */}
           <div className="mr-auto flex items-center gap-2 lg:mr-2">
-            <a
-              href={`tel:${SITE.phone}`}
+            <Link
+              href="/appointment"
               className="hidden items-center gap-1.5 rounded-full bg-teal px-4 py-2 text-[13px] font-black text-ink shadow-lg shadow-teal/25 transition-all duration-300 hover:scale-[1.04] hover:bg-gold-soft active:scale-95 sm:flex"
-              aria-label={`تماس با مطب — ${SITE.phoneDisplay}`}
+              aria-label="رزرو نوبت آنلاین"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
+                <path d="M8 2v4M16 2v4" /><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M3 10h18" /><path d="M9 16l2 2 4-4" />
               </svg>
               رزرو نوبت
-            </a>
+            </Link>
             <button
               type="button"
               onClick={() => setOpen((o) => !o)}
@@ -176,15 +175,15 @@ export function Navbar() {
                   </Link>
                 );
               })}
-              <a
-                href={`tel:${SITE.phone}`}
+              <Link
+                href="/appointment"
                 className="mt-1 flex items-center justify-center gap-2 rounded-2xl bg-teal px-4 py-3.5 text-sm font-black text-ink"
               >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
+                  <path d="M8 2v4M16 2v4" /><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M3 10h18" /><path d="M9 16l2 2 4-4" />
                 </svg>
-                رزرو نوبت — <span dir="ltr">{SITE.phoneDisplay}</span>
-              </a>
+                رزرو نوبت آنلاین
+              </Link>
             </motion.nav>
           )}
         </AnimatePresence>

@@ -312,6 +312,13 @@ export const ADMIN_NAV: {
     ],
   },
   {
+    group: "بیماران و تعامل",
+    items: [
+      { path: "/admin/appointments", label: "نوبت‌های آنلاین", icon: "CalendarClock" },
+      { path: "/admin/comments", label: "نظرات مقاله‌ها", icon: "MessagesSquare" },
+    ],
+  },
+  {
     group: "سیستم",
     items: [
       { path: "/admin/media", label: "کتابخانه رسانه", icon: "ImagePlus" },
