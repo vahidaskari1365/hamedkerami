@@ -13,6 +13,40 @@ export async function register(): Promise<void> {
     const { db } = await import("@/lib/db");
     const { BLOG_ARTICLES } = await import("@/lib/blog-articles");
 
+    /* خودترمیمی جدول BlogPost — دیتابیس سرور از دیپلوی‌های اول مانده و
+       ممکن است جدول BlogPost نداشته باشد یا ستون‌هایش با مدل فعلی نخواند؛
+       در آن صورت هر کوئری Prisma خطا می‌دهد و سایت برای همیشه روی
+       fallback ثابت می‌ماند (datePublished/sitemap بدون تاریخ واقعی).
+       چون منبع حقیقت مقالات = کد، بازسازی جدول بی‌خطر است. */
+    try {
+      const EXPECTED =
+        "body,cover,createdAt,date,excerpt,id,published,slug,title,updatedAt";
+      const info = (await db.$queryRawUnsafe(
+        "PRAGMA table_info(BlogPost)",
+      )) as Array<{ name: string }>;
+      const names = Array.isArray(info)
+        ? info.map((c) => c.name).sort().join(",")
+        : "";
+      if (names !== EXPECTED) {
+        await db.$executeRawUnsafe(`DROP TABLE IF EXISTS "BlogPost"`);
+        await db.$executeRawUnsafe(`CREATE TABLE "BlogPost" (
+            "id" TEXT NOT NULL PRIMARY KEY,
+            "slug" TEXT NOT NULL UNIQUE,
+            "title" TEXT NOT NULL,
+            "excerpt" TEXT NOT NULL DEFAULT '',
+            "body" TEXT NOT NULL DEFAULT '',
+            "cover" TEXT NOT NULL DEFAULT '',
+            "date" TEXT NOT NULL DEFAULT '',
+            "published" BOOLEAN NOT NULL DEFAULT true,
+            "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            "updatedAt" DATETIME NOT NULL
+        )`);
+        console.log("[seed] جدول BlogPost بازسازی شد (ناسازگاری اسکیما)");
+      }
+    } catch (e) {
+      console.error("[seed] self-heal BlogPost:", (e as Error).message);
+    }
+
     /* seed/upsert مقالات شاخه ثابت — فقط اگر محتوایشان عوض شده باشد */
     let seeded = 0;
     for (const a of BLOG_ARTICLES) {
