@@ -1,0 +1,462 @@
+{
+  "meta": {
+    "site": "dr-kermani.com",
+    "doctor": "دکتر حامد کرمانی — متخصص جراحی فک و صورت",
+    "round": "دور دوم محتوا (پس از انتشار ۱۸ مقاله دور اول)",
+    "created": "2026-10-21",
+    "total": 50,
+    "note": "منبع واحد: اکسل تقویم محتوایی + src/lib/agents/topics.ts + docs/seo/keyword-plan.md همگی از این فایل ساخته می‌شوند. اولویت دور دوم: ایمپلنت و بازسازی (سرویس پرسود با کمترین مقاله)، هزینه و بیمه (BOFU)، چرخه کامل بعد از عمل."
+  },
+  "articles": [
+    {
+      "n": 1, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "هزینه ایمپلنت دندان ۱۴۰۵؛ جدول قیمت برندها و عوامل موثر",
+      "keyword": "هزینه ایمپلنت دندان",
+      "related": ["هزینه ایمپلنت ۱۴۰۵", "قیمت کاشت دندان", "هزینه ایمپلنت در تهران", "برندهای ایمپلنت کره", "ایمپلنت سوئیسی"],
+      "intent": "تراکنشی", "funnel": "BOFU", "volume": "بالا", "competition": "زیاد", "landing": "/costs",
+      "brief": "مقاله BOFU اصلی ایمپلنت: جدول بازه قیمت به تفکیک برند (کره، سوئیس، ایران)، عوامل موثر (استخوان، بریج، کراون)، هزینه‌های جانبی، مقایسه با هزینه تجمعی بریج. CTA رزرو مشاوره + اتصال به صفحه /costs.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 2, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "ایمپلنت فوری چیست؟ کاشت دندان در همان روز کشیدن",
+      "keyword": "ایمپلنت فوری",
+      "related": ["ایمپلنت یک روزه", "کاشت دندان فوری", "ایمپلنت بلافاصله بعد کشیدن دندان", "immediate implant"],
+      "intent": "تجاری", "funnel": "MOFU", "volume": "متوسط", "competition": "متوسط", "landing": "/dental-implant",
+      "brief": "شرایط ایمپلنت فوری (استخوان سالم، عدم عفونت فعال، سیگار)، تفاوت با ایمپلنت تاخیری، مراحل عمل یک‌روزه، درصد موفقیت و ایندیکاسیون. جدول مقایسه فوری/تاخیری.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 3, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "ایمپلنت زایگوماتیک یا پیوند استخوان؟ مقایسه برای فک بالا تحلیل‌رفته",
+      "keyword": "ایمپلنت زایگوماتیک",
+      "related": ["ایمپلنت گونه‌ای", "پیوند استخوان فک بالا", "تحلیل استخوان فک", "زایگوماتیک چیست"],
+      "intent": "تجاری", "funnel": "MOFU", "volume": "کم", "competition": "کم", "landing": "/dental-implant",
+      "brief": "پیلار پشتیبان صفحه زایگوماتیک: آناتومی استخوان گونه، چه کسی کاندید زایگوماتیک است، مقایسه زمان درمان (زایگوماتیک ۱ روز vs پیوند ۶-۹ ماه)، هزینه کل مسیر، تجربه دکتر کرمانی در بازسازی فک بالا.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 4, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "آل-آن-فور (All-on-4) چیست؟ دندان ثابت با فقط ۴ ایمپلنت",
+      "keyword": "ایمپلنت آل آن فور",
+      "related": ["All-on-4", "دندان مصنوعی ثابت", "ایمپلنت تمام فک", "پروتز فیکس"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "متوسط", "competition": "کم", "landing": "/dental-implant",
+      "brief": "مفهوم آل-آن-فور و تیلت زاویه‌دار ایمپلنت‌های خلفی، تفاوت با آل-آن-۶ و فول ماوث، روند یک‌روزه (کشیدن + ایمپلنت + دندان موقت)، نگهداری، هزینه تقریبی کل فک.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 5, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "ایمپلنت کامل فک؛ راهنمای بازسازی تمام دهان (فول ماوث)",
+      "keyword": "ایمپلنت کامل فک",
+      "related": ["فول ماوث", "بازسازی کامل دهان", "ایمپلنت تمام دندان‌ها", "دندان ثابت تمام فک"],
+      "intent": "تجاری", "funnel": "MOFU", "volume": "کم", "competition": "متوسط", "landing": "/dental-implant",
+      "brief": "چه کسی به بازسازی کامل نیاز دارد (تریبولوشن، پوسیدگی چندگانه، پروتز متحرک ناراضی)، مسیر درمان مرحله به مرحله، نقش CBCT و شبیه‌سازی دیجیتال، گزینه‌های پروتز نهایی، مدت زمان کل.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 6, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "پیوند استخوان فک قبل از ایمپلنت؛ چه زمانی لازم می‌شود؟",
+      "keyword": "پیوند استخوان فک",
+      "related": ["گرافت استخوان", "تحلیل استخوان بعد کشیدن دندان", "پیوند اتوگرافت", "GBR"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/dental-implant",
+      "brief": "چرا استخوان بعد از کشیدن تحلیل می‌رود (۳۰-۵۰٪ در سال اول)، انواع گرافت (اتوگرافت، آلوگرافت، سنتتیک، GBR)، مدت جوش خوردن ۴-۶ ماه، تکنیکsocket shield و حفظ استخوان. نیت پیشگیرانه برای جوانان.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 7, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "سینوس لیفت چیست؟ پیش‌نیاز ایمپلنت در فک بالا",
+      "keyword": "سینوس لیفت",
+      "related": ["جابجایی سینوس", "سینوس لیفت جانبی", "ایمپلنت فک بالا", "گرافت سینوس"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/dental-implant",
+      "brief": "آناتومی سینوس ماگزیلاری و افتادگی بعد از دندان کشیده، دو روش جانبی وcrestal (بالون)، میزان افزایش ارتفاع استخوان، عوارض نادر و مراقبت (عطسه، پرواز)، زمان انتظار تا ایمپلنت.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 8, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "مراقبت بعد از ایمپلنت دندان؛ تقویم ریکاوری روزبه‌روز",
+      "keyword": "مراقبت بعد از ایمپلنت",
+      "related": ["بعد از کاشت ایمپلنت", "درد بعد ایمپلنت", "شستشو بعد ایمپلنت", "تورم بعد ایمپلنت"],
+      "intent": "اطلاعاتی", "funnel": "MOFU", "volume": "متوسط", "competition": "کم", "landing": "/dental-implant",
+      "brief": "تقویم ۷۲ ساعت اول (یخ، دارو، رژیم)، شستشوی کلرهگزیدین، مسواک ناحیه عمل، علائم هشدار (عفونت، لقی)، زمان جوش خوردن اسیواینتیگروشن ۳-۴ ماه، سیگار ممنوع. فرمت HowTo.",
+      "schema": "Article + HowTo + FAQ"
+    },
+    {
+      "n": 9, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "عمر ایمپلنت دندان چقدر است؟ نگهداری و علل شکست",
+      "keyword": "عمر ایمپلنت دندان",
+      "related": ["دوام ایمپلنت", "شکست ایمپلنت", "پری‌ایمپلنتیت", "ایمپلنت چند سال دوام دارد"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "متوسط", "competition": "کم", "landing": "/dental-implant",
+      "brief": "نرخ موفقیت ۹۵-۹۸٪ در ۱۰ سال، تفاوت دوام فیکسچر با کراون، علت‌های شکست (پری‌ایمپلنتیت، سیگار، دیابت کنترل‌نشده، بروکسیزم)، نقش سرویس سالانه و مسواک برقی. اعداد داخل جمله برای GEO.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 10, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "ایمپلنت دندان برای دیابتی‌ها؛ شرایط لازم و میزان موفقیت",
+      "keyword": "ایمپلنت دندان دیابتی",
+      "related": ["ایمپلنت با قند خون بالا", "HbA1c و ایمپلنت", "ایمپلنت بیماران خاص"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/dental-implant",
+      "brief": "شرط HbA1c زیر ۷-۸٪، تفاوت دیابت کنترل‌شده و کنترل‌نشده در اسیواینتیگروشن، دوران بهبودی طولانی‌تر، هماهنگی با پزشک داخلی، رژیم بعد عمل برای کنترل قند. نیچ کم‌رقابت با نیت اضطرابی.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 11, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "ایمپلنت یا بریج؟ مقایسه قیمت، دوام و سلامت دندان‌های مجاور",
+      "keyword": "ایمپلنت یا بریج",
+      "related": ["بریج دندان", "قیمت بریج", "تراش دندان سالم", "بهترین جایگزین دندان"],
+      "intent": "تجاری", "funnel": "MOFU", "volume": "بالا", "competition": "متوسط", "landing": "/dental-implant",
+      "brief": "مقایسه صادقانه در ۶ محور: تراش دندان‌های سالم (برای بریج)، هزینه تجمعی ۱۰ ساله، دوام (بریج ۱۰-۱۵ سال vs ایمپلنت مادام‌العمر با نگهداری)، تحلیل استخوان، زیبایی لثه، سناریوهایی که بریج منطقی‌تر است. جدول مقایسه.",
+      "schema": "Article + FAQ"
+    },
+    {
+      "n": 12, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "هزینه ایمپلنت زایگوماتیک ۱۴۰۵؛ چرا گران‌تر از ایمپلنت معمولی است؟",
+      "keyword": "هزینه ایمپلنت زایگوماتیک",
+      "related": ["قیمت ایمپلنت گونه‌ای", "ایمپلنت زایگوماتیک تهران", "هزینه بازسازی فک بالا"],
+      "intent": "تراکنشی", "funnel": "BOFU", "volume": "کم", "competition": "کم", "landing": "/costs",
+      "brief": "مقاله BOFU نیچ: قیمت فیکسچر طولانی زایگوماتیک، تخصص‌محوری (چرا جراح فک و صورت)، صرفه‌جویی پنهان (حذف پیوند و ماه‌ها انتظار)، مقایسه هزینه کل مسیر زایگوماتیک با مسیر گرافت+ایمپلنت. اتصال به /costs.",
+      "schema": "Article + FAQ"
+    },
+    {
+      "n": 13, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "ایمپلنت و بازسازی دهان",
+      "title": "کشیدن دندان و ایمپلنت همزمان؛ چه وقت امکان‌پذیر است؟",
+      "keyword": "ایمپلنت همزمان با کشیدن",
+      "related": ["ایمپلنت در روز کشیدن", "socket implant", "کاشت دندان بدون انتظار"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/dental-implant",
+      "brief": "شرایط سوکت سالم (بدون عفونت حاد، دیواره بون intact)، مزیت حفظ استخوان و کانتور لثه، زمان‌بندی سه‌گانه (فوری، زودهنگام ۴-۸ هفته، تاخیری)، در چه مواردی انتظار اجباری است.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 14, "lang": "fa", "phase": "فاز ۵ — ایمپلنت و پول‌ساز (ماه ۱)", "cluster": "پاتولوژی و جراحی داخل دهان",
+      "title": "دندان عقل نهفته؛ چه زمانی باید کشیده شود و چه زمانی نه؟",
+      "keyword": "دندان عقل نهفته",
+      "related": ["کشیدن دندان عقل نهفته", "دندان عقل افقی", "جراحی دندان عقل", "دندان عقل بدون علائم"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "بالا", "competition": "متوسط", "landing": "/services",
+      "brief": "انواع نهفتگی (افقی، مایل، عمقی)، معیارهای تصمیم (فشار روی ریشه دندان مجاور، کیست، عفونت مکرر پری‌کورونار)، جراحی از داخل دهان بدون اسکار بیرونی، نقاهت ۳-۵ روز، اتصال به مقاله نقاهت دندان عقل.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 15, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "بلفاروپلاستی و زیبایی پلک",
+      "title": "بلفاروپلاستی چیست؟ جراحی زیبایی پلک و جوان‌سازی نگاه",
+      "keyword": "بلفاروپلاستی",
+      "related": ["جراحی پلک بالا", "جوان‌سازی اطراف چشم", "پلک افتاده", "جراحی زیبایی پلک"],
+      "intent": "تجاری", "funnel": "TOFU", "volume": "بالا", "competition": "متوسط", "landing": "/services",
+      "brief": "پیلار بلفاروپلاستی (سرویس فعال مطب بدون هیچ مقاله‌ای): تفاوت پلک بالایی و پایینی، کاندید مناسب (پوست اضافه در برابر افتادگی عضله)، برش پشت پلک (ترانسکانجونکتیوال)، ترکیب با بلفاروپلاستی فانکشنال بیمه‌ای.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 16, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "بلفاروپلاستی و زیبایی پلک",
+      "title": "هزینه بلفاروپلاستی ۱۴۰۵؛ بازه قیمت و شرایط بیمه",
+      "keyword": "هزینه بلفاروپلاستی",
+      "related": ["قیمت جراحی پلک", "بلفاروپلاستی بیمه", "هزینه پلک بالا", "جراحی پلک تهران"],
+      "intent": "تراکنشی", "funnel": "BOFU", "volume": "متوسط", "competition": "متوسط", "landing": "/costs",
+      "brief": "بازه قیمت پلک بالا/پایین/چهارپلک، عوامل موثر (مقدار پوست، ترانسکانجونکتیوال)، تفاوت بلفاروپلاستی زیبایی با فانکشنال (پوشش بیمه در اختلال میدان بینایی)، هزینه‌های جانبی. اتصال به /costs.",
+      "schema": "Article + FAQ"
+    },
+    {
+      "n": 17, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "بلفاروپلاستی و زیبایی پلک",
+      "title": "مراقبت بعد از بلفاروپلاستی؛ خواب، تورم و بازگشت به اجتماع",
+      "keyword": "مراقبت بعد از بلفاروپلاستی",
+      "related": ["بعد از جراحی پلک", "تورم بعد بلفاروپلاستی", "چشمک زدن بعد جراحی پلک", "کبودی پلک"],
+      "intent": "اطلاعاتی", "funnel": "MOFU", "volume": "کم", "competition": "کم", "landing": "/services",
+      "brief": "تقویم روزبه‌روز: یخ‌گذاری ۴۸ ساعت، خواب با سر بالا ۳۰ درجه، قطره و پماد، پرهیز از فشار چشم و ورزش تا ۲ هفته، کبودی ۷-۱۰ روز، بازگشت به کار ۵-۷ روز، نتیجه نهایی ۲-۳ ماه. فرمت HowTo.",
+      "schema": "Article + HowTo + FAQ"
+    },
+    {
+      "n": 18, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "بلفاروپلاستی و زیبایی پلک",
+      "title": "بلفاروپلاستی پلک بالا یا پایین؟ تفاوت روش‌ها و نتایج",
+      "keyword": "بلفاروپلاستی پلک پایین",
+      "related": ["جراحی پلک پایین", "کیسه چربی چشم", "پلک بالا افتاده", "چهار پلک"],
+      "intent": "تجاری", "funnel": "MOFU", "volume": "کم", "competition": "کم", "landing": "/services",
+      "brief": "پلک بالا: حذف پوست و نوار عضله، نتیجه باز شدن نگاه؛ پلک پایین: کیسه چربی و شلی، مسیر داخل پلک بدون برش بیرونی، ترکیب دو عمل در یک جلسه، ریسک‌های اختصاصی هر کدام (اکروپیون، خشکی چشم).",
+      "schema": "Article + FAQ"
+    },
+    {
+      "n": 19, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "ریکاوری و مراقبت بعد از عمل",
+      "title": "ورزش بعد از جراحی فک؛ از چه زمانی و چه تمرین‌هایی مجاز است؟",
+      "keyword": "ورزش بعد از جراحی فک",
+      "related": ["بدنسازی بعد جراحی فک", "تمرین فک بعد عمل", "دویدن بعد جراحی فک", "حرکت فک بعد عمل"],
+      "intent": "اطلاعاتی", "funnel": "MOFU", "volume": "کم", "competition": "کم", "landing": "/appointment",
+      "brief": "تایم‌لاین ۴ مرحله‌ای: راه رفتن سبک هفته ۱، هوازی ملایم هفته ۲-۳، ورزش با وزنه از هفته ۴-۶ (فشار خون و تورم)، تمرینات دیسکاپسیو فک. چرا فشار زودهنگام خطر خونریزی دارد. تکمیل مقاله مراقبت دور اول.",
+      "schema": "Article + HowTo + FAQ"
+    },
+    {
+      "n": 20, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "ریکاوری و مراقبت بعد از عمل",
+      "title": "سیگار بعد از جراحی فک؛ چرا حتی یک نخ هم خطرناک است؟",
+      "keyword": "سیگار بعد از جراحی فک",
+      "related": ["نیکوتین و جوش خوردن استخوان", "ترک سیگار قبل جراحی", "قلیان بعد جراحی فک"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/appointment",
+      "brief": "مکانیزم نیکوتین: انقباض عروقی و کاهش اکسیژن رسانی، افزایش ریسک نکروز و عدم جوش خوردن استئوتومی، دستور ۴ هفته قبل و ۸ هفته بعد، شامل قلیان و سیگار الکترونیکی، راهکارهای ترک موقت. لحن اکید ولی همدلانه.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 21, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "ریکاوری و مراقبت بعد از عمل",
+      "title": "تغذیه بعد از جراحی فک؛ برنامه غذایی هفته به هفته از مایع تا جامد",
+      "keyword": "تغذیه بعد از جراحی فک",
+      "related": ["رژیم مایعات جراحی فک", "بلندر بعد جراحی فک", "پروتئین بعد جراحی فک", "غذای بدون جویدن"],
+      "intent": "اطلاعاتی", "funnel": "MOFU", "volume": "متوسط", "competition": "کم", "landing": "/appointment",
+      "brief": "عمق‌بخشی به مقاله مراقبت دور اول: ۴ مرحله غذایی (شفاف مایع، کامل مایع، سوفله/پوره، جامد نرم) با جدول پروتئین روزانه (۶۰-۸۰ گرم)، لیست دستور بلندر، مکمل، جبران کاهش وزن ۳-۵ کیلویی طبیعی.",
+      "schema": "Article + HowTo + FAQ"
+    },
+    {
+      "n": 22, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "ریکاوری و مراقبت بعد از عمل",
+      "title": "خواب بعد از جراحی فک؛ وضعیت درست سر و راه‌حل بی‌خوابی",
+      "keyword": "خواب بعد از جراحی فک",
+      "related": ["بالش بعد جراحی فک", "خوابیدن پهلو بعد جراحی فک", "بی‌خوابی بعد عمل فک"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/appointment",
+      "brief": "خواب نیمه‌نشسته ۳۰-۴۵ درجه برای کاهش تورم تا ۲ هفته، پرهیز از خوابیدن روی صورت، مدیریت تنفس دهانی و خشکی حلق، وسایل کمکی، زمان بازگشت به خواب عادی. سوال پرتکرار بیماران قبل عمل.",
+      "schema": "Article + FAQ"
+    },
+    {
+      "n": 23, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "ریکاوری و مراقبت بعد از عمل",
+      "title": "بازگشت به کار و درس بعد از جراحی فک؛ تقویم واقعی",
+      "keyword": "بازگشت به کار بعد از جراحی فک",
+      "related": ["مرخصی جراحی فک", "استودیو آنلاین بعد جراحی فک", "دانشگاه بعد جراحی فک", "جلسه بعد جراحی فک"],
+      "intent": "اطلاعاتی", "funnel": "MOFU", "volume": "کم", "competition": "کم", "landing": "/appointment",
+      "brief": "تقویم واقع‌بینانه: کار اداری/آنلاین ۱۰-۱۴ روز، کار حضوری بدون صحبت زیاد ۲-۳ هفته، تدریس و ارائه ۳-۴ هفته، فاکتورهای تشخیص تورم باقی‌مانده، نکات دوربین جلسه آنلاین در هفته دوم.",
+      "schema": "Article + FAQ"
+    },
+    {
+      "n": 24, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "اقلوژن، اصلاح فک و ریویژن",
+      "title": "عقب‌رفتگی فک پایین؛ علائم، مشکلات تنفسی و جراحی اصلاح",
+      "keyword": "عقب رفتگی فک پایین",
+      "related": ["فک عقب رفته", "ردیوگانشیا", "پروفایل پرنده", "جراحی فک پایین"],
+      "intent": "اطلاعاتی", "funnel": "MOFU", "volume": "متوسط", "competition": "متوسط", "landing": "/jaw-surgery",
+      "brief": "تشخیص در پروفایل (خط E استتیک)، ارتباط با آپنه خواب و تنفس دهانی، تاثیر روی گازگیری و TMJ، جراحی بای‌دیوریشن/اسلایدینگ جنیوپلاستی، شبیه‌سازی دیجیتال نتیجه. اتصال به مقاله آپنه خواب.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 25, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "اقلوژن، اصلاح فک و ریویژن",
+      "title": "جلوآمدگی فک (پروگناتیزم)؛ علت گازگیری معکوس و درمان آن",
+      "keyword": "جلو آمدن فک",
+      "related": ["فک جلو", "پروگناتیزم", "گازگیری معکوس", "کلاس ۳ اسکلتی", "فک پایین بلند"],
+      "intent": "اطلاعاتی", "funnel": "MOFU", "volume": "متوسط", "competition": "متوسط", "landing": "/jaw-surgery",
+      "brief": "شایع‌ترین انگیزه مراجعه ایرانی به جراحی فک: تشخیص اسکلتی کلاس ۳ در سفالوگرام، چرا ارتودنسی به تنهایی جواب نمی‌دهد (ماسک کردن vs اصلاح اسکلتی)، ست فک پایین یا بالا، رشد تا کی ادامه دارد.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 26, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "اقلوژن، اصلاح فک و ریویژن",
+      "title": "بایت باز (Open Bite)؛ چرا لب‌ها بسته نمی‌مانند و درمانش چیست؟",
+      "keyword": "بایت باز",
+      "related": ["باز بودن دندان‌های جلو", "اوپن بایت", "گازگیری باز", "بلع نامناسب"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/jaw-surgery",
+      "brief": "تعریف و علت‌ها (بلع نامناسب، مکش انگشت، رشد عمودی فک بالا)، تفاوت بایت باز دندانی و اسکلتی، محدودیت کامپرومی ارتودنسی در نوع اسکلتی، نقش جراحی فک بالا (ایمپاکشن) در درمان قطعی.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 27, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "اقلوژن، اصلاح فک و ریویژن",
+      "title": "کراس‌بایت و فک باریک؛ اکسپنشن کافی است یا جراحی لازم است؟",
+      "keyword": "کراس بایت",
+      "related": ["فک باریک", "اکسپنشن فک", "گازگیری متقاطع", "MSE"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/jaw-surgery",
+      "brief": "تعریف کراس‌بایت خلفی و شماتیک صورت سه‌گوش، اکسپنشن ارتودنسی در نوجوانی (RPE) در برابر MSE بزرگسالی و ساروژری-فست، تعیین مرز با CBCT، ترکیب اکسپنشن با جراحی ارتوگناتیک.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 28, "lang": "fa", "phase": "فاز ۶ — بلفاروپلاستی، ریکاوری و اقلوژن (ماه ۲)", "cluster": "اقلوژن، اصلاح فک و ریویژن",
+      "title": "گازگیری نامناسب (مال‌اکلوژن)؛ انواع، عوارض و راه‌حل‌ها",
+      "keyword": "گازگیری نامناسب",
+      "related": ["مال اکلوژن", "کلاس ۱ ۲ ۳ گازگیری", "اصلاح گازگیری", "بی‌نظمی دندان اسکلتی"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "بالا", "competition": "متوسط", "landing": "/jaw-surgery",
+      "brief": "پیلار آموزشی: طبقه‌بندی انگل (کلاس ۱، ۲، ۳) با تصویر ذهنی ساده، تفکیک مشکل دندانی از اسکلتی (کلید تصمیم)، عوارض بلندمدت (سایش، TMJ، آپنه)، نقشه درمان از ارتودنسی تا جراحی. لینک به مقاله ارتودنسی+جراحی.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 29, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "TMD و مفصل فک",
+      "title": "پروتز مفصل فک (TMJ)؛ چه کسانی به مفصل مصنوعی نیاز دارند؟",
+      "keyword": "پروتز مفصل فک",
+      "related": ["مفصل مصنوعی فک", "TMJ total joint", "آنکیلوز فک", "آرتروز شدید مفصل فک"],
+      "intent": "تجاری", "funnel": "MOFU", "volume": "کم", "competition": "کم", "landing": "/services",
+      "brief": "عمق‌بخشی به پیلار موجود: ایندیکاسیون‌های قطعی (آنکیلوز، آرتروز پایان‌مرحله، تومور مفصل، شکستگی پیچیده)، مراحل عمل، بازتوانی بازشدن دهان، زندگی با TMJ مصنوعی. تمایزساز E-E-A-T مطب.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 30, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "TMD و مفصل فک",
+      "title": "قفل شدن فک؛ علت‌ها و کاری که همین حالا باید بکنید",
+      "keyword": "قفل شدن فک",
+      "related": ["فک باز نمی‌شود", "قفل شدن فک صبح", "دیسک جابجا فک", "باز شدن محدود فک"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "متوسط", "competition": "کم", "landing": "/contact",
+      "brief": "مقاله نیت اضطرابی: تفاوت قفل بسته و باز، جابجایی دیسک با/بدون ردیوکشن، اقدامات فوری در خانه (گرم، نرم، آرام)، چه زمانی مراجعه فوری لازم است (تراوما، عفونت)، مسیر درمان در مطب.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 31, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "TMD و مفصل فک",
+      "title": "دندان قروچه (براکسیزم)؛ از نایت‌گارد تا بوتاکس",
+      "keyword": "دندان قروچه",
+      "related": ["براکسیزم", "نایت گارد", "سایش دندان", "قروچه شبانه"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "بالا", "competition": "متوسط", "landing": "/services",
+      "brief": "علل (استرس، اکلوژن، داروهای SSRIs)، پیامدها (سایش، ترک، هیپرتروفی ماستر، TMD)، پله‌های درمان: نایت‌گارد → اصلاح اکلوژن → بوتاکس ماستر، اتصال به مقاله بوتاکس فک دور اول.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 32, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "پاتولوژی و جراحی داخل دهان",
+      "title": "کیست فک؛ علائم خطر و جراحی تخلیه و برش",
+      "keyword": "کیست فک",
+      "related": ["کیست دندانی", "دنتیریگراس cyst", "رادیکولار", "کیست فک پایین", "جراحی کیست فک"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "متوسط", "competition": "کم", "landing": "/contact",
+      "brief": "انواع شایع (رادیکولار، دنتیریگراس، کراتوسیست)، کشف اتفاقی در رادیوگرافی، رشد خاموش تا شکستگی پاتولوژیک، دو جراحی اصلی انوکلیشن و مارسیالیزاسیون، پیگیری سالانه. نیچ با رقابت کم.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 33, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "پاتولوژی و جراحی داخل دهان",
+      "title": "تومور فک؛ از آمیلوبلاستوما تا بازسازی بعد از جراحی",
+      "keyword": "تومور فک",
+      "related": ["آمیloblastوما", "تومور خوش‌خیم فک", "رزکسیون فک", "بازسازی فک با فلپ"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/contact",
+      "brief": "مقاله اتوریتی: آمیلوبلاستوما و رفتار محلی تهاجمی، ODONTOMA و ضایعات خوش‌خیم، رزکسیون سگمنتال در برابر حاشیه‌بندی، بازسازی با فلپ و ایمپلنت بعد از رزکسیون، اهمیت بیوپسی قبل تصمیم. E-E-A-T قوی.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 34, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "پاتولوژی و جراحی داخل دهان",
+      "title": "بیوپسی ضایعات دهان و فک؛ روند نمونه‌برداری و تفسیر جواب",
+      "keyword": "بیوپسی فک",
+      "related": ["بیوپسی دهان", "نمونه برداری ضایعه فک", "هیستوپاتولوژی", "ضایعه سفید دهان"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/contact",
+      "brief": "کاهش اضطراب با شفاف‌سازی: تفاوت بیوپسی اینسیزیال و اکسایزیال، بی‌حسی موضعی و روند ۱۵ دقیقه‌ای، زمان جواب ۷-۱۰ روز، تفسیر گزارش پاتولوژی، سوال‌هایی که باید از پاتولوژیست پرسید.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 35, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "اقلوژن، اصلاح فک و ریویژن",
+      "title": "جراحی فک یا ارتودنسی؟ مرز تصمیم کجاست؟",
+      "keyword": "جراحی فک یا ارتودنسی",
+      "related": ["ارتودنسی کافی است", "کامپرومایز ارتودنسی", "درمان اسکلتی", "decortation orthodontic"],
+      "intent": "تجاری", "funnel": "MOFU", "volume": "متوسط", "competition": "متوسط", "landing": "/jaw-surgery",
+      "brief": "قاطع‌ترین سوال بیمار: سه معیار تصمیم (شدت عدم تطابق اسکلتی، انتظار زیبایی پروفایل، پایداری نتیجه)، خطر کامپرومایز در کلاس ۳ شدید، نقش مشاوره مشترک جراح+ارتودنتیست. تکمیل مقاله ارتودنسی دور اول، نه تکرار آن.",
+      "schema": "Article + FAQ"
+    },
+    {
+      "n": 36, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "هزینه و بیمه",
+      "title": "هزینه جراحی دو فک (بایمکس) ۱۴۰۵؛ عوامل موثر و بازه قیمت",
+      "keyword": "هزینه جراحی دو فک",
+      "related": ["قیمت جراحی بایمکس", "هزینه ارتوگناتیک", "هزینه جراحی فک ۱۴۰۵", "قیمت جراحی فک بالا و پایین"],
+      "intent": "تراکنشی", "funnel": "BOFU", "volume": "متوسط", "competition": "متوسط", "landing": "/costs",
+      "brief": "BOFU دومین کلمه هزینه: تفاوت قیمت یک فک با دو فک (بیهوشی و زمان عمل)، عوامل (جراح، بیمارستان، ایمپلنت‌های فیکساسیون)، جدول بازه، تقویم پرداخت، اتصال به مقاله بایمکس و صفحه /costs.",
+      "schema": "Article + FAQ"
+    },
+    {
+      "n": 37, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "هزینه و بیمه",
+      "title": "بیمه و جراحی فک؛ کدام بخش از هزینه تحت پوشش است؟",
+      "keyword": "بیمه جراحی فک",
+      "related": ["پوشش بیمه ارتوگناتیک", "بیمه تکمیلی جراحی فک", "هزینه بستری بیمه", "بیمه درمانی جراحی زیبایی"],
+      "intent": "تراکنشی", "funnel": "BOFU", "volume": "متوسط", "competition": "کم", "landing": "/costs",
+      "brief": "شفاف‌سازی پرتقاضا: تفکیک بخش درمانی (بستری، بیهوشی، فیکساسیون) از زیبایی، نامه پزشک برای تایید ایندیکاسیون درمانی، تفاوت بیمه‌های پایه و تکمیلی، سوال‌هایی که قبل عمل از بیمه بپرسید. بدون وعده قطعی.",
+      "schema": "Article + FAQ"
+    },
+    {
+      "n": 38, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "سوالات متداول (AEO)",
+      "title": "عمل جراحی فک چقدر طول می‌کشد؟ زمان عمل، بستری و کل درمان",
+      "keyword": "مدت جراحی فک",
+      "related": ["ساعت عمل جراحی فک", "بستری بعد جراحی فک", "مدت درمان ارتوگناتیک", "چند روز بیمارستان جراحی فک"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "متوسط", "competition": "کم", "landing": "/appointment",
+      "brief": "پاسخ AEO سه‌لایه با اعداد داخل جمله: عمل یک فک ۲-۳ ساعت و دو فک ۳-۴.۵ ساعت، بستری ۱-۲ شب، کل درمان با ارتودنسی ۱۸-۳۰ ماه. ساختار پاسخ مستقیم ۴۰ کلمه‌ای در ابتدا برای اسنیپت و AI.",
+      "schema": "Article + FAQ"
+    },
+    {
+      "n": 39, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "سوالات متداول (AEO)",
+      "title": "درد بعد از جراحی فک؛ میزان واقعی درد و مدیریت آن",
+      "keyword": "درد بعد از جراحی فک",
+      "related": ["جراحی فک درد دارد", "ضد درد بعد جراحی فک", "درد شدید بعد ارتوگناتیک"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "متوسط", "competition": "کم", "landing": "/appointment",
+      "brief": "رسم‌الکلمات صادقانه: اوج درد ۴۸-۷۲ ساعت اول و کنترل با دارو، تورم دردناک‌تر از درد است، سنجش NRS بیماران، برنامه دارویی نمونه، چه زمانی درد غیرعادی است (عفونت/تراوما عصب). کاهش ترس قبل عمل.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 40, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "سوالات متداول (AEO)",
+      "title": "بی‌حسی بعد از جراحی فک؛ چند ماه طول می‌کشد و کی برمی‌گردد؟",
+      "keyword": "بی حسی بعد از جراحی فک",
+      "related": ["گوشه لب بی حس", "کم‌حسی چانه", "ترمیم عصب آلوئولار", "بی‌حسی دائمی جراحی فک"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "متوسط", "competition": "کم", "landing": "/appointment",
+      "brief": "شفاف‌ترین پاسخ: چرا عصب آلوئولار پایین در معرض است، طبیعی بودن بی‌حسی هفته‌های اول، تایم‌لاین بازیابی (۶ هفته تا ۶ ماه در اکثر بیماران)، درصد نادر دائمی، تکنیک‌های کاهش ریسک. تکمیل مقاله عوارض دور اول.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 41, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "سوالات متداول (AEO)",
+      "title": "اسکار جراحی فک؛ آیا جای برش بیرون صورت می‌ماند؟",
+      "keyword": "اسکار جراحی فک",
+      "related": ["برش جراحی فک داخل دهان", "جای عمل فک", "اسکار ساب منتال", "زخم جراحی فک"],
+      "intent": "اطلاعاتی", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/appointment",
+      "brief": "پاسخ آرام‌بخش مبتنی بر تکنیک: برش استاندارد داخل دهان بدون اسکار بیرونی، تنها استثناها (ساب منتال در برخی ریویژن‌ها، بلفاروپلاستی جدا)، مراقبت برش داخل دهان، سوال دائمی دختران و پسران جوان.",
+      "schema": "Article + FAQ"
+    },
+    {
+      "n": 42, "lang": "fa", "phase": "فاز ۷ — مفصل فک، پاتولوژی، هزینه و AEO (ماه ۳)", "cluster": "اقلوژن، اصلاح فک و ریویژن",
+      "title": "جراحی مجدد فک (ریویژن)؛ اصلاح نتیجه عمل قبلی",
+      "keyword": "جراحی مجدد فک",
+      "related": ["ریویژن ارتوگناتیک", "اصلاح جراحی فک قبلی", "نارضایتی از جراحی فک", "عمل دوم فک"],
+      "intent": "تجاری", "funnel": "MOFU", "volume": "کم", "competition": "کم", "landing": "/jaw-surgery",
+      "brief": "گفتگوی صادقانه: علل نارضایتی (جابجایی ناقص، رفلپس، انتظار غیرواقعی)، زمان مناسب ریویژن (۶-۱۲ ماه بعد)، چالش‌های بافت اسکار و فیکساسیون قبلی، نقش رادیوگرافی و شبیه‌سازی مجدد. اعتمادسازی با شفافیت.",
+      "schema": "MedicalWebPage + FAQ"
+    },
+    {
+      "n": 43, "lang": "en", "phase": "فاز ۸ — EN توریسم پزشکی (ماه ۳-۴)", "cluster": "توریسم پزشکی (EN)",
+      "title": "Jaw Surgery Cost in Iran 2026; Complete Price Guide for International Patients",
+      "keyword": "jaw surgery cost in Iran",
+      "related": ["orthognathic surgery price Iran", "double jaw surgery cost Tehran", "jaw surgery price vs Turkey"],
+      "intent": "Transactional", "funnel": "BOFU", "volume": "متوسط", "competition": "کم", "landing": "/en/jaw-surgery-in-iran",
+      "brief": "Anchor BOFU article for medical tourism: full cost breakdown (surgery, hospital, orthodontics, stay), price comparison with Turkey/UAE/Korea (Iran 50-70% lower), payment logistics for foreign patients. Links to /en/jaw-surgery-in-iran.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 44, "lang": "en", "phase": "فاز ۸ — EN توریسم پزشکی (ماه ۳-۴)", "cluster": "توریسم پزشکی (EN)",
+      "title": "How to Choose a Jaw Surgeon in Tehran; 9 Criteria for International Patients",
+      "keyword": "jaw surgeon in Tehran",
+      "related": ["best maxillofacial surgeon Iran", "board certified OMFS Iran", "orthognathic specialist Tehran"],
+      "intent": "Transactional", "funnel": "BOFU", "volume": "کم", "competition": "کم", "landing": "/en/about",
+      "brief": "Trust-building BOFU: board certification (OMFS + craniofacial fellowship), digital planning workflow, before/after gallery, WhatsApp pre-consultation with X-rays. Positions Dr. Kermani's credentials. Links to /en/about.",
+      "schema": "Article + Person + FAQ"
+    },
+    {
+      "n": 45, "lang": "en", "phase": "فاز ۸ — EN توریسم پزشکی (ماه ۳-۴)", "cluster": "توریسم پزشکی (EN)",
+      "title": "Orthognathic Surgery in Iran; The Complete Patient Journey Step by Step",
+      "keyword": "orthognathic surgery in Iran",
+      "related": ["jaw surgery Iran process", "orthognathic surgery abroad", "surgery first Iran"],
+      "intent": "Informational", "funnel": "MOFU", "volume": "کم", "competition": "کم", "landing": "/en/jaw-surgery-in-iran",
+      "brief": "End-to-end journey: online pre-assessment, arrival timeline, orthodontic options (surgery-first for short stays), 1-2 night hospital stay, follow-up before departure, remote follow-up after returning home. Extends the 6-step landing flow.",
+      "schema": "Article + HowTo + FAQ"
+    },
+    {
+      "n": 46, "lang": "en", "phase": "فاز ۸ — EN توریسم پزشکی (ماه ۳-۴)", "cluster": "توریسم پزشکی (EN)",
+      "title": "Dental Implants in Iran; Brands, Quality and Price Comparison",
+      "keyword": "dental implants in Iran",
+      "related": ["implant cost Tehran", "all-on-4 Iran", "full mouth reconstruction Iran"],
+      "intent": "Transactional", "funnel": "BOFU", "volume": "متوسط", "competition": "متوسط", "landing": "/en/services",
+      "brief": "Implant tourism BOFU: international brand options available in Tehran, price per fixture + crown vs European/US clinics, full-arch and All-on-4 packages, timeline for two-visit treatment. Links to /en/services.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 47, "lang": "en", "phase": "فاز ۸ — EN توریسم پزشکی (ماه ۳-۴)", "cluster": "توریسم پزشکی (EN)",
+      "title": "Zygomatic Implants in Iran; Advanced Solution for Severe Bone Loss",
+      "keyword": "zygomatic implants in Iran",
+      "related": ["cheekbone implant Tehran", "graftless implant solution", "zygoma implant cost Iran"],
+      "intent": "Informational", "funnel": "MOFU", "volume": "کم", "competition": "کم", "landing": "/en/services",
+      "brief": "Niche low-competition: who needs zygomatic fixtures, graftless one-day protocol, why maxillofacial surgeons perform them, cost advantage of Tehran, candidacy check via CBCT upload. Deepens /en/services implant section.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 48, "lang": "en", "phase": "فاز ۸ — EN توریسم پزشکی (ماه ۳-۴)", "cluster": "توریسم پزشکی (EN)",
+      "title": "TMJ Treatment in Iran; From Splints to Total Joint Replacement",
+      "keyword": "TMJ treatment in Iran",
+      "related": ["TMJ surgery Tehran", "jaw joint replacement cost", "TMD treatment Iran"],
+      "intent": "Informational", "funnel": "MOFU", "volume": "کم", "competition": "کم", "landing": "/en/services",
+      "brief": "Full spectrum for chronic TMD patients abroad: conservative first (splint, physio), arthrocentesis, then total joint prosthesis availability in Iran; remote evaluation of scans. Authority signal for complex care.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    },
+    {
+      "n": 49, "lang": "en", "phase": "فاز ۸ — EN توریسم پزشکی (ماه ۳-۴)", "cluster": "توریسم پزشکی (EN)",
+      "title": "Traveling to Iran for Jaw Surgery; Visa, Stay and Recovery Timeline",
+      "keyword": "jaw surgery Iran medical tourism",
+      "related": ["Iran medical visa", "Tehran medical travel", "surgery trip Iran logistics"],
+      "intent": "Informational", "funnel": "TOFU", "volume": "کم", "competition": "کم", "landing": "/en/jaw-surgery-in-iran",
+      "brief": "Logistics pillar: visa on arrival / e-visa for medical travel, recommended stay 14-21 days, accommodation near clinic, soft-food plan while traveling, when it is safe to fly, WhatsApp follow-up after departure. TOFU entry for tourists.",
+      "schema": "Article + HowTo + FAQ"
+    },
+    {
+      "n": 50, "lang": "en", "phase": "فاز ۸ — EN توریسم پزشکی (ماه ۳-۴)", "cluster": "توریسم پزشکی (EN)",
+      "title": "Blepharoplasty in Iran; Cost, Quality and Recovery Guide",
+      "keyword": "blepharoplasty in Iran",
+      "related": ["eyelid surgery Tehran cost", "eye bag removal Iran", "blepharoplasty medical tourism"],
+      "intent": "Transactional", "funnel": "BOFU", "volume": "متوسط", "competition": "متوسط", "landing": "/en/services",
+      "brief": "Second aesthetic service for the EN audience: upper/lower/laser options, Tehran price advantage vs Istanbul/Dubai, combining blepharoplasty with other procedures in one trip, 7-10 day recovery schedule for travelers.",
+      "schema": "Article + MedicalWebPage + FAQ"
+    }
+  ]
+}
