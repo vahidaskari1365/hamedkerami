@@ -236,6 +236,25 @@ async function editorAgent(draft: Draft, cover: string): Promise<PublishResult> 
 const LOG_PREFIX = "[agents/daily]";
 
 export async function runDailyBlog(force = false): Promise<PublishResult | { skipped: string }> {
+  /* هر خطای توقف‌دهنده در دیتابیس ثبت می‌شود تا از طریق
+     GET /api/agents/daily قابل مشاهده باشد — وگرنه خطا فقط در
+     stderr.log سرور گم می‌شود و آخرین اجرا همیشه null می‌ماند */
+  try {
+    return await runDailyBlogInner(force);
+  } catch (e) {
+    const msg = ((e as Error).message || String(e)).slice(0, 500);
+    try {
+      await db.setting.upsert({
+        where: { key: "agents_last_error" },
+        create: { key: "agents_last_error", value: JSON.stringify({ at: new Date().toISOString(), error: msg }) },
+        update: { value: JSON.stringify({ at: new Date().toISOString(), error: msg }) },
+      });
+    } catch { /* دیتابیس هم در دسترس نیست — چیزی برای ثبت نداریم */ }
+    throw e;
+  }
+}
+
+async function runDailyBlogInner(force = false): Promise<PublishResult | { skipped: string }> {
   /* قفل روزانه — مگر force (اجرای دستی) */
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tehran" }).format(new Date());
   if (!force) {

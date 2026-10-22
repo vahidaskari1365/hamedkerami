@@ -21,9 +21,10 @@ async function isAdmin(): Promise<boolean> {
 
 export async function GET() {
   try {
-    const [lastRun, lastResult, count] = await Promise.all([
+    const [lastRun, lastResult, lastError, count] = await Promise.all([
       db.setting.findUnique({ where: { key: "agents_last_run_date" } }),
       db.setting.findUnique({ where: { key: "agents_last_result" } }),
+      db.setting.findUnique({ where: { key: "agents_last_error" } }),
       db.blogPost.count(),
     ]);
     let result: unknown = null;
@@ -32,11 +33,18 @@ export async function GET() {
     } catch {
       result = lastResult?.value ?? null;
     }
+    let error: unknown = null;
+    try {
+      error = lastError ? JSON.parse(lastError.value) : null;
+    } catch {
+      error = lastError?.value ?? null;
+    }
     return NextResponse.json({
       enabled: true,
       schedule: "هر روز ۰۷:۰۰ تهران",
       lastRunDate: lastRun?.value ?? null,
       lastResult: result,
+      lastError: error,
       totalPosts: count,
     });
   } catch (e) {
