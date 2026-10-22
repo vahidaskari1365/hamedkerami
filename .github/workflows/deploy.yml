@@ -118,10 +118,19 @@ jobs:
             -F "overwrite=1" \
             -F "content=</tmp/zai-config" \
             "$API/save_file_content")
-          echo "install → HTTP $code"
+          echo "install APP_DIR → HTTP $code"
           [ "$code" = "200" ] || { cat /tmp/zai-resp.json | head -c 300; echo; exit 1; }
+          # هوم‌دایرکتوری هم پوشش داده می‌شود — یکی از مسیرهای جستجوی SDK
+          code=$(curl -s -o /tmp/zai-resp2.json -w "%{http_code}" --retry 3 --retry-delay 5 --max-time 120 \
+            -H "$AUTH" \
+            -F "dir=/home/${{ secrets.CPANEL_USER }}" \
+            -F "file=.z-ai-config" \
+            -F "overwrite=1" \
+            -F "content=</tmp/zai-config" \
+            "$API/save_file_content")
+          echo "install homedir → HTTP $code"
           rm -f /tmp/zai-config
-          echo "ZAI config نصب شد — ایجنت‌های بلاگ می‌توانند اجرا شوند"
+          echo "ZAI config نصب شد (APP_DIR + homedir) — ایجنت‌های بلاگ می‌توانند اجرا شوند"
 
       - name: Trigger restart (deploy-hook → پروسه قدیمی خاموش، Passenger تازه می‌سازد)
         if: env.DEPLOY_READY == 'true'

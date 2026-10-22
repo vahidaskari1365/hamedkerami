@@ -106,6 +106,21 @@ function extractPendingPackage() {
       console.error("[bootstrap] server.js copy (non-fatal):", e.message);
     }
 
+    /* ۶) کانفیگ SDK هوش مصنوعی (ایجنت‌های بلاگ) — Next standalone بعد از
+       استارت process.chdir به .next/standalone می‌زند، پس SDK فایل را در
+       cwd نمی‌بیند؛ کپی آن داخل .next/standalone کشف cwd-محور را تضمین می‌کند
+       (هوم‌دایرکتوری هم در workflow دیپلوی پوشش داده می‌شود) */
+    try {
+      const cfg = path.join(ROOT, ".z-ai-config");
+      const dstDir = path.join(ROOT, ".next", "standalone");
+      if (fs.existsSync(cfg) && fs.existsSync(dstDir)) {
+        fs.copyFileSync(cfg, path.join(dstDir, ".z-ai-config"));
+        console.log("[bootstrap] .z-ai-config → .next/standalone کپی شد");
+      }
+    } catch (e) {
+      console.error("[bootstrap] zai-config copy (non-fatal):", e.message);
+    }
+
     fs.rmSync(STAGE, { recursive: true, force: true });
     fs.unlinkSync(PKG);
     console.log("[bootstrap] clean-swap deploy DONE — fresh .next is live");
