@@ -9,7 +9,7 @@
    ============================================================ */
 
 import { writeFileSync } from "node:fs";
-import { strategistAgent, writerAgent, seoAgent, imageAgentBase64 } from "../src/lib/agents/creative.ts";
+import { strategistAgent, writerAgent, seoAgent, imageAgentBase64 } from "@/lib/agents/creative";
 import ZAI from "z-ai-web-dev-sdk";
 
 const SITE_URL = process.env.SITE_URL || "https://dr-kermani.com";
