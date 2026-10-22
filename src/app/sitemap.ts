@@ -16,6 +16,10 @@ export const dynamic = "force-dynamic";
       گوگل/بینگ می‌کشد تاریخ و ساعت تازه می‌بیند (نشانه سایت زنده).
    ۳) این route هرگز ۵۰۰ نمی‌دهد: اگر دیتابیس شکست خورد، حداقل
       صفحات اصلی برگردانده می‌شوند.
+   ۴) قالب متنی: مثل سایت مرجع — هر <url> فقط ۴ سطر تمیز
+      (loc/lastmod/changefreq/priority) و بدون xhtml:link و
+      بدون xmlns:xhtml. صفحات EN به‌صورت URL مستقل داخل همین
+      سایت‌مپ می‌آیند تا هم‌چنان قابل کشف باشند.
    ============================================================ */
 
 /** هر ورودی تاریخ را به «YYYY-MM-DD» امن تبدیل می‌کند؛ نامعتبر → null */
@@ -64,84 +68,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   /* ---------- صفحات اصلی فارسی ---------- */
   const main: MetadataRoute.Sitemap = [
-    {
-      url: base,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 1,
-      alternates: { languages: { fa: base, en: `${base}/en`, "x-default": base } },
-    },
+    { url: base, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${base}/jaw-surgery`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${base}/chin-surgery`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${base}/dental-implant`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${base}/implant-pasdaran`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
-    {
-      url: `${base}/about`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-      alternates: { languages: { fa: `${base}/about`, en: `${base}/en/about`, "x-default": `${base}/about` } },
-    },
-    {
-      url: `${base}/services`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.9,
-      alternates: { languages: { fa: `${base}/services`, en: `${base}/en/services`, "x-default": `${base}/services` } },
-    },
+    { url: `${base}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/services`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/costs`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/gallery`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/blog`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
     { url: `${base}/appointment`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
-    {
-      url: `${base}/contact`,
-      lastModified: now,
-      changeFrequency: "yearly",
-      priority: 0.9,
-      alternates: { languages: { fa: `${base}/contact`, en: `${base}/en/contact`, "x-default": `${base}/contact` } },
-    },
+    { url: `${base}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.9 },
   ];
 
-  /* ---------- نسخه انگلیسی (/en) — hreflang در sitemap ----------
+  /* ---------- نسخه انگلیسی (/en) — به‌صورت URL مستقل ----------
      لندینگ jaw-surgery-in-iran معادل فارسی ندارد؛ فقط en.
-     بقیه با alternates بالا دوسویه fa↔en می‌شوند. */
+     قالب متنی مثل بقیه: loc/lastmod/changefreq/priority. */
   const en: MetadataRoute.Sitemap = [
-    {
-      url: `${base}/en`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.9,
-      alternates: { languages: { fa: base, en: `${base}/en`, "x-default": base } },
-    },
-    {
-      url: `${base}/en/about`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-      alternates: { languages: { fa: `${base}/about`, en: `${base}/en/about`, "x-default": `${base}/about` } },
-    },
-    {
-      url: `${base}/en/services`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-      alternates: { languages: { fa: `${base}/services`, en: `${base}/en/services`, "x-default": `${base}/services` } },
-    },
-    {
-      url: `${base}/en/jaw-surgery-in-iran`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.9,
-      alternates: { languages: { en: `${base}/en/jaw-surgery-in-iran` } },
-    },
-    {
-      url: `${base}/en/contact`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-      alternates: { languages: { fa: `${base}/contact`, en: `${base}/en/contact`, "x-default": `${base}/contact` } },
-    },
+    { url: `${base}/en`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/en/about`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/en/services`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/en/jaw-surgery-in-iran`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/en/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
   ];
 
   return [...main, ...en, ...blog];
