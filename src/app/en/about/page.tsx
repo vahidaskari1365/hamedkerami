@@ -16,7 +16,7 @@ export const metadata: Metadata = {
       "About Dr. Hamed Kermani — Craniofacial Fellowship-Trained Jaw Surgeon in Tehran",
   },
   description:
-    "CV of Dr. Hamed Kermani: oral & maxillofacial surgeon (Mashhad University), craniofacial surgery fellowship (Tehran University), former university assistant professor, 1,067+ jaw surgeries, 5,000+ dental implants and 18 scientific publications.",
+    "CV of Dr. Hamed Kermani: oral & maxillofacial surgeon (Mashhad University), craniofacial surgery fellowship (Tehran University), former university assistant professor, 1,200+ jaw surgeries, 20,000+ dental implants and 18 scientific publications.",
   alternates: {
     canonical: "/en/about",
     languages: { fa: "/about", en: "/en/about", "x-default": "/about" },

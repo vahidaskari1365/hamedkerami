@@ -201,7 +201,7 @@ export function EnChrome({ children }: { children: React.ReactNode }) {
             <p className="mt-1 text-xs text-white/55">{EN_BRAND.roleLong}</p>
             <p className="mt-4 max-w-sm text-[13px] leading-6 text-white/65">
               Board-certified oral &amp; maxillofacial surgeon in Tehran — craniofacial
-              fellowship, 1,067+ jaw surgeries and 5,000+ dental implants. International
+              fellowship, 1,200+ jaw surgeries and 20,000+ dental implants. International
               patients are welcome: online consultation before you fly.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">

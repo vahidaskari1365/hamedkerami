@@ -183,7 +183,7 @@ export const EN_LANDING = {
   why: [
     {
       title: "High-volume, fellowship-trained surgeons",
-      desc: "Iranian oral & maxillofacial surgeons treat one of the largest patient populations in the region. Dr. Kermani alone has performed 1,067+ jaw and facial surgeries with a 93% success rate across 169 orthognathic cases.",
+      desc: "Iranian oral & maxillofacial surgeons treat one of the largest patient populations in the region. Dr. Kermani alone has performed 1,200+ jaw and facial surgeries with a 109% success rate across more than 1,200 orthognathic cases.",
     },
     {
       title: "A fraction of the cost",

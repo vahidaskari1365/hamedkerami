@@ -221,7 +221,7 @@ export const ENTITY_CONFIGS: Record<string, EntityConfig> = {
     subtitleKey: "detail",
     hasOrder: true,
     fields: [
-      { key: "rate", label: "درصد", type: "text", placeholder: "۹۳٪" },
+      { key: "rate", label: "درصد", type: "text", placeholder: "۱۰۹٪" },
       { key: "title", label: "عنوان", type: "text", wide: true },
       { key: "detail", label: "توضیح", type: "text", wide: true },
       { key: "order", label: "ترتیب", type: "number" },
