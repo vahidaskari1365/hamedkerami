@@ -1,0 +1,289 @@
+"""Audit Brand & Entity — brand identity signals for AI perception.
+
+Extracted from audit.py — separation of concerns.
+Works only on already-fetched data, zero HTTP requests.
+"""
+
+from __future__ import annotations
+
+from collections import Counter
+from typing import TYPE_CHECKING
+
+from geo_optimizer.models.config import (
+    ABOUT_LINK_PATTERNS,
+    BRAND_LEGAL_SUFFIXES,
+    KG_PILLAR_DOMAINS,
+    ORGANIZATION_TYPES,
+)
+from geo_optimizer.models.results import BrandEntityResult, ContentResult, MetaResult, SchemaResult
+from geo_optimizer.utils.jsonld import schema_types as jsonld_types
+
+if TYPE_CHECKING:
+    from bs4 import BeautifulSoup
+
+
+def _flatten_graph(raw_schema: dict) -> list[dict]:
+    """Extract schemas from @graph if present, otherwise return as single-item list (#412).
+
+    Only dict nodes are returned: a ``@graph`` that is null, a scalar or a list
+    with non-object members made the callers' ``.get()`` calls raise.
+    """
+    if "@graph" in raw_schema:
+        graph = raw_schema["@graph"]
+        nodes = graph if isinstance(graph, list) else [graph]
+    else:
+        nodes = [raw_schema]
+    return [node for node in nodes if isinstance(node, dict)]
+
+
+# Title separators, e.g. "Brand — Tagline" / "Brand – Tagline" / "Brand | Blog".
+# Includes both the em dash (U+2014) and en dash (U+2013): the en dash is a
+# common separator in German/French/other European titles and was missing
+# entirely before this fix (#550), so titles built with it were never cut and
+# compared as whole sentences instead of brand names.
+_TITLE_SEPARATORS = (" — ", " – ", " - ", " | ", " · ")
+
+
+def _cut_at_first_separator(text: str) -> str:
+    """Cut `text` at whichever separator occurs earliest in the string (#550).
+
+    A plain "first separator in tuple order" scan is wrong: in
+    "Acme – Tools for makers | Blog" the correct brand-name cut is at the en
+    dash, but " | " would be found first if the tuple happened to list it
+    before " – ". Matching by actual text position instead of tuple order
+    fixes that regardless of how _TITLE_SEPARATORS is ordered.
+    """
+    hits = [text.find(sep) for sep in _TITLE_SEPARATORS if sep in text]
+    return text[: min(hits)].strip() if hits else text
+
+
+def _normalize_brand_name(name: str) -> str:
+    """Normalize a brand name for comparison by stripping legal suffixes (#397).
+
+    Strips leading/trailing whitespace, lowercases, then removes any legal suffix
+    (e.g. "Inc.", "Ltd.", "GmbH", "S.r.l.") from the END of the name.
+    The suffix must appear as a standalone trailing token — it is NOT removed
+    when it appears in the middle (e.g. "The Inc. Company" is unchanged).
+
+    Args:
+        name: Raw brand name (e.g. "Apple Inc.", "Auriti S.r.l.").
+
+    Returns:
+        Normalized name without trailing legal suffix (e.g. "apple", "auriti").
+    """
+    normalized = name.strip().lower()
+    # Strip trailing punctuation (comma, period not part of suffix) before matching
+    normalized = normalized.rstrip(",")
+    for suffix in BRAND_LEGAL_SUFFIXES:
+        # Match suffix at end, preceded by a space (to avoid mid-name removal)
+        if normalized.endswith(" " + suffix):
+            normalized = normalized[: -(len(suffix) + 1)].strip()
+            break
+    return normalized
+
+
+def audit_brand_entity(
+    soup: BeautifulSoup | None, schema_result: SchemaResult, meta_result: MetaResult, content_result: ContentResult
+) -> BrandEntityResult:
+    """Analyze brand identity and entity signals for AI perception (v4.3).
+
+    Works only on already-fetched data, zero HTTP requests.
+
+    Args:
+        soup: BeautifulSoup of the homepage.
+        schema_result: Already-computed SchemaResult.
+        meta_result: Already-computed MetaResult.
+        content_result: Already-computed ContentResult.
+
+    Returns:
+        BrandEntityResult with brand/entity signals populated.
+    """
+    result = BrandEntityResult()
+    if soup is None:
+        return result
+
+    # ── 1. Entity Coherence ──────────────────────────────────────
+    # Collect brand names from different sources
+    names = []
+
+    # H1
+    h1 = soup.find("h1")
+    h1_name = ""
+    if h1 and h1.get_text(strip=True):
+        h1_text = _cut_at_first_separator(h1.get_text(strip=True))
+        if h1_text:
+            h1_name = h1_text
+            names.append(h1_text)
+
+    # Title tag
+    title_name = ""
+    if meta_result.title_text:
+        title_name = _cut_at_first_separator(meta_result.title_text)
+        if title_name:
+            names.append(title_name)
+
+    # og:title
+    og_title = soup.find("meta", property="og:title")
+    og_name = ""
+    if og_title and og_title.get("content", ""):
+        og_name = _cut_at_first_separator(og_title["content"])
+        if og_name:
+            names.append(og_name)
+
+    # Schema names: WebSite/WebApplication/SoftwareApplication describe what the
+    # page's primary subject IS, Organization more often names the publisher — a
+    # distinct, valid entity that shouldn't override a page's own subject when
+    # the two disagree. Found live on this project's own geoready.dev homepage:
+    # WebSite and WebApplication schema both say "GeoReady" (the product), but
+    # Organization schema says "Auriti Labs" (the company that publishes it) —
+    # treating both types as equally authoritative picked the publisher's name
+    # as if it were the page's brand (#brand-primary-name).
+    _PRIMARY_SCHEMA_TYPES = {"WebSite", "WebApplication", "SoftwareApplication"}
+    primary_schema_names: list[str] = []
+    org_schema_names: list[str] = []
+    schema_names: list[str] = []
+    for raw_schema in schema_result.raw_schemas:
+        schemas_to_check = _flatten_graph(raw_schema)
+        for s in schemas_to_check:
+            name = s.get("name")
+            if not isinstance(name, str) or not name.strip():
+                continue
+            s_types = jsonld_types(s.get("@type"))
+            if any(t in _PRIMARY_SCHEMA_TYPES for t in s_types):
+                names.append(name)
+                primary_schema_names.append(name)
+                schema_names.append(name)
+            # Any Organization subtype (LocalBusiness, Restaurant, ...), not only the
+            # literal "Organization": a LocalBusiness name never reached the brand-name
+            # consistency check, so small-business sites lost those points (#392 class).
+            elif any(t in ORGANIZATION_TYPES for t in s_types):
+                names.append(name)
+                org_schema_names.append(name)
+                schema_names.append(name)
+
+    result.names_found = names[:10]
+
+    # Primary name: schema data outranks positional guesses from H1/title/og:title
+    # — an H1 with no separator (e.g. a sentence-style hero heading) would otherwise
+    # be read as the brand name verbatim. Among schema signals, WebSite/WebApplication
+    # (the page's own subject) outranks Organization (typically the publisher).
+    # Falls back to the most-frequent candidate, then the first one found (#perception).
+    if primary_schema_names:
+        result.primary_name = primary_schema_names[0]
+    elif org_schema_names:
+        result.primary_name = org_schema_names[0]
+    elif names:
+        lower_names = [_normalize_brand_name(n) for n in names]
+        freq = Counter(lower_names)
+        most_common_name, most_common_count = freq.most_common(1)[0]
+        if most_common_count >= 2:
+            result.primary_name = next(n for n in names if _normalize_brand_name(n) == most_common_name)
+        else:
+            result.primary_name = names[0]
+
+    # Consistency: one source counts once; title and og:title are both the head source.
+    source_names = []
+    head_names = {_normalize_brand_name(n) for n in (title_name, og_name) if n}
+    if head_names:
+        source_names.append(head_names)
+    if h1_name:
+        source_names.append({_normalize_brand_name(h1_name)})
+    normalized_schema_names = {_normalize_brand_name(n) for n in schema_names}
+    if normalized_schema_names:
+        source_names.append(normalized_schema_names)
+
+    if len(source_names) >= 2:
+        freq = Counter(name for source in source_names for name in source)
+        most_common_name, most_common_count = freq.most_common(1)[0]
+        if most_common_count >= 2:
+            result.brand_name_consistent = True
+
+    # Schema description vs meta description
+    if meta_result.description_text:
+        meta_desc_lower = meta_result.description_text.lower()[:100]
+        for raw_schema in schema_result.raw_schemas:
+            for s in _flatten_graph(raw_schema):
+                schema_desc = s.get("description", "")
+                if schema_desc and isinstance(schema_desc, str):
+                    schema_desc_lower = schema_desc.lower()[:100]
+                    # Sovrapposizione significativa: almeno 30 caratteri in comune
+                    if meta_desc_lower[:30] in schema_desc_lower or schema_desc_lower[:30] in meta_desc_lower:
+                        result.schema_desc_matches_meta = True
+                        break
+
+    # ── 2. Knowledge Graph Readiness ─────────────────────────────
+    for url in schema_result.sameas_urls:
+        url_lower = url.lower()
+        for domain in KG_PILLAR_DOMAINS:
+            if domain in url_lower:
+                result.kg_pillar_urls.append(url)
+                if "wikipedia.org" in url_lower:
+                    result.has_wikipedia = True
+                elif "wikidata.org" in url_lower:
+                    result.has_wikidata = True
+                elif "linkedin.com" in url_lower:
+                    result.has_linkedin = True
+                elif "crunchbase.com" in url_lower:
+                    result.has_crunchbase = True
+                break
+    result.kg_pillar_count = sum(
+        [
+            result.has_wikipedia,
+            result.has_wikidata,
+            result.has_linkedin,
+            result.has_crunchbase,
+        ]
+    )
+
+    # ── 3. About/Contact Signals ─────────────────────────────────
+    # Look for /about link in the page
+    for a_tag in soup.find_all("a", href=True):
+        href = a_tag["href"].lower()
+        if any(pattern in href for pattern in ABOUT_LINK_PATTERNS):
+            result.has_about_link = True
+            break
+
+    # Look for Organization with address/telephone/email or Person with jobTitle
+    for raw_schema in schema_result.raw_schemas:
+        schemas_to_check = _flatten_graph(raw_schema)
+        for s in schemas_to_check:
+            # All declared types, not only the first: ["Thing", "LocalBusiness"] is valid JSON-LD
+            s_types = jsonld_types(s.get("@type"))
+            if any(t in ORGANIZATION_TYPES for t in s_types) and (
+                s.get("address") or s.get("telephone") or s.get("email") or s.get("contactPoint")
+            ):
+                result.has_contact_info = True
+            elif "Person" in s_types and (s.get("jobTitle") or s.get("hasCredential") or s.get("alumniOf")):
+                result.has_contact_info = True
+
+    # ── 4. Geographic Identity ───────────────────────────────────
+    # Tag hreflang
+    hreflang_tags = soup.find_all("link", attrs={"rel": "alternate", "hreflang": True})
+    result.hreflang_count = len(hreflang_tags)
+    result.has_hreflang = result.hreflang_count > 0
+
+    # Geo signals from Schema (address, areaServed, LocalBusiness)
+    for raw_schema in schema_result.raw_schemas:
+        schemas_to_check = _flatten_graph(raw_schema)
+        for s in schemas_to_check:
+            s_types = jsonld_types(s.get("@type"))
+            if "LocalBusiness" in s_types or s.get("areaServed") or ("Organization" in s_types and s.get("address")):
+                result.has_geo_schema = True
+                break
+
+    # ── 5. Topic Authority ───────────────────────────────────────
+    # FAQ depth from FAQPage schema
+    for raw_schema in schema_result.raw_schemas:
+        schemas_to_check = _flatten_graph(raw_schema)
+        for s in schemas_to_check:
+            if "FAQPage" in jsonld_types(s.get("@type")):
+                main_entity = s.get("mainEntity", [])
+                if isinstance(main_entity, list):
+                    result.faq_depth += len(main_entity)
+
+    # Article/BlogPosting with dateModified
+    result.has_recent_articles = schema_result.has_date_modified and (
+        schema_result.has_article or any(t in ("BlogPosting", "NewsArticle") for t in schema_result.found_types)
+    )
+
+    return result
