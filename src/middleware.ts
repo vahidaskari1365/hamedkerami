@@ -15,6 +15,12 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const IMMUTABLE_PATH = /^\/(_next\/static|_next\/image|uploads|images|icons|favicon)\//;
 
+/* مسیرهای متادیتای سئو — هرگز نباید در LSCache ذخیره شوند.
+   sitemap هر روز با مقاله جدید تغییر می‌کند؛ یک کپی stale (به‌خاطر
+   s-maxage یک‌ساله خود هاست) هفته‌ها نسخه کهنه را به گوگل داد.
+   no-store سخت‌گیرانه‌تر از no-cache است: حتی ذخیره هم ممنوع. */
+const SEO_META_PATH = /^\/(sitemap\.xml|robots\.txt|llms\.txt|llms-full\.txt)$/;
+
 /* دامنه رسمی سایت (منبع واحد: SITE.url در lib/data.ts) —
    هر درخواستی با هاست دیگر (مثلاً www.dr-kermani.com) باید ۳۰۸
    به دامنه اصلی ریدایرکت شود؛ وگرنه گوگل دو نسخه از کل سایت
@@ -47,7 +53,9 @@ export function middleware(req: NextRequest) {
   }
 
   const res = NextResponse.next();
-  if (!IMMUTABLE_PATH.test(req.nextUrl.pathname)) {
+  if (SEO_META_PATH.test(req.nextUrl.pathname)) {
+    res.headers.set("Cache-Control", "no-store, must-revalidate, max-age=0");
+  } else if (!IMMUTABLE_PATH.test(req.nextUrl.pathname)) {
     res.headers.set("Cache-Control", "no-cache, must-revalidate");
   }
   return res;

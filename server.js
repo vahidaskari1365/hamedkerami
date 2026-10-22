@@ -3,13 +3,21 @@
    Application startup file = server.js
 
    کارها:
-   ۱) chdir به ریشه‌ی اپ — تا دیتابیس (db/) و آپلودها (data/uploads)
+   ۱) اگر پکیج دیپلوی جدید (deploy-package.tar.gz) موجود باشد:
+      اکسترکت در پوشه staging → تأیید سلامت → تعویض اتمیک.
+      ⚠️ نکته حیاتی: tar معمولی فقط overwrite می‌کند و فایل‌های
+      جامانده از بیلدهای قدیمی را پاک نمی‌کند؛ نتیجه‌اش state
+      مخلوط بود — مثلاً باندل قدیمی sitemap.xml از هفته اول
+      پروژه زنده ماند و هرگز به‌روز نشد. راه‌حل: کل .next هر
+      بار کامل تعویض می‌شود، نه merge.
+   ۲) chdir به ریشه اپ — تا دیتابیس (db/) و آپلودها (data/uploads)
       همیشه در مسیر پایدار و خارج از بیلد باشند
-   ۲) تنظیم متغیرهای محیطی پروداکشن (DATABASE_URL و…)
-   ۳) اجرای سرور standalone ساخته‌شده توسط `next build`
+   ۳) تنظیم متغیرهای محیطی پروداکشن (DATABASE_URL و…)
+   ۴) اجرای سرور standalone ساخته‌شده توسط `next build`
    ============================================================ */
 
 /* eslint-disable @typescript-eslint/no-require-imports -- فایل ورودی Passenger باید CommonJS بماند */
+const { execFileSync } = require("child_process");
 const path = require("path");
 const fs = require("fs");
 
@@ -17,6 +25,124 @@ const ROOT = __dirname;
 
 /* Passenger ممکن است cwd را جای دیگری بگذارد — قطعی می‌کنیم */
 process.chdir(ROOT);
+
+/* ============================================================
+   بخش ۱ — دیپلوی خودکار: اکسترکت پکیج در انتظار با تعویض تمیز
+   ============================================================ */
+
+const PKG = path.join(ROOT, "deploy-package.tar.gz");
+const STAGE = path.join(ROOT, ".deploy-staging-" + process.pid);
+
+/** حذف زباله‌های swap ناتمام بوت‌های قبلی (اگر پروسه وسط کار مرده باشد) */
+function cleanupSwapJunk() {
+  try {
+    for (const name of fs.readdirSync(ROOT)) {
+      if (/^\.deploy-staging-/.test(name) || /^\.next\.old-/.test(name) || /^\.prisma\.old-/.test(name)) {
+        console.log("[bootstrap] removing leftover from interrupted swap:", name);
+        fs.rmSync(path.join(ROOT, name), { recursive: true, force: true });
+      }
+    }
+  } catch { /* noop */ }
+}
+
+/**
+ * تعویض یک پوشه داخل ROOT با نسخه staging — با rollback.
+ * rename روی یک فایل‌سیستم اتمیک است؛ هیچ لحظه‌ای .next ناقص روی مسیر اصلی نیست.
+ */
+function swapDir(stageDir, name) {
+  const src = path.join(stageDir, name);
+  if (!fs.existsSync(src)) return; // پکیج این پوشه را ندارد — دست نمی‌زنیم
+  const cur = path.join(ROOT, name);
+  const trash = path.join(ROOT, "." + name.replace(/\//g, "_") + ".old-" + process.pid);
+  if (fs.existsSync(cur)) fs.renameSync(cur, trash);
+  try {
+    fs.renameSync(src, cur);
+  } catch (e) {
+    /* rollback — نسخه قبلی را برگردان تا سایت با بیلد قدیمی بالا بیاید */
+    if (fs.existsSync(trash)) fs.renameSync(trash, cur);
+    throw e;
+  }
+  fs.rmSync(trash, { recursive: true, force: true });
+}
+
+function extractPendingPackage() {
+  if (!fs.existsSync(PKG)) return;
+
+  console.log("[bootstrap] deploy package found — clean-swap extract starting…");
+  try {
+    /* ۱) اکسترکت در staging — هیچ‌وقت مستقیم روی build زنده نه */
+    fs.rmSync(STAGE, { recursive: true, force: true });
+    fs.mkdirSync(STAGE, { recursive: true });
+    execFileSync("tar", ["-xzf", PKG, "-C", STAGE], { stdio: "inherit" });
+
+    /* ۲) تأیید سلامت پکیج — قبل از دست زدن به بیلد زنده */
+    if (!fs.existsSync(path.join(STAGE, ".next", "standalone", "server.js"))) {
+      throw new Error("package verification failed: .next/standalone/server.js missing");
+    }
+    console.log("[bootstrap] package verified — swapping build…");
+
+    /* ۳) تعویض تمیز — کل .next جایگزین می‌شود تا هیچ باندل/آرتیفکت
+          قدیمی از بیلدهای قبل (مثل sitemap.xml قدیمی) باقی نماند */
+    swapDir(STAGE, ".next");
+    swapDir(STAGE, "prisma");
+
+    /* ۴) db/init.db — فقط این فایل؛ db/custom.db داده واقعی پروداکشن است
+          (نوبت‌ها، مقالات ایجنت‌ها) و باید از سالم بماند */
+    try {
+      const srcInit = path.join(STAGE, "db", "init.db");
+      if (fs.existsSync(srcInit)) {
+        fs.mkdirSync(path.join(ROOT, "db"), { recursive: true });
+        fs.copyFileSync(srcInit, path.join(ROOT, "db", "init.db"));
+      }
+    } catch (e) {
+      console.error("[bootstrap] init.db copy (non-fatal):", e.message);
+    }
+
+    /* ۵) server.js پکیج — همین فایل است؛ روی نسخه در حال اجرا (در حافظه) اثری ندارد */
+    try {
+      const srcServer = path.join(STAGE, "server.js");
+      if (fs.existsSync(srcServer)) fs.copyFileSync(srcServer, path.join(ROOT, "server.js"));
+    } catch (e) {
+      console.error("[bootstrap] server.js copy (non-fatal):", e.message);
+    }
+
+    fs.rmSync(STAGE, { recursive: true, force: true });
+    fs.unlinkSync(PKG);
+    console.log("[bootstrap] clean-swap deploy DONE — fresh .next is live");
+  } catch (e) {
+    console.error("[bootstrap] deploy package extract FAILED — keeping current build:", e.message);
+    try { fs.rmSync(STAGE, { recursive: true, force: true }); } catch {}
+    /* پکیج حذف نمی‌شود — بوت بعدی دوباره تلاش می‌کند (retry) */
+  }
+}
+
+/** فایل‌های استاتیک قدیمی که نباید روی routeهای داینامیک اولویت داشته باشند */
+function cleanupStalePublicArtifacts() {
+  const STALE = [
+    "public/robots.txt",
+    "public/sitemap.xml",
+    "public/llms.txt",
+    "public/llms-full.txt",
+  ];
+  for (const f of STALE) {
+    try {
+      fs.unlinkSync(path.join(ROOT, f));
+      console.log("[bootstrap] removed stale artifact:", f);
+    } catch { /* نبود — مشکلی نیست */ }
+  }
+  /* فایل‌های موقتی تست‌های خیلی قدیمی */
+  for (const junk of ["ci-pkg.tar.gz", "probe.txt", "ci-write-test.txt", "ci-test-1.txt", "ci-test-2.txt", "ci-test-3.txt"]) {
+    try { fs.unlinkSync(path.join(ROOT, junk)); } catch {}
+  }
+}
+
+cleanupSwapJunk();
+extractPendingPackage();
+cleanupStalePublicArtifacts();
+
+/* ============================================================
+   بخش ۲ — محیط پروداکشن
+   ============================================================ */
 
 process.env.NODE_ENV = process.env.NODE_ENV || "production";
 process.env.NEXT_TELEMETRY_DISABLED = "1";
@@ -36,10 +162,11 @@ const INIT_FILE = path.join(DB_DIR, "init.db");
 if (!fs.existsSync(DB_FILE) && fs.existsSync(INIT_FILE)) {
   fs.mkdirSync(DB_DIR, { recursive: true });
   fs.copyFileSync(INIT_FILE, DB_FILE);
-  console.log("[server.js] دیتابیس ساخته شد (db/custom.db از init.db)");
+  console.log("[bootstrap] دیتابیس ساخته شد (db/custom.db از init.db)");
 }
-process.env.DATABASE_URL =
-  process.env.DATABASE_URL || "file:" + DB_FILE;
+/* همیشه دیتابیس خودِ اپ — اگر cPanel/env قدیمی DATABASE_URL دیگری
+   ست کرده باشد، مسیر اشتباه زنده می‌ماند و همه کوئری‌ها خطا می‌دهند */
+process.env.DATABASE_URL = "file:" + DB_FILE;
 
 /* آپلودهای ادمین در <اپ>/data/uploads می‌مانند (پایدار، همراه بکاپ‌ها)
    و از طریق route داینامیک /uploads/<file> سرو می‌شوند */
@@ -54,13 +181,13 @@ const STANDALONE = path.join(ROOT, ".next", "standalone", "server.js");
 
 if (!fs.existsSync(STANDALONE)) {
   console.error(
-    "[server.js] بیلد پیدا نشد: .next/standalone/server.js موجود نیست.\n" +
+    "[bootstrap] بیلد پیدا نشد: .next/standalone/server.js موجود نیست.\n" +
       "دیپلوی را از گیت‌هاب اجرا کنید یا `bun run build` بزنید."
   );
   process.exit(1);
 }
 
-console.log("[server.js] starting standalone Next.js server…");
-console.log("[server.js] DATABASE_URL =", process.env.DATABASE_URL);
+console.log("[bootstrap] starting standalone Next.js server…");
+console.log("[bootstrap] DATABASE_URL =", process.env.DATABASE_URL);
 
 require(STANDALONE);

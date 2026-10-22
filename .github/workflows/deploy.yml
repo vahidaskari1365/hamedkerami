@@ -4,7 +4,7 @@ name: Build & Deploy to IranHost (cPanel UAPI)
 # (FTP این هاست کانال دیتایش فایروال است و SSH هم بسته — پس همه‌چیز از HTTPS پورت 2083 می‌گذرد)
 on:
   push:
-    branches: [main]
+    branches: [main] # fix: قبلاً «ain]» تایپ شده بود و push به main هرگز دیپلوی خودکار تریگر نمی‌کرد
   workflow_dispatch: # اجرای دستی از تب Actions
 
 env:
@@ -77,92 +77,11 @@ jobs:
         run: |
           AUTH="Authorization: cpanel ${{ secrets.CPANEL_USER }}:${{ secrets.CPANEL_API_TOKEN }}"
           API="https://${{ secrets.CPANEL_HOST }}:2083/execute/Fileman"
-          # بوت‌استرپ: در هر شروع، اگر پکیج تازه هست اکسترکت می‌کند و بعد standalone را اجرا می‌کند
-          cat > /tmp/bootstrap.js <<'BOOTSTRAP'
-          /* CI bootstrap — اکسترکت پکیج دیپلوی + اجرای standalone (نوشته‌شده توسط پایپ‌لاین گیت‌هاب) */
-          const { execFileSync } = require("child_process");
-          const path = require("path");
-          const fs = require("fs");
-
-          const ROOT = __dirname;
-          process.chdir(ROOT);
-
-          const PKG = path.join(ROOT, "deploy-package.tar.gz");
-          if (fs.existsSync(PKG)) {
-            try {
-              console.log("[bootstrap] extracting deploy package…");
-              execFileSync("tar", ["-xzf", PKG, "-C", ROOT, "--overwrite"], { stdio: "inherit" });
-              fs.unlinkSync(PKG);
-              console.log("[bootstrap] extracted OK");
-            } catch (e) {
-              console.error("[bootstrap] extract FAILED:", e.message);
-            }
-          }
-
-          // پاکسازی فایل‌های موقتی تست‌های قدیمی (یک‌بار برای همه)
-          for (const junk of ["ci-pkg.tar.gz", "probe.txt", "ci-write-test.txt", "ci-test-1.txt", "ci-test-2.txt", "ci-test-3.txt"]) {
-            try { fs.unlinkSync(path.join(ROOT, junk)); } catch {}
-          }
-
-          /* پاکسازی آرتیفکت‌های جامانده از بیلدهای قدیمی —
-             tar فقط overwrite می کند؛ فایل‌هایی که در بسته جدید نیستند
-             روی سرور می مانند و Next نسخه استاتیک قدیمی را به جای
-             route داینامیک سرو می کند (مثال: sitemap.xml قدیمی با
-             دامنه قبلی که تا یک سال کش می ماند) */
-          const STALE_ARTIFACTS = [
-            "public/robots.txt", // حالا route داینامیک src/app/robots.ts است
-            "public/sitemap.xml", // حالا route داینامیک src/app/sitemap.ts است — فایل استاتیک قدیمی روی route اولویت داشت!
-            "public/llms.txt", // حالا route داینامیک src/app/llms.txt/route.ts است (AIO)
-            "public/llms-full.txt", // حالا route داینامیک src/app/llms-full.txt/route.ts است (AIO)
-            ".next/standalone/public/robots.txt",
-            ".next/standalone/public/sitemap.xml",
-            ".next/standalone/public/llms.txt",
-            ".next/standalone/public/llms-full.txt",
-            ".next/server/app/sitemap.xml.body",
-            ".next/server/app/sitemap.xml.meta",
-            ".next/server/app/sitemap.xml.rsc",
-            ".next/standalone/.next/server/app/sitemap.xml.body",
-            ".next/standalone/.next/server/app/sitemap.xml.meta",
-            ".next/standalone/.next/server/app/sitemap.xml.rsc",
-            ".next/server/app/robots.txt.body",
-            ".next/server/app/robots.txt.meta",
-            ".next/standalone/.next/server/app/robots.txt.body",
-            ".next/standalone/.next/server/app/robots.txt.meta",
-          ];
-          for (const f of STALE_ARTIFACTS) {
-            try {
-              fs.unlinkSync(path.join(ROOT, f));
-              console.log("[bootstrap] removed stale artifact:", f);
-            } catch { /* نبود — مشکلی نیست */ }
-          }
-
-          process.env.NODE_ENV = "production";
-          process.env.NEXT_TELEMETRY_DISABLED = "1";
-          process.env.HOSTNAME = "0.0.0.0";
-          if (!process.env.PORT) process.env.PORT = "3000";
-
-          const DB_FILE = path.join(ROOT, "db", "custom.db");
-          const INIT_FILE = path.join(ROOT, "db", "init.db");
-          if (!fs.existsSync(DB_FILE) && fs.existsSync(INIT_FILE)) {
-            fs.mkdirSync(path.join(ROOT, "db"), { recursive: true });
-            fs.copyFileSync(INIT_FILE, DB_FILE);
-            console.log("[bootstrap] db/custom.db created from init.db");
-          }
-          /* همیشه دیتابیس خودِ اپ — اگر cPanel/env قدیمی DATABASE_URL دیگری
-             ست کرده باشد، مسیر اشتباه زنده می‌ماند و همه کوئری‌ها خطا می‌دهند */
-          process.env.DATABASE_URL = "file:" + DB_FILE;
-          process.env.UPLOAD_DIR = path.join(ROOT, "data", "uploads");
-          try { fs.mkdirSync(process.env.UPLOAD_DIR, { recursive: true }); } catch {}
-
-          const STANDALONE = path.join(ROOT, ".next", "standalone", "server.js");
-          if (!fs.existsSync(STANDALONE)) {
-            console.error("[bootstrap] standalone missing — package extract failed?");
-            process.exit(1);
-          }
-          console.log("[bootstrap] starting standalone Next.js…");
-          require(STANDALONE);
-          BOOTSTRAP
-          # نوشتن بوت‌استرپ به‌جای server.js
+          # بوت‌استرپ = همان server.js مخزن (تک منبع حقیقت — دیگر heredoc تکراری نیست):
+          # پکیج در staging اکسترکت می‌شود → تأیید سلامت → تعویض اتمیک کل .next
+          # (قبلاً tar مستقیم روی ROOT باز می‌شد و باندل‌های قدیمی مثل sitemap.xml
+          #  از بیلدهای قبل روی سرور می‌ماندند و نسخه کهنه سرو می‌شد)
+          cp server.js /tmp/bootstrap.js
           curl -sf --retry 3 --retry-delay 5 --max-time 120 \
             -H "$AUTH" \
             -F "dir=${{ env.APP_DIR }}" \
@@ -225,6 +144,23 @@ jobs:
             -H "Host: ${{ env.SITE_HOST }}" \
             "http://${{ env.SITE_IP }}/__cache-purge" || echo "000")
           echo "purge → HTTP $code : $(head -c 100 /tmp/purge.txt)"
+
+      # ── کاناری سئو: اگر سایت‌مپ قدیمی سرو شود (کش LSCache / state مخلوط .next)
+      # دیپلوی قرمز می‌شود تا فوراً بفهمیم — نه هفته‌ها بعد در Search Console
+      - name: Verify sitemap freshness (SEO canary)
+        if: env.DEPLOY_READY == 'true'
+        run: |
+          sleep 5
+          SM=$(curl -sf --max-time 60 "https://${{ env.SITE_HOST }}/sitemap.xml" || echo "")
+          echo "$SM" | head -c 300; echo
+          fail=0
+          echo "$SM" | grep -q "jaw-surgery-in-iran" || { echo "::error::sitemap: EN landing missing — stale sitemap served"; fail=1; }
+          echo "$SM" | grep -q "<loc>${{ env.SITE_HOST }}/appointment</loc>" || { echo "::error::sitemap: /appointment missing"; fail=1; }
+          echo "$SM" | grep -q "xhtml:link" || { echo "::error::sitemap: hreflang alternates missing"; fail=1; }
+          n=$(echo "$SM" | grep -c "<loc>" || true)
+          echo "sitemap URLs: $n (expected ≥ 30)"
+          [ "$n" -ge 30 ] || { echo "::error::sitemap: too few URLs — stale build?"; fail=1; }
+          exit $fail
 
       - name: Done (بدون دیپلوی — فقط بیلد)
         if: env.DEPLOY_READY != 'true'
