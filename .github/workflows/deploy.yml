@@ -182,18 +182,22 @@ jobs:
           SM=""
           for attempt in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
             SM=$(curl -sf --max-time 30 "https://${{ env.SITE_HOST }}/sitemap.xml" || echo "")
-            ok=1
-            echo "$SM" | grep -q "jaw-surgery-in-iran" || ok=0
-            echo "$SM" | grep -q "<loc>${{ env.SITE_HOST }}/appointment</loc>" || ok=0
-            echo "$SM" | grep -q "xhtml:link" || ok=0
+            c1=$(echo "$SM" | grep -c "jaw-surgery-in-iran" || true)
+            c2=$(echo "$SM" | grep -c "<loc>https://${{ env.SITE_HOST }}/appointment</loc>" || true)
+            c3=$(echo "$SM" | grep -c "xhtml:link" || true)
             n=$(echo "$SM" | grep -c "<loc>" || true)
+            echo "تلاش $attempt → EN-landing:$c1 appointment:$c2 hreflang:$c3 URLs:$n"
+            ok=1
+            [ "$c1" -ge 1 ] || ok=0
+            [ "$c2" -ge 1 ] || ok=0
+            [ "$c3" -ge 1 ] || ok=0
             [ "$n" -ge 30 ] || ok=0
             if [ "$ok" = "1" ]; then
               echo "✅ کاناری سبز (تلاش $attempt) — sitemap URLs: $n"
               fail=0
               break
             fi
-            echo "⏳ تلاش $attempt ناموفق (URLs: $n) — اپ احتمالاً هنوز اکسترکت/بوت است؛ ۲۵ ثانیه صبر…"
+            echo "⏳ هنوز سبز نشده — اپ احتمالاً در حال اکسترکت/بوت است؛ ۲۵ ثانیه صبر…"
             sleep 25
           done
           if [ "$fail" = "1" ]; then
