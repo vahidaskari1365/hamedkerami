@@ -99,6 +99,30 @@ jobs:
             "$API/save_file_content" >/dev/null
           echo "bootstrap + restart signal OK"
 
+      # کانفیگ SDK هوش مصنوعی برای ایجنت‌های بلاگ روزانه — بدون این فایل
+      # ZAI.create() روی سرور خطا می‌دهد و مقاله‌ی روزانه هرگز منتشر نمی‌شود.
+      # فایل بیرون public_html است و از وب در دسترس نیست؛ هر دیپلوی بازنویسی می‌شود (self-heal).
+      - name: Install ZAI config (برای ایجنت‌های بلاگ)
+        if: env.DEPLOY_READY == 'true'
+        run: |
+          AUTH="Authorization: cpanel ${{ secrets.CPANEL_USER }}:${{ secrets.CPANEL_API_TOKEN }}"
+          API="https://${{ secrets.CPANEL_HOST }}:2083/execute/Fileman"
+          echo "${{ secrets.ZAI_CONFIG_B64 }}" | base64 -d > /tmp/zai-config
+          SIZE=$(wc -c < /tmp/zai-config)
+          echo "config size: $SIZE bytes"
+          [ "$SIZE" -gt 50 ] || { echo "::error::ZAI_CONFIG_B64 secret خالی/خراب است"; exit 1; }
+          code=$(curl -s -o /tmp/zai-resp.json -w "%{http_code}" --retry 3 --retry-delay 5 --max-time 120 \
+            -H "$AUTH" \
+            -F "dir=${{ env.APP_DIR }}" \
+            -F "file=.z-ai-config" \
+            -F "overwrite=1" \
+            -F "content=</tmp/zai-config" \
+            "$API/save_file_content")
+          echo "install → HTTP $code"
+          [ "$code" = "200" ] || { cat /tmp/zai-resp.json | head -c 300; echo; exit 1; }
+          rm -f /tmp/zai-config
+          echo "ZAI config نصب شد — ایجنت‌های بلاگ می‌توانند اجرا شوند"
+
       - name: Trigger restart (deploy-hook → پروسه قدیمی خاموش، Passenger تازه می‌سازد)
         if: env.DEPLOY_READY == 'true'
         run: |
@@ -147,14 +171,17 @@ jobs:
 
       # ── کاناری سئو: اگر سایت‌مپ قدیمی سرو شود (کش LSCache / state مخلوط .next)
       # دیپلوی قرمز می‌شود تا فوراً بفهمیم — نه هفته‌ها بعد در Search Console
-      # تا ۹۰ ثانیه فرصت می‌دهیم (Passenger ممکن است هنوز اکسترکت/بوت باشد)
+      # اکسترکت پکیج ۶۹MB روی هاست اشتراکی تا ۲-۳ دقیقه طول می‌کشد؛
+      # مرحله wake فقط «مصرف پکیج» را چک می‌کند نه «سرو واقعی» — پس اینجا
+      # تا ~۷ دقیقه با حوصله می‌کشیم (۱۵ تلاش × ۲۵ ثانیه)
       - name: Verify sitemap freshness (SEO canary)
         if: env.DEPLOY_READY == 'true'
         run: |
-          sleep 5
+          sleep 10
           fail=1
-          for attempt in 1 2 3 4 5 6; do
-            SM=$(curl -sf --max-time 60 "https://${{ env.SITE_HOST }}/sitemap.xml" || echo "")
+          SM=""
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+            SM=$(curl -sf --max-time 30 "https://${{ env.SITE_HOST }}/sitemap.xml" || echo "")
             ok=1
             echo "$SM" | grep -q "jaw-surgery-in-iran" || ok=0
             echo "$SM" | grep -q "<loc>${{ env.SITE_HOST }}/appointment</loc>" || ok=0
@@ -166,12 +193,12 @@ jobs:
               fail=0
               break
             fi
-            echo "⏳ تلاش $attempt ناموفق بود (URLs: $n) — ۱۵ ثانیه صبر و بررسی مجدد…"
-            sleep 15
+            echo "⏳ تلاش $attempt ناموفق (URLs: $n) — اپ احتمالاً هنوز اکسترکت/بوت است؛ ۲۵ ثانیه صبر…"
+            sleep 25
           done
           if [ "$fail" = "1" ]; then
             echo "$SM" | head -c 300; echo
-            echo "::error::sitemap: کاناری بعد از ۶ تلاش قرمز ماند — stale sitemap یا اپ پایین"
+            echo "::error::sitemap: کاناری بعد از ۱۵ تلاش (~۷ دقیقه) قرمز ماند — stale sitemap یا اپ پایین"
             exit 1
           fi
 
