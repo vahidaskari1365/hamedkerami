@@ -6,23 +6,16 @@ import { SITE } from "@/lib/data";
 export const dynamic = "force-dynamic";
 
 /* ============================================================
-   Sitemap — نسخه فول‌پروف برای Google Search Console
+   Sitemap — کاملاً دینامیک (هم‌سبک drpedrambakhshaei.com)
 
-   سه قانونی که باگ‌های بازگشتی قبلی را برای همیشه می‌بندد:
-
-   ۱) lastmod فقط «تاریخ واقعی محتوا» است، هیچ‌وقت زمانِ سرور:
-      - برای مقاله‌ها: اول تاریخ تحریری شمسی مقاله (p.date) که
-        پایدارِ مطلق است؛ نسخه قبلی اول updatedAt دیتابیس را
-        می‌گرفت و هر بازسازی جدول/seed همه lastmodها را به لحظه
-        insert می‌پراند (گوگل به lastmod متغیر اعتماد نمی‌کند و
-        در Search Console رفتار غیرقابل پیش‌بینی می‌سازد).
-      - برای صفحات اصلی: جدیدترین تاریخ واقعی محتوا.
-   ۲) فرمت فقط «YYYY-MM-DD» — امن‌ترین شکل W3C برای GSC؛
-      بدون میلی‌ثانیه و پسوند Z که بعضی ابزارها/validationها رد می‌کنند.
-   ۳) این route هرگز ۵۰۰ نمی‌دهد: اگر دیتابیس یا هر چیز دیگری
-      شکست خورد، حداقل صفحات اصلی برگردانده می‌شوند. (تاخیر/خطای
-      «Couldn't fetch» گوگل از کول‌استارت Passenger است که با
-      ورک‌فلو keep-warm حل شده است.)
+   ۱) مقاله‌ها: lastmod = تاریخ تحریری واقعیِ خود مقاله
+      (شمسی → میلادی، ساعت ۰۰:۰۰ UTC). هر مقاله جدید که ایجنت‌ها
+      یا ادمین منتشر کند، خودکار و بلافاصله در سایت‌مپ می‌آید و
+      تاریخش با بقیه فرق دارد — دقیقاً مثل سایت مرجع.
+   ۲) صفحات اصلی و نسخه EN: lastmod = لحظه تولید سایت‌مپ؛ هر بار
+      گوگل/بینگ می‌کشد تاریخ و ساعت تازه می‌بیند (نشانه سایت زنده).
+   ۳) این route هرگز ۵۰۰ نمی‌دهد: اگر دیتابیس شکست خورد، حداقل
+      صفحات اصلی برگردانده می‌شوند.
    ============================================================ */
 
 /** هر ورودی تاریخ را به «YYYY-MM-DD» امن تبدیل می‌کند؛ نامعتبر → null */
@@ -40,72 +33,72 @@ const FALLBACK_DAY = "2026-10-01";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = SITE.url;
 
-  /* ---------- مقاله‌ها: lastmod پایدار = تاریخ تحریری ---------- */
+  /* ---------- لحظه تولید سایت‌مپ — برای همه صفحات اصلی ---------- */
+  const now = new Date();
+
+  /* ---------- مقاله‌ها: lastmod = تاریخ تحریری واقعی هر مقاله ---------- */
   let blog: MetadataRoute.Sitemap = [];
   try {
     const posts = await getPublishedPosts();
     blog = posts.map((p) => {
-      const lastModified =
+      const day =
         toDay(p.date ? jalaliDisplayToIso(p.date) : null) ??
         toDay(p.updatedAt) ??
         toDay(p.publishedAt) ??
         FALLBACK_DAY;
       return {
         url: `${base}/blog/${p.slug}`,
-        lastModified,
-        changeFrequency: "monthly",
-        priority: 0.7,
+        lastModified: new Date(`${day}T00:00:00.000Z`),
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
       };
     });
+    /* جدیدترین مقاله اول — مثل سایت مرجع */
+    blog.sort(
+      (a, b) =>
+        (b.lastModified as Date).getTime() - (a.lastModified as Date).getTime(),
+    );
   } catch {
     /* دیتابیس در دسترس نیست — صفحات اصلی همچنان سرو می‌شوند */
   }
 
-  /* ---------- صفحات اصلی: جدیدترین تاریخ واقعی محتوا ----------
-     چون همه تاریخ‌ها اکنون تاریخ-تحریری و پایدارند، این مقدار هم
-     بین درخواست‌ها ثابت می‌ماند — دقیقاً چیزی که گوگل می‌خواهد */
-  const days = blog
-    .map((b) => b.lastModified)
-    .filter((d): d is string => typeof d === "string")
-    .sort();
-  const mainDay = days.length ? days[days.length - 1] : FALLBACK_DAY;
-
+  /* ---------- صفحات اصلی فارسی ---------- */
   const main: MetadataRoute.Sitemap = [
     {
       url: base,
-      lastModified: mainDay,
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 1,
       alternates: { languages: { fa: base, en: `${base}/en`, "x-default": base } },
     },
-    { url: `${base}/jaw-surgery`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/chin-surgery`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/dental-implant`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/implant-pasdaran`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/jaw-surgery`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${base}/chin-surgery`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${base}/dental-implant`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${base}/implant-pasdaran`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     {
       url: `${base}/about`,
-      lastModified: mainDay,
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.8,
       alternates: { languages: { fa: `${base}/about`, en: `${base}/en/about`, "x-default": `${base}/about` } },
     },
     {
       url: `${base}/services`,
-      lastModified: mainDay,
+      lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
       alternates: { languages: { fa: `${base}/services`, en: `${base}/en/services`, "x-default": `${base}/services` } },
     },
-    { url: `${base}/costs`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/gallery`, lastModified: mainDay, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${base}/blog`, lastModified: mainDay, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/appointment`, lastModified: mainDay, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/privacy`, lastModified: mainDay, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${base}/costs`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/gallery`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/blog`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
+    { url: `${base}/appointment`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     {
       url: `${base}/contact`,
-      lastModified: mainDay,
+      lastModified: now,
       changeFrequency: "yearly",
-      priority: 0.7,
+      priority: 0.9,
       alternates: { languages: { fa: `${base}/contact`, en: `${base}/en/contact`, "x-default": `${base}/contact` } },
     },
   ];
@@ -116,35 +109,35 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const en: MetadataRoute.Sitemap = [
     {
       url: `${base}/en`,
-      lastModified: mainDay,
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
       alternates: { languages: { fa: base, en: `${base}/en`, "x-default": base } },
     },
     {
       url: `${base}/en/about`,
-      lastModified: mainDay,
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
       alternates: { languages: { fa: `${base}/about`, en: `${base}/en/about`, "x-default": `${base}/about` } },
     },
     {
       url: `${base}/en/services`,
-      lastModified: mainDay,
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
       alternates: { languages: { fa: `${base}/services`, en: `${base}/en/services`, "x-default": `${base}/services` } },
     },
     {
       url: `${base}/en/jaw-surgery-in-iran`,
-      lastModified: mainDay,
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.9,
       alternates: { languages: { en: `${base}/en/jaw-surgery-in-iran` } },
     },
     {
       url: `${base}/en/contact`,
-      lastModified: mainDay,
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
       alternates: { languages: { fa: `${base}/contact`, en: `${base}/en/contact`, "x-default": `${base}/contact` } },

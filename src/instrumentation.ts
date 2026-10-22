@@ -132,24 +132,28 @@ export async function register(): Promise<void> {
     }
     if (seeded) console.log(`[seed] ${seeded} مقاله در دیتابیس sync شد`);
 
-    /* پاکسازی مقالات جامانده — دیپلوی‌های اول ۱۶ مقاله قدیمی
-       (اسلاگ‌هایی مثل orthognathic-surgery با تاریخ ۱۴۰۱) در
-       دیتابیس سرور گذاشته بودند. اگر این ردیف‌ها بمانند:
-       ۱) پنل ادمین مقالات غیرواقعی نشان می‌دهد
-       ۲) اگر دیتابیس یک روز در دسترس شود، سایت ناگهان ۱۶ مقاله
-          قدیمی/حذف‌شده را نمایش می‌دهد و سایت‌مپ URLهای ۴۰۴ می‌گیرد
-       منبع حقیقت = BLOG_ARTICLES در کد */
-    const canonicalSlugs = BLOG_ARTICLES.map((a) => a.slug);
+    /* پایش مقالات خارج از فهرست کد — فقط لاگ، بدون حذف!
+       قبلاً اینجا deleteMany({ slug: { notIn: canonicalSlugs } }) بود که
+       هر مقاله‌ای که در کد نبود را با هر ری‌استارت/دیپلوی حذف می‌کرد —
+       یعنی مقاله‌های منتشرشدهٔ روزانهٔ ایجنت‌ها و مقاله‌های ساخته‌شده در
+       پنل ادمین عملاً هر شب پاک می‌شدند و سایت‌مپ هیچ‌وقت مقاله جدید
+       نمی‌دید. پاکسازی یک‌بارهٔ مقالات قدیمی (۱۴۰۱) سرور قبلاً انجام
+       شده؛ از این پس هیچ حذف خودکاری انجام نمی‌شود — فقط گزارش می‌دهیم. */
     try {
-      const removed = await db.blogPost.deleteMany({
+      const canonicalSlugs = BLOG_ARTICLES.map((a) => a.slug);
+      const stray = await db.blogPost.findMany({
         where: { slug: { notIn: canonicalSlugs } },
+        select: { slug: true },
       });
-      if (removed.count) {
-        console.log(`[seed] ${removed.count} مقاله قدیمی از دیتابیس حذف شد`);
-        /* بدون حذف قدیمی‌ها، findMany ردیف‌های قدیمی را هم برمی‌گرداند */
+      if (stray.length) {
+        console.log(
+          `[seed] ${stray.length} مقاله خارج از فهرست کد (ایجنت/ادمین) — حفظ شد: ${stray
+            .map((s) => s.slug)
+            .join(", ")}`,
+        );
       }
     } catch (e) {
-      console.error("[seed] cleanup:", (e as Error).message);
+      console.error("[seed] scan:", (e as Error).message);
     }
 
     /* زمان‌بند ایجنت‌ها */
