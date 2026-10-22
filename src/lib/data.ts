@@ -109,7 +109,7 @@ export const SERVICES = [
     title: "بلفاروپلاستی",
     latin: "Blepharoplasty",
     desc: "جراحی پلک برای رفع پف و افتادگی پلک بالا و پایین؛ جوانسازی نگاه با برش های ظریف و پنهان در چین طبیعی پلک.",
-    image: "/images/blepharo-2.jpg",
+    image: "/images/blepharo-1.jpg",
     points: [
       "رفع پف و کیسه های زیر چشم",
       "اصلاح افتادگی پلک بالا",
@@ -273,6 +273,10 @@ export const BEFORE_AFTER = {
     label: "جراحی دو فک (بایمکس)",
   },
   blepharo: {
+    /* توجه: محتوای فایل‌ها جابجا شده — blepharo-1 = عکس قبل از عمل
+       (خط‌گذاری بنفش) و blepharo-2 = بلافاصله بعد از عمل (بخیه).
+       ردیف‌های دیتابیس (BeforeAfterPair) به همین مسیرها اشاره می‌کنند
+       و چون فایل‌ها عوض شدند، پرده قبل/بعد اکنون درست است. */
     before: "/images/blepharo-1.jpg",
     after: "/images/blepharo-2.jpg",
     label: "بلفاروپلاستی",
