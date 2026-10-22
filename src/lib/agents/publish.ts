@@ -97,11 +97,11 @@ export async function publishSubmittedArticle(draft: SubmittedArticle, cover: Co
     return { ok: false, reason: `سردبیر رد کرد: ${failed.map(([r]) => r).join(" | ")}`, slug: draft.slug, title: draft.title };
   }
 
-  const cover = await saveCover(draft.slug, coverBase64);
+  const coverResolved = await saveCover(draft.slug, cover);
   await db.blogPost.upsert({
     where: { slug: draft.slug },
-    create: { slug: draft.slug, title: draft.title, excerpt: draft.excerpt, body: draft.body, cover, date: todayJalali(), published: true },
-    update: { title: draft.title, excerpt: draft.excerpt, body: draft.body, cover, published: true },
+    create: { slug: draft.slug, title: draft.title, excerpt: draft.excerpt, body: draft.body, cover: coverResolved, date: todayJalali(), published: true },
+    update: { title: draft.title, excerpt: draft.excerpt, body: draft.body, cover: coverResolved, published: true },
   });
   return { ok: true, reason: `منتشر شد (${words} کلمه، ${faqCount} سوال FAQ)`, slug: draft.slug, title: draft.title };
 }
