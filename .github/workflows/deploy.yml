@@ -180,6 +180,8 @@ jobs:
 
       # ── کاناری سئو: اگر سایت‌مپ قدیمی سرو شود (کش LSCache / state مخلوط .next)
       # دیپلوی قرمز می‌شود تا فوراً بفهمیم — نه هفته‌ها بعد در Search Console
+      # سبک قالب: مثل سایت مرجع — بدون هیچ «xhtml:» (نه xmlns:xhtml نه xhtml:link)؛
+      # از commit 1668931 به بعد هر <url> فقط loc/lastmod/changefreq/priority دارد.
       # اکسترکت پکیج ۶۹MB روی هاست اشتراکی تا ۲-۳ دقیقه طول می‌کشد؛
       # مرحله wake فقط «مصرف پکیج» را چک می‌کند نه «سرو واقعی» — پس اینجا
       # تا ~۷ دقیقه با حوصله می‌کشیم (۱۵ تلاش × ۲۵ ثانیه)
@@ -193,13 +195,13 @@ jobs:
             SM=$(curl -sf --max-time 30 "https://${{ env.SITE_HOST }}/sitemap.xml" || echo "")
             c1=$(echo "$SM" | grep -c "jaw-surgery-in-iran" || true)
             c2=$(echo "$SM" | grep -c "<loc>https://${{ env.SITE_HOST }}/appointment</loc>" || true)
-            c3=$(echo "$SM" | grep -c "xhtml:link" || true)
+            c3=$(echo "$SM" | grep -c "xhtml:" || true)
             n=$(echo "$SM" | grep -c "<loc>" || true)
-            echo "تلاش $attempt → EN-landing:$c1 appointment:$c2 hreflang:$c3 URLs:$n"
+            echo "تلاش $attempt → EN-landing:$c1 appointment:$c2 xhtml:$c3 URLs:$n"
             ok=1
             [ "$c1" -ge 1 ] || ok=0
             [ "$c2" -ge 1 ] || ok=0
-            [ "$c3" -ge 1 ] || ok=0
+            [ "$c3" -eq 0 ] || ok=0   # قالب تمیز: هیچ xhtml: نباید باشد
             [ "$n" -ge 30 ] || ok=0
             if [ "$ok" = "1" ]; then
               echo "✅ کاناری سبز (تلاش $attempt) — sitemap URLs: $n"
