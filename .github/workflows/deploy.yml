@@ -147,20 +147,33 @@ jobs:
 
       # ── کاناری سئو: اگر سایت‌مپ قدیمی سرو شود (کش LSCache / state مخلوط .next)
       # دیپلوی قرمز می‌شود تا فوراً بفهمیم — نه هفته‌ها بعد در Search Console
+      # تا ۹۰ ثانیه فرصت می‌دهیم (Passenger ممکن است هنوز اکسترکت/بوت باشد)
       - name: Verify sitemap freshness (SEO canary)
         if: env.DEPLOY_READY == 'true'
         run: |
           sleep 5
-          SM=$(curl -sf --max-time 60 "https://${{ env.SITE_HOST }}/sitemap.xml" || echo "")
-          echo "$SM" | head -c 300; echo
-          fail=0
-          echo "$SM" | grep -q "jaw-surgery-in-iran" || { echo "::error::sitemap: EN landing missing — stale sitemap served"; fail=1; }
-          echo "$SM" | grep -q "<loc>${{ env.SITE_HOST }}/appointment</loc>" || { echo "::error::sitemap: /appointment missing"; fail=1; }
-          echo "$SM" | grep -q "xhtml:link" || { echo "::error::sitemap: hreflang alternates missing"; fail=1; }
-          n=$(echo "$SM" | grep -c "<loc>" || true)
-          echo "sitemap URLs: $n (expected ≥ 30)"
-          [ "$n" -ge 30 ] || { echo "::error::sitemap: too few URLs — stale build?"; fail=1; }
-          exit $fail
+          fail=1
+          for attempt in 1 2 3 4 5 6; do
+            SM=$(curl -sf --max-time 60 "https://${{ env.SITE_HOST }}/sitemap.xml" || echo "")
+            ok=1
+            echo "$SM" | grep -q "jaw-surgery-in-iran" || ok=0
+            echo "$SM" | grep -q "<loc>${{ env.SITE_HOST }}/appointment</loc>" || ok=0
+            echo "$SM" | grep -q "xhtml:link" || ok=0
+            n=$(echo "$SM" | grep -c "<loc>" || true)
+            [ "$n" -ge 30 ] || ok=0
+            if [ "$ok" = "1" ]; then
+              echo "✅ کاناری سبز (تلاش $attempt) — sitemap URLs: $n"
+              fail=0
+              break
+            fi
+            echo "⏳ تلاش $attempt ناموفق بود (URLs: $n) — ۱۵ ثانیه صبر و بررسی مجدد…"
+            sleep 15
+          done
+          if [ "$fail" = "1" ]; then
+            echo "$SM" | head -c 300; echo
+            echo "::error::sitemap: کاناری بعد از ۶ تلاش قرمز ماند — stale sitemap یا اپ پایین"
+            exit 1
+          fi
 
       - name: Done (بدون دیپلوی — فقط بیلد)
         if: env.DEPLOY_READY != 'true'
