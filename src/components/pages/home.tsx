@@ -589,50 +589,6 @@ function PortfolioSection() {
   );
 }
 
-/* ================= SUCCESS RATES ================= */
-function SuccessRates() {
-  const { successRates: SUCCESS_RATES } = useContent();
-  return (
-    <section className="bg-bone py-24" aria-label="آمار نتایج درمان ها">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <Reveal className="max-w-2xl">
-          <p className="flex items-center gap-3 text-sm font-bold text-teal-2">
-            <span className="h-px w-10 bg-teal" aria-hidden />
-            آمار نتایج درمان ها
-          </p>
-          <h2 className="mt-4 text-3xl font-black leading-snug sm:text-4xl">
-            اعداد، خودشان حرف می زنند
-          </h2>
-        </Reveal>
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {SUCCESS_RATES.map((s, i) => (
-            <Reveal key={s.title} delay={i * 0.1}>
-              <MagicCard
-                className="h-full rounded-3xl"
-                surface="#fffdf7"
-                gradientSize={260}
-              >
-                <div className="relative h-full overflow-hidden rounded-3xl bg-card p-8 ring-1 ring-ink/5">
-                  <p className="gold-text text-5xl font-black">{s.rate}</p>
-                  <div className="mt-4 h-1.5 w-24 overflow-hidden rounded-full bg-ink/8" aria-hidden>
-                    <div className="h-full rounded-full bg-gradient-to-l from-teal to-sand" />
-                  </div>
-                  <h3 className="mt-4 font-extrabold leading-7">{s.title}</h3>
-                  <p className="mt-2 text-sm text-foreground/60">{s.detail}</p>
-                  <span
-                    aria-hidden
-                    className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full bg-teal/8 transition-transform duration-500 group-hover:scale-150"
-                  />
-                </div>
-              </MagicCard>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ================= FAQ (AEO) ================= */
 function FaqSection() {
   const { site: SITE, faq: FAQ } = useContent();
@@ -739,7 +695,6 @@ export function HomePage() {
       <AboutTeaser />
       <ServicesSection />
       <PortfolioSection />
-      <SuccessRates />
       <BlogTeaser />
       <FaqSection />
       <CtaSection />
