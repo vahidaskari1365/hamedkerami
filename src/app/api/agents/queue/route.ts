@@ -28,14 +28,15 @@ export async function GET(req: Request) {
   }
   try {
     const existing = await db.blogPost.findMany({ select: { title: true, slug: true } });
-    const taken = new Set(existing.map((p) => p.title));
+    const cursor = [...existing.map((p) => p.title)];
+    const cursorSlugs = existing.map((p) => p.slug);
     const pending: ReturnType<typeof nextTopic>[] = [];
-    let cursor = [...existing.map((p) => p.title)];
     for (let i = 0; i < 4; i++) {
-      const t = nextTopic(cursor);
+      const t = nextTopic(cursor, cursorSlugs);
       if (!t) break;
       pending.push(t);
       cursor.push(t.title);
+      cursorSlugs.push(t.slug);
     }
     return NextResponse.json({
       totalPublished: existing.length,

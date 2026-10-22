@@ -148,7 +148,10 @@ export async function seoAgent(
 
 /* ---------------- ۴) ایجنت تصویرساز ۳D — خروجی base64 ---------------- */
 export async function imageAgentBase64(topic: Topic): Promise<string> {
-  const prompt = `Professional 3D medical illustration, ${topic.keyword}, human jaw and facial skeleton anatomy, isometric 3D render style, soft studio lighting, dark lacquer background with warm gold accents, premium medical website cover, clean composition, high quality, detailed, no text, no watermark`;
+  /* موضوع تصویر از اسلاگ انگلیسی ساخته می‌شود — کلمات کلیدی فارسی
+     (مثل «هزینه») فیلتر محتوای API تصویر را فعال می‌کنند */
+  const subjectEn = topic.slug.replace(/-\d+$/, "").replace(/-/g, " ");
+  const prompt = `Professional 3D medical illustration of ${subjectEn}, human jaw and facial skeleton anatomy, isometric 3D render style, soft studio lighting, dark lacquer background with warm gold accents, premium medical website cover, clean composition, high quality, detailed, no text, no watermark`;
   const zai = await ZAI.create();
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {

@@ -124,10 +124,11 @@ async function runDailyBlogInner(force = false): Promise<PublishResult[] | { ski
 
   const results: PublishResult[] = [];
   const publishedTitles = existing.map((p) => p.title);
+  const publishedSlugs = existing.map((p) => p.slug);
 
   for (let i = 0; i < ARTICLES_PER_DAY; i++) {
-    /* موضوع بعدی — عناوین همین اجرا هم جزو «منتشرشده» حساب می‌شوند */
-    const topic = nextTopic(publishedTitles);
+    /* موضوع بعدی — عناوین و اسلاگ‌های همین اجرا هم جزو «منتشرشده» حساب می‌شوند */
+    const topic = nextTopic(publishedTitles, publishedSlugs);
     if (!topic) {
       console.log(`${LOG_PREFIX} صف موضوعات خالی است`);
       break;
@@ -136,7 +137,10 @@ async function runDailyBlogInner(force = false): Promise<PublishResult[] | { ski
     try {
       const r = await publishOneTopic(zai, topic);
       results.push(r);
-      if (r.ok) publishedTitles.push(r.title);
+      if (r.ok) {
+        publishedTitles.push(r.title);
+        publishedSlugs.push(r.slug);
+      }
     } catch (e) {
       console.error(`${LOG_PREFIX} ✗ موضوع «${topic.title}» ناموفق:`, (e as Error).message);
       results.push({ ok: false, reason: `خطا: ${((e as Error).message || "").slice(0, 200)}`, slug: topic.slug, title: topic.title });

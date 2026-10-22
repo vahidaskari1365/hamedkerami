@@ -323,11 +323,13 @@ export const EVERGREEN_TOPICS: Topic[] = [
   },
 ];
 
-/** انتخاب موضوع بعدی: صف اصلی → evergreen → null */
-export function nextTopic(publishedTitles: string[]): Topic | null {
-  const taken = new Set(publishedTitles);
-  const fresh = TOPIC_QUEUE.find((t) => !taken.has(t.title));
+/** انتخاب موضوع بعدی: صف اصلی → evergreen → null
+    dedupe دوگانه: عنوان (سازه تولید ایجنت) + اسلاگ (پایدار و قابل اتکا) */
+export function nextTopic(publishedTitles: string[], publishedSlugs: string[] = []): Topic | null {
+  const takenTitles = new Set(publishedTitles);
+  const takenSlugs = new Set(publishedSlugs);
+  const fresh = TOPIC_QUEUE.find((t) => !takenTitles.has(t.title) && !takenSlugs.has(t.slug));
   if (fresh) return fresh;
-  const ever = EVERGREEN_TOPICS.find((t) => !taken.has(t.title));
+  const ever = EVERGREEN_TOPICS.find((t) => !takenTitles.has(t.title) && !takenSlugs.has(t.slug));
   return ever ?? null;
 }
