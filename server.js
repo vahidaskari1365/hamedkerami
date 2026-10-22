@@ -121,27 +121,6 @@ function extractPendingPackage() {
       console.error("[bootstrap] zai-config copy (non-fatal):", e.message);
     }
 
-    /* ۷) کلید ایجنت‌های بلاگ — فایل .agent-secret (بیرون public_html، از وب
-       در دسترس نیست) منبع حقیقت AGENT_SECRET است و روی هر مقدار
-       قدیمی env (مثلاً از cPanel) اولویت دارد؛ تا تریگر گیت‌هاب همیشه
-       با همان کلیدی که workflow می‌شناسد پاس شود.
-       نسخه‌ای از فایل داخل .next/standalone هم کپی می‌شود تا instrumentation
-       در هر ری‌استارت (حتی بدون پکیج در انتظار) بتواند بخواند */
-    try {
-      const secFile = path.join(ROOT, ".agent-secret");
-      if (fs.existsSync(secFile)) {
-        const val = fs.readFileSync(secFile, "utf8").trim();
-        if (val) {
-          process.env.AGENT_SECRET = val;
-          console.log("[bootstrap] .agent-secret → AGENT_SECRET بارگذاری شد (override)");
-          const dstDir = path.join(ROOT, ".next", "standalone");
-          if (fs.existsSync(dstDir)) fs.copyFileSync(secFile, path.join(dstDir, ".agent-secret"));
-        }
-      }
-    } catch (e) {
-      console.error("[bootstrap] agent-secret (non-fatal):", e.message);
-    }
-
     fs.rmSync(STAGE, { recursive: true, force: true });
     fs.unlinkSync(PKG);
     console.log("[bootstrap] clean-swap deploy DONE — fresh .next is live");
@@ -206,6 +185,24 @@ process.env.DATABASE_URL = "file:" + DB_FILE;
 
 /* آپلودهای ادمین در <اپ>/data/uploads می‌مانند (پایدار، همراه بکاپ‌ها)
    و از طریق route داینامیک /uploads/<file> سرو می‌شوند */
+/* ۸) کلید ایجنت‌های بلاگ — فایل .agent-secret منبع حقیقت AGENT_SECRET است
+   و روی هر مقدار قدیمی env اولویت دارد؛ در هر بوت (با یا بدون پکیج)
+   خوانده می‌شود تا تریگر گیت‌هاب با همان کلید پاس شود */
+try {
+  const secFile = path.join(ROOT, ".agent-secret");
+  if (fs.existsSync(secFile)) {
+    const val = fs.readFileSync(secFile, "utf8").trim();
+    if (val) {
+      process.env.AGENT_SECRET = val;
+      console.log("[bootstrap] .agent-secret → AGENT_SECRET بارگذاری شد (override)");
+      const dstDir = path.join(ROOT, ".next", "standalone");
+      if (fs.existsSync(dstDir)) fs.copyFileSync(secFile, path.join(dstDir, ".agent-secret"));
+    }
+  }
+} catch (e) {
+  console.error("[bootstrap] agent-secret (non-fatal):", e.message);
+}
+
 process.env.UPLOAD_DIR = path.join(ROOT, "data", "uploads");
 try {
   fs.mkdirSync(process.env.UPLOAD_DIR, { recursive: true });

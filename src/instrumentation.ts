@@ -9,30 +9,6 @@
 export async function register(): Promise<void> {
   if (process.env.NEXT_RUNTIME !== "nodejs") return;
 
-  /* کلید تریگر ایجنت‌ها — فایل .agent-secret را در cwd (standalone) و
-     پدرهایش جستجو می‌کند و روی مقدار قدیمی env اولویت می‌دهد؛
-     منبع حقیقت = فایلی که deploy.yml از secret گیت‌هاب نصب می‌کند.
-     (boot بدون پکیج در انتظار هم پوشش داده می‌شود) */
-  try {
-    const fs = await import("node:fs");
-    const path = await import("node:path");
-    let dir = process.cwd();
-    for (let i = 0; i < 4 && dir; i++) {
-      const f = path.join(dir, ".agent-secret");
-      if (fs.existsSync(f)) {
-        const val = fs.readFileSync(f, "utf8").trim();
-        if (val) {
-          process.env.AGENT_SECRET = val;
-          console.log("[instrumentation] .agent-secret → AGENT_SECRET بارگذاری شد");
-        }
-        break;
-      }
-      dir = path.dirname(dir);
-    }
-  } catch (e) {
-    console.error("[instrumentation] agent-secret:", (e as Error).message);
-  }
-
   try {
     const { db } = await import("@/lib/db");
     const { BLOG_ARTICLES } = await import("@/lib/blog-articles");
