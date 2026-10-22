@@ -70,7 +70,7 @@ async function publishOneTopic(zai: Awaited<ReturnType<typeof ZAI.create>>, topi
   /* ۵) سردبیر و انتشار */
   const result = await publishSubmittedArticle(
     { slug, title: optimized.title, excerpt: optimized.excerpt || topic.brief.slice(0, 150), body: optimized.body, keyword: topic.keyword },
-    coverBase64,
+    { coverBase64 },
   );
   console.log(`${LOG_PREFIX} ${result.ok ? "✓ منتشر شد" : "✗ رد شد"} — ${result.reason}`);
   return result;

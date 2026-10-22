@@ -40,11 +40,8 @@ export async function GET(req: Request) {
     return NextResponse.json({
       totalPublished: existing.length,
       publishedTitles: existing.map((p) => p.title),
-      pending: pending.map((t) => ({
-        slug: t?.slug,
-        title: t?.title,
-        keyword: t?.keyword,
-      })),
+      /* موضوع کامل — رانر برای تولید به related/landing/brief نیاز دارد */
+      pending,
     });
   } catch (e) {
     return NextResponse.json({ error: (e as Error).message }, { status: 500 });

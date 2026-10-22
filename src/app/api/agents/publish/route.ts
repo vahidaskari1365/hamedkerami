@@ -30,7 +30,7 @@ export async function POST(req: Request) {
   }
   try {
     const body = await req.json();
-    const { slug, title, excerpt, body: articleBody, keyword, coverBase64 } = body ?? {};
+    const { slug, title, excerpt, body: articleBody, keyword, coverBase64, cover: coverPath } = body ?? {};
     if (!slug || !title || !articleBody) {
       return NextResponse.json({ error: "fieds: slug/title/body الزامی است" }, { status: 400 });
     }
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     }
     const result = await publishSubmittedArticle(
       { slug, title, excerpt: excerpt || "", body: articleBody, keyword: keyword || "" },
-      coverBase64 || "",
+      { coverBase64: coverBase64 || "", coverPath },
     );
     return NextResponse.json(result, { status: result.ok ? 201 : 422 });
   } catch (e) {

@@ -28,13 +28,21 @@ export type SubmittedArticle = {
   keyword: string;
 };
 
-async function saveCover(slug: string, coverBase64: string): Promise<string> {
-  if (coverBase64 && coverBase64.length > 1000) {
+export type CoverInput = {
+  /** مسیر کاور از قبل موجود (مثلاً /images/agent/xxx.png از مخزن مقالات آماده) */
+  coverPath?: string;
+  /** یا تصویر base64 تولیدشده توسط ایجنت تصویرساز */
+  coverBase64?: string;
+};
+
+async function saveCover(slug: string, cover: CoverInput): Promise<string> {
+  if (cover.coverPath && cover.coverPath.startsWith("/")) return cover.coverPath;
+  if (cover.coverBase64 && cover.coverBase64.length > 1000) {
     try {
       const dir = uploadsDir();
       await mkdir(dir, { recursive: true });
       const name = `a${createHash("md5").update(slug).digest("hex").slice(0, 24)}.png`;
-      await writeFile(path.join(dir, name), Buffer.from(coverBase64, "base64"));
+      await writeFile(path.join(dir, name), Buffer.from(cover.coverBase64 as string, "base64"));
       return `/uploads/${name}`;
     } catch (e) {
       console.error("[agents/publish] ذخیره کاور ناموفق:", (e as Error).message);
@@ -55,7 +63,7 @@ function todayJalali(): string {
   return new Intl.DateTimeFormat("fa-IR", { timeZone: "Asia/Tehran", year: "numeric", month: "long", day: "numeric" }).format(new Date());
 }
 
-export async function publishSubmittedArticle(draft: SubmittedArticle, coverBase64: string): Promise<PublishResult> {
+export async function publishSubmittedArticle(draft: SubmittedArticle, cover: CoverInput = {}): Promise<PublishResult> {
   const words = countWords(draft.body);
   const hasAnswer = draft.body.trimStart().startsWith(">");
   const faqCount = (draft.body.match(/^### .+/gm) || []).length;
@@ -63,7 +71,7 @@ export async function publishSubmittedArticle(draft: SubmittedArticle, coverBase
   const nameMention = /کرمانی|کرانیوفاسیال/.test(draft.body);
 
   const checks: [string, boolean][] = [
-    ["طول مقاله زیر ۱۵۰۰ کلمه است", words < 1500],
+    ["طول مقاله زیر ۷۰۰ کلمه است", words < 700],
     ["پاسخ مستقیم ابتدای مقاله ندارد", !hasAnswer],
     ["FAQ کمتر از ۴ سوال دارد", faqCount < 4],
     ["CTA تماس ندارد", !hasCta],
