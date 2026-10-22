@@ -31,7 +31,7 @@ export default async function ImplantPasdaranPage() {
     "@type": "Dentist",
     name: "مطب دکتر حامد کرمانی — ایمپلنت و جراحی فک و صورت",
     medicalSpecialty: "Dentistry",
-    telephone: "02166921500",
+    telephone: "09382080270",
     address: {
       "@type": "PostalAddress",
       addressLocality: "تهران",

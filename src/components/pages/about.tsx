@@ -192,7 +192,7 @@ export function AboutPage() {
 
       {/* stats band */}
       <section className="bg-ink py-16 text-white" aria-label="آمار جراحی ها">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 text-center sm:px-6 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 text-center sm:grid-cols-3 sm:px-6 lg:grid-cols-5">
           {STATS.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.08}>
               <p className="text-4xl font-black text-teal sm:text-5xl">

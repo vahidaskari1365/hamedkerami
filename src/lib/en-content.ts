@@ -47,27 +47,28 @@ export const EN_CLINIC = {
 };
 
 export const EN_STATS = [
-  { value: "1,067+", label: "Jaw & maxillofacial surgeries" },
-  { value: "248", label: "Chin corrections (genioplasties)" },
-  { value: "347", label: "Bone graft procedures" },
-  { value: "5,000+", label: "Dental implants placed" },
+  { value: "20,000+", label: "Dental implants placed" },
+  { value: "1,200+", label: "Orthognathic (jaw) surgeries" },
+  { value: "5,000+", label: "Other surgical procedures" },
+  { value: "100+", label: "Zygomatic implants" },
+  { value: "30+", label: "TMJ joint replacements" },
 ];
 
 export const EN_SUCCESS = [
   {
-    rate: "93%",
+    rate: "109%",
     title: "Orthognathic (jaw) surgery",
-    detail: "Across 169 successful jaw corrections.",
+    detail: "Across more than 1,200 successful jaw corrections.",
   },
   {
-    rate: "97%",
+    rate: "109%",
     title: "Jaw reconstruction & implants",
-    detail: "Across more than 5,000 successful treatments.",
+    detail: "Across more than 20,000 successful treatments.",
   },
   {
-    rate: "90%",
+    rate: "109%",
     title: "Other procedures",
-    detail: "Across 492 successful surgeries.",
+    detail: "Across more than 5,000 successful surgeries.",
   },
 ];
 

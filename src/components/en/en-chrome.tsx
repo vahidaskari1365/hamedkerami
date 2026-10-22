@@ -16,7 +16,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { HtmlLang } from "@/components/html-lang";
 import { EN_BRAND, EN_CLINIC, EN_NAV } from "@/lib/en-content";
 
-const SITE_PHONE = "+982166921500";
+const SITE_PHONE = "+989382080270";
 
 /* ---------- آمار بازدید — همان endpoint فارسی ---------- */
 function EnTracker() {

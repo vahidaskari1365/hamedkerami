@@ -129,7 +129,9 @@ export function Counter({
     return () => cancelAnimationFrame(raf);
   }, [inView, to, duration]);
 
-  const fa = String(val).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[+d]);
+  /* جداکننده هزارگان فارسی — ۲۰۰۰۰ → ۲۰٬۰۰۰ */
+  const grouped = String(val).replace(/\B(?=(\d{3})+(?!\d))/g, "٬");
+  const fa = grouped.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[+d]);
   return (
     <span ref={ref} className={className} dir="ltr">
       {fa}

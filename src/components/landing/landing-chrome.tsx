@@ -10,8 +10,8 @@ import { waLink } from "@/lib/data";
 export const SITE_INFO = {
   name: "دکتر حامد کرمانی",
   role: "متخصص جراحی فک و صورت — فلوشیپ جراحی های کرانیوفاسیال",
-  phone: "02166921500",
-  phoneDisplay: "۰۲۱-۶۶۹۲۱۵۰۰",
+  phone: "09382080270",
+  phoneDisplay: "۰۹۳۸-۲۰۸۰۲۷۰",
   whatsapp: "09382080270",
   whatsappDisplay: "۰۹۳۸-۲۰۸۰۲۷۰",
   address: "تهران، بلوار کشاورز، تقاطع جمالزاده، ساختمان پزشکان کوثر، طبقه ۳ واحد ۱۲",
@@ -95,7 +95,7 @@ export function LandingFooter({ related }: { related: { href: string; label: str
           <div>
             <p className="text-base font-black text-white">{SITE_INFO.name}</p>
             <p className="mt-2 text-xs leading-7">{SITE_INFO.role}</p>
-            <p className="mt-4 text-xs leading-7">سابقه بیش از ۱۶ سال جراحی، ۱۰۶۷ جراحی فک و ۵۰۰۰ ایمپلنت دندان</p>
+            <p className="mt-4 text-xs leading-7">سابقه بیش از ۱۶ سال جراحی، ۱۲۰۰ جراحی فک و ۲۰۰۰۰ ایمپلنت دندان</p>
           </div>
           <div>
             <p className="text-sm font-black text-white">اطلاعات تماس</p>

@@ -265,7 +265,7 @@ function Stats() {
           "سینوس لیفت و GBR",
         ]}
       />
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px overflow-hidden px-4 py-14 sm:px-6 lg:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px overflow-hidden px-4 py-14 sm:grid-cols-3 sm:px-6 lg:grid-cols-5">
         {STATS.map((s, i) => (
           <Reveal key={s.label} delay={i * 0.08} className="text-center">
             <p className="gold-text text-4xl font-black sm:text-5xl">

@@ -238,7 +238,7 @@ export default async function BlogArticlePage({ params }: Props) {
                 <p className="text-sm font-black text-ink">دکتر حامد کرمانی</p>
                 <p className="mt-1 text-xs leading-6 text-foreground/60">
                   متخصص جراحی فک و صورت و فلوشیپ جراحی های کرانیوفاسیال از دانشگاه علوم پزشکی
-                  تهران — بیش از ۱۰۶۷ جراحی موفق فک و صورت و ۵۰۰۰ ایمپلنت دندان.
+                  تهران — بیش از ۱۲۰۰ جراحی موفق فک و صورت و ۲۰۰۰۰ ایمپلنت دندان.
                 </p>
                 <Link
                   href="/about"

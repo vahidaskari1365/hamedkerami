@@ -127,7 +127,7 @@ export default function EnHomePage() {
 
       {/* ---------- آمار ---------- */}
       <section aria-label="Surgical statistics" className="border-b border-ink/8 bg-bone-2 py-10">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 sm:px-6 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 sm:grid-cols-3 sm:px-6 lg:grid-cols-5">
           {EN_STATS.map((s) => (
             <div key={s.label} className="text-center">
               <p className="text-2xl font-black text-teal-3 sm:text-3xl">{s.value}</p>

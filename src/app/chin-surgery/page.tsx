@@ -38,7 +38,7 @@ export default async function ChinSurgeryPage() {
       "@type": "Physician",
       name: "دکتر حامد کرمانی",
       medicalSpecialty: "OralAndMaxillofacialSurgery",
-      telephone: "02166921500",
+      telephone: "09382080270",
     },
   };
 

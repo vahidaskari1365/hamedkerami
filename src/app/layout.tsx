@@ -158,7 +158,7 @@ async function JsonLd() {
     url: SITE.url,
     image: `${SITE.url}/images/dr-photo.png`,
     logo: `${SITE.url}/images/logo.png`,
-    telephone: "+982166921500",
+    telephone: "+989382080270",
     description: SITE.metaDescription,
     medicalSpecialty: "OralAndMaxillofacialSurgery",
     priceRange: "$$$",
