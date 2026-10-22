@@ -122,16 +122,20 @@ function extractPendingPackage() {
     }
 
     /* ۷) کلید ایجنت‌های بلاگ — فایل .agent-secret (بیرون public_html، از وب
-       در دسترس نیست) به AGENT_SECRET خوانده می‌شود تا تریگر گیت‌هاب با
-       هدر x-agent-key بتواند /api/agents/daily را صدا بزند.
-       هر دیپلوی بازنویسی‌اش می‌کند (self-heal، مثل .z-ai-config) */
+       در دسترس نیست) منبع حقیقت AGENT_SECRET است و روی هر مقدار
+       قدیمی env (مثلاً از cPanel) اولویت دارد؛ تا تریگر گیت‌هاب همیشه
+       با همان کلیدی که workflow می‌شناسد پاس شود.
+       نسخه‌ای از فایل داخل .next/standalone هم کپی می‌شود تا instrumentation
+       در هر ری‌استارت (حتی بدون پکیج در انتظار) بتواند بخواند */
     try {
       const secFile = path.join(ROOT, ".agent-secret");
       if (fs.existsSync(secFile)) {
         const val = fs.readFileSync(secFile, "utf8").trim();
-        if (val && !process.env.AGENT_SECRET) {
+        if (val) {
           process.env.AGENT_SECRET = val;
-          console.log("[bootstrap] .agent-secret → AGENT_SECRET بارگذاری شد");
+          console.log("[bootstrap] .agent-secret → AGENT_SECRET بارگذاری شد (override)");
+          const dstDir = path.join(ROOT, ".next", "standalone");
+          if (fs.existsSync(dstDir)) fs.copyFileSync(secFile, path.join(dstDir, ".agent-secret"));
         }
       }
     } catch (e) {
