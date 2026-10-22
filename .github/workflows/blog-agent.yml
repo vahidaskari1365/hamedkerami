@@ -1,11 +1,15 @@
 name: Blog Agent (2 articles/day — 07:00 Tehran)
 
 # ایجنت محتوایی سایت: هر روز ۰۷:۰۰ به وقت ایران (۰۳:۳۰ UTC) دو مقاله بعدی
-# صف را با ۵ ایجنت (استراتژیست/نویسنده/سئوکار/تصویرساز ۳D/سردبیر) تولید و
-# منتشر می‌کند؛ سایت‌مپ و llms.txt داینامیک خودکار به‌روز می‌شوند.
-# این workflow «تریگر» است — اجرا روی سرور سایت رخ می‌دهد (پایپ‌لاین
-# درون‌پردازشی). زمان‌بند داخلی سرور (۰۷:۰۰-۰۹:۵۹ تهران) هم به‌عنوان
-# پشتیبان فعال است؛ قفل روزانه دوباره‌کاری را غیرممکن می‌کند.
+# صف ۲۴ مقاله‌ای با ۵ ایجنت (استراتژیست/نویسنده/سئوکار/تصویرساز ۳D/سردبیر)
+# تولید و منتشر می‌شود؛ سایت‌مپ و llms.txt داینامیک خودکار به‌روز می‌شوند.
+#
+# معماری: تولید در رانر گیت‌هاب (اینترنت کامل + کلید SDK از secret
+# ZAI_CONFIG_B64 — همان کلید سرور) → POST /api/agents/publish به سرور
+# (سردبیر QC + چک یکتایی + ذخیره در دیتابیس). دلیل: خروجی شبکه هاست
+# اشتراکی به API هوش مصنوعی نامطمئن است (خطای fetch failed).
+# زمان‌بند داخلی سرور (۰۷:۰۰-۰۹:۵۹ تهران) پشتیبان است؛ جلوگیری از تکرار
+# با عناوین منتشرشده (queue endpoint) + قفل روزانه سرور انجام می‌شود.
 
 on:
   schedule:
@@ -15,37 +19,53 @@ on:
 env:
   SITE_URL: https://dr-kermani.com
 
+concurrency:
+  group: blog-agent
+  cancel-in-progress: false
+
 jobs:
-  trigger:
+  generate-publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 35
     steps:
-      - name: Trigger /api/agents/daily
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Setup ZAI config (کلید SDK هوش مصنوعی)
+        run: |
+          echo "${{ secrets.ZAI_CONFIG_B64 }}" | base64 -d > .z-ai-config
+          SIZE=$(wc -c < .z-ai-config)
+          echo "config size: $SIZE bytes"
+          [ "$SIZE" -gt 50 ] || { echo "::error::ZAI_CONFIG_B64 secret خالی/خراب است"; exit 1; }
+
+      - name: Generate & publish 2 articles
+        env:
+          SITE_URL: ${{ env.SITE_URL }}
+          AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
+        run: bun scripts/blog-agent/generate.mjs
+
+      - name: Fallback — trigger server pipeline (اگر رانر تولید نکرد)
+        if: failure()
         run: |
           code=$(curl -s -o /tmp/agent.json -w "%{http_code}" -X POST --max-time 90 \
             -H "x-agent-key: ${{ secrets.AGENT_SECRET }}" \
             "${{ env.SITE_URL }}/api/agents/daily" || echo "000")
-          echo "POST → HTTP $code : $(cat /tmp/agent.json 2>/dev/null | head -c 300)"
-          if [ "$code" = "401" ]; then
-            echo "::warning::AGENT_SECRET ست نشده یا با سرور نمی‌خواند — زمان‌بند داخلی سرور (۰۷:۰۰ تهران) پشتیبان است"
-            exit 1
-          fi
-          if [ "$code" != "202" ] && [ "$code" != "200" ]; then
-            echo "::error::تریگر ایجنت ناموفق — HTTP $code"
-            exit 1
-          fi
+          echo "server pipeline trigger → HTTP $code : $(head -c 200 /tmp/agent.json 2>/dev/null)"
+          # خروجی fail نیست — سرور فقط پشتیبان است و خطایش در /api/agents/daily دیده می‌شود
 
-      # پایپ‌لاین (۲ مقاله با تصویر ۳D) چند دقیقه طول می‌کشد؛ نتیجه از GET خوانده می‌شود
-      - name: Wait and report result (up to ~15 min)
+      - name: Report queue state
+        if: always()
         run: |
-          sleep 240
-          for i in 1 2 3 4 5 6 7 8 9 10 11; do
-            ST=$(curl -s --max-time 60 "${{ env.SITE_URL }}/api/agents/daily" || echo "{}")
-            BUSY=$(echo "$ST" | python3 -c "import json,sys;print(json.load(sys.stdin).get('busy',False))" 2>/dev/null || echo False)
-            echo "poll $i → busy=$BUSY"
-            if [ "$BUSY" != "True" ] && [ "$BUSY" != "true" ]; then
-              echo "$ST" | python3 -m json.tool 2>/dev/null | head -60 || echo "$ST" | head -c 800
-              exit 0
-            fi
-            sleep 60
-          done
-          echo "::warning::ایجنت بعد از ۱۵ دقیقه هنوز مشغول است — نتیجه بعداً از GET /api/agents/daily قابل مشاهده است"
+          sleep 5
+          curl -s --max-time 60 -H "x-agent-key: ${{ secrets.AGENT_SECRET }}" \
+            "${{ env.SITE_URL }}/api/agents/queue" \
+            | python3 -c "import json,sys; d=json.load(sys.stdin); print('published:', d.get('totalPublished')); print('next:', *[t['title'] for t in d.get('pending',[])], sep='\n  ')" \
+            || echo "queue report ناموفق"
