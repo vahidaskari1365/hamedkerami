@@ -26,6 +26,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const { site: SITE } = await getSiteContent();
   return {
   metadataBase: new URL(SITE.url),
+  /* فید RSS — کشف محتوای جدید توسط AI و خواننده‌ها (GEO) */
+  alternates: {
+    types: {
+      "application/rss+xml": `${SITE.url}/feed.xml`,
+    },
+  },
   title: {
     default: "دکتر حامد کرمانی | متخصص جراحی فک و صورت در تهران",
     template: "%s | دکتر حامد کرمانی",
@@ -187,6 +193,14 @@ async function JsonLd() {
       },
     ],
     knowsLanguage: ["fa", "en"],
+    /* contactPoint — اعتبارسازی entity برای موتورهای جستجو و پاسخ‌محور
+       (پیشنهاد geo-optimizer-skill) */
+    contactPoint: [{
+      "@type": "ContactPoint",
+      telephone: "+989382080270",
+      contactType: "appointments",
+      availableLanguage: ["fa", "en"],
+    }],
     memberOf: {
       "@type": "MedicalOrganization",
       name: "دانشگاه علوم پزشکی تهران — فلوشیپ جراحی کرانیوفاسیال",
@@ -206,6 +220,16 @@ async function JsonLd() {
     name: "دکتر حامد کرمانی | متخصص جراحی فک و صورت",
     inLanguage: "fa-IR",
     publisher: { "@id": `${SITE.url}/#physician` },
+    /* SearchAction — قابل‌کشف بودن جستجوی داخلی برای ایجنت‌های AI
+       (GEO/AIO — پیشنهاد geo-optimizer-skill) */
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE.url}/blog?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
   };
 
   const faqLd = {

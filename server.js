@@ -121,6 +121,23 @@ function extractPendingPackage() {
       console.error("[bootstrap] zai-config copy (non-fatal):", e.message);
     }
 
+    /* ۷) کلید ایجنت‌های بلاگ — فایل .agent-secret (بیرون public_html، از وب
+       در دسترس نیست) به AGENT_SECRET خوانده می‌شود تا تریگر گیت‌هاب با
+       هدر x-agent-key بتواند /api/agents/daily را صدا بزند.
+       هر دیپلوی بازنویسی‌اش می‌کند (self-heal، مثل .z-ai-config) */
+    try {
+      const secFile = path.join(ROOT, ".agent-secret");
+      if (fs.existsSync(secFile)) {
+        const val = fs.readFileSync(secFile, "utf8").trim();
+        if (val && !process.env.AGENT_SECRET) {
+          process.env.AGENT_SECRET = val;
+          console.log("[bootstrap] .agent-secret → AGENT_SECRET بارگذاری شد");
+        }
+      }
+    } catch (e) {
+      console.error("[bootstrap] agent-secret (non-fatal):", e.message);
+    }
+
     fs.rmSync(STAGE, { recursive: true, force: true });
     fs.unlinkSync(PKG);
     console.log("[bootstrap] clean-swap deploy DONE — fresh .next is live");

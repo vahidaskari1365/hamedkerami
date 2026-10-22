@@ -2,11 +2,14 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 import { SESSION_COOKIE } from "@/lib/auth";
+import { isBusy } from "@/lib/agents/pipeline";
 
 /* ============================================================
-   /api/agents/daily — کنترل ایجنت‌های بلاگ
+   /api/agents/daily — کنترل ایجنت‌های بلاگ (روزی ۲ مقاله، ۰۷:۰۰ تهران)
    GET  → وضعیت (آخرین اجرا + نتیجه + تعداد مقالات ایجنت‌ها)
-   POST → اجرای دستی (نیاز به لاگین ادمین یا هدر x-agent-key)
+   POST → تریگر اجرا (زمان‌بند گیت‌هاب با هدر x-agent-key یا ادمین)
+          پاسخ ۲۰۲ فوری برمی‌گردد و پایپ‌لاین در پس‌زمینه اجرا می‌شود
+          (نتیجه از GET یا دیتابیس قابل پیگیری است)
    ============================================================ */
 
 export const dynamic = "force-dynamic";
@@ -41,7 +44,8 @@ export async function GET() {
     }
     return NextResponse.json({
       enabled: true,
-      schedule: "هر روز ۰۷:۰۰ تهران",
+      schedule: "هر روز ۰۷:۰۰ تهران — روزی ۲ مقاله به ترتیب صف",
+      busy: isBusy(),
       lastRunDate: lastRun?.value ?? null,
       lastResult: result,
       lastError: error,
@@ -55,15 +59,27 @@ export async function GET() {
 export async function POST(req: Request) {
   const key = req.headers.get("x-agent-key");
   const secret = process.env.AGENT_SECRET || "";
-  const authed = (secret && key === secret) || (await isAdmin());
+  const isAdminUser = await isAdmin();
+  const authed = (secret && key === secret) || isAdminUser;
   if (!authed) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
-  try {
-    const { runDailyBlog } = await import("@/lib/agents/pipeline");
-    const result = await runDailyBlog(true);
-    return NextResponse.json({ started: true, result });
-  } catch (e) {
-    return NextResponse.json({ error: (e as Error).message }, { status: 500 });
+  if (isBusy()) {
+    return NextResponse.json({ started: false, reason: "اجرای قبلی هنوز در جریان است" }, { status: 202 });
   }
+  /* اجرای پس‌زمینه — تریگر گیت‌هاب منتظر اتمام نمی‌ماند (تایم‌اوت HTTP
+     و کشتن پروسه توسط Passenger روی پایپ‌لاین چنددقیقه‌ای اثر ندارد)؛
+     قفل روزانه در خود پایپ‌لاین (قبل از شروع) ثبت می‌شود.
+     اجرای ادمین = force؛ اجرای تریگر = با رعایت قفل روزانه */
+  const force = isAdminUser;
+  void (async () => {
+    try {
+      const { runDailyBlog } = await import("@/lib/agents/pipeline");
+      const result = await runDailyBlog(force);
+      console.log("[agents/daily] اجرای پس‌زمینه تمام شد:", JSON.stringify(result).slice(0, 400));
+    } catch (e) {
+      console.error("[agents/daily] اجرای پس‌زمینه ناموفق:", (e as Error).message);
+    }
+  })();
+  return NextResponse.json({ started: true, mode: "background", force }, { status: 202 });
 }

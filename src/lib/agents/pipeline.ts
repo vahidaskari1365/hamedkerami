@@ -41,6 +41,12 @@ type Draft = {
   keyword: string;
 };
 
+/** قفل درون‌پردازشی — تیک زمان‌بند و تریگر API هرگز هم‌زمان اجرا نمی‌شوند */
+let runningNow = false;
+export function isBusy(): boolean {
+  return runningNow;
+}
+
 async function chat(zai: Awaited<ReturnType<typeof ZAI.create>>, system: string, user: string): Promise<string> {
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
@@ -235,7 +241,13 @@ async function editorAgent(draft: Draft, cover: string): Promise<PublishResult> 
 /* ---------------- ارکستراتور روزانه ---------------- */
 const LOG_PREFIX = "[agents/daily]";
 
-export async function runDailyBlog(force = false): Promise<PublishResult | { skipped: string }> {
+/* روزی ۲ مقاله — طبق درخواست کاربر (۰۷:۰۰ تهران، به ترتیب صف) */
+export const ARTICLES_PER_DAY = 2;
+
+export async function runDailyBlog(force = false): Promise<PublishResult[] | { skipped: string }> {
+  /* قفل درون‌پردازشی — هم‌پوشانی تیک زمان‌بند و تریگر API را می‌بندد */
+  if (runningNow) return { skipped: "اجرای قبلی هنوز در جریان است" };
+  runningNow = true;
   /* هر خطای توقف‌دهنده در دیتابیس ثبت می‌شود تا از طریق
      GET /api/agents/daily قابل مشاهده باشد — وگرنه خطا فقط در
      stderr.log سرور گم می‌شود و آخرین اجرا همیشه null می‌ماند */
@@ -251,24 +263,17 @@ export async function runDailyBlog(force = false): Promise<PublishResult | { ski
       });
     } catch { /* دیتابیس هم در دسترس نیست — چیزی برای ثبت نداریم */ }
     throw e;
+  } finally {
+    runningNow = false;
   }
 }
 
-async function runDailyBlogInner(force = false): Promise<PublishResult | { skipped: string }> {
-  /* قفل روزانه — مگر force (اجرای دستی) */
-  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tehran" }).format(new Date());
-  if (!force) {
-    const lastRun = await db.setting.findUnique({ where: { key: "agents_last_run_date" } });
-    if (lastRun?.value === today) return { skipped: "امروز قبلا اجرا شده است" };
-  }
-
-  const existing = await db.blogPost.findMany({ select: { title: true, slug: true } });
-  const topic = nextTopic(existing.map((p) => p.title));
-  if (!topic) return { skipped: "صف موضوعات خالی است" };
-
-  console.log(`${LOG_PREFIX} موضوع: ${topic.title}`);
-  const zai = await ZAI.create();
-
+/** اجرای کامل ۵ ایجنت برای یک موضوع — ایزوله؛ خطایش به بقیه روز آسیب نمی‌زند */
+async function publishOneTopic(
+  zai: Awaited<ReturnType<typeof ZAI.create>>,
+  topic: Topic,
+  existingTitles: string[],
+): Promise<PublishResult> {
   /* ۱) استراتژیست — با fallback امن */
   let brief: Brief;
   try {
@@ -294,6 +299,7 @@ async function runDailyBlogInner(force = false): Promise<PublishResult | { skipp
   console.log(`${LOG_PREFIX} ✓ سئوکار — عنوان: ${optimized.title}`);
 
   /* اسلاگ یکتا */
+  const existing = await db.blogPost.findMany({ select: { title: true, slug: true } });
   let slug = topic.slug;
   if (existing.some((p) => p.slug === slug)) slug = `${slug}-${Date.now().toString(36).slice(-4)}`;
 
@@ -307,17 +313,65 @@ async function runDailyBlogInner(force = false): Promise<PublishResult | { skipp
     cover,
   );
   console.log(`${LOG_PREFIX} ${result.ok ? "✓ منتشر شد" : "✗ رد شد"} — ${result.reason}`);
+  void existingTitles;
+  return result;
+}
 
+async function runDailyBlogInner(force = false): Promise<PublishResult[] | { skipped: string }> {
+  /* قفل روزانه — مگر force (اجرای دستی) */
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tehran" }).format(new Date());
+  if (!force) {
+    const lastRun = await db.setting.findUnique({ where: { key: "agents_last_run_date" } });
+    if (lastRun?.value === today) return { skipped: "امروز قبلا اجرا شده است" };
+  }
+
+  /* قفل «قبل از شروع» ثبت می‌شود تا اجرای هم‌زمانِ زمان‌بند + تریگر
+     گیت‌هاب هرگز دوباره‌کاری (مقاله تکراری) نسازد؛ اگر هیچ مقاله‌ای
+     منتشر نشد، قفل آزاد می‌شود تا تیک بعدی همان روز دوباره تلاش کند */
   await db.setting.upsert({
     where: { key: "agents_last_run_date" },
     create: { key: "agents_last_run_date", value: today },
     update: { value: today },
   });
+
+  const existing = await db.blogPost.findMany({ select: { title: true, slug: true } });
+  const zai = await ZAI.create();
+
+  const results: PublishResult[] = [];
+  const publishedTitles = existing.map((p) => p.title);
+
+  for (let i = 0; i < ARTICLES_PER_DAY; i++) {
+    /* موضوع بعدی — عناوین همین اجرا هم جزو «منتشرشده» حساب می‌شوند */
+    const topic = nextTopic(publishedTitles);
+    if (!topic) {
+      console.log(`${LOG_PREFIX} صف موضوعات خالی است`);
+      break;
+    }
+    console.log(`${LOG_PREFIX} مقاله ${i + 1}/${ARTICLES_PER_DAY}: ${topic.title}`);
+    try {
+      const r = await publishOneTopic(zai, topic, publishedTitles);
+      results.push(r);
+      if (r.ok) publishedTitles.push(r.title);
+    } catch (e) {
+      console.error(`${LOG_PREFIX} ✗ موضوع «${topic.title}» ناموفق:`, (e as Error).message);
+      results.push({ ok: false, reason: `خطا: ${((e as Error).message || "").slice(0, 200)}`, slug: topic.slug, title: topic.title });
+    }
+  }
+
+  /* اگر هر دو شکست خوردند → قفل روز آزاد شود تا تیک بعدی (تا ۰۹:۵۹) دوباره تلاش کند */
+  if (results.length > 0 && results.every((r) => !r.ok)) {
+    await db.setting.upsert({
+      where: { key: "agents_last_run_date" },
+      create: { key: "agents_last_run_date", value: "" },
+      update: { value: "" },
+    });
+  }
+
   await db.setting.upsert({
     where: { key: "agents_last_result" },
-    create: { key: "agents_last_result", value: JSON.stringify({ date: today, topic: topic.title, ...result }) },
-    update: { value: JSON.stringify({ date: today, topic: topic.title, ...result }) },
+    create: { key: "agents_last_result", value: JSON.stringify({ date: today, count: results.length, results }) },
+    update: { value: JSON.stringify({ date: today, count: results.length, results }) },
   });
 
-  return result;
+  return results;
 }
