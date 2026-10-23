@@ -66,8 +66,15 @@ export function refreshSiteContent(): void {
   refreshFn?.();
 }
 
-export function ContentProvider({ children }: { children: React.ReactNode }) {
-  const [content, setContent] = useState<SiteContent>(FALLBACK);
+export function ContentProvider({
+  children,
+  initialContent,
+}: {
+  children: React.ReactNode;
+  /** محتوای رندر سروری — از SiteShell پاس داده می‌شود تا HTML اولیه واقعی باشد (AEO/GEO) */
+  initialContent?: SiteContent;
+}) {
+  const [content, setContent] = useState<SiteContent>(initialContent ?? FALLBACK);
 
   useEffect(() => {
     let alive = true;
