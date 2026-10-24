@@ -60,3 +60,26 @@ uv run geo audit --url https://dr-kermani.com
 - ۲۰۲۶-۱۰-۲۳: **۷۷/۱۰۰** (بعد از پیاده‌سازی endpoint های AI → انتظار ۸۵+)
 - ۲۰۲۶-۱۰-۲۴: **۸۱/۱۰۰** — ChatGPT ۶۳، Perplexity ۵۰، Google AI ۸۹. اقدام امروز: لینک RSS hoisted در head + قرارداد کیفیت `docs/standards.md` + نصب ۵ اسکیل طراحی در `agent-skills/`. یافته‌های باز (پذیرفته‌شده): تاریخ نامرئی (تصمیم کاربر)، نیم‌فاصله = false positive فارسی، ۴۹ عنصر sr-only (الگوی a11y)، نبود لینک Knowledge Graph خارجی (ویکی‌پدیا/لینکدین وجود ندارد)
 - ۲۰۲۶-۱۰-۲۴ (بعدازظهر): **۸۷/۱۰۰** ✅ هدف ۸۵+ محقق شد — ChatGPT ۷۳، Perplexity ۶۰، Google AI ۸۹، Instruction-following ۹۰ (aria-live ✅). رفع‌ها: فیلدهای سطح اول `name/description` در summary.json و `name/capabilities` در service.json (استاندارد geo-checklist.dev)، اسکیمای `MedicalOrganization#clinic` کنار `Physician` (تشخیص Organization + تماس + سازگاری برند)، ناحیه aria-live سراسری. یافته‌های باقی‌مانده (پذیرفته‌شده/برای بعد از ۱۰ مقاله): «برند ناسازگار» = پسوند متفاوت title/H1 (ریشه برند یکسان — تصمیم طراحی)، KG خارجی ندارد (واقعیت موجود)، ۴۹ عنصر opacity:0 = state اولیه انیمیشن اسکرول (false positive، کلوکینگ نیست)، نیم‌فاصله = الزام تایپوگرافی فارسی، RAG-chunk ۳۵ = مخصوص صفحه اصلی (سطح RAG مقالات است)
+
+## ۴) claude-seo (AgriciDaniel) — ✅ نصب شد؛ ممیزی پنج‌استانداره و دروازه کیفیت
+
+پلاگین کامل ممیزی سئو (۲۶ زیر-اسکیل + ۱۹ ایجنت) — Technical/Content(E-E-A-T)/Schema/GEO/Local/E-commerce.
+
+- کد کامل در `tools/seo/claude-seo/` (بدون .git، بدون screenshots/assets)
+- مرجع قواعد کلیدی: `tools/seo/claude-seo/skills/seo/references/quality-gates.md`
+  (بلاگ ≥۱۵۰۰ کلمه) و `eeat-framework.md` (Who/How/Why + سیگنال تجربه اول‌شخص)
+
+### پیاده‌سازی روی سایت (۲۰۲۶-۱۰-۲۴):
+
+| قاعده claude-seo | وضعیت |
+|---|---|
+| بلاگ ≥۱۵۰۰ کلمه | ✅ ممیزی ۲۷ مقاله لایو: ۲۵ منطبق + ۲ مقاله (۱۴۷۸/۱۴۵۸ کلمه) با بخش تکمیلی محتوایی اصلاح شدند (SYNC_VERSION v2 در instrumentation) |
+| دروازه انتشار | ✅ کف publish gate از ۷۰۰ به ۱۴۰۰ کلمه ارتقا یافت (`publish.ts`) |
+| E-E-A-T تجربه اول‌شخص | ✅ قاعدهٔ صحنه بالینی ملموس به پرامپت نویسنده اضافه شد؛ باکس نویسنده از قبل موجود |
+| ضد-الگوی AI | ✅ ممنوعیت عبارات تیپی («در دنیای امروز»، «شایان ذکر است»…) در پرامپت نویسنده |
+| ممیزی دوره‌ای | ✅ `node scripts/audit-articles.mjs` — ممیزی پنج‌استانداره زنده (SEO/AEO/GEO/SXO/AIO) |
+
+### ادغام در جریان کار
+
+پیش از هر انتشار: دروازه publish.ts (کف ۱۴۰۰ + FAQ≥۴ + لینک داخلی≥۴ + پاسخ‌کوتاه + یکتایی)
+→ پس از انتشار: IndexNow/Bing ping خودکار → هر دور: audit-articles.mjs + geo audit

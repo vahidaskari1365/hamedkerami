@@ -140,8 +140,9 @@ export async function register(): Promise<void> {
        ۱) بازسازی کامل Stat و SuccessRate از داده‌ی کد
        ۲) جایگزینی امن شماره ثابت با موبایل در Setting/Faq/LandingPage/BlogPost
        ۳) بروزرسانی عبارت‌های آماری قدیمی (۱۰۶۷ جراحی، ۵۰۰۰ ایمپلنت…)
+       ۴) تطبیق سقف کیفیت مقاله‌ها با claude-seo quality-gates (≥۱۵۰۰ کلمه)
        ============================================================ */
-    const SYNC_VERSION = "2026-10-22-phones-stats-v1";
+    const SYNC_VERSION = "2026-10-24-article-wordcount-v2";
     try {
       const markerRow = await db.setting.findUnique({ where: { key: "contentSyncVersion" } });
       let marker = "";
@@ -254,6 +255,36 @@ export async function register(): Promise<void> {
           if (title !== p.title || excerpt !== p.excerpt || body !== p.body) {
             await db.blogPost.update({ where: { id: p.id }, data: { title, excerpt, body } });
             changes++;
+          }
+        }
+
+        /* ۴) تطبیق سقف کیفیت مقاله‌ها (claude-seo quality-gates: بلاگ ≥۱۵۰۰ کلمه)
+              دو مقالهٔ دستهٔ اول کمی زیر سقف بودند؛ بخش تکمیلی پیش از «پرسش های پرتکرار»
+              درج می‌شود. idempotent: اگر عنوان بخش از قبل در بدنه باشد، دست نمی‌زند. */
+        const ARTICLE_SECTIONS: Array<{ slug: string; heading: string; body: string }> = [
+          {
+            slug: "blepharoplasty-cost-1405",
+            heading: "بلفاروپلاستی چقدر دوام دارد؟ حساب هزینه در طول سال‌ها",
+            body: `وقتی هزینه بلفاروپلاستی را با بیماران مطب مرور می‌کنیم، همیشه یک سوال بعدی می‌آید: «چند سال نتیجه می‌ماند؟» تجربه بالینی و مطالعات رایج نشان می‌دهد نتیجه پلک فوقانی معمولاً ۱۰ تا ۱۵ سال و نتیجه پلک تحتانی اغلب طولانی‌تر از آن می‌ماند؛ چون چینِ ایجادشده و پوستِ برداشته‌شده برنمی‌گردند و فقط روند طبیعی پیری ادامه پیدا می‌کند. سرعت این روند به ژنتیک، حالت پوست شما، مصرف سیگار و مراقبت از پوست بستگی دارد.\n\nاز این عدد یک دید ساده بسازید: اگر هزینه امروز را بر بیش از یک دهه ماندگاری تقسیم کنید، بهای واقعی هر سالِ «پلک سرحال» بسیار کمتر از عدد اولیه‌ای می‌شود که در قرارداد می‌بینید. در مشاوره با دکتر حامد کرمانی، این برآورد بلندمدت همراه با بررسی انحنای حدقه و ضخامت پوست شما مشخص می‌شود تا تصمیم مالی و پزشکی هر دو روشن باشد.`,
+          },
+          {
+            slug: "best-implant-brands",
+            heading: "تأیید اصالت ایمپلنت؛ کارت گارانتی و کد رهگیری چیست؟",
+            body: `پرسش پرتکرار بیماران در مطب این است: «از کجا بفهمم ایمپلنتی که در دهان من گذاشته‌اید اصل همان برند است؟» برندهای معتبر برای هر فیکسچر یک شناسه یکتا دارند که در بسته‌بندی استریل و در کارت گارانتی رسمی درج می‌شود و امکان رهگیری آن در سامانه رسمی شرکت وجود دارد. پیش از جراحی از کلینیک بخواهید نام دقیق برند و کشور سازنده را کتباً در قرارداد بیاورد و کارت گارانتی با شماره سری هموارده شما داده شود؛ این کارت در ویزیت‌های بعدی، قصد مهاجرت یا مراجعه به دندانپزشک دیگر هم ارزش سند دارد.\n\nایمپلنت بدون سابقه و بدون گارانتی معمولاً ارزان‌تر است، اما ریسک عدم تطابق قطعات و از دست رفتن پشتیبانی شرکت را به جان می‌خرد. در مطب دکتر حامد کرمانی، برند بر اساس تراکم استخوان و بودجه شما انتخاب می‌شود و اصالت هر قطعه با مستندات کتبی تحویل می‌گردد.`,
+          },
+        ];
+        for (const sec of ARTICLE_SECTIONS) {
+          try {
+            const post = await db.blogPost.findUnique({ where: { slug: sec.slug } });
+            if (!post || post.body.includes(sec.heading)) continue;
+            const insert = `## ${sec.heading}\n\n${sec.body}\n\n`;
+            const anchor = post.body.search(/## پرسش/);
+            const body = anchor >= 0 ? post.body.slice(0, anchor) + insert + post.body.slice(anchor) : post.body + "\n\n" + insert;
+            await db.blogPost.update({ where: { slug: sec.slug }, data: { body } });
+            changes++;
+            console.log(`[sync] بخش تکمیلی به ${sec.slug} اضافه شد (سقف ۱۵۰۰ کلمه)`);
+          } catch (e) {
+            console.error(`[sync] مقاله ${sec.slug}:`, (e as Error).message);
           }
         }
 

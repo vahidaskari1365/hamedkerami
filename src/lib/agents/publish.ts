@@ -77,7 +77,7 @@ export async function publishSubmittedArticle(draft: SubmittedArticle, cover: Co
   const hasForbidden = /`|\$\{|!\[|\]\(https?:|<\/?[a-zA-Z][^>]*>/.test(draft.body);
 
   const checks: [string, boolean][] = [
-    ["طول مقاله زیر ۷۰۰ کلمه است", words < 700],
+    ["طول مقاله زیر ۱۴۰۰ کلمه است (سقف کیفیت claude-seo: ۱۵۰۰)", words < 1400],
     ["پاسخ مستقیم ابتدای مقاله ندارد", !hasAnswer],
     ["FAQ کمتر از ۴ سوال دارد", faqCount < 4],
     ["CTA تماس ندارد", !hasCta],
