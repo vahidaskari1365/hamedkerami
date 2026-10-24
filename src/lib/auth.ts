@@ -41,6 +41,11 @@ function loadOrCreateSecret(): string {
 
 const SECRET = loadOrCreateSecret();
 
+/** رمز مشترک برنامه — برای هش کد OTP و امضای نشست */
+export function appSecret(): string {
+  return SECRET;
+}
+
 export const SESSION_COOKIE = "km_admin";
 export const SESSION_TTL_SEC = 60 * 60 * 24 * 7; // ۷ روز
 

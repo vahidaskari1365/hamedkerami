@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/admin-guard";
 import { ADMIN_ENTITIES, sanitizeBody } from "@/lib/admin-entities";
+import { ensureBookingSchema } from "@/lib/booking/schema-guard";
 
 type Ctx = { params: Promise<{ entity: string; id: string }> };
 
@@ -26,6 +27,8 @@ export async function PUT(req: NextRequest, ctx: Ctx) {
     return NextResponse.json({ ok: false, error: "موجودیت نامعتبر" }, { status: 404 });
   }
   try {
+    /* نوبت‌ها — قبل از تغییر، ستون‌های فاز ۲ تضمین می‌شوند */
+    if (entity === "appointments") await ensureBookingSchema();
     const body = (await req.json()) as Record<string, unknown>;
     const { data, errors } = sanitizeBody(found.def, body, { partial: true });
     if (errors.length) {

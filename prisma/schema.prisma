@@ -23,20 +23,61 @@ model ContactMessage {
 
 /* ---------- نوبت‌دهی آنلاین ---------- */
 model Appointment {
-  id        String   @id @default(cuid())
-  name      String // نام بیمار
-  phone     String
-  doctor    String // دکتر انتخابی
-  dayIso    String // روز انتخابی — ISO میلادی «2026-11-08» برای مرتب‌سازی
-  dayJalali String // همان روز به شمسی «یکشنبه ۱۷ آبان ۱۴۰۵» — نمایش در پنل
-  slot      String   @default("") // بازه ساعت دلخواه
-  note      String   @default("")
-  status    String   @default("pending") // pending | confirmed | done | canceled
-  createdAt DateTime @default(now())
+  id            String   @id @default(cuid())
+  name          String // نام بیمار
+  phone         String
+  doctor        String // دکتر انتخابی
+  dayIso        String // روز انتخابی — ISO میلادی «2026-11-08» برای مرتب‌سازی
+  dayJalali     String // همان روز به شمسی «یکشنبه ۱۷ آبان ۱۴۰۵» — نمایش در پنل
+  slot          String   @default("") // بازه ساعت دلخواه
+  note          String   @default("")
+  status        String   @default("pending") // pending | confirmed | done | canceled
+  /* ---------- فاز ۲ — رزرو با تأیید پیامکی ---------- */
+  latinName     String   @default("") // نام لاتین پرونده
+  gender        String   @default("") // female | male
+  birthYear     String   @default("") // سال تولد شمسی «۱۳۸۵»
+  visitType     String   @default("in_person") // in_person | online
+  feeToman      Int      @default(0) // تعرفه ویزیت در لحظه ثبت (اسنپ‌شات)
+  paymentMethod String   @default("clinic") // clinic | online
+  trackingCode  String   @default("") // کد رهگیری «KB-XXXXXX»
+  createdAt     DateTime @default(now())
 
   @@index([dayIso])
   @@index([status])
   @@index([createdAt])
+  @@index([phone])
+  @@index([trackingCode])
+}
+
+/* کد یک‌بارمصرف تأیید شماره موبایل — ۵ رقمی، هش‌شده ذخیره می‌شود */
+model OtpCode {
+  id         String    @id @default(cuid())
+  mobile     String
+  codeHash   String // sha256(mobile:code:secret) — کد خام هرگز ذخیره نمی‌شود
+  expiresAt  DateTime
+  consumedAt DateTime?
+  attempts   Int       @default(0)
+  ip         String    @default("")
+  createdAt  DateTime  @default(now())
+
+  @@index([mobile])
+  @@index([createdAt])
+}
+
+/* پیام‌های اپراتور/بیمار — تا وصل‌شدن پنل SMS در صف می‌مانند */
+model BookingNotification {
+  id        String    @id @default(cuid())
+  bookingId String    @default("")
+  kind      String // operator_sms | patient_sms
+  to        String // شماره گیرنده
+  body      String
+  status    String    @default("queued") // queued | sent | failed
+  error     String    @default("")
+  sentAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([status])
+  @@index([bookingId])
 }
 
 /* ---------- نظرات مقاله‌ها (مدیریت‌شده) ---------- */

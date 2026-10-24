@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/admin-guard";
 import { ADMIN_ENTITIES, sanitizeBody } from "@/lib/admin-entities";
+import { ensureBookingSchema } from "@/lib/booking/schema-guard";
 
 type Ctx = { params: Promise<{ entity: string }> };
 
@@ -27,6 +28,8 @@ export async function GET(_req: NextRequest, ctx: Ctx) {
     return NextResponse.json({ ok: false, error: "موجودیت نامعتبر" }, { status: 404 });
   }
   try {
+    /* نوبت‌ها — قبل از خواندن، ستون‌های فاز ۲ تضمین می‌شوند */
+    if (entity === "appointments") await ensureBookingSchema();
     const rows = await found.delegate.findMany({
       orderBy: found.def.orderBy,
     });

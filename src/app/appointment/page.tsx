@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteShell } from "@/components/site-chrome";
-import { AppointmentClient } from "@/components/appointment-client";
+import { BookingWizard } from "@/components/booking-wizard";
 import { JsonLdScript, breadcrumbLd } from "@/components/schema";
 import { SITE } from "@/lib/data";
 
@@ -10,12 +10,12 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "رزرو نوبت آنلاین مطب | دکتر حامد کرمانی — جراح فک و صورت",
   description:
-    "نوبت‌دهی آنلاین مطب دکتر حامد کرمانی در تهران؛ انتخاب روز شمسی و پزشک (جراحی فک و صورت یا پروتزهای دندانی) در چند ثانیه. آدرس: بلوار کشاورز، تقاطع جمالزاده — تلفن: ۰۹۳۸-۲۰۸۰۲۷۰",
+    "رزرو نوبت آنلاین مطب دکتر حامد کرمانی در تهران؛ انتخاب روز و ساعت از تقویم شمسی و تأیید قطعی با کد پیامکی در کمتر از یک دقیقه. آدرس: بلوار کشاورز، تقاطع جمالزاده — تلفن: ۰۹۳۸-۲۰۸۰۲۷۰",
   alternates: { canonical: "/appointment" },
   openGraph: {
     title: "رزرو نوبت آنلاین مطب دکتر حامد کرمانی",
     description:
-      "روز و پزشک را از تقویم شمسی انتخاب کنید؛ همکاران مطب برای تأیید نهایی تماس می‌گیرند.",
+      "روز و ساعت مراجعه را از تقویم شمسی انتخاب کنید؛ نوبت با کد پیامکی قطعی می‌شود — بدون تماس تلفنی.",
     url: `${SITE.url}/appointment`,
     images: [{ url: "/images/og-cover.jpg", width: 1200, height: 630, alt: "رزرو نوبت مطب دکتر حامد کرمانی" }],
   },
@@ -52,7 +52,9 @@ export default function AppointmentPage() {
       <header className="bg-ink pb-14 pt-32 text-white sm:pb-16 sm:pt-36">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <nav aria-label="مسیر صفحه" className="flex flex-wrap items-center gap-2 text-xs text-white/50">
-            <Link href="/" className="transition hover:text-teal">خانه</Link>
+            <Link href="/" className="transition hover:text-teal">
+              خانه
+            </Link>
             <span aria-hidden>/</span>
             <span className="text-white/80">نوبت‌دهی آنلاین</span>
           </nav>
@@ -60,17 +62,17 @@ export default function AppointmentPage() {
             رزرو نوبت آنلاین مطب
           </h1>
           <p className="mt-4 max-w-2xl text-sm leading-8 text-white/70">
-            پزشک و روز مراجعه را از تقویم شمسی انتخاب کنید؛ درخواست شما مستقیم در سامانه مطب ثبت
-            می‌شود و همکاران ما برای تأیید نهایی تماس می‌گیرند. مطب شنبه تا چهارشنبه، ۱۵ تا ۱۹ فعال
-            است.
+            روز و ساعت مراجعه را از تقویم شمسی انتخاب کنید، اطلاعات بیمار را ثبت کنید و در پایان با
+            کد ۵ رقمی پیامکی، نوبت خود را قطعی کنید — همه‌چیز آنلاین و در کمتر از یک دقیقه. مطب
+            شنبه تا چهارشنبه، ۱۵ تا ۱۹ پذیرش دارد.
           </p>
         </div>
       </header>
 
-      {/* فرم نوبت‌دهی */}
+      {/* ویزار رزرو نوبت */}
       <section className="bg-bone py-10 sm:py-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <AppointmentClient />
+          <BookingWizard />
         </div>
       </section>
     </SiteShell>

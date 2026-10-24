@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { refreshSiteContent } from "@/lib/content-context";
 import { ImageField } from "@/components/admin/image-field";
+import { Switch } from "@/components/ui/switch";
 import { Save, KeyRound, LogOut } from "lucide-react";
 
 type Group = Record<string, unknown>;
@@ -20,7 +21,8 @@ type Group = Record<string, unknown>;
 interface FieldSpec {
   key: string;
   label: string;
-  type?: "text" | "textarea" | "image" | "lines";
+  type?: "text" | "textarea" | "image" | "lines" | "switch";
+  desc?: string;
 }
 
 const GROUPS: { key: string; title: string; fields: FieldSpec[] }[] = [
@@ -81,6 +83,27 @@ const GROUPS: { key: string; title: string; fields: FieldSpec[] }[] = [
       { key: "note", label: "یادداشت" },
     ],
   },
+  {
+    key: "booking",
+    title: "نوبت‌دهی آنلاین",
+    fields: [
+      {
+        key: "feeToman",
+        label: "تعرفه ویزیت (تومان)",
+        desc: "در تقویم، بازه‌های ساعت و فاکتور نوبت نمایش داده می‌شود",
+      },
+      {
+        key: "operatorMobile",
+        label: "موبایل اپراتور (مثل 09123456789)",
+        desc: "با هر رزرو جدید، متن نوبت برای این شماره پیامک می‌شود",
+      },
+      {
+        key: "onlinePayment",
+        label: "فعال‌بودن نمایش پرداخت آنلاین",
+        type: "switch",
+      },
+    ],
+  },
 ];
 
 function GroupField({
@@ -96,6 +119,19 @@ function GroupField({
     return (
       <div className="sm:col-span-2">
         <ImageField label={spec.label} value={typeof value === "string" ? value : ""} onChange={onChange} />
+      </div>
+    );
+  }
+  if (spec.type === "switch") {
+    return (
+      <div className="sm:col-span-2">
+        <div className="flex items-center justify-between gap-3 rounded-lg bg-bone/60 px-3.5 py-3">
+          <div>
+            <span className="block text-sm font-bold text-foreground/80">{spec.label}</span>
+            {spec.desc ? <span className="mt-0.5 block text-[11px] text-foreground/45">{spec.desc}</span> : null}
+          </div>
+          <Switch checked={Boolean(value)} onCheckedChange={onChange} aria-label={spec.label} />
+        </div>
       </div>
     );
   }
@@ -120,6 +156,7 @@ function GroupField({
     <div>
       <label className="mb-1.5 block text-sm font-bold text-foreground/80">{spec.label}</label>
       <Input value={String(value ?? "")} onChange={(e) => onChange(e.target.value)} />
+      {spec.desc ? <p className="mt-1 text-[11px] leading-5 text-foreground/45">{spec.desc}</p> : null}
     </div>
   );
 }
