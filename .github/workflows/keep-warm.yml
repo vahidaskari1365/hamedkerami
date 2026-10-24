@@ -10,7 +10,9 @@ name: Keep warm (anti cold-start)
 
 on:
   schedule:
-    - cron: "*/10 * * * *" # حداقل مجاز گیت‌هاب ۵ دقیقه است؛ ۱۰ دقیقه امن است
+    - cron: "*/5 * * * *" # حداقل مجاز گیت‌هاب؛ این ورک‌فلو خودش throttle می‌شود
+      # (گاهی ~ساعتی اجرا می‌شود) — لایهٔ دوم مقابله: PassengerMinInstances 1
+      # در server.js (خودترمیم روی هر بوت) که اصلاً اجازه خاموشی نمی‌دهد
   workflow_dispatch:
 
 jobs:

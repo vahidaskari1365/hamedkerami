@@ -75,3 +75,4 @@ db/.admin-secret
 # playwright-cli session artifacts + local audit output
 /.playwright-cli/
 /.geo-audit-new.txt
+.bing-api-key

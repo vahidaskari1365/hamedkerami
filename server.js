@@ -156,6 +156,47 @@ extractPendingPackage();
 cleanupStalePublicArtifacts();
 
 /* ============================================================
+   بخش ۱٫۵ — ضد cold-start (خودترمیم)
+   Passenger به‌طور پیش‌فرض پروسهٔ بیکار را بعد از ~۵ دقیقه
+   می‌کشد؛ درخواست بعدی (اغلب از Bingbot/Googlebot) کول‌استارت
+   سنگین می‌خورد → تایم‌اوت → سitemap «Couldn't fetch / timed out»
+   و ایندکس داغدار. راه‌حل رسمی: PassengerMinInstances 1 در
+   .htaccess → حداقل یک پروسه همیشه زنده می‌ماند.
+   این تابع روی هر بوت، هر دو .htaccess احتمالی (ریشهٔ اپ و
+   public_html) را با مارکر idempotent اصلاح می‌کند.
+   ============================================================ */
+
+const HT_BLOCK = [
+  "",
+  "# --- anti cold-start (auto-managed by server.js) ---",
+  "<IfModule mod_passenger.c>",
+  "  PassengerMinInstances 1",
+  "</IfModule>",
+  "# --- end anti cold-start ---",
+  "",
+].join("\n");
+const HT_MARKER = "# --- anti cold-start (auto-managed by server.js) ---";
+
+function ensureAntiColdStart(dir) {
+  try {
+    const htFile = path.join(dir, ".htaccess");
+    let content = "";
+    if (fs.existsSync(htFile)) {
+      content = fs.readFileSync(htFile, "utf8");
+      if (content.includes(HT_MARKER)) return; // از قبل هست
+    }
+    /* فایل مال کاربر خودمان است؛ append امن است — چیزی بازنویسی نمی‌شود */
+    fs.appendFileSync(htFile, HT_BLOCK);
+    console.log("[bootstrap] anti cold-start → PassengerMinInstances 1 اضافه شد به", htFile);
+  } catch (e) {
+    console.error("[bootstrap] htaccess patch (non-fatal):", e.message);
+  }
+}
+
+ensureAntiColdStart(ROOT);
+if (process.env.HOME) ensureAntiColdStart(path.join(process.env.HOME, "public_html"));
+
+/* ============================================================
    بخش ۲ — محیط پروداکشن
    ============================================================ */
 
