@@ -1,0 +1,230 @@
+⏳ Fetching page, robots.txt, llms.txt and AI files...
+⏳ Analyzing schema, meta tags and content...
+⏳ Checking CDN access for AI bots...
+⏳ Running trust, brand and extra checks...
+✅ Analysis complete.
+
+
+🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 
+  GEO AUDIT — https://dr-kermani.com
+  github.com/auriti-labs/geo-optimizer-skill
+🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 
+
+   Status: 200 | Size: 414,302 bytes | Duration: 8197ms
+
+============================================================
+  1. ROBOTS.TXT — AI Bot Access
+============================================================
+  ✅ robots.txt found
+  ✅ GPTBot allowed ✓
+  ✅ OAI-SearchBot allowed ✓
+  ✅ ChatGPT-User allowed ✓
+  ✅ ClaudeBot allowed ✓
+  ✅ Claude-SearchBot allowed ✓
+  ✅ Claude-User allowed ✓
+  ✅ PerplexityBot allowed ✓
+  ✅ Perplexity-User allowed ✓
+  ✅ Googlebot allowed ✓
+  ✅ Google-Extended allowed ✓
+  ✅ Google-CloudVertexBot allowed ✓
+  ✅ Bingbot allowed ✓
+  ✅ Applebot-Extended allowed ✓
+  ✅ cohere-ai allowed ✓
+  ✅ DuckAssistBot allowed ✓
+  ✅ Bytespider allowed ✓
+  ✅ meta-externalagent allowed ✓
+  ✅ Meta-ExternalFetcher allowed ✓
+  ✅ facebookexternalhit allowed ✓
+  ✅ Amazonbot allowed ✓
+  ✅ AI2Bot allowed ✓
+  ✅ AI2Bot-Dolma allowed ✓
+  ✅ xAI-Bot allowed ✓
+  ✅ Applebot allowed ✓
+  ✅ PetalBot allowed ✓
+  ✅ YouBot allowed ✓
+  ✅ CCBot allowed ✓
+  ✅ All critical CITATION bots are correctly configured
+
+============================================================
+  2. LLMS.TXT — AI Index File (Other AI agents · not used by Google Search)
+============================================================
+  ✅ llms.txt found (~1418 words)
+  ✅ H1 present
+  ✅ H2 sections present
+  ✅ Links found
+
+============================================================
+  3. SCHEMA JSON-LD — Structured Data
+============================================================
+  ✅ Schema Physician ✓
+  ✅ Schema MedicalOrganization ✓
+  ✅ Schema WebSite ✓
+  ✅ Schema FAQPage ✓
+  ✅ Schema ItemList ✓
+
+============================================================
+  4. META TAG — SEO & Open Graph
+============================================================
+  ✅ Title: دکتر حامد کرمانی | متخصص جراحی فک و صورت در تهران
+  ✅ Meta description (218 characters) ✓
+  ✅ Canonical: https://dr-kermani.com
+  ✅ og:title ✓
+  ✅ og:description ✓
+  ✅ og:image ✓
+
+============================================================
+  5. CONTENT QUALITY — GEO Best Practices
+============================================================
+  ✅ H1: زیبایی و عملکرد،در دستان جراح فک و صورت
+  ✅ 22 headings
+  ✅ 19 numbers/statistics found ✓
+  ✅ ~1072 words
+  ✅ 9 external links ✓
+
+============================================================
+  6. TECHNICAL SIGNALS
+============================================================
+  ✅ Language: fa
+  ✅ RSS/Atom feed found
+  ⚠️  No dateModified signal
+
+============================================================
+  7. AI DISCOVERY ENDPOINTS
+============================================================
+  ✅ /.well-known/ai.txt found
+  ✅ /ai/summary.json valid
+  ✅ /ai/faq.json (6 FAQs)
+
+============================================================
+  8. BRAND & ENTITY SIGNALS
+============================================================
+  [██░░░] 6/12
+  ⚠️  Brand name inconsistent across schema, meta and content
+  ⚠️  No Knowledge Graph links (Wikipedia, Wikidata, LinkedIn)
+  ✅ About page linked
+  ✅ Contact information present
+  ✅ 6 FAQs found
+
+============================================================
+  9. CDN AI CRAWLER ACCESS
+============================================================
+  ✅ All AI crawlers can access the site
+
+============================================================
+  10. JS RENDERING CHECK
+============================================================
+  ✅ 1061 words and 22 headings found in raw HTML. Content is accessible without JavaScript.
+
+============================================================
+  11. PROMPT INJECTION DETECTION
+============================================================
+  ⚠️  Severity: SUSPICIOUS (2 pattern)
+  ❌ Hidden text: 49 element(s)
+  ⚠️  Invisible Unicode: 11 char(s)
+
+============================================================
+  12. TRUST STACK SCORE
+============================================================
+  Grade: C (16/25) — Trust level: medium
+  [█████] Technical Trust: 5/5
+  [███░░] Identity Trust: 3/5
+  [████░] Social Trust: 4/5
+  [██░░░] Academic Trust: 2/5
+  [██░░░] Consistency Trust: 2/5
+
+============================================================
+  13. RAG CHUNK READINESS
+============================================================
+  Sections: 14 (0 in 100-150 word range)
+  Avg section words: 34.4
+  Definition opening: ❌
+  Heading boundaries: 157%
+  Anchor sentences: 0
+  Chunk readiness: 35/100
+
+============================================================
+  14. EMBEDDING PROXIMITY
+============================================================
+  ⏭️  Skipped: sentence-transformers not installed (pip install geo-optimizer-skill[embedding])
+
+============================================================
+  16. PLATFORM CITATION PROFILE
+============================================================
+  CHATGPT: 73/100
+    ✅ GPTBot allowed in robots.txt
+    ✅ llms.txt present
+    ✅ FAQ schema present
+  PERPLEXITY: 60/100
+    ✅ PerplexityBot allowed
+    ✅ llms.txt with links
+    ✅ Substantial content depth
+    💡 Add dateModified schema or freshness indicators
+  GOOGLE_AI: 89/100
+    ✅ Googlebot allowed (feeds Search and AI Overviews)
+    ✅ Rich schema (3 types)
+    ✅ Complete meta tags
+    💡 Add dateModified / lastmod freshness signals
+
+============================================================
+  17. CONTEXT WINDOW OPTIMIZATION
+============================================================
+  Tokens: ~1379 (1061 words)
+  Front-loading: 56% | Filler: 0%
+  Truncation risk: 🟢 low
+  Fits: perplexity, chatgpt, claude
+  Efficiency: 87/100
+
+============================================================
+  18. INSTRUCTION FOLLOWING READINESS
+============================================================
+  Actions: 8 labeled, 0 unlabeled (100/100)
+  Forms: 0/0 labeled, 0 typed (100/100)
+  Error recovery: aria-live ✅ | roles ❌
+  Readiness: 90/100 (advanced)
+
+============================================================
+  19. MULTIMODAL READINESS
+============================================================
+  Images: 26/26 with descriptive alt (100%) | captions: 1
+  Readiness: excellent
+
+============================================================
+  GOOGLE AI SEARCH
+============================================================
+  ✓ G-INDEX: HTTP 200, indexable, Googlebot allowed (5/5)
+  ✓ G-SNIPPET: No snippet restrictions (5/5)
+  ✓ G-CANONICAL: One absolute canonical matching the final URL (3/3)
+  ⚠ G-DATES: No valid publication or update date found (1/2)
+  ✓ G-BYLINE: Visible author byline (2/2)
+  ✓ G-LINKS: 67 crawlable <a href> links (1/1)
+  ✓ G-VIEWPORT: meta viewport present (1/1)
+  ✓ G-SITEMAP: Sitemap declared: https://dr-kermani.com/sitemap.xml (1/1)
+  ? G-GENAI-CONTROL: Check Search Console > Settings > Search generative AI control (0/0)
+
+============================================================
+  📊 FINAL GEO SCORE
+============================================================
+
+  [█████████████████░░░] 87/100
+
+  🏆 EXCELLENT — Site is well optimized for AI search engines!
+
+  Score bands: 0–35 = critical | 36–67 = foundation | 68–85 = good | 86–100 = excellent
+
+  📋 PRIORITY NEXT STEPS:
+  1. Hidden text detected (display:none/visibility:hidden with content) — AI crawlers can read it and may penalize this cloaking pattern
+  2. [G-DATES] No valid publication or update date found — https://developers.google.com/search/docs/appearance/publication-dates
+  3. Use consistent brand name across title, og:title, H1, and schema Organization
+  4. Add sameAs links in Organization schema to Wikipedia, Wikidata, LinkedIn, or Crunchbase for Knowledge Graph disambiguation
+  5. Add descriptive labels to forms (label, aria-label) to make them usable by AI agents
+  6. Consider adding WebMCP toolname/tooldescription attributes to interactive elements for Chrome AI agent support
+
+  💡 One-shot audit. The free plan at https://geoready.dev saves your reports and runs
+     one real AI answer check a week; weekly score monitoring starts on Pro.
+
+  → Web report for this URL (free, no account):
+     https://geoready.dev/report/audit?url=https://dr-kermani.com
+
+  🏅 87/100 is embed-worthy. Add it to your README:
+     [![GEO Score](https://geoready.dev/badge?url=https%3A%2F%2Fdr-kermani.com)](https://geoready.dev?utm_source=badge)
+
