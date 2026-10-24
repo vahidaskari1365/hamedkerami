@@ -67,3 +67,39 @@ IndexNow به‌طور خودکار با Bing Webmaster Tools پراپرتی `dr
   به گوگل می‌رسند — اقدام دستی لازم نیست
 - ممیزی سلامت: `bash scripts/audit-live-pages.sh` هر زمان که خواستید
 - چرخهٔ ۲ماههٔ GSC: طبق `docs/seo/gsc-cycle.md`
+
+---
+
+## دور ۲ — ۲۰۲۶-۱۰-۲۴ (بعدازظهر): Bing API + ریشه‌کنی cold-start
+
+### Bing Webmaster API — متصل و فعال شد
+
+کاربر کلید API را از BWT فرستاد (`Settings → API Access`). یافتهٔ مهم:
+endpointهای قدیمی SOAP/POX از ۲۰۲۶-۰۸-۳۱ بازنشسته شدند؛ مسیر JSON فعلی:
+`https://ssl.bing.com/webmaster/api.svc/json/<Method>?apikey=...`
+
+| متد | نتیجه |
+|---|---|
+| GetUrlSubmissionQuota | ✅ 200 — سهمیه ۱۰۰/روز، ۸۰۰/ماه |
+| SubmitUrl (تک‌به‌تک × ۴۵) | ✅ 45/45 موفق HTTP 200 |
+| GetCrawlIssues | ✅ هیچ خطای خزشی ثبت نشده |
+| GetFeeds | ⚠️ سitemap ثبت است ولی «request timed out» + UrlCount 0 |
+| GetUser / GetSites / SubmitSitemap | 404 (احتمالاً فقط OAuth — غیرمسدودکننده) |
+
+اسکریپت: `node scripts/bing-submit-urls.mjs [--quota|--errors|--sitemap-only|<url>...]`
+
+### ریشهٔ «timed out» بینگ (و احتمالاً «Couldn't fetch» گوگل) — حذف شد
+
+- keep-warm گیت‌هاب به‌جای هر ۱۰ دقیقه، ~هر ۴ ساعت اجرا می‌شود (throttle
+  گیت‌هاب روی schedule رایگان) → سرور cPanel سرد می‌شد → کول‌استارت ۳۰-۹۰ ثانیه‌ای
+  Node → بات بینگ تایم‌اوت می‌کرد
+- **رفع ریشه‌ای:** `PassengerMinInstances 1` در .htaccess — server.js روی هر بوت
+  هر دو .htaccess (ریشهٔ اپ + public_html) را idempotent پچ می‌کند؛ پروسهٔ Node
+  دیگر هیچ‌وقت نمی‌میرد → پاسخ ~۲ ثانیه همیشه
+- keep-warm هم به `*/5` بهبود یافت (لایهٔ دوم)
+
+### وضعیت نهایی بینگ
+
+- ۴۵ صفحه: در صف ایندکس مستقیم (SubmitUrl) + IndexNow (202) — دو مسیر موازی
+- سitemap: پس از fetch بعدی بینگ (معمولاً <۲۴h) با سرور گرم، UrlCount به ۴۵ می‌رسد
+- سهمیهٔ باقی‌مانده امروز: ۵۵ URL (برای مقاله‌های جدید و آینده کافی)
