@@ -55,6 +55,10 @@ jobs:
           AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
         run: bun scripts/blog-agent/generate.mjs
 
+      - name: IndexNow — پینگ Bing برای مقاله‌های تازه
+        if: always()
+        run: node scripts/indexnow-submit.mjs --updated || echo "IndexNow ping ناموفق — مانع انتشار نیست"
+
       - name: Fallback — trigger server pipeline (اگر رانر تولید نکرد)
         if: failure()
         run: |

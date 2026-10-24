@@ -21,7 +21,11 @@ export const metadata: Metadata = {
     "Corrective jaw surgery in Iran explained: costs a fraction of US/UK prices, fellowship-trained surgeon in Tehran, online consultation before you fly, 10–14 day treatment trip and online follow-up. Full guide for international patients.",
   alternates: {
     canonical: "/en/jaw-surgery-in-iran",
-    languages: { en: "/en/jaw-surgery-in-iran", "x-default": "/en/jaw-surgery-in-iran" },
+    languages: {
+      fa: "/jaw-surgery",
+      en: "/en/jaw-surgery-in-iran",
+      "x-default": "/jaw-surgery",
+    },
   },
   openGraph: {
     title: "Jaw Surgery in Iran — The Complete Patient Guide",
