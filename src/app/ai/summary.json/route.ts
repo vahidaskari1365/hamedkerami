@@ -13,6 +13,11 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const posts = await getPublishedPosts();
   const body = {
+    /* name/description سطح اول — استاندارد geo-checklist.dev:
+       geo-optimizer-skill فقط فیلدهای ریشه را می‌خواند */
+    name: "دکتر حامد کرمانی",
+    description:
+      "وب‌سایت رسمی دکتر حامد کرمانی، متخصص جراحی فک و صورت و فلوشیپ جراحی‌های کرانیوفاسیال در تهران — جراحی ارتوگناتیک، جنیوپلاستی، بلفاروپلاستی و ایمپلنت دندان، همراه با راهنمای کامل هزینه و دوره نقاهت.",
     site: {
       name: "دکتر حامد کرمانی",
       alternateName: "Dr. Hamed Kermani",

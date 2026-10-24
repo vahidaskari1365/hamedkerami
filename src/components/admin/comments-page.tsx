@@ -32,8 +32,8 @@ export function CommentsPage() {
   const [filter, setFilter] = useState("");
   const [open, setOpen] = useState<Cmt | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(async (withSpinner = true) => {
+    if (withSpinner) setLoading(true);
     try {
       const res = await fetch("/api/admin/comments");
       const data = await res.json();
@@ -46,7 +46,8 @@ export function CommentsPage() {
   }, []);
 
   useEffect(() => {
-    load();
+    /* میکروتسک — بدون setState همگام در بدنه effect (react-compiler) */
+    queueMicrotask(() => void load(false));
   }, [load]);
 
   async function setApproved(c: Cmt, approved: boolean) {

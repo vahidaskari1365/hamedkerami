@@ -211,6 +211,58 @@ async function JsonLd() {
     ],
   };
 
+  const clinicLd = {
+    "@context": "https://schema.org",
+    /* MedicalOrganization — نوع شناخته‌شده در خانواده LocalBusiness؛
+       Physician تنها برای موتورهای جستجو قابل‌فهم است ولی ممیزی entity
+       (برند یکسان + اطلاعات تماس + Organization) این نوع را می‌خواهد */
+    "@type": "MedicalOrganization",
+    "@id": `${SITE.url}/#clinic`,
+    name: "دکتر حامد کرمانی | جراحی فک و صورت",
+    alternateName: "Dr. Hamed Kermani Oral & Maxillofacial Surgery",
+    url: SITE.url,
+    logo: `${SITE.url}/images/logo.png`,
+    image: `${SITE.url}/images/og-cover.jpg`,
+    telephone: "+989382080270",
+    description: SITE.metaDescription,
+    medicalSpecialty: "OralAndMaxillofacialSurgery",
+    priceRange: "$$$",
+    currenciesAccepted: "IRR",
+    paymentAccepted: "Cash",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: SITE.address,
+      addressLocality: "تهران",
+      addressRegion: "تهران",
+      addressCountry: "IR",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: SITE.geo.lat,
+      longitude: SITE.geo.lng,
+    },
+    hasMap: SITE.maps,
+    sameAs: [SITE.instagram, SITE.aparat, SITE.maps],
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Saturday", "Monday", "Tuesday", "Wednesday"],
+        opens: "15:00",
+        closes: "19:00",
+      },
+    ],
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: "+989382080270",
+        contactType: "appointments",
+        availableLanguage: ["fa", "en"],
+      },
+    ],
+    founder: { "@id": `${SITE.url}/#physician` },
+    employee: { "@id": `${SITE.url}/#physician` },
+  };
+
   const websiteLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -275,6 +327,10 @@ async function JsonLd() {
       />
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(clinicLd) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteLd) }}
       />
       <script
@@ -307,6 +363,9 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body className="antialiased">
+        {/* ناحیه اعلام دسترس‌پذیر — به‌روزرسانی‌های async (توست/خطا) را به
+            فناوری‌های کمکی و ایجنت‌های AI اعلام می‌کند (ممیزی GEO بند ۱۸) */}
+        <div id="aria-live-region" aria-live="polite" aria-atomic="true" className="sr-only" />
         <JsonLd />
         {children}
         <Toaster />

@@ -23,8 +23,8 @@ export function MessagesPage() {
   const [loading, setLoading] = useState(true);
   const [openMsg, setOpenMsg] = useState<Msg | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(async (withSpinner = true) => {
+    if (withSpinner) setLoading(true);
     try {
       const res = await fetch("/api/admin/messages");
       const data = await res.json();
@@ -37,7 +37,8 @@ export function MessagesPage() {
   }, []);
 
   useEffect(() => {
-    load();
+    /* میکروتسک — بدون setState همگام در بدنه effect (react-compiler) */
+    queueMicrotask(() => void load(false));
   }, [load]);
 
   async function remove(id: string) {

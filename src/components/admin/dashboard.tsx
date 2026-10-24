@@ -69,8 +69,8 @@ export function Dashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(async (withSpinner = true) => {
+    if (withSpinner) setLoading(true);
     try {
       const res = await fetch(`/api/admin/stats?days=${days}`);
       const data = await res.json();
@@ -83,7 +83,8 @@ export function Dashboard() {
   }, [days]);
 
   useEffect(() => {
-    load();
+    /* میکروتسک — بدون setState همگام در بدنه effect (react-compiler) */
+    queueMicrotask(() => void load(false));
   }, [load]);
 
   const chartData = (stats?.daily ?? []).map((d) => ({

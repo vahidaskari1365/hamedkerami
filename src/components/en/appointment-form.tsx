@@ -84,8 +84,12 @@ export function EnAppointmentForm() {
       });
       list.push({ iso: localIsoDay(d), label });
     }
-    setOptions(list);
-    setMounted(true);
+    /* میکروتسک — محاسبه تاریخ فقط سمت کلاینت است (اختلاف هیدریشن با SSR
+       نمی‌افتد) و setState همگام در بدنه effect هم نداریم (react-compiler) */
+    queueMicrotask(() => {
+      setOptions(list);
+      setMounted(true);
+    });
   }, [doctor]);
 
   const selectedLabel = useMemo(

@@ -51,7 +51,9 @@ export function ArticleComments({ slug }: { slug: string }) {
   }, [slug]);
 
   useEffect(() => {
-    void load();
+    /* فراخوانی در میکروتسک — تحلیل sync effect را راضی نگه می‌دارد؛
+       بدنه load فقط بعد از await state عوض می‌کند */
+    queueMicrotask(() => void load());
   }, [load]);
 
   async function submit(e: React.FormEvent) {

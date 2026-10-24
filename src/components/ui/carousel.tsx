@@ -90,12 +90,13 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api || !setApi) return
-    setApi(api)
+    /* میکروتسک — همگام‌سازی اولیه api بدون setState همگام در effect */
+    queueMicrotask(() => setApi(api))
   }, [api, setApi])
 
   React.useEffect(() => {
     if (!api) return
-    onSelect(api)
+    queueMicrotask(() => onSelect(api))
     api.on("reInit", onSelect)
     api.on("select", onSelect)
 

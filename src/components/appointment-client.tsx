@@ -78,13 +78,16 @@ export function AppointmentClient() {
   const [error, setError] = useState("");
   const [done, setDone] = useState<{ dayJalali: string; doctor: string; slot: string } | null>(null);
 
-  /* امروزِ تهران فقط سمت کلاینت محاسبه می‌شود تا با SSR اختلاف هیدریشن نیفتد */
+  /* امروزِ تهران فقط سمت کلاینت محاسبه می‌شود تا با SSR اختلاف هیدریشن نیفتد
+     (میکروتسک: بعد از هیدریشن و قبل از paint — بدون setState همگام در effect) */
   useEffect(() => {
-    const t = tehranToday();
-    setToday(t);
-    setTodayJ(gregorianToJalali(t.getFullYear(), t.getMonth() + 1, t.getDate()));
-    setView({ jy: gregorianToJalali(t.getFullYear(), t.getMonth() + 1, t.getDate())[0], jm: gregorianToJalali(t.getFullYear(), t.getMonth() + 1, t.getDate())[1] });
-    setMounted(true);
+    queueMicrotask(() => {
+      const t = tehranToday();
+      setToday(t);
+      setTodayJ(gregorianToJalali(t.getFullYear(), t.getMonth() + 1, t.getDate()));
+      setView({ jy: gregorianToJalali(t.getFullYear(), t.getMonth() + 1, t.getDate())[0], jm: gregorianToJalali(t.getFullYear(), t.getMonth() + 1, t.getDate())[1] });
+      setMounted(true);
+    });
   }, []);
 
   /* ---------- تقویم ماه جاری نمایش ---------- */

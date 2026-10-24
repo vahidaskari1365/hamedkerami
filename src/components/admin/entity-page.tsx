@@ -130,8 +130,8 @@ export function EntityPage({ config }: { config: EntityConfig }) {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState<Row | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(async (withSpinner = true) => {
+    if (withSpinner) setLoading(true);
     try {
       const res = await fetch(`/api/admin/${config.slug}`);
       const data = await res.json();
@@ -144,7 +144,8 @@ export function EntityPage({ config }: { config: EntityConfig }) {
   }, [config.slug]);
 
   useEffect(() => {
-    load();
+    /* میکروتسک — بدون setState همگام در بدنه effect (react-compiler) */
+    queueMicrotask(() => void load(false));
   }, [load]);
 
   const openNew = () => {

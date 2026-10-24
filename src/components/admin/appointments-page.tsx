@@ -51,8 +51,8 @@ export function AppointmentsPage() {
   const [filter, setFilter] = useState("");
   const [open, setOpen] = useState<Appt | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(async (withSpinner = true) => {
+    if (withSpinner) setLoading(true);
     try {
       const res = await fetch("/api/admin/appointments");
       const data = await res.json();
@@ -65,7 +65,8 @@ export function AppointmentsPage() {
   }, []);
 
   useEffect(() => {
-    load();
+    /* میکروتسک — بدون setState همگام در بدنه effect (react-compiler) */
+    queueMicrotask(() => void load(false));
   }, [load]);
 
   async function setStatus(appt: Appt, status: string) {
