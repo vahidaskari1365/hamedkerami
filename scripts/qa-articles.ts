@@ -120,7 +120,12 @@ for (const a of BLOG_ARTICLES) {
   /* ۹ — برند و CTA */
   const brand = (body.match(/دکتر حامد کرمانی|دکتر کرمانی/g) ?? []).length;
   if (brand < 2) issues.push({ slug, msg: `نام دکتر فقط ${brand} بار` });
-  if (!body.includes("۶۶۹۲۱۵۰۰") && !body.includes("66921500"))
+  /* تلفن مطب ۰۹۳۸-۲۰۸۰۲۷۰ — نرمال‌سازی ارقام فارسی و جداکننده‌ها
+     (شماره قدیمی ۰۲۱-۶۶۹۲۱۵۰۰ هم برای اطمینان پذیرفته می‌شود) */
+  const digits = body
+    .replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)))
+    .replace(/[^0-9]/g, "");
+  if (!digits.includes("09382080270") && !digits.includes("66921500"))
     issues.push({ slug, msg: "CTA تلفن مطب نیست" });
   if (!title || title.length < 20) issues.push({ slug, msg: "عنوان کوتاه" });
   if (!excerpt || excerpt.length < 40) issues.push({ slug, msg: "excerpt کوتاه" });

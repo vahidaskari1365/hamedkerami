@@ -26,12 +26,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const { site: SITE } = await getSiteContent();
   return {
   metadataBase: new URL(SITE.url),
-  /* فید RSS — کشف محتوای جدید توسط AI و خواننده‌ها (GEO) */
-  alternates: {
-    types: {
-      "application/rss+xml": `${SITE.url}/feed.xml`,
-    },
-  },
+  /* فید RSS از متادیتا حذف شد — چون هر صفحه‌ای که alternates خودش را
+     تعریف کند (canonical)، آبجکت alternates لایه را کامل override می‌کند
+     و لینک فید از head حذف می‌شد (ممیزی GEO: «No RSS/Atom feed»).
+     حالا لینک فید مستقیم در <body> رندر می‌شود و React 19 آن را به
+     <head> منتقل می‌کند؛ هیچ صفحه‌ای نمی‌تواند حذفش کند. */
   title: {
     default: "دکتر حامد کرمانی | متخصص جراحی فک و صورت در تهران",
     template: "%s | دکتر حامد کرمانی",
@@ -267,6 +266,9 @@ async function JsonLd() {
   /* رندر idiomatik به‌صورت کامپوننت (await خودکار توسط RSC) */
   return (
     <>
+      {/* فید RSS — برای کشف محتوای جدید توسط AI/خواننده‌ها (GEO)؛
+          React 19 این تگ را به <head> منتقل می‌کند */}
+      <link rel="alternate" type="application/rss+xml" title="RSS — دکتر حامد کرمانی" href={`${SITE.url}/feed.xml`} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(physicianLd) }}

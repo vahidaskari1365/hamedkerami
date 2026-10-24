@@ -19,7 +19,7 @@ uv run geo audit --url https://dr-kermani.com
 | robots.txt — ربات‌های tier جستجو | ✅ از قبل مجاز؛ حالا به‌صورت صریح هم لیست شدند (Claude-SearchBot، Perplexity-User، xAI-Bot، …) |
 | llms.txt | ✅ از قبل داینامیک |
 | JSON-LD (Physician/WebSite/FAQ/ItemList) | ✅ از قبل موجود |
-| RSS/Atom feed + لینک در head | ✅ `/feed.xml` ساخته شد + `alternates.types` در layout |
+| RSS/Atom feed + لینک در head | ✅ `/feed.xml` ساخته شد؛ لینک head ابتدا با `alternates.types` بود که صفحاتی که `alternates` خودشان را تعریف می‌کردند حذفش می‌کردند (ممیزی ۰۲۴-۱۰-۲۴ این را گرفت) — حالا مستقیم در layout رندر و توسط React 19 به head منتقل می‌شود |
 | `/.well-known/ai.txt` | ✅ ساخته شد (public/.well-known/ai.txt) |
 | `/ai/summary.json` | ✅ ساخته شد (داینامیک از دیتابیس) |
 | `/ai/faq.json` | ✅ ساخته شد (داینامیک از دیتابیس) |
@@ -58,3 +58,4 @@ uv run geo audit --url https://dr-kermani.com
 تکرار شود و امتیاز در همین فایل ثبت گردد:
 
 - ۲۰۲۶-۱۰-۲۳: **۷۷/۱۰۰** (بعد از پیاده‌سازی endpoint های AI → انتظار ۸۵+)
+- ۲۰۲۶-۱۰-۲۴: **۸۱/۱۰۰** — ChatGPT ۶۳، Perplexity ۵۰، Google AI ۸۹. اقدام امروز: لینک RSS hoisted در head + قرارداد کیفیت `docs/standards.md` + نصب ۵ اسکیل طراحی در `agent-skills/`. یافته‌های باز (پذیرفته‌شده): تاریخ نامرئی (تصمیم کاربر)، نیم‌فاصله = false positive فارسی، ۴۹ عنصر sr-only (الگوی a11y)، نبود لینک Knowledge Graph خارجی (ویکی‌پدیا/لینکدین وجود ندارد)

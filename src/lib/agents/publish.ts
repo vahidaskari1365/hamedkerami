@@ -1,6 +1,7 @@
 /* ============================================================
    publish — سردبیر QC + انتشار مقاله (مشترک سرور و تریگر گیت‌هاب)
-   ۱) کنترل کیفیت (طول، پاسخ مستقیم، FAQ، CTA، نام برند)
+   ۱) کنترل کیفیت (طول، پاسخ مستقیم، FAQ، CTA، نام برند، لینک داخلی،
+      الگوهای ممنوعه پارسر — قرارداد docs/standards.md)
    ۲) چک یکتایی جملات با مقالات موجود (uniqueness.ts)
    ۳) ذخیره کاور و upsert در دیتابیس → سایت‌مپ/llms.txt خودکار
    ============================================================ */
@@ -69,6 +70,11 @@ export async function publishSubmittedArticle(draft: SubmittedArticle, cover: Co
   const faqCount = (draft.body.match(/^### .+/gm) || []).length;
   const hasCta = draft.body.includes(PHONE);
   const nameMention = /کرمانی|کرانیوفاسیال/.test(draft.body);
+  /* لینک داخلی — قرارداد standards: حداقل ۴ لینک به صفحات سایت */
+  const internalLinks = (draft.body.match(/\]\((\/[^)]*)\)/g) || []).length;
+  /* الگوهای ممنوعه — پارسر بدنه تحمل نمی‌کند: بک‌تیک، ${}، تگ HTML،
+     عکس مارک‌داون و لینک http خارجی (docs/standards.md بند ۳) */
+  const hasForbidden = /`|\$\{|!\[|\]\(https?:|<\/?[a-zA-Z][^>]*>/.test(draft.body);
 
   const checks: [string, boolean][] = [
     ["طول مقاله زیر ۷۰۰ کلمه است", words < 700],
@@ -77,6 +83,8 @@ export async function publishSubmittedArticle(draft: SubmittedArticle, cover: Co
     ["CTA تماس ندارد", !hasCta],
     ["نام دکتر/فلوشیپ در متن نیست", !nameMention],
     ["عنوان کوتاه یا خالی است", draft.title.trim().length <= 10],
+    ["کمتر از ۴ لینک داخلی دارد", internalLinks < 4],
+    ["الگوی ممنوعه پارسر دارد (بک‌تیک/${/تگ HTML/لینک http/عکس مارک‌داون)", hasForbidden],
   ];
 
   /* چک یکتایی — جملات مقاله نباید با مقالات موجود مشترک باشد */

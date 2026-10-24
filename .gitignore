@@ -71,3 +71,7 @@ db/.admin-secret
 # research clones + local test screenshots
 /skills-research/
 /.screenshots/
+
+# playwright-cli session artifacts + local audit output
+/.playwright-cli/
+/.geo-audit-new.txt

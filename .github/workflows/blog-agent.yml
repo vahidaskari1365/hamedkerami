@@ -39,6 +39,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: QA مخزن مقاله‌ها (قرارداد docs/standards.md)
+        run: bun scripts/qa-articles.ts
+
       - name: Setup ZAI config (کلید SDK هوش مصنوعی)
         run: |
           echo "${{ secrets.ZAI_CONFIG_B64 }}" | base64 -d > .z-ai-config
