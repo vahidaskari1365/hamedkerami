@@ -211,7 +211,7 @@ async function auditPage(url) {
   /* پاراگراف‌ها + strong */
   const paras = [...art.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)].map((m) => stripTags(m[1])).filter((p) => words(p).length > 3);
   meta.maxParaWords = paras.reduce((mx, p) => Math.max(mx, words(p).length), 0);
-  meta.strongs = (art.match(/<strong>/g) || []).length;
+  meta.strongs = (art.match(/<strong[\s>]/g) || []).length;
 
   /* تصاویر */
   const imgs = [...art.matchAll(/<img[^>]*>/gi)].map((m) => m[0]);

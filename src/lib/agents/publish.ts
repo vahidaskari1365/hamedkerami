@@ -76,6 +76,15 @@ export async function publishSubmittedArticle(draft: SubmittedArticle, cover: Co
      عکس مارک‌داون و لینک http خارجی (docs/standards.md بند ۳) */
   const hasForbidden = /`|\$\{|!\[|\]\(https?:|<\/?[a-zA-Z][^>]*>/.test(draft.body);
 
+  /* مقاله موجود در حال به‌روزرسانی است؟ (فیکس محتوایی مقاله‌های قدیمی)
+     گیت‌های سقف کلمه و آمار فقط برای مقاله تازه سخت است — مقاله‌های
+     جامع قدیمی نباید برای به‌روزرسانی خوانایی تکه‌ شوند. بقیه گیت‌ها
+     (پاسخ/FAQ/لینک/توپر/CTA/یکتایی) برای به‌روزرسانی هم برقرار است. */
+  const existingPost = await db.blogPost
+    .findUnique({ where: { slug: draft.slug }, select: { slug: true } })
+    .catch(() => null);
+  const isUpdate = Boolean(existingPost);
+
   /* ---- گیت‌های AEO/SXO — claude-seo quality gates (docs/seo/content-pipeline.md) ---- */
   /* AEO-۱: پاسخ مستقیم باید ۲۵–۹۰ کلمه باشد (نه صرفاً وجودش) */
   const answerLine = draft.body.split("\n").find((l) => l.trimStart().startsWith(">")) ?? "";
@@ -90,12 +99,12 @@ export async function publishSubmittedArticle(draft: SubmittedArticle, cover: Co
   const bolds = (draft.body.match(/\*\*[^*]+\*\*/g) || []).length;
 
   const checks: [string, boolean][] = [
-    ["طول مقاله زیر ۱۴۰۰ کلمه است (سقف کیفیت claude-seo: ۱۵۰۰)", words < 1400],
+    ["طول مقاله زیر ۱۴۰۰ کلمه است (سقف کیفیت claude-seo: ۱۵۰۰)", !isUpdate && words >= 1400],
     ["پاسخ مستقیم ابتدای مقاله ندارد", !hasAnswer],
     ["پاسخ مستقیم خارج از بازه ۲۵–۹۰ کلمه است (AEO)", hasAnswer && (answerWords < 25 || answerWords > 90)],
     ["FAQ کمتر از ۴ سوال دارد", faqCount < 4],
     ["تیتر پرسشی کمتر از ۲ مورد — H2/H3 با «؟» (AEO)", qHeadings < 2],
-    ["کمتر از ۳ عدد/آمار داخل جمله دارد (GEO)", numbers < 3],
+    ["کمتر از ۳ عدد/آمار داخل جمله دارد (GEO)", !isUpdate && numbers < 3],
     ["لینک BOFU ندارد (SXO)", bofuLinks < 1],
     ["برجسته‌سازی ** کمتر از ۲ مورد (SXO خوانایی)", bolds < 2],
     ["CTA تماس ندارد", !hasCta],
