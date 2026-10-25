@@ -99,7 +99,7 @@ export async function publishSubmittedArticle(draft: SubmittedArticle, cover: Co
   const bolds = (draft.body.match(/\*\*[^*]+\*\*/g) || []).length;
 
   const checks: [string, boolean][] = [
-    ["طول مقاله زیر ۱۴۰۰ کلمه است (سقف کیفیت claude-seo: ۱۵۰۰)", !isUpdate && words >= 1400],
+    ["طول مقاله کمتر از ۱۵۰۰ کلمه است (حداقل الزامی کاربر — docs/standards.md بند ۳)", !isUpdate && words < 1500],
     ["پاسخ مستقیم ابتدای مقاله ندارد", !hasAnswer],
     ["پاسخ مستقیم خارج از بازه ۲۵–۹۰ کلمه است (AEO)", hasAnswer && (answerWords < 25 || answerWords > 90)],
     ["FAQ کمتر از ۴ سوال دارد", faqCount < 4],

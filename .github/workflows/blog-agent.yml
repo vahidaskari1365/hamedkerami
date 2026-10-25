@@ -1,8 +1,9 @@
-name: Blog Agent (2 articles/day — 07:00 Tehran)
+name: Blog Agent (10 articles/day — 07:00 Tehran)
 
-# ایجنت محتوایی سایت: هر روز ۰۷:۰۰ به وقت ایران (۰۳:۳۰ UTC) دو مقاله بعدی
-# صف ۲۴ مقاله‌ای با ۵ ایجنت (استراتژیست/نویسنده/سئوکار/تصویرساز ۳D/سردبیر)
+# ایجنت محتوایی سایت: هر روز ۰۷:۰۰ به وقت ایران (۰۳:۳۰ UTC) **۱۰ مقاله**
+# بعدی صف محتوایی با ۵ ایجنت (استراتژیست/نویسنده/سئوکار/تصویرساز ۳D/سردبیر)
 # تولید و منتشر می‌شود؛ سایت‌مپ و llms.txt داینامیک خودکار به‌روز می‌شوند.
+# (الزام کاربر: روزی ۱۰ مقاله، هر مقاله ۱۵۰۰+ کلمه، استاندارد ۵گانه اجباری)
 #
 # معماری: تولید در رانر گیت‌هاب (اینترنت کامل + کلید SDK از secret
 # ZAI_CONFIG_B64 — همان کلید سرور) → POST /api/agents/publish به سرور
@@ -26,7 +27,7 @@ concurrency:
 jobs:
   generate-publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 90
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -49,7 +50,7 @@ jobs:
           echo "config size: $SIZE bytes"
           [ "$SIZE" -gt 50 ] || { echo "::error::ZAI_CONFIG_B64 secret خالی/خراب است"; exit 1; }
 
-      - name: Generate & publish 2 articles
+      - name: Generate & publish 10 articles
         env:
           SITE_URL: ${{ env.SITE_URL }}
           AGENT_SECRET: ${{ secrets.AGENT_SECRET }}

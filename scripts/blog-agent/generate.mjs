@@ -1,5 +1,5 @@
 /* ============================================================
-   blog-agent — انتشار روزانه ۲ مقاله (روزی ۰۷:۰۰ تهران)
+   blog-agent — انتشار روزانه ۱۰ مقاله (۰۷:۰۰ تهران)
    دو منبع محتوا به ترتیب:
    ۱) مخزن مقالات آماده (content-queue/pool/<slug>.json) — مقالات
       دست‌نویس تاییدشده؛ در رانر گیت‌هاب بدون نیاز به API هوش مصنوعی
@@ -100,7 +100,7 @@ async function main() {
   }
 
   const results = [];
-  for (const topic of q.json.pending.slice(0, 2)) {
+  for (const topic of q.json.pending.slice(0, 10)) {
     console.log(`\n[runner] === ${topic.title} ===`);
     try {
       const pooled = poolArticleFor(topic.slug);

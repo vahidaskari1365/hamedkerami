@@ -700,6 +700,39 @@ function CtaSection() {
 }
 
 /* ================= PAGE ================= */
+/* Money-pages strip — لینک ایکویتی به ۵ صفحه پول (roadmap سئو) */
+function MoneyPagesSection() {
+  const links = [
+    { href: "/costs", label: "تعرفه کامل جراحی فک و ایمپلنت" },
+    { href: "/jaw-surgery", label: "هزینه جراحی فک (ارتوگناتیک)" },
+    { href: "/dental-implant", label: "هزینه ایمپلنت دندان به تفکیک برند" },
+    { href: "/chin-surgery", label: "هزینه جنیوپلاستی و جراحی چانه" },
+    { href: "/services", label: "تعرفه دندان عقل و جراحی های دیگر" },
+  ];
+  return (
+    <section className="bg-ink py-14" aria-label="تعرفه خدمات و هزینه ها">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+        <Reveal>
+          <h2 className="text-center text-xl font-black text-white sm:text-2xl">
+            تعرفه و <span className="gold-text">هزینه جراحی ها</span> — شفاف و بدون مکفی
+          </h2>
+          <nav aria-label="لینک صفحات تعرفه" className="mt-7 flex flex-wrap items-center justify-center gap-3">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="rounded-full border border-[#c9a13b]/35 bg-white/[0.04] px-5 py-2.5 text-sm font-bold text-white/85 transition hover:border-[#c9a13b]/70 hover:bg-[#c9a13b]/10 hover:text-white"
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 export function HomePage() {
   return (
     <>
@@ -710,6 +743,7 @@ export function HomePage() {
       <ServicesSection />
       <PortfolioSection />
       <BlogTeaser />
+      <MoneyPagesSection />
       <FaqSection />
       <CtaSection />
     </>
