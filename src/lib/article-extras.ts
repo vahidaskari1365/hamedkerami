@@ -142,7 +142,14 @@ export function parseArticle(body: string): ArticleExtras {
 
     /* --- پرسش FAQ (H3 داخل بخش پرسش‌ها) --- */
     if (inFaqSection && firstLine.startsWith("### ")) {
-      faq.push({ q: firstLine.slice(4).trim(), a: "" });
+      /* پاسخ ممکن است در همان گروهِ هدینگ باشد («### سوال\nپاسخ») یا
+         گروه جدا («### سوال\n\nپاسخ») — هر دو فرمت باید پاسخ بدهد */
+      const restLines = group
+        .split("\n")
+        .slice(1)
+        .join(" ")
+        .trim();
+      faq.push({ q: firstLine.slice(4).trim(), a: restLines });
       continue;
     }
 
