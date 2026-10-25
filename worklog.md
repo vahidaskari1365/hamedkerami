@@ -316,3 +316,24 @@ Stage Summary:
 - اسکن یکتایی: ۰ جمله مشترک در کل مجموعه pool و مقالات استاتیک
 - ابزار scripts/validate6c.py برای غنی‌سازی‌های بعدی pool قابل استفاده مجدد است
 - نکته برای انتشار: کاورهای /images/agent/ هر ۵ اسلاگ همچنان باید پیش از publish ساخته شوند
+
+---
+Task ID: 7
+Agent: main (Z.ai)
+Task: لیست ۵۶ موضوعی به ایجنت‌ها + انتشار ۱۰ بلاگ امروز با کاور 3D + استاندارد ۵گانه اجباری + غنی‌سازی صف
+
+Work Log:
+- publish.ts: گیت کف ۱۵۰۰ کلمه (جایگزین سقف ۱۴۰۰) — الزام کاربر
+- blog-agent.yml + generate.mjs: روزی ۱۰ مقاله، timeout ۹۰ دقیقه؛ queue route cap ۴→۱۰
+- topics.ts: +۳۰ موضوع مارکت ریسرچ (خوشه ریکاوری ۷گانه، قیمت، TMJ، GEO) — صف ۵۶ موضوعی
+- ۱۰ مقاله P1 امروز نوشته شد (۵ ایجنت موازی، ۱۵۸۷-۱۷۵۸ کلمه) + ۱۰ کاور 3D (scripts/gen-covers-today.sh)
+- دیسپچ ۱: ۳ منتشر + ۱ رد (تیتر CTA مشترک nutrition/sleeping) — فیکس شد؛ دیسپچ ۲: ۵ منتشر
+- نتیجه: ۱۰/۱۰ مقاله امروز لایو + llms.txt و sitemap به‌روز (۳۵ مقاله)
+- ۲۰ مقاله قدیمی صف (۸۶۲-۱۲۱۰ کلمه) با ۴ ایجنت موازی به ۱۵۵۵-۱۸۲۶ کلمه رسید
+- اسکن یکتایی نهایی: صفر جمله مشترک در ۵۰ بدنه (scripts/scan-uniqueness.py)
+- هوم‌پیج: سکشن MoneyPagesSection با ۵ لینک BOFU اضافه شد
+
+Stage Summary:
+- امروز ۱۰ مقاله منتشر شد: cost-1405, dental-implant-cost-1405, nutrition, sleeping, lefort, bsso, all-on-4, without-orthodontics, implant-complications, consultation-checklist
+- کل صف ۵۰ مقاله باقی‌مانده ≥۱۵۰۰ کلمه و یکتا — cron فردا ۰۷:۰۰ تهران خودکار ۱۰ می‌گذارد
+- ۲ مقاله منتشرشده قدیمی (3d-simulation 966w, jaw-surgery-pain 936w) بعدا به‌روزرسانی شوند
