@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-25 09:56",
+  "date": "2026-10-25 10:05",
   "base": "https://dr-kermani.com",
   "avgAeo": 100,
   "avgSxo": 100,
@@ -84,7 +84,7 @@
         "hasAuthorBox": true,
         "hasAuthorName": true,
         "maxParaWords": 86,
-        "strongs": 3,
+        "strongs": 4,
         "imgCount": 1,
         "imgAlt": 1,
         "altOk": true,
@@ -166,7 +166,7 @@
           {
             "pts": 15,
             "max": 15,
-            "label": "خوانایی (بلندترین پاراگراف 86 کلمه، strong: 3)"
+            "label": "خوانایی (بلندترین پاراگراف 86 کلمه، strong: 4)"
           },
           {
             "pts": 10,
@@ -440,7 +440,7 @@
         "hasAuthorBox": true,
         "hasAuthorName": true,
         "maxParaWords": 86,
-        "strongs": 3,
+        "strongs": 4,
         "imgCount": 1,
         "imgAlt": 1,
         "altOk": true,
@@ -522,7 +522,7 @@
           {
             "pts": 15,
             "max": 15,
-            "label": "خوانایی (بلندترین پاراگراف 86 کلمه، strong: 3)"
+            "label": "خوانایی (بلندترین پاراگراف 86 کلمه، strong: 4)"
           },
           {
             "pts": 10,
@@ -558,7 +558,7 @@
                 "name": "جراحی بایمکس چقدر طول می‌کشد؟",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "معمولاً دو تا سه ساعت با بیهوشی عمومی. با اسپلینت چاپی و طرح‌ریزی سه‌بعدی، دقت کار بالا و زمان عمل کنترل‌شده‌تر است؛ بستری هم معمولاً یک تا دو شب کافی است."
+                  "text": "معمولاً دو تا سه ساعت با **بیهوشی عمومی**. با اسپلینت چاپی و طرح‌ریزی سه‌بعدی، دقت کار بالا و زمان عمل کنترل‌شده‌تر است؛ بستری هم معمولاً یک تا دو شب کافی است."
                 }
               },
               {
@@ -618,7 +618,7 @@
         "hasAuthorBox": true,
         "hasAuthorName": true,
         "maxParaWords": 99,
-        "strongs": 3,
+        "strongs": 4,
         "imgCount": 1,
         "imgAlt": 1,
         "altOk": true,
@@ -700,7 +700,7 @@
           {
             "pts": 15,
             "max": 15,
-            "label": "خوانایی (بلندترین پاراگراف 99 کلمه، strong: 3)"
+            "label": "خوانایی (بلندترین پاراگراف 99 کلمه، strong: 4)"
           },
           {
             "pts": 10,
@@ -974,7 +974,7 @@
         "hasAuthorBox": true,
         "hasAuthorName": true,
         "maxParaWords": 86,
-        "strongs": 2,
+        "strongs": 4,
         "imgCount": 1,
         "imgAlt": 1,
         "altOk": true,
@@ -1021,7 +1021,7 @@
         ]
       },
       "sxo": {
-        "score": 97,
+        "score": 100,
         "items": [
           {
             "pts": 10,
@@ -1054,9 +1054,9 @@
             "label": "باکس نویسنده + رزومه"
           },
           {
-            "pts": 12,
+            "pts": 15,
             "max": 15,
-            "label": "خوانایی (بلندترین پاراگراف 86 کلمه، strong: 2)"
+            "label": "خوانایی (بلندترین پاراگراف 86 کلمه، strong: 4)"
           },
           {
             "pts": 10,
@@ -1070,7 +1070,7 @@
           }
         ]
       },
-      "total": 197
+      "total": 200
     },
     {
       "url": "https://dr-kermani.com/blog/best-implant-brands",
@@ -3384,7 +3384,7 @@
         "hasAuthorBox": true,
         "hasAuthorName": true,
         "maxParaWords": 98,
-        "strongs": 3,
+        "strongs": 4,
         "imgCount": 1,
         "imgAlt": 1,
         "altOk": true,
@@ -3466,7 +3466,7 @@
           {
             "pts": 15,
             "max": 15,
-            "label": "خوانایی (بلندترین پاراگراف 98 کلمه، strong: 3)"
+            "label": "خوانایی (بلندترین پاراگراف 98 کلمه، strong: 4)"
           },
           {
             "pts": 10,
@@ -3570,8 +3570,8 @@
         "hasBreadcrumb": true,
         "hasAuthorBox": true,
         "hasAuthorName": true,
-        "maxParaWords": 94,
-        "strongs": 3,
+        "maxParaWords": 95,
+        "strongs": 5,
         "imgCount": 1,
         "imgAlt": 1,
         "altOk": true,
@@ -3653,7 +3653,7 @@
           {
             "pts": 15,
             "max": 15,
-            "label": "خوانایی (بلندترین پاراگراف 94 کلمه، strong: 3)"
+            "label": "خوانایی (بلندترین پاراگراف 95 کلمه، strong: 5)"
           },
           {
             "pts": 10,
