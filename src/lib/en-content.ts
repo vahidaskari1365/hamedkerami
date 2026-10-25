@@ -37,9 +37,9 @@ export const EN_CLINIC = {
       "Hello, I am contacting you through your website about a consultation.",
     ),
   hours: [
-    { day: "Saturday", doctor: "", time: "3:00–7:00 PM" },
+    { day: "Saturday", doctor: "Dr. Kermani", time: "3:00–7:00 PM" },
     { day: "Sunday", doctor: "Dr. Kermani", time: "3:00–7:00 PM" },
-    { day: "Monday", doctor: "", time: "3:00–7:00 PM" },
+    { day: "Monday", doctor: "Dr. Kermani", time: "3:00–7:00 PM" },
     { day: "Tuesday", doctor: "Dr. Kermani", time: "3:00–7:00 PM" },
     { day: "Wednesday", doctor: "Dr. Kermani", time: "3:00–7:00 PM" },
     { day: "Thursday & Friday", doctor: "", time: "Closed" },
@@ -78,8 +78,8 @@ export const EN_DOCTORS = [
     fa: "دکتر حامد کرمانی",
     role: "Oral & Maxillofacial Surgeon",
     image: "/images/clinic/dr-portrait.jpg",
-    daysEn: "Sun · Tue · Wed",
-    days: [0, 2, 3],
+    daysEn: "Sat · Sun · Mon · Tue · Wed",
+    days: [6, 0, 1, 2, 3],
   },
 ];
 

@@ -89,15 +89,14 @@ export async function getSiteContent() {
     const implantCosts = costs.filter((c) => c.category === "implant");
     const pair = (key: string) => pairs.find((p) => p.key === key);
 
-    /* پاک‌سازی نام پزشک حذف‌شده از تیم — ردیف‌های قدیمی دیتابیس پروداکشن
-       نباید هیچ‌جا (تیم، ساعات کاری، FAQ) نمایش داده شوند؛ مستقل از seed. */
+    /* پاک‌سازی ردیف‌های قدیمی دیتابیس پروداکشن — نام پزشک حذف‌شده
+       جای خود را به دکتر کرمانی می‌دهد (شنبه/دوشنبه مالِ ایشان است)؛
+       مستقل از seed و بدون دست‌زدن به ردیف‌های سالم. */
     const REMOVED_DOC = /رستم[\s\u200c]+خانی/;
-    /* الگوی اول فقط نام و عبارت روزها را برمی‌دارد و «حاضر هستند» را نگه
-       می‌دارد تا جمله فارسی سالم بماند: «... دکتر کرمانی حاضر هستند.» */
-    const REMOVED_CLAUSE =
-      /\s*و\s*روزهای\s+شنبه\s+و\s+دوشنبه\s+دکتر\s+رستم[\s\u200c]+خانی|\s*(?:و\s*)?دکتر\s+رستم[\s\u200c]+خانی/g;
-    const scrubFa = (s: string): string =>
-      s.replace(REMOVED_CLAUSE, "").replace(/\s{2,}/g, " ").trim();
+    /* پاسخ FAQ ساعات کاری که نام حذف‌شده دارد — بازنویسی کامل با متن جدید
+       (دکتر کرمانی همه روزهای شنبه تا چهارشنبه حاضر هستند) */
+    const NEW_HOURS_FAQ =
+      "مطب شنبه تا چهارشنبه از ساعت ۱۵:۰۰ تا ۱۹:۰۰ فعال است و دکتر کرمانی همه این روزها در مطب حاضر هستند. نوبت‌دهی آنلاین برای همین روزها فعال است؛ برای رزرو نوبت با شماره ۰۹۳۸-۲۰۸۰۲۷۰ تماس بگیرید.";
 
     const bimax = pair("bimax");
     const blepharo = pair("blepharo");
@@ -209,12 +208,15 @@ export async function getSiteContent() {
         ? certificates.map((c) => ({ src: c.src, title: c.title }))
         : CERTIFICATES,
       faq: faq.length
-        ? faq.map((f) => ({ q: f.q, a: scrubFa(f.a) }))
+        ? faq.map((f) => ({
+            q: f.q,
+            a: REMOVED_DOC.test(f.a) ? NEW_HOURS_FAQ : f.a,
+          }))
         : FAQ,
       hours: hours.length
         ? hours.map((h) => ({
             day: h.day,
-            doctor: REMOVED_DOC.test(h.doctor) ? "" : h.doctor,
+            doctor: REMOVED_DOC.test(h.doctor) ? "دکتر کرمانی" : h.doctor,
             time: h.time,
           }))
         : HOURS,
