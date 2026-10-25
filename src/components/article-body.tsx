@@ -204,7 +204,9 @@ function FaqAccordion({ items }: { items: Array<{ q: string; a: string }> }) {
             </span>
           </summary>
           <div className="border-t border-ink/8 px-5 py-4 text-[15px] leading-8 text-foreground/75">
-            {f.a}
+            {/* پاسخ از طریق رندر مارک‌داون — لینک داخلی و ** توپر ** باید
+                واقعاً به <a> و <strong> تبدیل شوند (AEO/SXO)، نه متن لفظی */}
+            <Markdown>{f.a}</Markdown>
           </div>
         </details>
       ))}
