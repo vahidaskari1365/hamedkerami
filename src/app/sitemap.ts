@@ -70,6 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const main: MetadataRoute.Sitemap = [
     { url: base, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${base}/jaw-surgery`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${base}/surgery-care`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${base}/chin-surgery`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${base}/dental-implant`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${base}/implant-pasdaran`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },

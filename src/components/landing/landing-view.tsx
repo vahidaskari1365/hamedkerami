@@ -7,6 +7,7 @@ import {
   LandingFaq,
   LandingCtaBand,
   LandingFooter,
+  SITE_INFO,
 } from "@/components/landing/landing-chrome";
 import type { LandingData, LandingSectionData } from "@/lib/landing-defaults";
 
@@ -46,6 +47,59 @@ function SectionBody({ s }: { s: LandingSectionData }) {
             </li>
           ))}
         </ul>
+      ) : null}
+      {s.table && s.table.rows.length > 0 ? (
+        <div className="mt-8 overflow-x-auto rounded-3xl ring-1 ring-ink/5">
+          <table className="w-full min-w-[540px] text-right text-sm">
+            <thead>
+              <tr className="bg-ink text-white">
+                {s.table.headers.map((h) => (
+                  <th key={h} scope="col" className="whitespace-nowrap px-4 py-3.5 font-black">
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {s.table.rows.map((row, ri) => (
+                <tr key={ri} className={ri % 2 === 1 ? "bg-bone" : "bg-white"}>
+                  {row.map((c, ci) => (
+                    <td
+                      key={ci}
+                      className={`px-4 py-3.5 leading-7 ${ci === 0 ? "font-bold text-ink" : "text-foreground/70"}`}
+                    >
+                      {c}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+      {s.image ? (
+        <figure className="mt-8 overflow-hidden rounded-3xl ring-1 ring-ink/5">
+          <img
+            src={s.image}
+            alt={s.imageAlt || s.title}
+            loading="lazy"
+            className="h-auto w-full object-cover"
+          />
+          {s.imageAlt ? <figcaption className="sr-only">{s.imageAlt}</figcaption> : null}
+        </figure>
+      ) : null}
+      {s.cta ? (
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-3xl bg-teal/10 p-5 ring-1 ring-teal/30">
+          <p className="text-sm font-bold text-ink">
+            <WithBold text={s.cta} />
+          </p>
+          <a
+            href={`tel:${SITE_INFO.phone}`}
+            className="rounded-full bg-teal px-6 py-3 text-xs font-black text-white transition hover:bg-teal-2"
+          >
+            تماس با مطب: <span dir="ltr">{SITE_INFO.phoneDisplay}</span>
+          </a>
+        </div>
       ) : null}
     </>
   );
