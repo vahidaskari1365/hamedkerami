@@ -1,8 +1,8 @@
 {
-  "date": "2026-10-25 08:07",
+  "date": "2026-10-25 09:34",
   "base": "https://dr-kermani.com",
   "avgAeo": 100,
-  "avgSxo": 90,
+  "avgSxo": 91,
   "results": [
     {
       "url": "https://dr-kermani.com/blog/jaw-surgery-insurance",
@@ -1504,7 +1504,7 @@
         "hasAuthorBox": true,
         "hasAuthorName": true,
         "maxParaWords": 143,
-        "strongs": 0,
+        "strongs": 3,
         "imgCount": 1,
         "imgAlt": 1,
         "altOk": true,
@@ -1551,7 +1551,7 @@
         ]
       },
       "sxo": {
-        "score": 89,
+        "score": 96,
         "items": [
           {
             "pts": 10,
@@ -1584,9 +1584,9 @@
             "label": "باکس نویسنده + رزومه"
           },
           {
-            "pts": 4,
+            "pts": 11,
             "max": 15,
-            "label": "خوانایی (بلندترین پاراگراف 143 کلمه، strong: 0)"
+            "label": "خوانایی (بلندترین پاراگراف 143 کلمه، strong: 3)"
           },
           {
             "pts": 10,
@@ -1600,7 +1600,7 @@
           }
         ]
       },
-      "total": 189
+      "total": 196
     },
     {
       "url": "https://dr-kermani.com/blog/facial-contouring",
@@ -3017,7 +3017,7 @@
         "hasAuthorBox": true,
         "hasAuthorName": true,
         "maxParaWords": 167,
-        "strongs": 0,
+        "strongs": 16,
         "imgCount": 1,
         "imgAlt": 1,
         "altOk": true,
@@ -3064,7 +3064,7 @@
         ]
       },
       "sxo": {
-        "score": 85,
+        "score": 92,
         "items": [
           {
             "pts": 10,
@@ -3097,9 +3097,9 @@
             "label": "باکس نویسنده + رزومه"
           },
           {
-            "pts": 0,
+            "pts": 7,
             "max": 15,
-            "label": "خوانایی (بلندترین پاراگراف 167 کلمه، strong: 0)"
+            "label": "خوانایی (بلندترین پاراگراف 167 کلمه، strong: 16)"
           },
           {
             "pts": 10,
@@ -3113,7 +3113,7 @@
           }
         ]
       },
-      "total": 185
+      "total": 192
     },
     {
       "url": "https://dr-kermani.com/blog/maxillofacial-vs-plastic-surgeon",
@@ -4497,7 +4497,7 @@
         "hasAuthorBox": true,
         "hasAuthorName": true,
         "maxParaWords": 163,
-        "strongs": 0,
+        "strongs": 26,
         "imgCount": 1,
         "imgAlt": 1,
         "altOk": true,
@@ -4544,7 +4544,7 @@
         ]
       },
       "sxo": {
-        "score": 85,
+        "score": 92,
         "items": [
           {
             "pts": 10,
@@ -4577,9 +4577,9 @@
             "label": "باکس نویسنده + رزومه"
           },
           {
-            "pts": 0,
+            "pts": 7,
             "max": 15,
-            "label": "خوانایی (بلندترین پاراگراف 163 کلمه، strong: 0)"
+            "label": "خوانایی (بلندترین پاراگراف 163 کلمه، strong: 26)"
           },
           {
             "pts": 10,
@@ -4593,7 +4593,7 @@
           }
         ]
       },
-      "total": 185
+      "total": 192
     },
     {
       "url": "https://dr-kermani.com/blog/best-jaw-surgeon-tehran",
