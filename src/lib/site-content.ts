@@ -89,6 +89,14 @@ export async function getSiteContent() {
     const implantCosts = costs.filter((c) => c.category === "implant");
     const pair = (key: string) => pairs.find((p) => p.key === key);
 
+    /* پاک‌سازی نام پزشک حذف‌شده از تیم — ردیف‌های قدیمی دیتابیس پروداکشن
+       نباید هیچ‌جا (تیم، ساعات کاری، FAQ) نمایش داده شوند؛ مستقل از seed. */
+    const REMOVED_DOC = /رستم[\s\u200c]+خانی/;
+    const REMOVED_CLAUSE =
+      /\s*(?:و\s*)?روزهای\s+شنبه\s+و\s+دوشنبه\s+دکتر\s+رستم[\s\u200c]+خانی\s+حاضر\s+هستند|\s*(?:و\s*)?دکتر\s+رستم[\s\u200c]+خانی/g;
+    const scrubFa = (s: string): string =>
+      s.replace(REMOVED_CLAUSE, "").replace(/\s{2,}/g, " ").trim();
+
     const bimax = pair("bimax");
     const blepharo = pair("blepharo");
     const main = pair("main");
@@ -155,7 +163,9 @@ export async function getSiteContent() {
         ? education.map((e) => ({ year: e.year, title: e.title, place: e.place }))
         : EDUCATION,
       team: team.length
-        ? team.map((t) => ({ name: t.name, role: t.role, image: t.image || null }))
+        ? team
+            .filter((t) => !REMOVED_DOC.test(t.name))
+            .map((t) => ({ name: t.name, role: t.role, image: t.image || null }))
         : TEAM,
       jawCosts: jawCosts.length
         ? jawCosts.map((c) => ({ item: c.item, price: c.price }))
@@ -196,9 +206,15 @@ export async function getSiteContent() {
       certificates: certificates.length
         ? certificates.map((c) => ({ src: c.src, title: c.title }))
         : CERTIFICATES,
-      faq: faq.length ? faq.map((f) => ({ q: f.q, a: f.a })) : FAQ,
+      faq: faq.length
+        ? faq.map((f) => ({ q: f.q, a: scrubFa(f.a) }))
+        : FAQ,
       hours: hours.length
-        ? hours.map((h) => ({ day: h.day, doctor: h.doctor, time: h.time }))
+        ? hours.map((h) => ({
+            day: h.day,
+            doctor: REMOVED_DOC.test(h.doctor) ? "" : h.doctor,
+            time: h.time,
+          }))
         : HOURS,
       /* تازه‌ترین تغییر محتوای واقعی — برای dateModified اسکیما و مُهر فوتر
          (سیگنال freshness برای Perplexity و Google G-DATES) */

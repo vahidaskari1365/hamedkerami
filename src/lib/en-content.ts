@@ -37,9 +37,9 @@ export const EN_CLINIC = {
       "Hello, I am contacting you through your website about a consultation.",
     ),
   hours: [
-    { day: "Saturday", doctor: "Dr. Rostamkhani (Prosthodontist)", time: "3:00–7:00 PM" },
+    { day: "Saturday", doctor: "", time: "3:00–7:00 PM" },
     { day: "Sunday", doctor: "Dr. Kermani", time: "3:00–7:00 PM" },
-    { day: "Monday", doctor: "Dr. Rostamkhani (Prosthodontist)", time: "3:00–7:00 PM" },
+    { day: "Monday", doctor: "", time: "3:00–7:00 PM" },
     { day: "Tuesday", doctor: "Dr. Kermani", time: "3:00–7:00 PM" },
     { day: "Wednesday", doctor: "Dr. Kermani", time: "3:00–7:00 PM" },
     { day: "Thursday & Friday", doctor: "", time: "Closed" },
@@ -80,14 +80,6 @@ export const EN_DOCTORS = [
     image: "/images/clinic/dr-portrait.jpg",
     daysEn: "Sun · Tue · Wed",
     days: [0, 2, 3],
-  },
-  {
-    name: "Dr. Fatemeh Rostamkhani",
-    fa: "دکتر فاطمه رستم خانی",
-    role: "Prosthodontist (Dental Prosthetics)",
-    image: "/images/team-rostamkhani.jpg",
-    daysEn: "Sat · Mon",
-    days: [6, 1],
   },
 ];
 

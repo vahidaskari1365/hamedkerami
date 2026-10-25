@@ -1,7 +1,6 @@
 -- دیتابیس کامل سایت دکتر حامد کرمانی (SQLite)
 -- بازگردانی: sqlite3 db/custom.db < db/init.sql
 BEGIN TRANSACTION;
-BEGIN TRANSACTION;
 CREATE TABLE "AdminUser" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "username" TEXT NOT NULL,
@@ -1680,7 +1679,7 @@ INSERT INTO "Faq" VALUES('cmvc9tsu4002msmpfx0y69ena','جراحی دو فک (با
 INSERT INTO "Faq" VALUES('cmvc9tsu5002nsmpf93ylycwt','هزینه جراحی فک و صورت چقدر است؟','هزینه جراحی چانه (جنیوپلاستی) ۹۰ تا ۱۱۰ میلیون تومان، جراحی یک فک ۱۷۰ تا ۱۸۰ میلیون تومان، جراحی دو فک ۱۹۰ تا ۲۰۰ میلیون تومان و جراحی دو فک همراه با جنیوپلاستی ۲۱۰ تا ۲۴۰ میلیون تومان است. هزینه دقیق پس از معاینه و بررسی پرونده اعلام می شود.',1);
 INSERT INTO "Faq" VALUES('cmvc9tsu5002osmpf972y0igg','دوران نقاهت بعد از جراحی ارتوگناتیک چقدر طول می کشد؟','بیشتر بیماران پس از ۲ هفته به زندگی عادی بازمی گردند و تورم اصلی در ۳ تا ۴ هفته فروکش می کند. بازگشت کامل به فرم نهایی چند ماه زمان می برد. رعایت دستورات پس از عمل، سرعت بهبود را افزایش می دهد.',2);
 INSERT INTO "Faq" VALUES('cmvc9tsu5002psmpfxqpex9a0','ایمپلنت دندان در چه شرایطی نیاز به پیوند استخوان دارد؟','اگر استخوان فک به دلیل فقدان طولانی مدت دندان تحلیل رفته باشد، قبل یا همزمان با ایمپلنت، پیوند استخوان (GBR) یا سینوس لیفت لازم می شود. در تحلیل های شدید فک بالا، ایمپلنت زایگوماتیک گزینه مناسبی است.',3);
-INSERT INTO "Faq" VALUES('cmvc9tsu6002qsmpf2gqycwxe','ساعات کاری مطب و نحوه رزرو نوبت چگونه است؟','مطب شنبه تا چهارشنبه از ساعت ۱۵:۰۰ تا ۱۹:۰۰ فعال است. روزهای یکشنبه، سه شنبه و چهارشنبه دکتر کرمانی و روزهای شنبه و دوشنبه دکتر رستم خانی حاضر هستند. برای رزرو نوبت با شماره ۰۲۱-۶۶۹۲۱۵۰۰ تماس بگیرید.',4);
+INSERT INTO "Faq" VALUES('cmvc9tsu6002qsmpf2gqycwxe','ساعات کاری مطب و نحوه رزرو نوبت چگونه است؟','مطب شنبه تا چهارشنبه از ساعت ۱۵:۰۰ تا ۱۹:۰۰ فعال است. دکتر کرمانی روزهای یکشنبه، سه‌شنبه و چهارشنبه حاضر هستند و نوبت‌دهی آنلاین برای همین روزها فعال است؛ برای هماهنگی روزهای دیگر با شماره ۰۲۱-۶۶۹۲۱۵۰۰ تماس بگیرید.',4);
 INSERT INTO "Faq" VALUES('cmvc9tsuq002rsmpfgiwn1e1j','بلفاروپلاستی چه مشکلاتی را برطرف می کند؟','بلفاروپلاستی پف و کیسه های زیر چشم، افتادگی پلک بالا و سایه سنگین روی نگاه را اصلاح می کند. برش ها در چین طبیعی پلک قرار می گیرد و به مرور محو می شود.',5);
 CREATE TABLE "GalleryCase" (
     "id" TEXT NOT NULL PRIMARY KEY,
@@ -1719,9 +1718,9 @@ CREATE TABLE "Hour" (
     "time" TEXT NOT NULL DEFAULT '',
     "order" INTEGER NOT NULL DEFAULT 0
 );
-INSERT INTO "Hour" VALUES('cmvc9tsus002ssmpfm1lqr471','شنبه','دکتر رستم خانی','۱۵:۰۰ تا ۱۹:۰۰',0);
+INSERT INTO "Hour" VALUES('cmvc9tsus002ssmpfm1lqr471','شنبه','','۱۵:۰۰ تا ۱۹:۰۰',0);
 INSERT INTO "Hour" VALUES('cmvc9tsut002tsmpfx7higgrm','یکشنبه','دکتر کرمانی','۱۵:۰۰ تا ۱۹:۰۰',1);
-INSERT INTO "Hour" VALUES('cmvc9tsut002usmpf2f3a4b8a','دوشنبه','دکتر رستم خانی','۱۵:۰۰ تا ۱۹:۰۰',2);
+INSERT INTO "Hour" VALUES('cmvc9tsut002usmpf2f3a4b8a','دوشنبه','','۱۵:۰۰ تا ۱۹:۰۰',2);
 INSERT INTO "Hour" VALUES('cmvc9tsuu002vsmpfcf5og9gs','سه شنبه','دکتر کرمانی','۱۵:۰۰ تا ۱۹:۰۰',3);
 INSERT INTO "Hour" VALUES('cmvc9tsuv002wsmpf3f74dz5f','چهارشنبه','دکتر کرمانی','۱۵:۰۰ تا ۱۹:۰۰',4);
 INSERT INTO "Hour" VALUES('cmvc9tsuv002xsmpfeb2prwzq','پنجشنبه و جمعه','','تعطیل',5);
@@ -1843,7 +1842,6 @@ CREATE TABLE "TeamMember" (
     "order" INTEGER NOT NULL DEFAULT 0
 );
 INSERT INTO "TeamMember" VALUES('cmvc9tssa000gsmpfv5124yfm','دکتر حامد کرمانی','متخصص جراحی فک و صورت','/images/dr-surgon.png',0);
-INSERT INTO "TeamMember" VALUES('cmvc9tssb000hsmpfjdk38gcn','دکتر فاطمه رستم خانی','متخصص پروتزهای دندانی','/images/team-rostamkhani.jpg',1);
 INSERT INTO "TeamMember" VALUES('cmvc9tssc000ismpf1j6dpbt7','خانم منیره کاظمی','سوپروایزر مطب','',2);
 INSERT INTO "TeamMember" VALUES('cmvc9tssd000jsmpfil2dlago','آقای پوریا هاشم پور','تولید محتوا','',3);
 CREATE UNIQUE INDEX "AdminUser_username_key" ON "AdminUser"("username");
@@ -1852,7 +1850,6 @@ CREATE INDEX "PageView_path_idx" ON "PageView"("path");
 CREATE UNIQUE INDEX "BlogPost_slug_key" ON "BlogPost"("slug");
 CREATE UNIQUE INDEX "BeforeAfterPair_key_key" ON "BeforeAfterPair"("key");
 CREATE UNIQUE INDEX "LandingPage_slug_key" ON "LandingPage"("slug");
-COMMIT;
 COMMIT;
 
 /* ---------- نوبت‌دهی آنلاین و نظرات مقاله‌ها (idempotent) ---------- */
