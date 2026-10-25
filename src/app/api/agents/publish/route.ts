@@ -34,8 +34,9 @@ export async function POST(req: Request) {
     if (!slug || !title || !articleBody) {
       return NextResponse.json({ error: "fieds: slug/title/body الزامی است" }, { status: 400 });
     }
-    /* جلوگیری از تکرار عنوان (اسلاگ قفل upsert است اما عنوان باید یکتا بماند) */
-    const dup = await db.blogPost.findFirst({ where: { title: { equals: title } }, select: { slug: true } });
+    /* جلوگیری از تکرار عنوان — اما به‌روزرسانی همان مقاله (slug یکسان)
+       مجاز است تا فیکس محتوایی مقاله زنده ممکن باشد (fix-article-faq) */
+    const dup = await db.blogPost.findFirst({ where: { title: { equals: title }, slug: { not: slug } }, select: { slug: true } });
     if (dup) {
       return NextResponse.json({ ok: false, reason: "مقاله‌ای با همین عنوان قبلا منتشر شده (بدون تکرار)", slug: dup.slug, title });
     }

@@ -1,0 +1,41 @@
+name: Article content fix (AEO/SXO append)
+
+# فیکس محتوایی مقاله زنده: افزودن بخش «پرسش های پرتکرار» + لینک داخلی +
+# برجسته‌سازی به مقاله‌های قدیمی‌تر از گیت‌های AEO/SXO — با AGENT_SECRET
+# از همان مسیر انتشار ایجنت روزانه (سردبیر QC کامل اعمال می‌شود).
+
+on:
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: "slug مقاله (بدون /blog/)"
+        required: true
+        type: string
+
+concurrency:
+  group: article-fix
+  cancel-in-progress: false
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Append FAQ & publish
+        env:
+          SITE_URL: https://dr-kermani.com
+          SLUG: ${{ inputs.slug }}
+          AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
+        run: node scripts/fix-article-faq.mjs
+
+      - name: IndexNow — پینگ Bing برای نسخه به‌روز
+        if: always()
+        run: node scripts/indexnow-submit.mjs --updated || echo "IndexNow ping ناموفق — مانع نیست"
