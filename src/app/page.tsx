@@ -3,6 +3,7 @@ import { SiteShell } from "@/components/site-chrome";
 import { HomePage } from "@/components/pages/home";
 import { JsonLdScript, videoLd } from "@/components/schema";
 import { VIDEOS } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content";
 
 /* ------------------------------------------------------------
    رندر داینامیک اجباری — دلایل:
@@ -23,7 +24,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
+export default async function Page() {
+  /* FAQPage فقط همین‌جا — دستورالعمل گوگل: سوال‌های FAQPage باید مرئی
+     در همان صفحه باشند. آکاردئون FAQ در HomePage رندر می‌شود و منبع
+     داده (getSiteContent) هم همین است — schema و متن مرئی همیشه یکی‌اند (AEO) */
+  const { faq } = await getSiteContent();
+  const faqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
   return (
     <SiteShell>
       {/* اسکیمای ویدئو — هر ویدئویی که در VIDEOS.items اضافه شود
@@ -31,6 +46,7 @@ export default function Page() {
       {VIDEOS.items.map((v) => (
         <JsonLdScript key={v.id} data={videoLd(v)} />
       ))}
+      {faq.length ? <JsonLdScript data={faqLd} /> : null}
       <HomePage />
     </SiteShell>
   );

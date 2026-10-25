@@ -153,7 +153,7 @@ export const viewport: Viewport = {
 
 /* ---------------- JSON-LD: SEO + AEO + GEO (از دیتابیس) ---------------- */
 async function JsonLd() {
-  const { site: SITE, faq: FAQ, services: SERVICES, lastUpdated } = await getSiteContent();
+  const { site: SITE, services: SERVICES, lastUpdated } = await getSiteContent();
   const physicianLd = {
     "@context": "https://schema.org",
     "@type": "Physician",
@@ -302,15 +302,10 @@ async function JsonLd() {
     },
   };
 
-  const faqLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: FAQ.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  };
+  /* FAQPage سراسری حذف شد — دستورالعمل گوگل: سوال‌های FAQPage باید مرئی
+     در همان صفحه باشند. این ۶ سوال فقط در صفحه اصلی رندر می‌شوند،
+     پس اسکیمای FAQPage هم فقط در src/app/page.tsx تزریق می‌شود
+     (مقاله‌ها FAQPage خودشان را از بدنه مقاله می‌سازند). */
 
   const servicesLd = {
     "@context": "https://schema.org",
@@ -351,10 +346,6 @@ async function JsonLd() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: safeJsonLd(faqLd) }}
       />
       <script
         type="application/ld+json"

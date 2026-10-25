@@ -44,12 +44,16 @@ function jsonLds(html) {
   return out;
 }
 function graphTypes(doc) {
-  const types = new Map(); // "@type" lowercase → node
+  const types = new Map(); // type lowercase → آرایه نودها (چند FAQPage ممکن است)
   const walk = (n) => {
     if (!n || typeof n !== "object") return;
     if (Array.isArray(n)) return n.forEach(walk);
     const t = n["@type"];
-    if (t) [].concat(t).forEach((x) => types.set(String(x).toLowerCase(), n));
+    if (t) [].concat(t).forEach((x) => {
+      const k = String(x).toLowerCase();
+      if (!types.has(k)) types.set(k, []);
+      types.get(k).push(n);
+    });
     Object.values(n).forEach(walk);
   };
   doc["@graph"] ? doc["@graph"].forEach(walk) : walk(doc);
@@ -61,18 +65,26 @@ function scoreAeo(html, meta) {
   const items = [];
   const add = (pts, max, label) => items.push({ pts, max, label });
 
-  /* ۱ — FAQPage schema ≥۴ سوال */
-  const faq = meta.types.get("faqpage");
-  const fq = faq?.mainEntity?.length ?? 0;
+  /* انتخاب FAQPage مقاله — صفحه‌های FAQ متعدد ممکن است (سراسری layout + مقاله)؛
+     معیار: بیشترین تطابق سوال‌ها با هدینگ‌های مرئی؛ برتری به @id «#faq» */
+  const normQ = (s) => stripTags(String(s)).replace(/[\u200c\u064b-\u0652]/g, "").replace(/\s+/g, " ").trim();
+  const h3set = new Set(meta.articleH3.map(normQ));
+  let faq = null, fq = 0, matchRatio = 0;
+  for (const f of meta.faqPages) {
+    const qs = f?.mainEntity ?? [];
+    const mr = qs.length && h3set.size
+      ? qs.filter((q) => h3set.has(normQ(q.name))).length / qs.length
+      : 0;
+    const better = !faq || mr > matchRatio ||
+      (mr === matchRatio && String(f["@id"] || "").endsWith("#faq"));
+    if (better) { faq = f; fq = qs.length; matchRatio = mr; }
+  }
+
+  /* ۱ — FAQPage schema ≥۴ سوال (سطح مقاله) */
   add(fq >= 4 ? 20 : fq > 0 ? 10 : 0, 20, `FAQPage schema (${fq} سوال)`);
 
   /* ۲ — تطابق سوالات اسکیما با FAQ قابل‌مشاهده */
-  let matchRatio = 0;
   if (fq >= 4 && meta.articleH3.length) {
-    const normQ = (s) => stripTags(String(s)).replace(/[\u200c\u064b-\u0652]/g, "").replace(/\s+/g, " ").trim();
-    const h3s = new Set(meta.articleH3.map(normQ));
-    const inSchema = faq.mainEntity.map((q) => normQ(q.name));
-    matchRatio = inSchema.filter((q) => h3s.has(q)).length / inSchema.length;
     add(matchRatio >= 0.8 ? 10 : matchRatio >= 0.5 ? 5 : 0, 10, `تطابق اسکیما/متن FAQ (${Math.round(matchRatio * 100)}٪)`);
   } else add(0, 10, "تطابق اسکیما/متن FAQ (ناموجود)");
 
@@ -87,7 +99,7 @@ function scoreAeo(html, meta) {
   add(meta.hasList ? 10 : 0, 10, meta.hasList ? "لیست/جدول snippet-پسند" : "فاقد لیست/جدول");
 
   /* ۶ — BlogPosting کامل */
-  const bp = meta.types.get("blogposting");
+  const bp = (meta.types.get("blogposting") ?? [])[0];
   const bpOk = bp && bp.author && (bp.datePublished || bp.dateModified) && bp.wordCount && bp.speakable;
   add(bpOk ? 10 : bp ? 5 : 0, 10, `BlogPosting کامل (author/dates/wordCount/speakable${bp?.dateModified ? "+dateModified" : ""})`);
 
@@ -149,8 +161,12 @@ async function auditPage(url) {
 
   /* JSON-LD */
   const types = new Map();
-  jsonLds(html).forEach((doc) => graphTypes(doc).forEach((v, k) => { if (!types.has(k)) types.set(k, v); }));
+  jsonLds(html).forEach((doc) => graphTypes(doc).forEach((v, k) => {
+    if (!types.has(k)) types.set(k, v);
+    else types.set(k, [...(types.get(k) ?? []), ...v]);
+  }));
   meta.types = types;
+  meta.faqPages = types.get("faqpage") ?? [];
 
   /* بدنه مقاله — بین <article ...> و </article> */
   const artMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
@@ -204,7 +220,7 @@ async function auditPage(url) {
   meta.altOk = meta.imgCount > 0 && meta.imgAlt === meta.imgCount;
 
   /* تاریخ به‌روزرسانی در اسکیما (freshness) */
-  meta.fresh = Boolean(types.get("blogposting")?.dateModified);
+  meta.fresh = Boolean((types.get("blogposting") ?? [])[0]?.dateModified);
 
   const aeo = scoreAeo(html, meta);
   const sxo = scoreSxo(html, meta);
