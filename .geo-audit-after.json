@@ -1,0 +1,745 @@
+{
+  "url": "https://dr-kermani.com",
+  "timestamp": "2026-10-25T06:34:23.609065+00:00",
+  "score": 94,
+  "band": "excellent",
+  "error": null,
+  "score_version": 2,
+  "score_max": {
+    "google_ai": 20,
+    "robots": 14,
+    "schema": 14,
+    "content": 14,
+    "brand_entity": 12,
+    "meta": 11,
+    "llms": 6,
+    "signals": 6,
+    "ai_discovery": 3
+  },
+  "google_ai": {
+    "checked": true,
+    "points": 20,
+    "max_points": 20,
+    "final_url": "https://dr-kermani.com",
+    "checks": [
+      {
+        "id": "G-INDEX",
+        "status": "pass",
+        "points": 5,
+        "max_points": 5,
+        "evidence": "HTTP 200, indexable, Googlebot allowed",
+        "source_url": "https://developers.google.com/search/docs/essentials/technical",
+        "evidence_level": "google-official"
+      },
+      {
+        "id": "G-SNIPPET",
+        "status": "pass",
+        "points": 5,
+        "max_points": 5,
+        "evidence": "No snippet restrictions",
+        "source_url": "https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag",
+        "evidence_level": "google-official"
+      },
+      {
+        "id": "G-CANONICAL",
+        "status": "pass",
+        "points": 3,
+        "max_points": 3,
+        "evidence": "One absolute canonical matching the final URL",
+        "source_url": "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls",
+        "evidence_level": "google-official"
+      },
+      {
+        "id": "G-DATES",
+        "status": "pass",
+        "points": 2,
+        "max_points": 2,
+        "evidence": "Visible date consistent with structured data",
+        "source_url": "https://developers.google.com/search/docs/appearance/publication-dates",
+        "evidence_level": "google-official"
+      },
+      {
+        "id": "G-BYLINE",
+        "status": "pass",
+        "points": 2,
+        "max_points": 2,
+        "evidence": "Visible author byline",
+        "source_url": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+        "evidence_level": "google-official"
+      },
+      {
+        "id": "G-LINKS",
+        "status": "pass",
+        "points": 1,
+        "max_points": 1,
+        "evidence": "67 crawlable <a href> links",
+        "source_url": "https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics",
+        "evidence_level": "google-official"
+      },
+      {
+        "id": "G-VIEWPORT",
+        "status": "pass",
+        "points": 1,
+        "max_points": 1,
+        "evidence": "meta viewport present",
+        "source_url": "https://developers.google.com/search/docs/appearance/page-experience",
+        "evidence_level": "google-official"
+      },
+      {
+        "id": "G-SITEMAP",
+        "status": "pass",
+        "points": 1,
+        "max_points": 1,
+        "evidence": "Sitemap declared: https://dr-kermani.com/sitemap.xml",
+        "source_url": "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap",
+        "evidence_level": "google-official"
+      },
+      {
+        "id": "G-GENAI-CONTROL",
+        "status": "manual",
+        "points": 0,
+        "max_points": 0,
+        "evidence": "Check Search Console > Settings > Search generative AI control",
+        "source_url": "https://developers.google.com/search/docs/fundamentals/ai-optimization-guide",
+        "evidence_level": "google-official"
+      }
+    ]
+  },
+  "checks": {
+    "robots_txt": {
+      "score": 14,
+      "max": 14,
+      "passed": true,
+      "details": {
+        "found": true,
+        "bots_allowed": [
+          "GPTBot",
+          "OAI-SearchBot",
+          "ChatGPT-User",
+          "ClaudeBot",
+          "Claude-SearchBot",
+          "Claude-User",
+          "PerplexityBot",
+          "Perplexity-User",
+          "Googlebot",
+          "Google-Extended",
+          "Google-CloudVertexBot",
+          "Bingbot",
+          "Applebot-Extended",
+          "cohere-ai",
+          "DuckAssistBot",
+          "Bytespider",
+          "meta-externalagent",
+          "Meta-ExternalFetcher",
+          "facebookexternalhit",
+          "Amazonbot",
+          "AI2Bot",
+          "AI2Bot-Dolma",
+          "xAI-Bot",
+          "Applebot",
+          "PetalBot",
+          "YouBot",
+          "CCBot"
+        ],
+        "bots_missing": [],
+        "bots_blocked": [],
+        "bots_partial": [],
+        "citation_bots_ok": true,
+        "crawl_delay": null,
+        "citation_bots_explicit": true,
+        "sitemaps": [
+          "https://dr-kermani.com/sitemap.xml"
+        ]
+      }
+    },
+    "llms_txt": {
+      "score": 6,
+      "max": 6,
+      "passed": true,
+      "details": {
+        "found": true,
+        "has_h1": true,
+        "has_description": true,
+        "has_sections": true,
+        "has_links": true,
+        "word_count": 1461,
+        "has_full": true,
+        "sections_count": 4,
+        "links_count": 35,
+        "has_blockquote": true,
+        "has_optional_section": false,
+        "companion_files_hint": false,
+        "validation_warnings": [],
+        "blocked_by_cdn": false
+      }
+    },
+    "schema_jsonld": {
+      "score": 12,
+      "max": 14,
+      "passed": true,
+      "details": {
+        "has_website": true,
+        "has_webapp": false,
+        "has_faq": true,
+        "found_types": [
+          "Physician",
+          "MedicalOrganization",
+          "WebSite",
+          "FAQPage",
+          "ItemList"
+        ]
+      }
+    },
+    "meta_tags": {
+      "score": 11,
+      "max": 11,
+      "passed": true,
+      "details": {
+        "has_title": true,
+        "has_description": true,
+        "has_canonical": true,
+        "has_og_title": true,
+        "has_og_description": true,
+        "has_og_image": true,
+        "title_text": "\u062f\u06a9\u062a\u0631 \u062d\u0627\u0645\u062f \u06a9\u0631\u0645\u0627\u0646\u06cc | \u0645\u062a\u062e\u0635\u0635 \u062c\u0631\u0627\u062d\u06cc \u0641\u06a9 \u0648 \u0635\u0648\u0631\u062a \u062f\u0631 \u062a\u0647\u0631\u0627\u0646",
+        "description_text": "\u062f\u06a9\u062a\u0631 \u062d\u0627\u0645\u062f \u06a9\u0631\u0645\u0627\u0646\u06cc\u060c \u0645\u062a\u062e\u0635\u0635 \u062c\u0631\u0627\u062d\u06cc \u0641\u06a9 \u0648 \u0635\u0648\u0631\u062a \u0648 \u0641\u0644\u0648\u0634\u06cc\u067e \u062c\u0631\u0627\u062d\u06cc \u0647\u0627\u06cc \u06a9\u0631\u0627\u0646\u06cc\u0648\u0641\u06cc\u0634\u0627\u0644 \u0627\u0632 \u062f\u0627\u0646\u0634\u06af\u0627\u0647 \u062a\u0647\u0631\u0627\u0646. \u062c\u0631\u0627\u062d\u06cc \u0627\u0631\u062a\u0648\u06af\u0646\u0627\u062a\u06cc\u06a9 (\u06cc\u06a9 \u0641\u06a9 \u0648 \u062f\u0648 \u0641\u06a9)\u060c \u062c\u0646\u06cc\u0648\u067e\u0644\u0627\u0633\u062a\u06cc\u060c \u0628\u0644\u0641\u0627\u0631\u0648\u067e\u0644\u0627\u0633\u062a\u06cc\u060c \u0627\u06cc\u0645\u067e\u0644\u0646\u062a \u062f\u0646\u062f\u0627\u0646 \u0648 \u0628\u0627\u0632\u0633\u0627\u0632\u06cc \u0641\u06a9 \u062f\u0631 \u062a\u0647\u0631\u0627\u0646. \u0645\u0634\u0627\u0648\u0631\u0647 \u0648 \u0631\u0632\u0631\u0648 \u0646\u0648\u0628\u062a: \u06f0\u06f9\u06f3\u06f8-\u06f2\u06f0\u06f8\u06f0\u06f2\u06f7\u06f0",
+        "description_length": 218,
+        "title_length": 49,
+        "canonical_url": "https://dr-kermani.com",
+        "x_robots_noindex": false,
+        "x_robots_tag": "",
+        "has_noai": false,
+        "noai_value": ""
+      }
+    },
+    "content": {
+      "score": 14,
+      "max": 14,
+      "passed": true,
+      "details": {
+        "has_h1": true,
+        "heading_count": 23,
+        "has_numbers": true,
+        "has_links": true,
+        "word_count": 1215,
+        "h1_text": "\u0632\u06cc\u0628\u0627\u06cc\u06cc \u0648 \u0639\u0645\u0644\u06a9\u0631\u062f\u060c\u062f\u0631 \u062f\u0633\u062a\u0627\u0646 \u062c\u0631\u0627\u062d \u0641\u06a9 \u0648 \u0635\u0648\u0631\u062a",
+        "numbers_count": 19,
+        "external_links_count": 9,
+        "has_heading_hierarchy": true,
+        "has_lists_or_tables": true,
+        "has_front_loading": true,
+        "images_alt_ok": true
+      }
+    },
+    "signals": {
+      "score": 6,
+      "max": 6,
+      "passed": true,
+      "details": {
+        "has_lang": true,
+        "lang_value": "fa",
+        "has_rss": true,
+        "rss_url": "https://dr-kermani.com/feed.xml",
+        "has_freshness": true,
+        "freshness_date": "2026-10-24T18:17:29.611Z",
+        "freshness_valid": true
+      }
+    },
+    "ai_discovery": {
+      "score": 3,
+      "max": 3,
+      "passed": true,
+      "details": {
+        "has_well_known_ai": true,
+        "has_summary": true,
+        "has_faq": true,
+        "has_service": true,
+        "summary_valid": true,
+        "faq_count": 6,
+        "endpoints_found": 4,
+        "has_webmcp_declaration": false,
+        "webmcp_declared_tool_count": 0,
+        "has_markdown": true
+      }
+    },
+    "brand_entity": {
+      "score": 8,
+      "max": 12,
+      "passed": true,
+      "details": {
+        "brand_name_consistent": true,
+        "names_found": [
+          "\u0632\u06cc\u0628\u0627\u06cc\u06cc \u0648 \u0639\u0645\u0644\u06a9\u0631\u062f\u060c\u062f\u0631 \u062f\u0633\u062a\u0627\u0646 \u062c\u0631\u0627\u062d \u0641\u06a9 \u0648 \u0635\u0648\u0631\u062a",
+          "\u062f\u06a9\u062a\u0631 \u062d\u0627\u0645\u062f \u06a9\u0631\u0645\u0627\u0646\u06cc",
+          "\u062f\u06a9\u062a\u0631 \u062d\u0627\u0645\u062f \u06a9\u0631\u0645\u0627\u0646\u06cc",
+          "\u062f\u06a9\u062a\u0631 \u062d\u0627\u0645\u062f \u06a9\u0631\u0645\u0627\u0646\u06cc",
+          "\u062f\u06a9\u062a\u0631 \u062d\u0627\u0645\u062f \u06a9\u0631\u0645\u0627\u0646\u06cc"
+        ],
+        "primary_name": "\u062f\u06a9\u062a\u0631 \u062d\u0627\u0645\u062f \u06a9\u0631\u0645\u0627\u0646\u06cc",
+        "schema_desc_matches_meta": true,
+        "kg_pillar_count": 0,
+        "kg_pillar_urls": [],
+        "has_wikipedia": false,
+        "has_wikidata": false,
+        "has_linkedin": false,
+        "has_crunchbase": false,
+        "has_about_link": true,
+        "has_contact_info": true,
+        "has_geo_schema": true,
+        "has_hreflang": true,
+        "hreflang_count": 3,
+        "faq_depth": 6,
+        "has_recent_articles": false
+      }
+    },
+    "google_ai": {
+      "score": 20,
+      "max": 20,
+      "passed": true,
+      "details": {
+        "checked": true,
+        "points": 20,
+        "max_points": 20,
+        "final_url": "https://dr-kermani.com",
+        "checks": [
+          {
+            "id": "G-INDEX",
+            "status": "pass",
+            "points": 5,
+            "max_points": 5,
+            "evidence": "HTTP 200, indexable, Googlebot allowed",
+            "source_url": "https://developers.google.com/search/docs/essentials/technical",
+            "evidence_level": "google-official"
+          },
+          {
+            "id": "G-SNIPPET",
+            "status": "pass",
+            "points": 5,
+            "max_points": 5,
+            "evidence": "No snippet restrictions",
+            "source_url": "https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag",
+            "evidence_level": "google-official"
+          },
+          {
+            "id": "G-CANONICAL",
+            "status": "pass",
+            "points": 3,
+            "max_points": 3,
+            "evidence": "One absolute canonical matching the final URL",
+            "source_url": "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls",
+            "evidence_level": "google-official"
+          },
+          {
+            "id": "G-DATES",
+            "status": "pass",
+            "points": 2,
+            "max_points": 2,
+            "evidence": "Visible date consistent with structured data",
+            "source_url": "https://developers.google.com/search/docs/appearance/publication-dates",
+            "evidence_level": "google-official"
+          },
+          {
+            "id": "G-BYLINE",
+            "status": "pass",
+            "points": 2,
+            "max_points": 2,
+            "evidence": "Visible author byline",
+            "source_url": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+            "evidence_level": "google-official"
+          },
+          {
+            "id": "G-LINKS",
+            "status": "pass",
+            "points": 1,
+            "max_points": 1,
+            "evidence": "67 crawlable <a href> links",
+            "source_url": "https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics",
+            "evidence_level": "google-official"
+          },
+          {
+            "id": "G-VIEWPORT",
+            "status": "pass",
+            "points": 1,
+            "max_points": 1,
+            "evidence": "meta viewport present",
+            "source_url": "https://developers.google.com/search/docs/appearance/page-experience",
+            "evidence_level": "google-official"
+          },
+          {
+            "id": "G-SITEMAP",
+            "status": "pass",
+            "points": 1,
+            "max_points": 1,
+            "evidence": "Sitemap declared: https://dr-kermani.com/sitemap.xml",
+            "source_url": "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap",
+            "evidence_level": "google-official"
+          },
+          {
+            "id": "G-GENAI-CONTROL",
+            "status": "manual",
+            "points": 0,
+            "max_points": 0,
+            "evidence": "Check Search Console > Settings > Search generative AI control",
+            "source_url": "https://developers.google.com/search/docs/fundamentals/ai-optimization-guide",
+            "evidence_level": "google-official"
+          }
+        ]
+      }
+    }
+  },
+  "score_breakdown": {
+    "robots": 14,
+    "llms": 6,
+    "schema": 12,
+    "meta": 11,
+    "content": 14,
+    "signals": 6,
+    "ai_discovery": 3,
+    "brand_entity": 8,
+    "negative_penalty": 0,
+    "google_ai": 20
+  },
+  "recommendations": [
+    "Add sameAs links in Organization schema to Wikipedia, Wikidata, LinkedIn, or Crunchbase for Knowledge Graph disambiguation",
+    "Add descriptive labels to forms (label, aria-label) to make them usable by AI agents",
+    "Consider adding WebMCP toolname/tooldescription attributes to interactive elements for Chrome AI agent support"
+  ],
+  "recommendations_by_category": {
+    "brand_entity": [
+      "Add sameAs links in Organization schema to Wikipedia, Wikidata, LinkedIn, or Crunchbase for Knowledge Graph disambiguation"
+    ],
+    "other": [
+      "Add descriptive labels to forms (label, aria-label) to make them usable by AI agents",
+      "Consider adding WebMCP toolname/tooldescription attributes to interactive elements for Chrome AI agent support"
+    ]
+  },
+  "webmcp": {
+    "readiness_level": "basic",
+    "agent_ready": false,
+    "has_register_tool": false,
+    "has_tool_attributes": false,
+    "tool_count": 0,
+    "has_potential_action": true,
+    "potential_actions": [
+      "SearchAction"
+    ],
+    "has_labeled_forms": false,
+    "labeled_forms_count": 0,
+    "has_openapi": false,
+    "has_webmcp_declaration": false,
+    "declared_tool_count": 0
+  },
+  "negative_signals": {
+    "severity": "clean",
+    "signals_found": 0,
+    "cta_density_high": false,
+    "cta_count": 0,
+    "has_popup_signals": false,
+    "is_thin_content": false,
+    "broken_links_count": 0,
+    "has_keyword_stuffing": false,
+    "has_author_signal": true,
+    "boilerplate_ratio": 0.16,
+    "has_mixed_signals": false
+  },
+  "cdn_check": {
+    "checked": true,
+    "browser_status": 200,
+    "browser_content_length": 422293,
+    "bot_results": [
+      {
+        "bot": "GPTBot",
+        "status": 200,
+        "content_length": 422293,
+        "blocked": false,
+        "challenge_detected": false
+      },
+      {
+        "bot": "OAI-SearchBot",
+        "status": 200,
+        "content_length": 422293,
+        "blocked": false,
+        "challenge_detected": false
+      },
+      {
+        "bot": "PerplexityBot",
+        "status": 200,
+        "content_length": 422293,
+        "blocked": false,
+        "challenge_detected": false
+      },
+      {
+        "bot": "Claude-SearchBot",
+        "status": 200,
+        "content_length": 422293,
+        "blocked": false,
+        "challenge_detected": false
+      },
+      {
+        "bot": "Googlebot",
+        "status": 200,
+        "content_length": 422293,
+        "blocked": false,
+        "challenge_detected": false
+      },
+      {
+        "bot": "Applebot",
+        "status": 200,
+        "content_length": 422220,
+        "blocked": false,
+        "challenge_detected": false
+      }
+    ],
+    "any_blocked": false,
+    "cdn_detected": "",
+    "cdn_headers": {},
+    "error": ""
+  },
+  "js_rendering": {
+    "checked": true,
+    "raw_word_count": 1204,
+    "raw_heading_count": 23,
+    "has_empty_root": false,
+    "has_noscript_content": false,
+    "framework_detected": "next.js",
+    "js_dependent": false,
+    "details": "1204 words and 23 headings found in raw HTML. Content is accessible without JavaScript."
+  },
+  "multimodal": {
+    "checked": true,
+    "total_images": 26,
+    "images_with_alt": 26,
+    "alt_coverage": 1.0,
+    "caption_count": 1,
+    "has_video": false,
+    "video_count": 0,
+    "has_video_schema": false,
+    "has_video_captions": false,
+    "has_audio": false,
+    "has_audio_schema": false,
+    "has_transcript": false,
+    "readiness_level": "excellent"
+  },
+  "trust_stack": {
+    "checked": true,
+    "technical": {
+      "name": "technical",
+      "label": "Technical Trust",
+      "score": 5,
+      "max_score": 5,
+      "signals_found": [
+        "HTTPS",
+        "HSTS",
+        "CSP",
+        "X-Frame-Options"
+      ],
+      "signals_missing": [],
+      "details": {}
+    },
+    "identity": {
+      "name": "identity",
+      "label": "Identity Trust",
+      "score": 5,
+      "max_score": 5,
+      "signals_found": [
+        "Brand name consistent",
+        "About page",
+        "Contact info",
+        "Organization schema",
+        "Author identified"
+      ],
+      "signals_missing": [],
+      "details": {}
+    },
+    "social": {
+      "name": "social",
+      "label": "Social Trust",
+      "score": 4,
+      "max_score": 5,
+      "signals_found": [
+        "sameAs links (5)",
+        "Multiple sameAs (3+)",
+        "Reviews/testimonials",
+        "Social profiles (instagram.com)"
+      ],
+      "signals_missing": [
+        "No Knowledge Graph pillar links"
+      ],
+      "details": {}
+    },
+    "academic": {
+      "name": "academic",
+      "label": "Academic Trust",
+      "score": 2,
+      "max_score": 5,
+      "signals_found": [
+        "Numbers cited (19)",
+        "External sources (7 non-social links)"
+      ],
+      "signals_missing": [
+        "No links to authoritative sources (DOI, PubMed, Scholar)",
+        "No References/Sources section",
+        "No original research data patterns"
+      ],
+      "details": {
+        "authoritative_domains": [],
+        "statistics_count": 0,
+        "numbers_count": 19
+      }
+    },
+    "consistency": {
+      "name": "consistency",
+      "label": "Consistency Trust",
+      "score": 5,
+      "max_score": 5,
+      "signals_found": [
+        "Brand name consistent across title/H1/schema",
+        "No mixed signals",
+        "Schema description matches meta",
+        "dateModified present"
+      ],
+      "signals_missing": [],
+      "details": {}
+    },
+    "composite_score": 21,
+    "grade": "B",
+    "trust_level": "high"
+  },
+  "prompt_injection": {
+    "checked": true,
+    "hidden_text_found": false,
+    "hidden_text_count": 0,
+    "hidden_text_samples": [],
+    "invisible_unicode_found": true,
+    "invisible_unicode_count": 27,
+    "llm_instruction_found": false,
+    "llm_instruction_count": 0,
+    "llm_instruction_samples": [],
+    "html_comment_injection_found": false,
+    "html_comment_injection_count": 0,
+    "html_comment_samples": [],
+    "monochrome_text_found": false,
+    "monochrome_text_count": 0,
+    "microfont_found": false,
+    "microfont_count": 0,
+    "data_attr_injection_found": false,
+    "data_attr_injection_count": 0,
+    "data_attr_samples": [],
+    "aria_hidden_injection_found": false,
+    "aria_hidden_injection_count": 0,
+    "aria_hidden_samples": [],
+    "ugc_surface_found": false,
+    "ugc_surface_samples": [],
+    "ugc_injection_risk": false,
+    "patterns_found": 1,
+    "severity": "suspicious",
+    "risk_level": "low"
+  },
+  "rag_chunk": {
+    "checked": true,
+    "total_sections": 15,
+    "sections_in_range": 1,
+    "avg_section_words": 40.8,
+    "has_definition_opening": false,
+    "heading_as_boundary_ratio": 1.53,
+    "anchor_sentences": 0,
+    "chunk_readiness_score": 37
+  },
+  "embedding_proximity": {
+    "checked": true,
+    "skipped_reason": "sentence-transformers not installed (pip install geo-optimizer-skill[embedding])",
+    "model_name": "",
+    "query_scores": [],
+    "avg_similarity": 0.0,
+    "top_similarity": 0.0,
+    "retrievable_chunks": 0,
+    "total_chunks": 0
+  },
+  "content_decay": {
+    "checked": true,
+    "signals": [],
+    "earliest_decay_days": null,
+    "decay_risk": "low",
+    "evergreen_score": 100
+  },
+  "platform_citation": {
+    "checked": true,
+    "platforms": [
+      {
+        "platform": "chatgpt",
+        "score": 73,
+        "strengths": [
+          "GPTBot allowed in robots.txt",
+          "llms.txt present",
+          "FAQ schema present",
+          "Well-structured content",
+          "Organization schema present"
+        ],
+        "recommendations": []
+      },
+      {
+        "platform": "perplexity",
+        "score": 75,
+        "strengths": [
+          "PerplexityBot allowed",
+          "llms.txt with links",
+          "Content freshness signals present",
+          "Substantial content depth",
+          "External links for source diversity",
+          "RSS feed available"
+        ],
+        "recommendations": []
+      },
+      {
+        "platform": "google_ai",
+        "score": 93,
+        "strengths": [
+          "Googlebot allowed (feeds Search and AI Overviews)",
+          "Rich schema (3 types)",
+          "Complete meta tags",
+          "Open Graph tags present",
+          "Quality content structure",
+          "Content freshness signals present",
+          "Content available without JS (SSR-safe)",
+          "Descriptive image alt text",
+          "sameAs links for authority signals"
+        ],
+        "recommendations": []
+      }
+    ]
+  },
+  "context_window": {
+    "checked": true,
+    "total_words": 1204,
+    "total_tokens_estimate": 1565,
+    "front_loaded_ratio": 0.12,
+    "key_info_tokens": 312,
+    "filler_ratio": 0.0,
+    "optimal_for": [
+      "perplexity",
+      "chatgpt",
+      "claude"
+    ],
+    "truncation_risk": "low",
+    "context_efficiency_score": 62
+  },
+  "instruction_readiness": {
+    "checked": true,
+    "labeled_buttons": 8,
+    "unlabeled_buttons": 0,
+    "action_clarity_score": 100,
+    "total_inputs": 0,
+    "labeled_inputs": 0,
+    "typed_inputs": 0,
+    "form_readability_score": 100,
+    "nav_links": 67,
+    "stateful_urls": true,
+    "has_aria_live": true,
+    "has_error_roles": false,
+    "readiness_score": 90,
+    "readiness_level": "advanced"
+  },
+  "http_status": 200,
+  "page_size": 422293,
+  "audit_duration_ms": 7233
+}
