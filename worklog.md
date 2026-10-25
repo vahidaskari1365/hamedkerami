@@ -337,3 +337,20 @@ Stage Summary:
 - امروز ۱۰ مقاله منتشر شد: cost-1405, dental-implant-cost-1405, nutrition, sleeping, lefort, bsso, all-on-4, without-orthodontics, implant-complications, consultation-checklist
 - کل صف ۵۰ مقاله باقی‌مانده ≥۱۵۰۰ کلمه و یکتا — cron فردا ۰۷:۰۰ تهران خودکار ۱۰ می‌گذارد
 - ۲ مقاله منتشرشده قدیمی (3d-simulation 966w, jaw-surgery-pain 936w) بعدا به‌روزرسانی شوند
+
+---
+Task ID: surgery-care-landing
+Agent: main (Z.ai)
+Task: ساخت صفحه «مراقبت‌های قبل و بعد از جراحی» بر اساس dromfs.com/orthosurgery با استاندارد ۵ گانه (SEO/AEO/GEO/AIO/SXO)
+
+Work Log:
+- استخراج کامل محتوای dromfs.com/orthosurgery (ناشتایی، مدارک، مراقبت بیمارستان، خانه، ویزیت‌ها)
+- گسترش LandingSectionData با فیلدهای table/image/cta + رندر در landing-view.tsx
+- افزودن اسلاگ surgery-care به LANDING_DEFAULTS و LANDING_SLUGS و LANDING_URLS
+- ساخت src/app/surgery-care/page.tsx با اسکیمای MedicalWebPage + lastReviewed داینامیک
+- لینک‌سازی متقابل از ۴ صفحه فرود دیگر + sitemap (priority 0.95) + بخش صفحات فرود در llms.txt
+- Build موفق + smoke test رندر (۲ جدول، H1 یکتا، ۷ FAQ، ۱۲ لینک tel) + push main (37d8709)
+
+Stage Summary:
+- /surgery-care با ۹ بخش سوال‌محور، ۲ جدول قابل استناد، ۷ FAQ، ۳ عکس با alt، CTA میانی و CTA نهایی منتشر شد
+- چارچوب landing-view از این به بعد جدول/عکس/CTA میانی را برای همه صفحات فرود پشتیبانی می‌کند
