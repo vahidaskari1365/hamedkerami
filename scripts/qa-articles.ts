@@ -129,6 +129,20 @@ for (const a of BLOG_ARTICLES) {
     issues.push({ slug, msg: "CTA تلفن مطب نیست" });
   if (!title || title.length < 20) issues.push({ slug, msg: "عنوان کوتاه" });
   if (!excerpt || excerpt.length < 40) issues.push({ slug, msg: "excerpt کوتاه" });
+
+  /* ۱۰ — AEO/SXO (claude-seo quality gates — هشدار برای مقالات موجود،
+     گیت سخت‌گیر فقط برای مقاله‌های تازه در publish.ts اعمال می‌شود) */
+  const qH2 = (body.match(/^#{2,3} .+؟/gm) || []).length;
+  if (qH2 < 2) warn.push({ slug, msg: `تیتر پرسشی فقط ${qH2} مورد (هدف ≥۲ — AEO)` });
+  const bolds = (body.match(/\*\*[^*]+\*\*/g) || []).length;
+  if (bolds < 2) warn.push({ slug, msg: `برجسته‌سازی ** فقط ${bolds} مورد (هدف ≥۲ — SXO)` });
+  const nums = (body.match(/[۰-۹0-9]+/g) || []).length;
+  if (nums < 3) warn.push({ slug, msg: `عدد/آمار فقط ${nums} مورد (هدف ≥۳ — GEO)` });
+  const BOFU = /^\/(costs|appointment|contact|jaw-surgery|chin-surgery|dental-implant|implant-pasdaran|gallery)/;
+  const bofu = new Set(
+    [...body.matchAll(/\]\((\/[^)]*)\)/g)].map((m) => m[1]).filter((l) => BOFU.test(l)),
+  );
+  if (!bofu.size) warn.push({ slug, msg: "لینک داخلی BOFU ندارد (SXO)" });
 }
 
 /* ---------- گزارش ---------- */

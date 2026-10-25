@@ -190,7 +190,11 @@ function FaqAccordion({ items }: { items: Array<{ q: string; a: string }> }) {
               >
                 {faNum(i + 1)}
               </span>
-              {f.q}
+              {/* سوال به‌صورت h3 واقعی — AEO: موتور پاسخ و موتور جستجو باید
+                  سوال‌ها را در ساختار هدینگ صفحه ببینند (تطابق با FAQPage schema) */}
+              <h3 className="inline text-[15px] font-black leading-8 text-ink">
+                {f.q}
+              </h3>
             </span>
             <span
               className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink/5 text-ink/60 transition group-open:rotate-45 group-open:bg-teal group-open:text-white"

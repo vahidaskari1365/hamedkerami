@@ -23,14 +23,37 @@ export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
 
+/* عنوان SERP — AEO/SXO: گوگل عنوان بالای ~۶۰ کاراکتر را می‌بُرد و
+   استاندارد داخلی هم ≤۶۰ است. عنوان کامل در H1 و og:title می‌ماند؛
+   فقط <title> به‌صورت هوشمند کوتاه می‌شود (بخش قبل از «|» یا برش کلمه‌ای).
+   چون layout قالب «%s | دکتر حامد کرمانی» دارد، اینجا با absolute
+   بودجه برند را خودمان حساب می‌کنیم تا خروجی نهایی ≤۶۰ بماند. */
+const TITLE_BRAND = " | دکتر حامد کرمانی";
+function serpTitle(full: string): string {
+  const budget = 60 - TITLE_BRAND.length; /* ۴۱ کاراکتر برای بدنه عنوان */
+  const beforePipe = full.split(/[|–]/)[0].trim();
+  if (beforePipe.length >= 20 && beforePipe.length <= budget) return beforePipe + TITLE_BRAND;
+  if (full.length <= budget) return full + TITLE_BRAND;
+  const cut = full.slice(0, budget - 1);
+  const core = cut.slice(0, cut.lastIndexOf(" ")) || cut;
+  return `${core}…${TITLE_BRAND}`;
+}
+
+/* توضیح متا — استاندارد: ۱۲۰–۱۶۰ کاراکتر با برش کلمه‌ای (نه وسط کلمه) */
+function serpDescription(full: string): string {
+  if (full.length <= 160) return full;
+  const cut = full.slice(0, 157);
+  return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getBlogPost(slug);
   if (!post) return {};
   const url = `${SITE.url}/blog/${slug}`;
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: { absolute: serpTitle(post.title) },
+    description: serpDescription(post.excerpt),
     alternates: { canonical: `/blog/${slug}` },
     openGraph: {
       type: "article",

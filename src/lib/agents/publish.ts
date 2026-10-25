@@ -76,10 +76,28 @@ export async function publishSubmittedArticle(draft: SubmittedArticle, cover: Co
      عکس مارک‌داون و لینک http خارجی (docs/standards.md بند ۳) */
   const hasForbidden = /`|\$\{|!\[|\]\(https?:|<\/?[a-zA-Z][^>]*>/.test(draft.body);
 
+  /* ---- گیت‌های AEO/SXO — claude-seo quality gates (docs/seo/content-pipeline.md) ---- */
+  /* AEO-۱: پاسخ مستقیم باید ۲۵–۹۰ کلمه باشد (نه صرفاً وجودش) */
+  const answerLine = draft.body.split("\n").find((l) => l.trimStart().startsWith(">")) ?? "";
+  const answerWords = countWords(answerLine.replace(/^>\s?/, ""));
+  /* AEO-۲: تیتر پرسشی — H2/H3 با «؟» (FAQ چهار سوال پایانی خودش این را پر می‌کند) */
+  const qHeadings = (draft.body.match(/^#{2,3} .+؟/gm) || []).length;
+  /* GEO/AEO-۳: آمار قابل‌استناد — حداقل ۳ عدد داخل جمله */
+  const numbers = (draft.body.match(/[۰-۹0-9]+/g) || []).length;
+  /* SXO-۴: لینک BOFU — حداقل یک لینک داخلی به صفحه تبدیل */
+  const bofuLinks = (draft.body.match(/\]\((\/(costs|appointment|contact|jaw-surgery|chin-surgery|dental-implant|implant-pasdaran|gallery)[^)]*)\)/g) || []).length;
+  /* SXO-۵: برجسته‌سازی — حداقل ۲ توپر (اسکن‌پذیری) */
+  const bolds = (draft.body.match(/\*\*[^*]+\*\*/g) || []).length;
+
   const checks: [string, boolean][] = [
     ["طول مقاله زیر ۱۴۰۰ کلمه است (سقف کیفیت claude-seo: ۱۵۰۰)", words < 1400],
     ["پاسخ مستقیم ابتدای مقاله ندارد", !hasAnswer],
+    ["پاسخ مستقیم خارج از بازه ۲۵–۹۰ کلمه است (AEO)", hasAnswer && (answerWords < 25 || answerWords > 90)],
     ["FAQ کمتر از ۴ سوال دارد", faqCount < 4],
+    ["تیتر پرسشی کمتر از ۲ مورد — H2/H3 با «؟» (AEO)", qHeadings < 2],
+    ["کمتر از ۳ عدد/آمار داخل جمله دارد (GEO)", numbers < 3],
+    ["لینک BOFU ندارد (SXO)", bofuLinks < 1],
+    ["برجسته‌سازی ** کمتر از ۲ مورد (SXO خوانایی)", bolds < 2],
     ["CTA تماس ندارد", !hasCta],
     ["نام دکتر/فلوشیپ در متن نیست", !nameMention],
     ["عنوان کوتاه یا خالی است", draft.title.trim().length <= 10],
