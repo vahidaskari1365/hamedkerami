@@ -23,13 +23,10 @@ export function ServicesPage() {
         <div className="mx-auto max-w-7xl space-y-8 px-4 sm:px-6">
           {SERVICES.map((s, i) => (
             <Reveal key={s.slug} delay={0.05}>
-              <motion.article
+              <article
                 id={s.slug}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.8 }}
-                className={`grid overflow-hidden rounded-3xl bg-white shadow-sm lg:grid-cols-2 ${
+                /* GEO: ورود با CSS keyframes — بدون استایل opacity:0 اینلاین */
+                className={`geo-enter grid overflow-hidden rounded-3xl bg-white shadow-sm lg:grid-cols-2 ${
                   i % 2 === 1 ? "lg:[&>figure]:order-2" : ""
                 }`}
               >
@@ -76,7 +73,7 @@ export function ServicesPage() {
                     </Link>
                   </div>
                 </div>
-              </motion.article>
+              </article>
             </Reveal>
           ))}
         </div>

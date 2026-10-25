@@ -5,7 +5,12 @@ import { Link, usePathname } from "@/components/hash-router";
 import { useContent } from "@/lib/content-context";
 import { NAV, waLink } from "@/lib/data";
 
-export function Footer() {
+export function Footer({
+  freshness,
+}: {
+  /** مُهر تازگی محتوا — المان سروری از SiteShell (ممیزی G-DATES: تاریخ قابل‌مشاهده + <time datetime>) */
+  freshness?: React.ReactNode;
+}) {
   const { site: SITE, hours: HOURS, brand } = useContent();
   const pathname = usePathname();
   return (
@@ -113,6 +118,7 @@ export function Footer() {
         <div className="border-t border-white/10">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-5 text-xs text-white/50 sm:px-6">
             <p>کپی رایت © ۱۴۰۵ — دکتر حامد کرمانی، متخصص جراحی فک و صورت</p>
+            {freshness}
             <div className="flex flex-wrap items-center gap-4">
               <Link href="/privacy" className={`transition hover:text-white ${pathname === "/privacy" ? "text-teal" : ""}`}>
                 حریم خصوصی و سلب مسئولیت پزشکی

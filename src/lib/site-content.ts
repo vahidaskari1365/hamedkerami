@@ -119,6 +119,7 @@ export async function getSiteContent() {
         certificates: CERTIFICATES,
         faq: FAQ,
         hours: HOURS,
+        lastUpdated: null,
         fromDb: false,
       };
     }
@@ -199,6 +200,14 @@ export async function getSiteContent() {
       hours: hours.length
         ? hours.map((h) => ({ day: h.day, doctor: h.doctor, time: h.time }))
         : HOURS,
+      /* تازه‌ترین تغییر محتوای واقعی — برای dateModified اسکیما و مُهر فوتر
+         (سیگنال freshness برای Perplexity و Google G-DATES) */
+      lastUpdated: blogPosts.length
+        ? blogPosts
+            .map((b) => (b.updatedAt > b.createdAt ? b.updatedAt : b.createdAt))
+            .reduce((a, b) => (a > b ? a : b))
+            .toISOString()
+        : null,
       fromDb: true,
     };
   } catch {
@@ -225,6 +234,7 @@ export async function getSiteContent() {
       certificates: CERTIFICATES,
       faq: FAQ,
       hours: HOURS,
+      lastUpdated: null,
       fromDb: false,
     };
   }

@@ -10,7 +10,6 @@
    ============================================================ */
 
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import { useContent } from "@/lib/content-context";
 import { waLink } from "@/lib/data";
 
@@ -75,11 +74,9 @@ export function ContactDock() {
       aria-label="دسترسی سریع تماس"
       className="floating-actions pointer-events-none fixed bottom-4 right-0 left-0 z-[85] flex justify-center px-4 pb-[env(safe-area-inset-bottom)]"
     >
-      <motion.nav
-        initial={{ y: 72, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
-        className="pointer-events-auto flex h-[58px] items-center gap-1 rounded-full bg-ink-3/90 p-2 shadow-[0_18px_50px_-16px_rgba(0,0,0,0.75)] ring-1 ring-white/12 backdrop-blur-xl"
+      <nav
+        /* GEO: ورود با CSS keyframes به‌جای initial opacity:0 اینلاین */
+        className="geo-enter-dock pointer-events-auto flex h-[58px] items-center gap-1 rounded-full bg-ink-3/90 p-2 shadow-[0_18px_50px_-16px_rgba(0,0,0,0.75)] ring-1 ring-white/12 backdrop-blur-xl"
       >
         {/* میان‌برها — راست به چپ: مپ، اینستاگرام، آپارات، واتسپ، تماس */}
         {items.map((it) => (
@@ -108,7 +105,7 @@ export function ContactDock() {
             </svg>
           </a>
         ))}
-      </motion.nav>
+      </nav>
     </div>
   );
 }

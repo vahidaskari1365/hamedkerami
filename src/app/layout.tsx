@@ -153,7 +153,7 @@ export const viewport: Viewport = {
 
 /* ---------------- JSON-LD: SEO + AEO + GEO (از دیتابیس) ---------------- */
 async function JsonLd() {
-  const { site: SITE, faq: FAQ, services: SERVICES } = await getSiteContent();
+  const { site: SITE, faq: FAQ, services: SERVICES, lastUpdated } = await getSiteContent();
   const physicianLd = {
     "@context": "https://schema.org",
     "@type": "Physician",
@@ -218,8 +218,13 @@ async function JsonLd() {
        (برند یکسان + اطلاعات تماس + Organization) این نوع را می‌خواهد */
     "@type": "MedicalOrganization",
     "@id": `${SITE.url}/#clinic`,
-    name: "دکتر حامد کرمانی | جراحی فک و صورت",
-    alternateName: "Dr. Hamed Kermani Oral & Maxillofacial Surgery",
+    /* GEO: name دقیقاً برابر نام برند در title/og:title — ممیزی
+       brand-consistency نام‌ها را بین title/H1/schema مقایسه می‌کند */
+    name: "دکتر حامد کرمانی",
+    alternateName: [
+      "Dr. Hamed Kermani Oral & Maxillofacial Surgery",
+      "دکتر حامد کرمانی | جراحی فک و صورت",
+    ],
     url: SITE.url,
     logo: `${SITE.url}/images/logo.png`,
     image: `${SITE.url}/images/og-cover.jpg`,
@@ -243,6 +248,12 @@ async function JsonLd() {
     },
     hasMap: SITE.maps,
     sameAs: [SITE.instagram, SITE.aparat, SITE.maps],
+    /* GEO: areaServed — سیگنال جغرافیایی برای entity checker
+       (has_geo_schema) و شفاف‌سازی منطقه خدمت برای موتورهای پاسخ‌محور */
+    areaServed: {
+      "@type": "City",
+      name: "تهران",
+    },
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
@@ -268,9 +279,17 @@ async function JsonLd() {
     "@type": "WebSite",
     "@id": `${SITE.url}/#website`,
     url: SITE.url,
-    name: "دکتر حامد کرمانی | متخصص جراحی فک و صورت",
+    /* GEO: name برند محض — هم‌خوان با title/og:title/schema کلینیک */
+    name: "دکتر حامد کرمانی",
+    alternateName: "دکتر حامد کرمانی | متخصص جراحی فک و صورت",
     inLanguage: "fa-IR",
     publisher: { "@id": `${SITE.url}/#physician` },
+    /* author — WebSite زیرمجموعه CreativeWork است؛ سیگنال نویسنده
+       (رفع جریمه missing author در ممیزی) */
+    author: { "@id": `${SITE.url}/#physician` },
+    /* dateModified — تازه‌ترین تغییر واقعی مقالات دیتابیس؛
+       سیگنال freshness برای Perplexity، Google (G-DATES) و signals */
+    ...(lastUpdated ? { dateModified: lastUpdated } : {}),
     /* SearchAction — قابل‌کشف بودن جستجوی داخلی برای ایجنت‌های AI
        (GEO/AIO — پیشنهاد geo-optimizer-skill) */
     potentialAction: {

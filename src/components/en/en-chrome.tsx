@@ -50,11 +50,9 @@ export function EnChrome({ children }: { children: React.ReactNode }) {
       {/* ---------- نوار بالا ---------- */}
       <header className="fixed top-3 right-0 left-0 z-[80] flex justify-center px-4">
         <div className="w-full max-w-5xl">
-          <motion.nav
-            initial={{ y: -64, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-center gap-1 rounded-full bg-ink/60 py-2 pl-2 pr-4 shadow-lg shadow-black/25 ring-1 ring-white/10 backdrop-blur-xl"
+          {/* GEO: CSS keyframes entrance — no inline opacity:0 in SSR HTML */}
+          <nav
+            className="geo-enter-nav flex items-center gap-1 rounded-full bg-ink/60 py-2 pl-2 pr-4 shadow-lg shadow-black/25 ring-1 ring-white/10 backdrop-blur-xl"
             aria-label="Main navigation"
           >
             <Link
@@ -128,7 +126,7 @@ export function EnChrome({ children }: { children: React.ReactNode }) {
                 </svg>
               </button>
             </div>
-          </motion.nav>
+          </nav>
 
           {/* منوی موبایل */}
           <AnimatePresence>

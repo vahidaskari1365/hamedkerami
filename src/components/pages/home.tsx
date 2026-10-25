@@ -92,11 +92,10 @@ function Hero() {
       <div className="relative mx-auto grid w-full max-w-7xl items-end gap-10 px-4 sm:px-6 lg:grid-cols-[1.15fr_0.85fr]">
         {/* copy */}
         <motion.div style={{ y: textY, opacity: fade }}>
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.15 }}
-            className="mb-5 flex items-center gap-3"
+          {/* GEO: ورود با CSS keyframes — بدون استایل opacity:0 اینلاین در HTML سروری */}
+          <div
+            className="geo-enter-x mb-5 flex items-center gap-3"
+            style={{ animationDelay: "0.15s" }}
           >
             <span className="h-px w-10 bg-teal" aria-hidden />
             <span className="rounded-full border border-teal/40 bg-teal/10 px-4 py-1.5 text-sm font-semibold text-gold-soft">
@@ -104,25 +103,21 @@ function Hero() {
                 {HERO.eyebrow}
               </AnimatedShinyText>
             </span>
-          </motion.div>
+          </div>
 
           <h1 className="heading-fluid-1 font-black tracking-tight">
             <LineReveal lines={HERO.headline} startDelay={0.25} />
           </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.75 }}
-            className="mt-6 max-w-[58ch] text-base leading-8 text-white/75 sm:text-lg"
+          <p
+            className="geo-enter mt-6 max-w-[58ch] text-base leading-8 text-white/75 sm:text-lg"
+            style={{ animationDelay: "0.75s" }}
           >
             {HERO.name} — {HERO.sub}
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.85 }}
-            className="mt-3 text-lg font-bold text-white/90 sm:text-xl"
+          </p>
+          <p
+            className="geo-enter mt-3 text-lg font-bold text-white/90 sm:text-xl"
+            style={{ animationDelay: "0.85s" }}
           >
             تخصص در {""}
             <WordRotate
@@ -135,13 +130,11 @@ function Hero() {
               ]}
               className="text-teal"
             />
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.9 }}
-            className="mt-9 flex flex-wrap items-center gap-4"
+          <div
+            className="geo-enter mt-9 flex flex-wrap items-center gap-4"
+            style={{ animationDelay: "0.9s" }}
           >
             <ShimmerButton
               href={`tel:${SITE.phone}`}
@@ -156,23 +149,19 @@ function Hero() {
             >
               نمونه جراحی ها
             </Link>
-          </motion.div>
+          </div>
 
-          <motion.blockquote
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 1.15 }}
-            className="mt-10 max-w-[62ch] border-r-2 border-teal/60 pr-5 text-sm leading-7 text-white/60"
+          <blockquote
+            className="geo-enter-fade mt-10 max-w-[62ch] border-r-2 border-teal/60 pr-5 text-sm leading-7 text-white/60"
+            style={{ animationDelay: "1.15s" }}
           >
             «{HERO.quote}»
-          </motion.blockquote>
+          </blockquote>
 
           {/* trust strip */}
-          <motion.ul
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 1.3 }}
-            className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3 text-[13px] text-white/65"
+          <ul
+            className="geo-enter mt-8 flex flex-wrap items-center gap-x-7 gap-y-3 text-[13px] text-white/65"
+            style={{ animationDelay: "1.3s" }}
           >
             {["بورد تخصصی جراحی فک و صورت", "فلوشیپ کرانیوفاسیال — دانشگاه تهران", "بیش از ۱۰۰۰ جراحی موفق"].map(
               (t) => (
@@ -184,16 +173,11 @@ function Hero() {
                 </li>
               ),
             )}
-          </motion.ul>
+          </ul>
         </motion.div>
 
         {/* doctor portrait */}
-        <motion.div
-          initial={{ opacity: 0, scale: 1.08, x: -30 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
-          transition={{ duration: 1.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto w-full max-w-[270px] sm:max-w-xs lg:max-w-sm"
-        >
+        <div className="geo-enter-photo relative mx-auto w-full max-w-[270px] sm:max-w-xs lg:max-w-sm">
           <div className="vignette relative aspect-[4/5] overflow-hidden rounded-3xl ring-1 ring-teal/40">
             <Image
               src={HERO.image}
@@ -205,17 +189,15 @@ function Hero() {
             />
             <BorderBeam width={2.5} speed={7} />
           </div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.4, duration: 0.8 }}
-            className="absolute -bottom-5 right-6 left-6 rounded-2xl bg-white/10 p-4 text-center backdrop-blur-xl ring-1 ring-teal/30"
+          <div
+            className="geo-enter absolute -bottom-5 right-6 left-6 rounded-2xl bg-white/10 p-4 text-center backdrop-blur-xl ring-1 ring-teal/30"
+            style={{ animationDelay: "1.4s" }}
           >
             <p className="text-sm font-extrabold">دکتر حامد کرمانی</p>
             <p className="mt-0.5 text-[11px] text-white/70">
               فلوشیپ جراحی های کرانیوفیشال — دانشگاه تهران
             </p>
-          </motion.div>
+          </div>
           {/* floating gold stat chip */}
           <div
             className="float-y absolute -top-4 -left-3 rounded-2xl border border-teal/40 bg-ink/70 px-4 py-3 text-center backdrop-blur-md sm:-left-6"
@@ -226,16 +208,14 @@ function Hero() {
             </p>
             <p className="text-[10px] text-white/70">جراحی فک و صورت</p>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* scroll hint */}
-      <motion.div
+      <div
         aria-hidden
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/50 lg:flex"
+        className="geo-enter-fade absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/50 lg:flex"
+        style={{ animationDelay: "2s" }}
       >
         <span className="text-[10px] tracking-widest">SCROLL</span>
         <motion.span
@@ -243,7 +223,7 @@ function Hero() {
           transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
           className="h-8 w-px bg-gradient-to-b from-teal to-transparent"
         />
-      </motion.div>
+      </div>
     </section>
   );
 }
@@ -274,6 +254,39 @@ function Stats() {
             <p className="mt-2 text-sm text-white/65">{s.label}</p>
           </Reveal>
         ))}
+      </div>
+    </section>
+  );
+}
+
+/* ================= WHAT IS — definition chunk (GEO/RAG) =================
+   ممیزی RAG-chunk readiness: بخش‌های ۱۰۰ تا ۱۵۰ کلمه‌ای با جمله تعریفی
+   نرخ استناد AI بالاتری دارند (SE Ranking 2026). این بخش پاسخ مستقیم
+   «جراحی فک و صورت چیست» را در همان ابتدای صفحه می‌گذارد. */
+function WhatIsSection() {
+  return (
+    <section className="bg-ink py-20 text-white" aria-label="معرفی جراحی فک و صورت">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
+        <Reveal>
+          <h2 className="text-2xl font-black leading-snug sm:text-3xl">
+            جراحی فک و صورت چیست؟
+          </h2>
+          <p className="mt-6 text-base leading-8 text-white/75 sm:text-lg">
+            جراحی فک و صورت (Maxillofacial Surgery) شاخه‌ای تخصصی از علوم پزشکی است که
+            تشخیص و درمان جراحی بیماری‌ها، آسیب‌ها و ناهنجاری‌های فک، صورت، جمجمه و
+            دهان را بر عهده دارد. این تخصص، زیبایی و عملکرد را هم‌زمان هدف می‌گیرد؛
+            یعنی اصلاح ابعاد اسکلتی فک با جراحی ارتوگناتیک و بایمکس، بازکردن تعادل
+            پروفایل با جنیوپلاستی، جوان‌سازی نگاه با بلفاروپلاستی و بازسازی دندان‌های
+            ازدست‌رفته با ایمپلنت و ایمپلنت زایگوماتیک.
+          </p>
+          <p className="mt-5 text-base leading-8 text-white/75 sm:text-lg">
+            جراحی فک و صورت یک مرحله برنامه‌ریزی دیجیتال دقیق دارد؛ از سی‌تی‌اسکن
+            سه‌بعدی و شبیه‌سازی عکس تا طراحی برش استخوانی. انتخاب جراح با تجربه
+            فلوشیپ کرانیوفاسیال ریسک عوارض را کم می‌کند و پایداری نتیجه را بالا
+            می‌برد. دکتر حامد کرمانی با بیش از ۱۶ سال تجربه آکادمیک و بالینی و
+            هزاران جراحی موفق، همه این خدمات را در تهران ارائه می‌کند.
+          </p>
+        </Reveal>
       </div>
     </section>
   );
@@ -692,6 +705,7 @@ export function HomePage() {
     <>
       <Hero />
       <Stats />
+      <WhatIsSection />
       <AboutTeaser />
       <ServicesSection />
       <PortfolioSection />

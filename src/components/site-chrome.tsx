@@ -22,6 +22,28 @@ import { HtmlLang } from "@/components/html-lang";
 import { Tracker } from "@/components/tracker";
 import { getSiteContent } from "@/lib/site-content";
 
+/* ============================================================
+   مُهر تازگی محتوا — کامپوننت سروری
+   ممیزی GEO (G-DATES گوگل + signals freshness): تاریخ به‌روزرسانی
+   باید هم در اسکیما (dateModified) و هم به‌صورت قابل‌مشاهده با
+   <time datetime> روی صفحه باشد. چون Footer کلاینت است، المان
+   سروری آماده به‌عنوان prop پاس داده می‌شود (بدون mismatch).
+   ============================================================ */
+function FreshnessStamp({ iso }: { iso: string | null }) {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  const fa = new Intl.DateTimeFormat("fa-IR", { dateStyle: "long" }).format(d);
+  return (
+    <p className="text-xs text-white/50">
+      آخرین به‌روزرسانی محتوا:{" "}
+      <time dateTime={iso} className="text-white/70">
+        {fa}
+      </time>
+    </p>
+  );
+}
+
 export async function SiteShell({ children }: { children: React.ReactNode }) {
   /* محتوای زنده دیتابیس برای رندر سروری — خطا داخل تابع مدیریت می‌شود */
   const content = await getSiteContent();
@@ -35,7 +57,7 @@ export async function SiteShell({ children }: { children: React.ReactNode }) {
         <ScrollProgress />
         <Navbar />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <Footer freshness={<FreshnessStamp iso={content.lastUpdated ?? null} />} />
         <ContactDock />
         <PwaInstallPill />
         <PwaTabbar />

@@ -9,7 +9,13 @@ import {
   useTransform,
   type Variants,
 } from "framer-motion";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import Image from "next/image";
 
 /* ---------- Scroll progress bar (cinematic top bar) ---------- */
@@ -29,7 +35,14 @@ export function ScrollProgress() {
   );
 }
 
-/* ---------- Section reveal: rise + unblur ---------- */
+/* ---------- Section reveal: rise + unblur ----------
+   GEO (ممیزی geo-optimizer-skill): framer-motion حالت اولیه
+   opacity:0 را به‌صورت استایل اینلاین در HTML سروری می‌نوشت و
+   خزنده‌های AI آن را الگوی cloaking («متن پنهان») پرچم می‌کردند.
+   راه‌حل: تا قبل از hydration یک div ساده و کاملاً قابل‌مشاهده
+   رندر می‌کنیم (HTML اولیه = بدون هیچ استایل مخفی) و بعد از
+   mount، همان انیمیشن whileInView اجرا می‌شود. خزنده و کاربر
+   بدون جاوااسکریپت همه‌چیز را می‌بینند؛ تجربه انیمیشن حفظ شده. */
 const revealVariants: Variants = {
   hidden: { opacity: 0, y: 36, filter: "blur(8px)" },
   show: {
@@ -39,6 +52,17 @@ const revealVariants: Variants = {
     transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
   },
 };
+
+/* تشخیص hydration بدون setState-in-effect — الگوی رسمی React.
+   SSR و رندر اولیه hydration: false | بعد از hydration: true */
+const emptySubscribe = () => () => {};
+function useHydrated(): boolean {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
+}
 
 export function Reveal({
   children,
@@ -51,8 +75,15 @@ export function Reveal({
   delay?: number;
   once?: boolean;
 }) {
+  const hydrated = useHydrated();
+
+  if (!hydrated) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
+      key="reveal"
       className={className}
       variants={revealVariants}
       initial="hidden"

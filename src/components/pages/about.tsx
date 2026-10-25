@@ -27,27 +27,24 @@ export function PageHero({
           <span aria-hidden className="mx-2">/</span>
           <span className="text-teal">{crumb}</span>
         </nav>
-        <motion.p
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="mb-4 flex items-center gap-3 text-sm font-semibold text-teal"
+        {/* GEO: ورود با CSS keyframes — بدون استایل opacity:0 اینلاین */}
+        <p
+          className="geo-enter-x mb-4 flex items-center gap-3 text-sm font-semibold text-teal"
+          style={{ animationDelay: "0.1s" }}
         >
           <span className="h-px w-10 bg-teal" aria-hidden />
           {eyebrow}
-        </motion.p>
+        </p>
         <h1 className="max-w-3xl text-4xl font-black leading-[1.2] sm:text-5xl">
           {title}
         </h1>
         {desc && (
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-5 max-w-[64ch] text-base leading-8 text-white/70"
+          <p
+            className="geo-enter mt-5 max-w-[64ch] text-base leading-8 text-white/70"
+            style={{ animationDelay: "0.3s" }}
           >
             {desc}
-          </motion.p>
+          </p>
         )}
       </div>
     </section>
@@ -123,19 +120,17 @@ export function AboutPage() {
               <h3 className="text-xl font-black">مدارک و سوابق تحصیلی</h3>
               <ol className="relative mt-8 space-y-8 border-r-2 border-teal/25 pr-6">
                 {EDUCATION.map((e, i) => (
-                  <motion.li
+                  <li
                     key={e.title + e.year}
-                    initial={{ opacity: 0, x: 24 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    transition={{ duration: 0.7, delay: i * 0.08 }}
-                    className="relative"
+                    /* GEO: ورود با CSS keyframes — بدون استایل opacity:0 اینلاین */
+                    className="geo-enter-x relative"
+                    style={{ animationDelay: `${0.08 * i}s` }}
                   >
                     <span className="absolute -right-[31px] top-1.5 h-4 w-4 rounded-full border-[3px] border-teal bg-bone" aria-hidden />
                     <p className="text-xs font-bold text-teal-2">{e.year}</p>
                     <p className="mt-1 font-extrabold">{e.title}</p>
                     <p className="mt-0.5 text-sm text-foreground/60">{e.place}</p>
-                  </motion.li>
+                  </li>
                 ))}
               </ol>
             </Reveal>

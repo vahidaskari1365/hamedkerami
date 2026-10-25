@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { HOME_MARKDOWN } from "@/lib/ai-home-md";
 
 /* ============================================================
    میان‌افزار کش — دو کار:
@@ -48,6 +49,26 @@ export function middleware(req: NextRequest) {
         "Content-Type": "text/plain; charset=utf-8",
         "X-LiteSpeed-Purge": "*",
         "Cache-Control": "no-cache, no-store, must-revalidate",
+      },
+    });
+  }
+
+  /* ============================================================
+     مذاکره محتوا — نسخه Markdown صفحه اصلی (GEO / ai_discovery)
+     ممیزی geo-optimizer-skill درخواست «/» با هدر Accept: text/markdown
+     می‌فرستد و انتظار پاسخ Content-Type: text/markdown دارد.
+     ایجنت‌های AI و ابزارهای متنی بدون اجرای JS نسخه تمیز می‌گیرند.
+     ============================================================ */
+  if (
+    req.nextUrl.pathname === "/" &&
+    /text\/markdown/i.test(req.headers.get("accept") ?? "")
+  ) {
+    return new NextResponse(HOME_MARKDOWN, {
+      status: 200,
+      headers: {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Cache-Control": "no-cache, must-revalidate",
+        Vary: "Accept",
       },
     });
   }

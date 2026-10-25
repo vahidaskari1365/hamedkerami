@@ -60,11 +60,9 @@ export function Navbar() {
       }`}
     >
       <div className="w-full max-w-5xl">
-        <motion.nav
-          initial={{ y: -64, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className={`flex items-center gap-1 rounded-full py-2 pr-2 pl-4 ring-1 backdrop-blur-xl transition-[background-color,box-shadow] duration-500 ${
+        <nav
+          /* GEO: ورود با CSS keyframes به‌جای initial opacity:0 اینلاین */
+          className={`geo-enter-nav flex items-center gap-1 rounded-full py-2 pr-2 pl-4 ring-1 backdrop-blur-xl transition-[background-color,box-shadow] duration-500 ${
             scrolled
               ? "bg-ink/90 shadow-xl shadow-black/40 ring-white/10"
               : "bg-ink/60 shadow-lg shadow-black/25 ring-white/10"
@@ -156,7 +154,7 @@ export function Navbar() {
               </svg>
             </button>
           </div>
-        </motion.nav>
+        </nav>
 
         {/* منوی موبایل — کارت شیشه‌ای شناور زیر پیل */}
         <AnimatePresence>

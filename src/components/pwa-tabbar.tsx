@@ -101,12 +101,10 @@ export function PwaTabbar() {
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <motion.nav
-      initial={{ y: 80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+    <nav
+      /* GEO: ورود با CSS keyframes به‌جای initial opacity:0 اینلاین */
       aria-label="منوی اصلی اپلیکیشن"
-      className="pwa-tabbar fixed inset-x-0 bottom-0 z-[95] items-stretch justify-around border-t border-white/10 bg-ink-3/95 shadow-[0_-10px_35px_rgba(0,0,0,0.5)] backdrop-blur-xl"
+      className="geo-enter-tabbar pwa-tabbar fixed inset-x-0 bottom-0 z-[95] items-stretch justify-around border-t border-white/10 bg-ink-3/95 shadow-[0_-10px_35px_rgba(0,0,0,0.5)] backdrop-blur-xl"
     >
       {/* خط طلایی بالای نوار — امضای تم Kinpaku */}
       <span
@@ -147,6 +145,6 @@ export function PwaTabbar() {
           </Link>
         );
       })}
-    </motion.nav>
+    </nav>
   );
 }

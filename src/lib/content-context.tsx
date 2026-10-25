@@ -54,6 +54,7 @@ const FALLBACK: SiteContent = {
   certificates: CERTIFICATES,
   faq: FAQ,
   hours: HOURS,
+  lastUpdated: null,
   fromDb: false,
 };
 
