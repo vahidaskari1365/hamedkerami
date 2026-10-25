@@ -1,7 +1,10 @@
 # GEO Audit & Fixes — dr-kermani.com
 
 > ابزار: [geo-optimizer-skill](https://github.com/Auriti-Labs/geo-optimizer-skill) — `uv run --active geo audit --url https://dr-kermani.com`
-> اجرای قبلی: **87/100 (EXCELLENT)** · اجرای محلی پس از فیکس‌ها: **92/100** · اجرای زنده پس از دیپلوی باید ≥92 باشد.
+> **قبل: 87/100 → بعد (زنده): 94/100 EXCELLENT** · خروجی‌ها: `.geo-audit-before.json` / `.geo-audit-after.json`
+>
+> پروفایل استناد پلتفرم‌ها (قبل → بعد): ChatGPT 73→73 · Perplexity **60→75** · Google AI 89→**93**
+> Trust Stack: C (16/25) → **B**
 
 ## ۱. شکاف‌های ممیزی 87/100 (قبل)
 
@@ -41,7 +44,22 @@ framer-motion حالت `initial={{ opacity: 0 }}` را به‌صورت **است�
 
 بخش «جراحی فک و صورت چیست؟» (~۱۲۰ کلمه با جمله تعریفی) بعد از آمار در صفحه اصلی — قطعه ۱۰۰–۱۵۰ کلمه‌ای استاندارد استناد AI.
 
-## ۶. آنچه باقی مانده (نیازمند ورودی کاربر)
+## ۶. نتیجه نهایی ممیزی زنده (پس از دیپلوی)
+
+| دسته | قبل | بعد |
+|---|---|---|
+| **امتیاز کل GEO** | **87/100** | **94/100** |
+| signals | 4/6 | 6/6 |
+| ai_discovery | 2/3 | 3/3 |
+| google_ai | 19/20 | 20/20 |
+| brand_entity | 6/12 | 8/12 |
+| negative_penalty | −1 | 0 |
+| Hidden text | 49 عنصر | **0** |
+| Perplexity citation | 60 | 75 |
+| Google AI citation | 89 | 93 |
+| Trust Stack | C (16/25) | B |
+
+## ۷. آنچه باقی مانده (نیازمند ورودی کاربر)
 
 | مورد | امتیاز بالقوه | اقدام |
 |---|---|---|
@@ -49,7 +67,7 @@ framer-motion حالت `initial={{ opacity: 0 }}` را به‌صورت **است�
 | schema_article روی صفحه اصلی | +2 | اعمال نشد — اسکیمای Article فقط برای صفحات مقاله معنا دارد؛ هوم‌پیج با ItemList مقالات پوشش داده شده |
 | هشدار Invisible Unicode | 0 | نیم‌فاصله (U+200C) املای استاندارد فارسی است — false positive، بدون تأثیر امتیاز |
 
-## ۷. روش اجرای مجدد ممیزی
+## ۸. روش اجرای مجدد ممیزی
 
 ```bash
 cd tools/seo/geo-optimizer-skill
