@@ -25,7 +25,7 @@ const ROOT = path.resolve(import.meta.dir, "..");
 
 const PILLARS = [
   "/jaw-surgery", "/chin-surgery", "/dental-implant", "/implant-pasdaran",
-  "/costs", "/gallery", "/services", "/about", "/contact", "/blog",
+  "/surgery-care", "/costs", "/gallery", "/services", "/about", "/contact", "/blog", "/appointment",
 ];
 const VALID_LINK_TARGETS = new Set<string>([
   ...PILLARS,
@@ -158,8 +158,164 @@ if (warn.length) {
   for (const i of warn) console.log(`   [${i.slug}] ${i.msg}`);
 }
 
+/* ============================================================
+   گیت استاندارد ۵ گانه (SEO/AEO/GEO/AIO/SXO) — مخزن مقالات آماده
+   پیش از ورود به خط انتشار باید این گیت‌های سخت را پاس کند؛
+   وگرنه این اسکریپت (که گیت CI ایجنت روزانه است) با خطا متوقف
+   می‌شود و مقاله ناسالم هرگز منتشر نمی‌شود.
+   ابعاد «تیتر پرسشی/توپر/جدول-لیست» برای مقاله‌های قدیمی مخزن
+   هشدار هستند (در پروژه ارتقای مقالات به‌تدریج رفع می‌شود) و
+   برای فایل‌های staging (مقاله‌های جدید) سخت‌گیرانه اعمال می‌شود.
+   ============================================================ */
+
+/* جملات مقالات منتشرشده — مرجع یکتایی مخزن (هر فایل pool/staging نباید
+   جمله‌ای ۶+ کلمه‌ای مشابه مقاله زنده داشته باشد) */
+const publishedSentences = new Set(allSentences.keys());
+
+const POOL_DIRS = ["content-queue/pool", "content-queue/staging"];
+const poolIssues: { slug: string; msg: string }[] = [];
+const poolWarn: { slug: string; msg: string }[] = [];
+const poolSentences = new Map<string, string>();
+
+function parseFrontmatter(raw: string): { meta: Record<string, string>; body: string } | null {
+  const m = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  if (!m) return null;
+  const meta: Record<string, string> = {};
+  for (const line of m[1].split("\n")) {
+    const i = line.indexOf(":");
+    if (i > 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+  }
+  return { meta, body: m[2].trim() };
+}
+
+/* اهداف لینک معتبر برای مخزن: صفحات زنده + مقالات منتشرشده + خود اسلاگ‌های
+   pool/staging (مقاله‌ها به هم لینک می‌دهند و همه در صف انتشار هستند) */
+const poolSlugs = new Set<string>();
+for (const dir of POOL_DIRS) {
+  try {
+    for (const f of fs.readdirSync(path.join(ROOT, dir))) {
+      if (f.endsWith(".md")) poolSlugs.add(f.replace(/\.md$/, ""));
+    }
+  } catch { /* dir نیست — بی‌خیال */ }
+}
+const POOL_VALID_TARGETS = new Set<string>([
+  ...PILLARS,
+  ...BLOG_ARTICLES.map((a) => `/blog/${a.slug}`),
+  ...[...poolSlugs].map((s) => `/blog/${s}`),
+]);
+
+for (const dir of POOL_DIRS) {
+  const abs = path.join(ROOT, dir);
+  let files: string[] = [];
+  try {
+    files = fs.readdirSync(abs).filter((f) => f.endsWith(".md"));
+  } catch {
+    continue;
+  }
+  const isStaging = dir.includes("staging");
+  for (const f of files) {
+    const slug = f.replace(/\.md$/, "");
+    const label = `${dir}/${slug}`;
+    const parsed = parseFrontmatter(fs.readFileSync(path.join(abs, f), "utf8"));
+    if (!parsed) {
+      poolIssues.push({ slug: label, msg: "فرانت‌متر title/excerpt/cover ندارد" });
+      continue;
+    }
+    const { meta, body } = parsed;
+    const w = body.replace(/[#>*`\-|]/g, " ").split(/\s+/).filter(Boolean).length;
+    if (w < 1500) poolIssues.push({ slug: label, msg: `حجم ${w} < ۱۵۰۰ کلمه` });
+
+    const firstBlock = body.split(/\n\s*\n/).map((g) => g.trim()).find(Boolean) ?? "";
+    if (!firstBlock.startsWith(">")) {
+      poolIssues.push({ slug: label, msg: "پاسخ کوتاه (بلاک‌کوت اول) ندارد" });
+    } else {
+      const aw = firstBlock.replace(/^>\s?/, "").replace(/\*\*/g, "").split(/\s+/).filter(Boolean).length;
+      if (aw < 25 || aw > 90) poolIssues.push({ slug: label, msg: `پاسخ کوتاه ${aw} کلمه (خارج از ۲۵-۹۰)` });
+    }
+
+    const faqN = (body.match(/^### .+/gm) || []).length;
+    if (faqN < 4) poolIssues.push({ slug: label, msg: `FAQ فقط ${faqN} سوال` });
+
+    const links = [...body.matchAll(/\]\((\/[^)]*)\)/g)].map((m) => m[1]);
+    if (links.length < 5) poolIssues.push({ slug: label, msg: `فقط ${links.length} لینک داخلی` });
+    for (const l of new Set(links)) {
+      if (!POOL_VALID_TARGETS.has(l))
+        poolIssues.push({ slug: label, msg: `لینک نامعتبر: ${l}` });
+    }
+    if (new Set(links).has(`/blog/${slug}`))
+      poolIssues.push({ slug: label, msg: "لینک به خود مقاله" });
+
+    const numsN = (body.match(/[۰-۹0-9]+/g) || []).length;
+    if (numsN < 3) poolIssues.push({ slug: label, msg: `عدد/آمار فقط ${numsN} (GEO)` });
+
+    const brandN = (body.match(/دکتر حامد کرمانی|دکتر کرمانی/g) ?? []).length;
+    if (brandN < 2) poolIssues.push({ slug: label, msg: `نام دکتر فقط ${brandN} بار` });
+
+    const digitsN = body
+      .replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)))
+      .replace(/[^0-9]/g, "");
+    if (!digitsN.includes("09382080270")) poolIssues.push({ slug: label, msg: "CTA تلفن مطب نیست" });
+
+    if (/`|\$\{|!\[|<[a-z][a-z0-9]*[\s>]/i.test(body))
+      poolIssues.push({ slug: label, msg: "الگوی ممنوعه پارسر (بک‌تیک/${/عکس/HTML)" });
+    if (/https?:\/\//.test(body)) poolIssues.push({ slug: label, msg: "لینک http خارجی" });
+
+    const cover = meta.cover || "";
+    if (!cover || !fs.existsSync(path.join(ROOT, "public", cover)))
+      poolIssues.push({ slug: label, msg: `کاور موجود نیست: ${cover || "—"}` });
+
+    /* ابعاد ارتقایی — سخت برای مقاله جدید (staging)، هشدار برای مخزن موجود */
+    const qN = (body.match(/^## .+؟/gm) || []).length;
+    const boldN = (body.match(/\*\*[^*]+\*\*/g) || []).length;
+    const tableN = (body.match(/^\|.+\|/gm) || []).length;
+    const listN = (body.match(/^- /gm) || []).length;
+    const tier = isStaging ? poolIssues : poolWarn;
+    if (qN < 2) tier.push({ slug: label, msg: `تیتر پرسشی ${qN} < ۲ (AEO)` });
+    if (boldN < 2) tier.push({ slug: label, msg: `برجسته‌سازی ${boldN} < ۲ (SXO)` });
+    if (tableN === 0 && listN < 3) tier.push({ slug: label, msg: "جدول/لیست ندارد (AEO/GEO)" });
+
+    /* یکتایی سراسری بین فایل‌های مخزن + مقالات منتشرشده */
+    for (const s of sentences(body)) {
+      const n = norm(s);
+      const owner = poolSentences.get(n);
+      if (owner && owner !== label)
+        poolIssues.push({ slug: label, msg: `جمله تکراری با ${owner}: «${s.slice(0, 50)}…»` });
+      else poolSentences.set(n, label);
+      if (publishedSentences.has(n))
+        poolIssues.push({ slug: label, msg: `جمله تکراری با مقاله منتشرشده: «${s.slice(0, 50)}…»` });
+    }
+  }
+}
+
+/* مقاله‌های تکراری بین pool و staging هم خطا هستند */
+const stagingNames = new Set(
+  (() => {
+    try { return fs.readdirSync(path.join(ROOT, "content-queue/staging")).filter((f) => f.endsWith(".md")); } catch { return []; }
+  })(),
+);
+const poolNames = new Set(
+  (() => {
+    try { return fs.readdirSync(path.join(ROOT, "content-queue/pool")).filter((f) => f.endsWith(".md")); } catch { return []; }
+  })(),
+);
+for (const f of stagingNames)
+  if (poolNames.has(f))
+    poolIssues.push({ slug: `content-queue/${f}`, msg: "هم در pool هم در staging — یکی را حذف کنید" });
+
+console.log(`\n=== گیت استاندارد ۵ گانه — مخزن مقالات (${[...poolNames, ...stagingNames].length} فایل) ===`);
+if (poolIssues.length) {
+  console.log(`❌ ${poolIssues.length} خطا:`);
+  for (const i of poolIssues) console.log(`   [${i.slug}] ${i.msg}`);
+} else {
+  console.log("✅ همه فایل‌ها از گیت استاندارد ۵ گانه عبور کردند");
+}
+if (poolWarn.length) {
+  console.log(`\n⚠ ${poolWarn.length} هشدار ارتقا (بعداً رفع می‌شود):`);
+  for (const i of poolWarn) console.log(`   [${i.slug}] ${i.msg}`);
+}
+
 /* پوشش slug ↔ keywords */
 const missingKw = BLOG_ARTICLES.filter((a) => !ARTICLE_KEYWORDS[a.slug]).map((a) => a.slug);
 if (missingKw.length) console.log(`\n⚠ بدون کلیدواژه اختصاصی (fallback عمومی): ${missingKw.join(", ")}`);
 
-process.exit(issues.length ? 1 : 0);
+process.exit(issues.length || poolIssues.length ? 1 : 0);
