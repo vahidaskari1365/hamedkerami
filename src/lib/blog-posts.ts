@@ -17,6 +17,17 @@ export type BlogArticle = {
   updatedAt: string | null;
 };
 
+/* ============================================================
+   مقالات پنهان‌شده — ردیفشان در دیتابیس می‌ماند اما از سایت
+   (ایندکس، صفحه مقاله، سایت‌مپ، llms.txt) حذف می‌شوند.
+   jaw-surgery-cost-1406: اشتباهاً ۴ آبان ۱۴۰۵ منتشر شد (سال جاری
+   ۱۴۰۵ است؛ مقاله هزینه ۱۴۰۵ زنده است و انتشار دوباره = کانیبالی).
+   نسخه آماده ۱۴۰۶ در content-queue/evergreen/ نگه‌داری می‌شود و
+   از ۱ فروردین ۱۴۰۶ (۲۰۲۷-۰۳-۲۱) با notBefore در topics.ts
+   مجاز به انتشار است. در آن زمان فقط از این Set خارج شود.
+   ============================================================ */
+const HIDDEN_SLUGS: ReadonlySet<string> = new Set(["jaw-surgery-cost-1406"]);
+
 export async function getPublishedPosts(): Promise<BlogArticle[]> {
   try {
     const rows = await db.blogPost.findMany({
@@ -24,16 +35,18 @@ export async function getPublishedPosts(): Promise<BlogArticle[]> {
       orderBy: { createdAt: "desc" },
     });
     if (rows.length) {
-      return rows.map((b) => ({
-        slug: b.slug,
-        title: b.title,
-        excerpt: b.excerpt,
-        body: b.body,
-        cover: b.cover,
-        date: b.date,
-        publishedAt: b.createdAt?.toISOString() ?? null,
-        updatedAt: b.updatedAt?.toISOString() ?? null,
-      }));
+      return rows
+        .filter((b) => !HIDDEN_SLUGS.has(b.slug))
+        .map((b) => ({
+          slug: b.slug,
+          title: b.title,
+          excerpt: b.excerpt,
+          body: b.body,
+          cover: b.cover,
+          date: b.date,
+          publishedAt: b.createdAt?.toISOString() ?? null,
+          updatedAt: b.updatedAt?.toISOString() ?? null,
+        }));
     }
   } catch {
     /* دیتابیس در دسترس نیست — fallback */
@@ -46,6 +59,8 @@ export async function getPublishedPosts(): Promise<BlogArticle[]> {
 }
 
 export async function getBlogPost(slug: string): Promise<BlogArticle | null> {
+  /* مقاله پنهان — مثل عدم وجود رفتار می‌شود (404) */
+  if (HIDDEN_SLUGS.has(slug)) return null;
   try {
     const b = await db.blogPost.findUnique({ where: { slug } });
     if (b && b.published) {

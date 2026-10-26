@@ -514,8 +514,9 @@
       "intent": "تراکنشی",
       "funnel": "BOFU",
       "landing": "/costs",
-      "brief": "به‌روزرسانی فصلی مقاله هزینه با آخرین بازه قیمت‌ها و عوامل موثر + سوالات بیمه.",
-      "schema": "Article + FAQ"
+      "brief": "به‌روزرسانی فصلی مقاله هزینه با آخرین بازه قیمت‌ها و عوامل موثر + سوالات بیمه. مقاله آماده در content-queue/evergreen/؛ انتشار فقط از ۱ فروردین ۱۴۰۶.",
+      "schema": "Article + FAQ",
+      "notBefore": "2027-03-21"
     },
     {
       "n": 26,
@@ -534,7 +535,8 @@
       "funnel": "BOFU",
       "landing": "/costs",
       "brief": "به‌روزرسانی سالانه مقاله هزینه ایمپلنت با جدول برندها و عوامل موثر.",
-      "schema": "Article + FAQ"
+      "schema": "Article + FAQ",
+      "notBefore": "2027-03-21"
     }
   ]
 }

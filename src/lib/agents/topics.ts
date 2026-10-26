@@ -2,7 +2,8 @@
    topics — صف محتوایی ایجنت‌های بلاگ
    فاز ۹ + ۱۰ — فهرست ۴۲ عنوانی سئو-محور مارکت ریسرچ (کاربر، اکتبر ۲۰۲۶)
    ترتیب انتشار = ترتیب همین فهرست؛ روزی ۱۰ مقاله، ۰۷:۰۰ تهران.
-   دو مقاله ابتدایی (هزینه ۱۴۰۶ + آمار) اولویت کاربر برای انتشار بعدی است.
+   مقاله آمار اولویت کاربر برای انتشار بعدی است. نسخه «هزینه ۱۴۰۶»
+   به evergreen منتقل شد (سال جاری ۱۴۰۵ است؛ انتشار فقط از ۱ فروردین ۱۴۰۶).
    مقاله‌های TIER 1 پول‌سازترین کلمات کلیدی هستند.
    جلوگیری از تکرار: nextTopic عناوین منتشرشده را رد می‌کند و
    سردبیر جملات تکراری با مقالات موجود را رد می‌کند (uniqueness.ts).
@@ -26,21 +27,14 @@ export type Topic = {
   brief: string;
   /** اسکیمای پیشنهادی مقاله */
   schema: string;
+  /** earliest publish date (ISO YYYY-MM-DD، تهران) — فقط evergreen: نسخه سال بعد زودتر منتشر نشود */
+  notBefore?: string;
 };
 
 export const TOPIC_QUEUE: Topic[] = [
-  /* ---------- اولویت کاربر — دو مقاله آماده انتشار بعدی (staging → pool پس از تایید) ---------- */
-  {
-    slug: "jaw-surgery-cost-1406",
-    title: "هزینه جراحی فک ۱۴۰۶؛ جدول قیمت به‌روز تک‌فک، بایمکس و جنیوپلاستی + راهنمای بیمه",
-    keyword: "هزینه جراحی فک ۱۴۰۶",
-    related: ["هزینه جراحی فک ۱۴۰۶", "قیمت جراحی ارتوگناتیک ۱۴۰۶", "تعرفه جراحی فک با بیمه ۱۴۰۶", "قیمت بایمکس ۱۴۰۶"],
-    intent: "تراکنشی",
-    funnel: "BOFU",
-    landing: "/costs",
-    brief: "صفحه قیمت زنده پول‌ساز: جدول تعرفه به‌تفکیک نوع عمل (جنیوپلاستی ۹۰-۱۱۰، تک‌فک ۱۷۰-۱۸۰، مونومکس ۱۸۰-۱۹۰، بایمکس ۱۹۰-۲۰۰، بایمکس+چانه ۲۱۰-۲۴۰ میلیون تومان)، عوامل مؤثر، سهم بیمه، پرداخت مرحله‌ای. جدول با هر ابلاغ تعرفه به‌روز می‌شود (سیگنال تازگی + استناد AI).",
-    schema: "Article + MedicalWebPage + FAQ",
-  },
+  /* ---------- اولویت کاربر — مقاله آماده انتشار بعدی (staging → pool پس از تایید) ----------
+     «هزینه جراحی فک ۱۴۰۶» قبلاً اینجا بود و ایجنت روزانه زودتر از موعد منتشرش کرد؛
+     به EVERGREEN_TOPICS منتقل شد. سال جاری ۱۴۰۵ است و مقاله «هزینه جراحی فک ۱۴۰۵» زنده است. */
   {
     slug: "jaw-surgery-statistics",
     title: "آمار و اعداد جراحی فک و صورت؛ نرخ موفقیت، زمان عمل و ریکاوری در یک نگاه",
@@ -675,9 +669,25 @@ export const TOPIC_QUEUE: Topic[] = [
 
 /* ============================================================
    evergreen — به‌روزرسانی‌های سالانه (بعد از اتمام صف اصلی)
-   هر سال فقط عدد «۱۴۰۵ → ۱۴۰۶» در عنوان/بریف عوض می‌شود.
+   هر سال فقط عدد در عنوان/بریف عوض می‌شود. قفل notBefore =
+   ۱ فروردین سال بعد (۲۰۲۷-۰۳-۲۱ برای ۱۴۰۶) — تا آن تاریخ
+   nextTopic هرگز این‌ها را برنمی‌گرداند؛ سال جاری ۱۴۰۵ است.
+   ⚠️ اگر تاپیک ۱۴۰۶ روزی منتشر شد، نسخه پنهان‌شده قبلی را هم از
+   HIDDEN_SLUGS در blog-posts.ts خارج کنید (خطر کانیبالیزاسیون).
    ============================================================ */
 export const EVERGREEN_TOPICS: Topic[] = [
+  {
+    slug: "jaw-surgery-cost-1406",
+    title: "هزینه جراحی فک ۱۴۰۶؛ جدول قیمت به‌روز تک‌فک، بایمکس و جنیوپلاستی + راهنمای بیمه",
+    keyword: "هزینه جراحی فک ۱۴۰۶",
+    related: ["هزینه جراحی فک ۱۴۰۶", "قیمت جراحی ارتوگناتیک ۱۴۰۶", "تعرفه جراحی فک با بیمه ۱۴۰۶", "قیمت بایمکس ۱۴۰۶"],
+    intent: "تراکنشی",
+    funnel: "BOFU",
+    landing: "/costs",
+    brief: "به‌روزرسانی سالانه صفحه قیمت زنده پول‌ساز: جدول تعرفه به‌تفکیک نوع عمل (جنیوپلاستی ۹۰-۱۱۰، تک‌فک ۱۷۰-۱۸۰، مونومکس ۱۸۰-۱۹۰، بایمکس ۱۹۰-۲۰۰، بایمکس+چانه ۲۱۰-۲۴۰ میلیون تومان)، عوامل مؤثر، سهم بیمه، پرداخت مرحله‌ای. مقاله آماده در content-queue/evergreen/jaw-surgery-cost-1406.md؛ از ۱ فروردین ۱۴۰۶ به pool برگردانید.",
+    schema: "Article + MedicalWebPage + FAQ",
+    notBefore: "2027-03-21",
+  },
   {
     slug: "implant-cost-1406",
     title: "هزینه ایمپلنت دندان ۱۴۰۶؛ جدول قیمت به‌روز برندها",
@@ -688,16 +698,25 @@ export const EVERGREEN_TOPICS: Topic[] = [
     landing: "/costs",
     brief: "به‌روزرسانی سالانه مقاله هزینه ایمپلنت با جدول برندها و عوامل موثر.",
     schema: "Article + FAQ",
+    notBefore: "2027-03-21",
   },
 ];
 
-/** انتخاب موضوع بعدی: صف اصلی → evergreen → null
+/** تاریخ امروز به وقت تهران — YYYY-MM-DD برای مقایسه با notBefore */
+function todayTehranISO(): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tehran" }).format(new Date());
+}
+
+/** انتخاب موضوع بعدی: صف اصلی → evergreen (فقط بعد از notBefore) → null
     dedupe دوگانه: عنوان (سازه تولید ایجنت) + اسلاگ (پایدار و قابل اتکا) */
 export function nextTopic(publishedTitles: string[], publishedSlugs: string[] = []): Topic | null {
   const takenTitles = new Set(publishedTitles);
   const takenSlugs = new Set(publishedSlugs);
   const fresh = TOPIC_QUEUE.find((t) => !takenTitles.has(t.title) && !takenSlugs.has(t.slug));
   if (fresh) return fresh;
-  const ever = EVERGREEN_TOPICS.find((t) => !takenTitles.has(t.title) && !takenSlugs.has(t.slug));
+  const today = todayTehranISO();
+  const ever = EVERGREEN_TOPICS.find(
+    (t) => (!t.notBefore || t.notBefore <= today) && !takenTitles.has(t.title) && !takenSlugs.has(t.slug)
+  );
   return ever ?? null;
 }
