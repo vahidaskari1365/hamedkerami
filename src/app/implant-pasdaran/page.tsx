@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { LandingPageView, landingOgImage } from "@/components/landing/landing-view";
 import { getLanding, LANDING_URLS } from "@/lib/landing-data";
 import { getPatientReviews } from "@/lib/reviews";
+import { videosForPage } from "@/lib/videos";
 
 export const dynamic = "force-dynamic";
 
@@ -45,5 +46,5 @@ export default async function ImplantPasdaranPage() {
     priceRange: "۲۴ تا ۱۱۰ میلیون تومان به ازای هر واحد ایمپلنت",
   };
 
-  return <LandingPageView data={data} url={LANDING_URLS["implant-pasdaran"]} serviceLd={serviceLd} reviews={reviews} />;
+  return <LandingPageView data={data} url={LANDING_URLS["implant-pasdaran"]} serviceLd={serviceLd} reviews={reviews} videos={videosForPage("implant-pasdaran")} />;
 }

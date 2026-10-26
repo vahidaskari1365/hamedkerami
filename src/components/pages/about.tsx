@@ -6,6 +6,8 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Counter, Parallax, Reveal } from "@/components/cinematic";
 import { Link } from "@/components/hash-router";
+import { LandingVideos } from "@/components/landing/landing-videos";
+import { INTRO_VIDEO, HIGHLIGHT_VIDEOS, APARAT_CHANNEL } from "@/lib/videos";
 import { useContent } from "@/lib/content-context";
 
 export function PageHero({
@@ -135,6 +137,38 @@ export function AboutPage() {
               </ol>
             </Reveal>
           </div>
+        </div>
+      </section>
+
+      {/* ویدیو معرفی + نمونه فیلم های جراحی — منبع واقعی کانال آپارات */}
+      <section className="bg-white py-20" aria-label="ویدیو معرفی و فیلم های جراحی">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <Reveal className="max-w-2xl">
+            <p className="mb-4 flex items-center gap-3 text-sm font-semibold text-teal-3">
+              <span className="h-px w-10 bg-teal-3" aria-hidden />
+              ویدیو و فیلم های جراحی
+            </p>
+            <h2 className="text-2xl font-black sm:text-3xl">
+              دکتر کرمانی را از نزدیک ببینید
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-foreground/60">
+              ویدیوی معرفی مطب و تصاویر واقعی اتاق عمل از جراحی های فک و ایمپلنت — بدون تدوین تبلیغاتی؛ ویدیوهای کامل‌تر در کانال آپارات دکتر کرمانی.
+            </p>
+          </Reveal>
+          <Reveal className="mt-10 text-right">
+            <LandingVideos videos={[INTRO_VIDEO, ...HIGHLIGHT_VIDEOS]} />
+          </Reveal>
+          <a
+            href={APARAT_CHANNEL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-10 inline-flex items-center gap-3 rounded-full bg-ink px-9 py-4 text-sm font-bold text-white transition hover:bg-ink-3"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <path d="M8 5.5v13l11-6.5L8 5.5z" />
+            </svg>
+            مشاهده کانال آپارات
+          </a>
         </div>
       </section>
 

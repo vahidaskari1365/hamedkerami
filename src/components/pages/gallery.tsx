@@ -7,6 +7,8 @@ import { Reveal } from "@/components/cinematic";
 import { MasonryGrid, masonryAspect } from "@/components/masonry";
 import { PageHero } from "@/components/pages/about";
 import { BeforeAfter } from "@/components/before-after";
+import { LandingVideos } from "@/components/landing/landing-videos";
+import { SITE_VIDEOS, APARAT_CHANNEL } from "@/lib/videos";
 import { useContent } from "@/lib/content-context";
 
 export function GalleryPage() {
@@ -168,26 +170,29 @@ export function GalleryPage() {
         </div>
       </section>
 
-      {/* videos */}
+      {/* videos — گرید ویدیوهای واقعی آپارات (پخش با کلیک) */}
       <section className="bg-white py-20" aria-label="فیلم های جراحی">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6">
           <Reveal>
             <h2 className="text-2xl font-black sm:text-3xl">فیلم های جراحی</h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-foreground/60">
-              {VIDEOS.note} — از طریق کانال آپارات مجموعه قابل مشاهده است.
+              {VIDEOS.note} — تصاویر واقعی اتاق عمل و نتیجه بیماران؛ برای پخش روی هر ویدیو کلیک کنید.
             </p>
-            <a
-              href={VIDEOS.aparat}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-3 rounded-full bg-ink px-9 py-4 text-sm font-bold text-white transition hover:bg-ink-3"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                <path d="M8 5.5v13l11-6.5L8 5.5z" />
-              </svg>
-              مشاهده کانال آپارات
-            </a>
           </Reveal>
+          <Reveal className="mt-10 text-right">
+            <LandingVideos videos={SITE_VIDEOS} />
+          </Reveal>
+          <a
+            href={VIDEOS.aparat || APARAT_CHANNEL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-10 inline-flex items-center gap-3 rounded-full bg-ink px-9 py-4 text-sm font-bold text-white transition hover:bg-ink-3"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <path d="M8 5.5v13l11-6.5L8 5.5z" />
+            </svg>
+            مشاهده کانال آپارات
+          </a>
         </div>
       </section>
 

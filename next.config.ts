@@ -16,7 +16,8 @@ const SECURITY_HEADERS = [
       "font-src 'self'",
       "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
       "media-src 'self'",
-      "frame-src 'self'",
+      /* پخش‌کننده ویدیو آپارات (کارت‌های ویدیو صفحات فرود/گالری/درباره) */
+      "frame-src 'self' https://www.aparat.com https://aparat.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

@@ -4,6 +4,8 @@
    (محتوای اولیه از سایت قبلی منتقل شده است)
    ============================================================ */
 
+import { SITE_VIDEOS } from "@/lib/videos";
+
 export const SITE = {
   name: "دکتر حامد کرمانی",
   title: "متخصص جراحی فک و صورت",
@@ -356,19 +358,11 @@ export const CERTIFICATES = [
 ];
 
 export const VIDEOS = {
-  aparat: "https://www.aparat.com/dromfs",
+  aparat: "https://www.aparat.com/dr.hamedkermani.omfs",
   note: "فیلم های جراحی در کانال آپارات قابل مشاهده است",
-  /* ویدئوها برای اسکیمای VideoObject — وقتی ویدئوی جدید آپلود شد،
-     اینجا اضافه کنید تا JSON-LD خودکار در صفحه اصلی تزریق شود (AIO/GEO):
-     { id, title, description, thumb, upload: "2026-10-20", embed: "https://www.aparat.com/v/xxxx?..." } */
-  items: [] as {
-    id: string;
-    title: string;
-    description: string;
-    thumb: string;
-    upload: string;
-    embed: string;
-  }[],
+  /* ویدئوهای واقعی از مرکز داده src/lib/videos.ts — هر ویدئوی جدید
+     آنجا اضافه می‌شود و JSON-LD آن خودکار در صفحه اصلی تزریق می‌گردد (AIO/GEO) */
+  items: SITE_VIDEOS,
 };
 
 /* ---------- نوبت‌دهی آنلاین ----------

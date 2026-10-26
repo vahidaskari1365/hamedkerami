@@ -4,6 +4,7 @@ import { LandingPageView, landingOgImage } from "@/components/landing/landing-vi
 import { SITE_INFO } from "@/components/landing/landing-chrome";
 import { getLanding, LANDING_URLS } from "@/lib/landing-data";
 import { getPatientReviews } from "@/lib/reviews";
+import { videosForPage } from "@/lib/videos";
 
 export const dynamic = "force-dynamic";
 
@@ -61,5 +62,5 @@ export default async function JawSurgeryPage() {
     },
   };
 
-  return <LandingPageView data={data} url={LANDING_URLS["jaw-surgery"]} serviceLd={serviceLd} reviews={reviews} />;
+  return <LandingPageView data={data} url={LANDING_URLS["jaw-surgery"]} serviceLd={serviceLd} reviews={reviews} videos={videosForPage("jaw-surgery")} />;
 }

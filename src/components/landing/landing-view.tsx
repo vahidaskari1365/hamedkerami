@@ -10,7 +10,10 @@ import {
   LandingFooter,
   SITE_INFO,
 } from "@/components/landing/landing-chrome";
+import { LandingVideos } from "@/components/landing/landing-videos";
+import { JsonLdScript, videoLd } from "@/components/schema";
 import type { LandingData, LandingSectionData } from "@/lib/landing-defaults";
+import type { SiteVideo } from "@/lib/videos";
 import { trimReviewBody } from "@/lib/reviews";
 
 /* ============================================================
@@ -112,12 +115,15 @@ export function LandingPageView({
   url,
   serviceLd,
   reviews = [],
+  videos = [],
 }: {
   data: LandingData;
   url: string;
   serviceLd: Record<string, unknown>;
   /** بازخورد واقعی بیماران — بدون رکورد، سکشن رندر نمی‌شود */
   reviews?: { name: string; body: string; date: string }[];
+  /** ویدیوهای آپارات مرتبط با موضوع صفحه + اسکیمای VideoObject */
+  videos?: SiteVideo[];
 }) {
   const faqLd = {
     "@context": "https://schema.org",
@@ -142,6 +148,10 @@ export function LandingPageView({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd).replace(/</g, "\\u003c") }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd).replace(/</g, "\\u003c") }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd).replace(/</g, "\\u003c") }} />
+      {/* اسکیمای VideoObject هر ویدیو — شانس نتیجه ویدیویی گوگل (AIO/GEO) */}
+      {videos.map((v) => (
+        <JsonLdScript key={`ld-video-${v.id}`} data={videoLd(v)} />
+      ))}
 
       <LandingHeader />
 
@@ -160,14 +170,29 @@ export function LandingPageView({
           </LandingSection>
         ))}
 
+        {videos.length > 0 ? (
+          <LandingSection title="ویدیوهای جراحی دکتر حامد کرمانی" alt={data.sections.length % 2 === 1}>
+            <p className="text-sm leading-8 text-foreground/65">
+              تصاویر واقعی اتاق عمل و نتیجه پیش و بعد بیماران جراحی فک و چانه و ایمپلنت دندان — بدون تدوین تبلیغاتی. ویدیوهای کامل‌تر در کانال آپارات دکتر کرمانی در دسترس است.
+            </p>
+            <LandingVideos videos={videos} />
+          </LandingSection>
+        ) : null}
+
         {data.faqs.length > 0 ? (
-          <LandingSection title="سوالات متداول" alt={data.sections.length % 2 === 1}>
+          <LandingSection
+            title="سوالات متداول"
+            alt={(data.sections.length + (videos.length > 0 ? 1 : 0)) % 2 === 1}
+          >
             <LandingFaq items={data.faqs} />
           </LandingSection>
         ) : null}
 
         {reviews.length > 0 ? (
-          <LandingSection title="تجربه بیماران دکتر حامد کرمانی" alt={(data.sections.length + (data.faqs.length > 0 ? 1 : 0)) % 2 === 1}>
+          <LandingSection
+            title="تجربه بیماران دکتر حامد کرمانی"
+            alt={(data.sections.length + (videos.length > 0 ? 1 : 0) + (data.faqs.length > 0 ? 1 : 0)) % 2 === 1}
+          >
             <p className="text-sm leading-8 text-foreground/65">
               بازخوردهای واقعی بیماران ثبت‌شده در وب‌سایت مطب؛ تجربه‌های مرتبط با جراحی فک، چانه و ایمپلنت از زبان خود بیماران.
             </p>

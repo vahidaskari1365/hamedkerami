@@ -6,6 +6,7 @@ import { getLanding, LANDING_URLS } from "@/lib/landing-data";
 import { getPatientReviews } from "@/lib/reviews";
 import { SITE } from "@/lib/data";
 import { tehranToday, localIsoDay } from "@/lib/jalali";
+import { videosForPage } from "@/lib/videos";
 
 export const dynamic = "force-dynamic";
 
@@ -115,6 +116,7 @@ export default async function BestJawSurgeonTehranPage() {
       url={LANDING_URLS["best-jaw-surgeon-tehran"]}
       serviceLd={entityLd}
       reviews={reviews}
+      videos={videosForPage("best-jaw-surgeon-tehran")}
     />
   );
 }
