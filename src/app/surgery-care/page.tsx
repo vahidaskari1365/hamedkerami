@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { LandingPageView, landingOgImage } from "@/components/landing/landing-view";
 import { SITE_INFO } from "@/components/landing/landing-chrome";
 import { getLanding, LANDING_URLS } from "@/lib/landing-data";
+import { getPatientReviews } from "@/lib/reviews";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function SurgeryCarePage() {
   const data = await getLanding("surgery-care");
   if (!data) notFound();
+
+  const reviews = await getPatientReviews();
 
   /* AIO: lastReviewed واقعی — هر بار رندر تاریخ روز درج می‌شود */
   const today = new Date().toISOString().slice(0, 10);
@@ -63,5 +66,5 @@ export default async function SurgeryCarePage() {
     },
   };
 
-  return <LandingPageView data={data} url={LANDING_URLS["surgery-care"]} serviceLd={pageLd} />;
+  return <LandingPageView data={data} url={LANDING_URLS["surgery-care"]} serviceLd={pageLd} reviews={reviews} />;
 }

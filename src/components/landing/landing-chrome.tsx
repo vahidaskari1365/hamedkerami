@@ -249,3 +249,34 @@ export function LandingFaq({ items }: { items: { q: string; a: string }[] }) {
     </div>
   );
 }
+
+/** نظرات بیماران — بلوک اعتماد صفحات فرود (فقط بازخورد واقعی ثبت‌شده
+    در پنل؛ بدون رکورد، رندر نمی‌شود) */
+export function LandingReviews({
+  reviews,
+}: {
+  reviews: { name: string; body: string; date: string }[];
+}) {
+  if (!reviews.length) return null;
+  return (
+    <div className="mt-8 grid gap-5 sm:grid-cols-2">
+      {reviews.map((r) => (
+        <figure key={r.name + r.date} className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-ink/5">
+          <span className="block text-3xl leading-none text-teal/40" aria-hidden>
+            ”
+          </span>
+          <blockquote className="mt-2 text-sm leading-8 text-foreground/75">{r.body}</blockquote>
+          <figcaption className="mt-4 flex items-center gap-3 border-t border-ink/5 pt-4">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-teal/10 text-sm font-black text-teal" aria-hidden>
+              {r.name.trim().charAt(0) || "ب"}
+            </span>
+            <span className="text-xs font-bold text-ink">{r.name}</span>
+            <span className="text-[11px] text-foreground/45">
+              {new Date(r.date).toLocaleDateString("fa-IR", { year: "numeric", month: "long" })}
+            </span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}

@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, MessageSquare, MessagesSquare, Trash2 } from "lucide-react";
+import { ExternalLink, MessageSquare, MessagesSquare, Plus, Trash2, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Cmt {
@@ -31,6 +31,12 @@ export function CommentsPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
   const [open, setOpen] = useState<Cmt | null>(null);
+  /* فرم ثبت بازخورد واقعی بیماران (اسلاگ اختصاصی patient-reviews) */
+  const [showForm, setShowForm] = useState(false);
+  const [fSlug, setFSlug] = useState("patient-reviews");
+  const [fName, setFName] = useState("");
+  const [fBody, setFBody] = useState("");
+  const [busy, setBusy] = useState(false);
 
   const load = useCallback(async (withSpinner = true) => {
     if (withSpinner) setLoading(true);
@@ -49,6 +55,40 @@ export function CommentsPage() {
     /* میکروتسک — بدون setState همگام در بدنه effect (react-compiler) */
     queueMicrotask(() => void load(false));
   }, [load]);
+
+  async function createReview() {
+    if (fName.trim().length < 2 || fBody.trim().length < 5) {
+      toast({ title: "نام و متن بازخورد را کامل وارد کنید", variant: "destructive" });
+      return;
+    }
+    setBusy(true);
+    try {
+      const res = await fetch("/api/admin/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: fSlug.trim() || "patient-reviews",
+          name: fName.trim(),
+          body: fBody.trim(),
+          approved: true,
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        toast({ title: "بازخورد ثبت و منتشر شد — در صفحات فرود نمایش داده می‌شود" });
+        setFName("");
+        setFBody("");
+        setShowForm(false);
+        load();
+      } else {
+        toast({ title: data.error || "خطا در ثبت", variant: "destructive" });
+      }
+    } catch {
+      toast({ title: "خطای شبکه", variant: "destructive" });
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function setApproved(c: Cmt, approved: boolean) {
     const res = await fetch(`/api/admin/comments/${c.id}`, {
@@ -95,26 +135,78 @@ export function CommentsPage() {
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-1.5">
-        {FILTERS.map((f) => {
-          const count = f.key
-            ? rows.filter((r) => (f.key === "approved" ? r.approved : !r.approved)).length
-            : rows.length;
-          return (
-            <button
-              key={f.key}
-              onClick={() => setFilter(f.key)}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition ${
-                filter === f.key
-                  ? "bg-ink text-white shadow"
-                  : "bg-bone text-foreground/60 hover:text-foreground"
-              }`}
-            >
-              {f.label} {count > 0 ? `(${count.toLocaleString("fa-IR")})` : ""}
-            </button>
-          );
-        })}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap gap-1.5">
+          {FILTERS.map((f) => {
+            const count = f.key
+              ? rows.filter((r) => (f.key === "approved" ? r.approved : !r.approved)).length
+              : rows.length;
+            return (
+              <button
+                key={f.key}
+                onClick={() => setFilter(f.key)}
+                className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition ${
+                  filter === f.key
+                    ? "bg-ink text-white shadow"
+                    : "bg-bone text-foreground/60 hover:text-foreground"
+                }`}
+              >
+                {f.label} {count > 0 ? `(${count.toLocaleString("fa-IR")})` : ""}
+              </button>
+            );
+          })}
+        </div>
+        <Button
+          variant={showForm ? "outline" : "default"}
+          size="sm"
+          onClick={() => setShowForm((v) => !v)}
+          className="gap-1.5"
+        >
+          {showForm ? <X size={14} /> : <Plus size={14} />}
+          {showForm ? "بستن فرم" : "افزودن بازخورد بیمار"}
+        </Button>
       </div>
+
+      {showForm ? (
+        <div className="rounded-2xl border border-teal/25 bg-teal/[0.03] p-5">
+          <p className="text-xs font-bold text-foreground/70">
+            بازخورد واقعی بیمار (با رضایت بیمار) را ثبت کنید — اسلاگ «patient-reviews» یعنی نمایش در بلوک «تجربه بیماران» همه صفحات فرود؛ برای نظر زیر یک مقاله، اسلاگ همان مقاله را بنویسید.
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div>
+              <label className="text-xs font-bold">اسلاگ</label>
+              <input
+                value={fSlug}
+                onChange={(e) => setFSlug(e.target.value)}
+                dir="ltr"
+                className="mt-1 w-full rounded-lg border border-ink/15 bg-white px-3 py-2 text-sm"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-bold">نام بیمار</label>
+              <input
+                value={fName}
+                onChange={(e) => setFName(e.target.value)}
+                placeholder="مثلا: خانم رضایی (فقط با رضایت)"
+                className="mt-1 w-full rounded-lg border border-ink/15 bg-white px-3 py-2 text-sm"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="text-xs font-bold">متن بازخورد</label>
+              <textarea
+                value={fBody}
+                onChange={(e) => setFBody(e.target.value)}
+                rows={4}
+                placeholder="متن بازخورد واقعی بیمار..."
+                className="mt-1 w-full rounded-lg border border-ink/15 bg-white px-3 py-2 text-sm leading-7"
+              />
+            </div>
+          </div>
+          <Button onClick={createReview} disabled={busy} size="sm" className="mt-3">
+            {busy ? "در حال ثبت..." : "ثبت و انتشار"}
+          </Button>
+        </div>
+      ) : null}
 
       {loading ? (
         <div className="space-y-3">
@@ -178,16 +270,20 @@ export function CommentsPage() {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="text-base font-black">{open.name}</h3>
-                <a
-                  href={`/blog/${open.slug}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-1 inline-flex items-center gap-1 text-xs text-teal-3 hover:underline"
-                  dir="ltr"
-                >
-                  /blog/{open.slug}
-                  <ExternalLink size={11} />
-                </a>
+                {open.slug === "patient-reviews" ? (
+                  <Badge variant="secondary" className="mt-1 text-[10px]">بازخورد بیماران — صفحات فرود</Badge>
+                ) : (
+                  <a
+                    href={`/blog/${open.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-flex items-center gap-1 text-xs text-teal-3 hover:underline"
+                    dir="ltr"
+                  >
+                    /blog/{open.slug}
+                    <ExternalLink size={11} />
+                  </a>
+                )}
               </div>
               <MessagesSquare size={18} className="text-teal" />
             </div>

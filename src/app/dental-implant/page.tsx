@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LandingPageView, landingOgImage } from "@/components/landing/landing-view";
 import { getLanding, LANDING_URLS } from "@/lib/landing-data";
+import { getPatientReviews } from "@/lib/reviews";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,8 @@ export default async function DentalImplantPage() {
   const data = await getLanding("dental-implant");
   if (!data) notFound();
 
+  const reviews = await getPatientReviews();
+
   const serviceLd = {
     "@context": "https://schema.org",
     "@type": "MedicalProcedure",
@@ -43,5 +46,5 @@ export default async function DentalImplantPage() {
     },
   };
 
-  return <LandingPageView data={data} url={LANDING_URLS["dental-implant"]} serviceLd={serviceLd} />;
+  return <LandingPageView data={data} url={LANDING_URLS["dental-implant"]} serviceLd={serviceLd} reviews={reviews} />;
 }

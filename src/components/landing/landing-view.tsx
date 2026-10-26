@@ -5,11 +5,13 @@ import {
   LandingCards,
   LandingSteps,
   LandingFaq,
+  LandingReviews,
   LandingCtaBand,
   LandingFooter,
   SITE_INFO,
 } from "@/components/landing/landing-chrome";
 import type { LandingData, LandingSectionData } from "@/lib/landing-defaults";
+import { trimReviewBody } from "@/lib/reviews";
 
 /* ============================================================
    LandingPageView — رندر کامل صفحه فرود از داده (دیتابیس/پیش‌فرض)
@@ -109,10 +111,13 @@ export function LandingPageView({
   data,
   url,
   serviceLd,
+  reviews = [],
 }: {
   data: LandingData;
   url: string;
   serviceLd: Record<string, unknown>;
+  /** بازخورد واقعی بیماران — بدون رکورد، سکشن رندر نمی‌شود */
+  reviews?: { name: string; body: string; date: string }[];
 }) {
   const faqLd = {
     "@context": "https://schema.org",
@@ -158,6 +163,17 @@ export function LandingPageView({
         {data.faqs.length > 0 ? (
           <LandingSection title="سوالات متداول" alt={data.sections.length % 2 === 1}>
             <LandingFaq items={data.faqs} />
+          </LandingSection>
+        ) : null}
+
+        {reviews.length > 0 ? (
+          <LandingSection title="تجربه بیماران دکتر حامد کرمانی" alt={(data.sections.length + (data.faqs.length > 0 ? 1 : 0)) % 2 === 1}>
+            <p className="text-sm leading-8 text-foreground/65">
+              بازخوردهای واقعی بیماران ثبت‌شده در وب‌سایت مطب؛ تجربه‌های مرتبط با جراحی فک، چانه و ایمپلنت از زبان خود بیماران.
+            </p>
+            <LandingReviews
+              reviews={reviews.map((r) => ({ ...r, body: trimReviewBody(r.body) }))}
+            />
           </LandingSection>
         ) : null}
 

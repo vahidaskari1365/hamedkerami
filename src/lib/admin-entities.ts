@@ -133,7 +133,9 @@ export const ADMIN_ENTITIES: Record<string, EntityDef> = {
   },
   comments: {
     model: "articleComment",
-    fields: { approved: "bool" },
+    /* slug/name/body: برای ثبت بازخورد واقعی بیماران (اسلاگ اختصاصی
+       patient-reviews) توسط تیم مطب در پنل — علاوه بر بازبینی ورودی‌ها */
+    fields: { approved: "bool", slug: "string", name: "string", body: "string" },
     orderBy: { createdAt: "desc" },
     required: [],
   },

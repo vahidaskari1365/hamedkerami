@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { LandingPageView, landingOgImage } from "@/components/landing/landing-view";
 import { SITE_INFO } from "@/components/landing/landing-chrome";
 import { getLanding, LANDING_URLS } from "@/lib/landing-data";
+import { getPatientReviews } from "@/lib/reviews";
 import { SITE } from "@/lib/data";
 import { tehranToday, localIsoDay } from "@/lib/jalali";
 
@@ -36,6 +37,7 @@ export default async function BestJawSurgeonTehranPage() {
   const data = await getLanding("best-jaw-surgeon-tehran");
   if (!data) notFound();
 
+  const reviews = await getPatientReviews();
   const lastReviewed = localIsoDay(tehranToday());
 
   /* اسکیمای صفحه پیلار — MedicalWebPage + موجودیت Physician
@@ -85,6 +87,18 @@ export default async function BestJawSurgeonTehranPage() {
           streetAddress: SITE_INFO.address,
         },
         areaServed: { "@type": "City", name: "تهران" },
+        /* نظرات واقعی بیماران — فقط وقتی رکورد تأییدشده وجود دارد
+           (بدون aggregateRating چون سیستم نظرات ستاره ندارد) */
+        ...(reviews.length > 0
+          ? {
+              review: reviews.map((r) => ({
+                "@type": "Review",
+                author: { "@type": "Person", name: r.name },
+                reviewBody: r.body,
+                datePublished: r.date.slice(0, 10),
+              })),
+            }
+          : {}),
         availableService: [
           { "@type": "MedicalProcedure", name: "جراحی ارتوگناتیک فک بالا و پایین" },
           { "@type": "MedicalProcedure", name: "جنیوپلاستی و اصلاح چانه" },
@@ -96,6 +110,11 @@ export default async function BestJawSurgeonTehranPage() {
   };
 
   return (
-    <LandingPageView data={data} url={LANDING_URLS["best-jaw-surgeon-tehran"]} serviceLd={entityLd} />
+    <LandingPageView
+      data={data}
+      url={LANDING_URLS["best-jaw-surgeon-tehran"]}
+      serviceLd={entityLd}
+      reviews={reviews}
+    />
   );
 }
