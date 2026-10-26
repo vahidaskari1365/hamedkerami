@@ -466,3 +466,19 @@ Stage Summary:
 - بعد از دیپلوی: ۲۴ مقاله pool زنده با بدنه ۱۵۰۰+ کلمه + جدول + تیتر پرسشی + کاور ۳D؛ ۱۶ مقاله ثابت زنده با توپر SXO
 - ۹ مقاله باقی pool (با جدول) با کرن ۰۷:۰۰ تهران خودکار منتشر می‌شوند
 - پس از تأیید زنده، manifest در کامیت بعدی حذف می‌شود (دیپلوی‌های بعدی بدون اثر)
+
+---
+Task ID: old-articles-upgrade-completion
+Agent: main (Z.ai)
+Task: تکمیل موج ارتقای مقالات قدیمی — انتشار زنده ۴۰/۴۰
+
+Work Log:
+- deploy اول: استپ ارتقا بدون env اجرا شد (AGENT_SECRET تنظیم نبود) → skip؛ فیکس env و push مجدد (b71dfdd)
+- ران ارتقا: ۲۴ pool (متای frontmatter: تیتر پرسشی + کاور ۳D + بدنه جدول‌دار) + ۱۶ ثابت (متای og + بدنه توپر) — ۳۹/۴۰ ✔
+- jaw-surgery-cost-1405 رد شد (جمله تکراری «تک‌فک ۱۷۰ تا ۱۸۰...» با ردیف قدیمی db) → بازنویسی پاسخ AEO در pool + manifest تک‌موردی → ✔ ۱۶۵۰ کلمه
+- حذف manifest (یک‌بارمصرف) — دیپلوی‌های بعدی بدون ارتقا
+
+Stage Summary:
+- زنده تأیید شد: جدول <table> در ivb/pain/locking/bruxism/statistics، توپر <strong> در best-jaw-surgeon/genioplasty/recovery-care، تیتر پرسشی و کاور ۳D جدید روی همه ۲۴ pool
+- سیلان نهایی: cost-1405=200، cost-1406=404 (قفل)، sitemap=61 URL، /costs و /surgery-care و /about=200
+- ۹ مقاله باقی pool (جدول‌دار) منتظر کرن روزانه ۰۷:۰۰ تهران
