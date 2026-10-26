@@ -593,3 +593,28 @@ Stage Summary:
 - راهنمای تیم: بازخورد واقعی با رضایت بیمار از واتساپ/اینستاگرام → پنل → نظرات مقاله‌ها → «افزودن بازخورد بیمار» → اسلاگ patient-reviews
 - شکاف ۳ تحلیل رقبا (ویدیو آپارات) باقی مانده — نیازمند محتوای ویدیویی از طرف دکتر
 - نکته: نظرات با اسلاگ patient-reviews در API عمومی /api/comments هم قابل واکشی‌اند (approved فقط)
+
+---
+Task ID: aparat-videos-wave
+Agent: main (Z.ai CLI)
+Task: محتوای ویدیویی آپارات + اسکیمای VideoObject — شکاف ۳ تحلیل رقبا (کاربر لینک ۷ ویدیو را فرستاد)
+
+Work Log:
+- متادیتای ۷ ویدیو از API رسمی آپارات (etc/api/video/videohash) استخراج شد: عنوان/تاریخ/مدت/کانال — ۲ کانال رسمی (dr.hamedkermani.omfs + آرشیو تجهیز طب)
+- دسته‌بندی: ۳ ارتوسرجری (p77oq71 قبل/بعد، X04Y6 دو فک، i486x63 یک فک) + ۳ ایمپلنت (40hon Ridge Splitting، dEIsD Fresh Socket، eYJyT سینوس لیفت) + ۱ معرفی (PyjL5)
+- ۷ بندانگشتی 900x506 دانلود و لوکال شد در public/aparat/ (بدون وابستگی به CDN و secret توکن)
+- src/lib/videos.ts (جدید): SiteVideo + SITE_VIDEOS + videosForPage() نگاشت صفحه→ویدیوی مرتبط + aparatEmbed() + INTRO/HIGHLIGHT — بدون ایمپورت از data/schema (جلوگیری از چرخه)
+- landing-videos.tsx (جدید، کلاینت): کارت پخش تنبل — iframe فقط با کلیک رندر می‌شود (LCP/سرعت حفظ)، نشان مدت + دکمه play هم‌سبک لندینگ
+- LandingPageView: prop اختیاری videos → سکشن «ویدیوهای جراحی دکتر حامد کرمانی» بین سکشن‌ها و FAQ + JsonLdScript videoLd برای هر ویدیو
+- اتصال: jaw-surgery/پیلار (۳ ارتوسرجری)، chin (۲)، dental-implant/implant-pasdaran (۳ ایمپلنت)؛ surgery-care عمداً بدون ویدیو (سیگنال موضوعی)
+- data.ts: VIDEOS.items = SITE_VIDEOS → هوم‌پیج خودکار ۷ VideoObject گرفت (زیرساخت آماده قبلی فعال شد) + کانال آپارات به dr.hamedkermani.omfs اصلاح شد
+- گالری: گرید واقعی ۷ ویدیو جایگزین «فقط لینک کانال»؛ درباره: سکشن «دکتر کرمانی را از نزدیک ببینید» (معرفی + ۳ نمونه)
+- ⚠️ نکته حیاتی: CSP سایت frame-src 'self' داشت و iframe آپارات را بلاک می‌کرد → next.config.ts: frame-src 'self' https://www.aparat.com https://aparat.com
+- بیلد پروداکشن سبز → push ad337f9 → دیپلوی تأیید شد
+
+Stage Summary:
+- زنده تأیید شد: jaw-surgery/پیلار/implant-pasdaran = ۳ VideoObject، chin = ۲، dental-implant = ۳ با هش‌های درست، surgery-care = صفر (عمدی)، هوم = ۷ VideoObject
+- درباره = ۴ کارت ویدیو، گالری = ۷ کارت؛ بندانگشتی لوکال 200؛ هدر CSP جدید با www.aparat.com اعمال شد
+- اسکیمای نمونه سالم: @id/video-{hash} + name/description/thumbnailUrl (URL مطلق لوکال)/uploadDate/embedUrl — شانس نتیجه ویدیویی گوگل
+- کلیدواژه‌های موضوعی در توضیح سکشن‌ها: «جراحی فک و چانه و ایمپلنت دندان» — پنج‌گانه رعایت شد (AIO/GEO اسکیما، SXO پخش تنبل، E-E-A-T فقط ویدیوی واقعی)
+- کل شکاف‌های تحلیل رقبا بسته شد: پیلار + نظرات بیماران + ویدیو — گام بعدی: ادامه صف میراث (statistics با «بذار»، blog-agent/qa-articles، مسیر ۱، ۲۳ مقاله قدیمی)
