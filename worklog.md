@@ -545,3 +545,27 @@ Stage Summary:
 - زنده: «جراحی دو فک زیبایی» در facial-contouring، «تروما صورت» در jaw-fracture، «مسواک بعد از جراحی فک» در recovery-care؛ اسکیمای zygomatic-implant-guide و jaw-surgery-cost-1405 کلیدواژه اختصاصی گرفتند
 - حالا هر ۴۲ مقاله (۱۸ ثابت + ۲۴ pool) کلمه کانونی در ۵ جایگاه + کلیدواژه‌های اختصاصی اسکیما دارند؛ مبنای رتبه ۱ گوگل
 -sitemap=۶۳ URL، /blog و سرچ ۲۰۰؛ گام بعدی پیشنهادی: تحلیل رقبا اجرا شده — کلمات ثانویه غایب دیگر صفر است؛ صفحه پیلار «بهترین دکتر جراحی فک و صورت تهران» (فرصت زمان‌دار doctoreto) و بلوک نظرات بیماران + Review schema بماند برای موج بعد
+
+---
+Task ID: pillar-best-jaw-surgeon-tehran
+Agent: main (Z.ai CLI)
+Task: صفحه پیلار «بهترین دکتر جراحی فک و صورت تهران» — فرصت زمان‌دار قبل از پر شدن صفحه خالی doctoreto (یافته تحلیل رقبا)
+
+Work Log:
+- معماری صفحات فرود بررسی شد (landing-defaults/landing-data/LandingPageView) — پیلار با همان سیستم ساخته شد (ادمین هم می‌تواند ویرایش کند)
+- محتوای پیلار در landing-defaults.ts: کلیدواژه دقیق «بهترین دکتر جراحی فک و صورت تهران» ۳۷ بار در متا/H1/هیرو/تیتر سکشن‌ها/جدول/FAQ/alt — قاب‌بندی E-E-A-T («بهترین» = معیارهای پنج‌گانه قابل راستی‌آزمایی، نه شعار)
+- ۹ سکشن: پاسخ مستقیم AEO + جدول معیارهای ۷ ردیفه (معیار/حد استاندارد/سابقه دکتر کرمانی) + ۷ آمار GEO + ۶ کارت خدمات + ۶ مرحله مسیر درمان + بیماران شهرستانی + شفافیت هزینه + نمونه کارها — ۳ CTA تلفنی میانی (SXO)
+- ۶ FAQ با سوال اول دقیقا کلمه کانونی
+- src/app/best-jaw-surgeon-tehran/page.tsx: اسکیمای @graph (MedicalWebPage با lastReviewed داینامیک + Physician کامل: alumniOf/memberOf/knowsAbout/availableService/address/areaServed) + FAQPage + Breadcrumb + hreflang
+- اتصال‌ها: sitemap (priority ۰.۹۵ weekly)، نوار صفحات پول هوم‌پیج (لینک اول)، lang-map → /en/jaw-surgery-in-iran، llms.txt (اولین لینک Citation-Ready)
+- مقاله پشتیبان best-jaw-surgeon-tehran (content-fixes + manifest static): تیتر به نیت اطلاعاتی «چگونه بهترین جراح فک و صورت را انتخاب کنیم؟» تغییر کرد (تفکیک نیت از پیلار، کلیدواژه کانونی مقاله حفظ شد) + لینک انکر «بهترین دکتر جراحی فک و صورت تهران» → پیلار
+- qa-articles.ts: /best-jaw-surgeon-tehran به PILLARS اضافه شد؛ QA کامل: صفر خطا، گیت ۵گانه سبز (۳۳ فایل)
+- پوش اول (f4ecdf0): پیلار سریع 200 شد ولی کاناری سایت‌مپ قرمز شد و استپ publish اجرا نشد → پوش دوم فیکس تیتر (21842b6) هر دو را حل کرد؛ پوش سوم حذف manifest مصرف‌شده (30da4a8)
+
+Stage Summary:
+- زنده تأیید شد: /best-jaw-surgeon-tehran = 200، کلیدواژه ۳۷ بار، تیتر «... | +۱۲۰۰ جراحی موفق | دکتر حامد کرمانی» (بدون تکرار برند)، اسکیمای Physician/FAQPage/MedicalWebPage، جدول، tel CTA، لینک از هوم‌پیج و سایت‌مپ
+- مقاله پشتیبان: og:title جدید زنده + انکر کلمه کانونی به پیلار زنده — کلاستر پیلار-اسپوک کامل
+- نیت‌ها تفکیک شدند: پیلار = نیت تجاری/برند (هدف رتبه ۱)، مقاله = راهنمای انتخاب (اسپوک اطلاعاتی)
+- فایل‌های لمس‌شده: landing-defaults.ts، landing-data.ts، app/best-jaw-surgeon-tehran/page.tsx، sitemap.ts، home.tsx، lang-map.ts، llms.txt/route.ts، qa-articles.ts، content-fixes/best-jaw-surgeon-tehran.md
+- نکته عملیاتی: بعد از ران اول دیپلوی، حتما استپ publish را با curl چک کن — کاناری قرمز استپ publish را می‌پراند
+- گام بعدی پیشنهادی (از تحلیل رقبا): بلوک نظرات بیماران + Review schema، محتوای ویدیویی آپارات
