@@ -27,9 +27,24 @@ const PILLARS = [
   "/jaw-surgery", "/chin-surgery", "/dental-implant", "/implant-pasdaran",
   "/surgery-care", "/costs", "/gallery", "/services", "/about", "/contact", "/blog", "/appointment",
 ];
+/* اسلاگ‌های منتشرشده در دیتابیس پروداکشن (خارج از ۱۸ مقاله ثابت)
+   — تأییدشده با sitemap زنده ۲۰۲۶-۱۰-۲۶. بعد از هر موج انتشار انبوه
+   (کرن روزانه) اسلاگ‌های تازه را به این فهرست اضافه کن. */
+const DB_PUBLISHED_SLUGS: string[] = [
+  "all-on-4-implants-guide", "best-implant-brands", "bimax-surgery-cost-1405",
+  "blepharoplasty-cost-1405", "bruxism-night-guard", "bsso-lower-jaw-surgery",
+  "chin-genderization", "dental-implant-complications", "dental-implant-cost-1405",
+  "implant-vs-bridge", "jaw-locking", "jaw-surgery-consultation-checklist",
+  "jaw-surgery-cost-1405", "jaw-surgery-insurance", "jaw-surgery-nutrition",
+  "jaw-surgery-pain", "jaw-surgery-signs", "jaw-surgery-sleeping",
+  "jaw-surgery-statistics", "jaw-surgery-without-orthodontics",
+  "lefort-osteotomy-guide", "mouth-protrusion", "wisdom-tooth-surgery-cost-1405",
+  "zygomatic-implant-guide",
+];
 const VALID_LINK_TARGETS = new Set<string>([
   ...PILLARS,
   ...BLOG_ARTICLES.map((a) => `/blog/${a.slug}`),
+  ...DB_PUBLISHED_SLUGS.map((s) => `/blog/${s}`),
 ]);
 
 type Issue = { slug: string; msg: string };

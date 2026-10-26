@@ -240,6 +240,18 @@ jobs:
             exit 1
           fi
 
+      # ── ارتقای یک‌باره مقالات قدیمی زنده (content-upgrades/manifest.json)
+      # بعد از سبز شدن کامل دیپلوی اجرا می‌شود: جایگزینی بدنه/تیتر/کاور
+      # مقاله‌های قدیمی با نسخه غنی‌شده (۱۵۰۰+ کلمه + جدول) از همان مسیر
+      # ایجنت روزانه (سردبیر QC کامل). بدون manifest کاری انجام نمی‌دهد.
+      - name: Publish pending article upgrades (one-shot manifest)
+        if: env.DEPLOY_READY == 'true'
+        run: |
+          node scripts/publish-upgrades.mjs || echo "ارتقا ناموفق — مانع دیپلوی نیست"
+          # کش صفحه ممکن است نسخه پیش از ارتقا را نگه داشته باشد
+          curl -s -o /dev/null --max-time 60 -H "Host: ${{ env.SITE_HOST }}" \
+            "http://${{ env.SITE_IP }}/__cache-purge" || true
+
       - name: Done (بدون دیپلوی — فقط بیلد)
         if: env.DEPLOY_READY != 'true'
         run: echo "بیلد سبز بود؛ دیپلوی skip شد چون CPANEL_API_TOKEN ست نیست."
