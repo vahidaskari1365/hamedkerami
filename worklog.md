@@ -393,3 +393,22 @@ Stage Summary:
 - مکانیزم به‌روزرسانی سالانه امن شد: نسخه‌های ۱۴۰۶ فقط از ۲۰۲۷-۰۳-۲۱ (۱ فروردین ۱۴۰۶) قابل انتشارند؛ یادآوری در کامنت evergreen: هنگام انتشار ۱۴۰۶، اسلاگ را از HIDDEN_SLUGS خارج کن
 - ردیف ۱۴۰۶ در دیتابیس تولید باقی است (بی‌اثر) — در صورت تمایل از پنل ادمین قابل حذف کامل است
 - صف انتشار روزانه حالا با «آمار و اعداد جراحی فک» ادامه می‌یابد (اولویت کاربر)
+
+---
+Task ID: roadmap-part-1
+Agent: main (Z.ai)
+Task: بخش ۱ نقشه راه — money page قیمت + مکانیزم ۱ آذر + About schema + خوشه ریکاوری ستاره‌ای
+
+Work Log:
+- /costs: بج «آخرین به‌روزرسانی تعرفه‌ها» با تاریخ شمسی داینامیک (jalaliDisplay/tehranToday) + تعهد بازبینی ۱ آذر روی صفحه
+- src/lib/costs-faq.ts: ۶ پرسش FAQ پاسخ‌آماردار (۴۰-۷۰ کلمه) — منبع واحد رندر + اسکیما
+- /costs page.tsx: FAQPage + MedicalWebPage (lastReviewed داینامیک = روز رندر) + breadcrumb؛ بخش FAQ مرئی ۶ کارتی + باکس «راهنماهای تکمیلی هزینه» با ۴ لینک خوشه قیمت
+- .github/workflows/price-review.yml: هر ۱ آذر (۲۲ نوامبر، ۰۷:۰۰ تهران) ایشون چک‌لیست بازبینی تعرفه می‌سازد (permissions: issues:write + ضد تکرار هم‌نام) — شامل یادآوری تغییر ۱۴۰۵→۱۴۰۶ در ۱ فروردین و خروج از HIDDEN_SLUGS
+- /about: Person (Physician: تخصص، alumniOf دانشگاه علوم پزشکی تهران، hasCredential، knowsAbout، sameAs اینستاگرام/آپارات) + MedicalBusiness/MedicalClinic (نشانی، geo، hasMap، openingHours شنبه-چهارشنبه ۱۵-۱۹، priceRange، employee/founder با @id مشترک)
+- خوشه ریکاوری ستاره‌ای: هاب jaw-surgery-recovery-care → ۴ لینک جدید (sleeping داخل «خواب و استراحت»، nutrition داخل «تغذیه»، pain داخل هفته ۱-۲، /surgery-care در «نقشه ادامه مسیر»)؛ /surgery-care related → ۳ مقاله ریکاوری (اسپوک‌ها از قبل به هاب لینک بودند — ستاره بسته شد)
+- اسکن یکتایی جملات جدید: هر جمله فقط در فایل خودش ✓؛ Build سبز؛ push 27fc97d
+
+Stage Summary:
+- لایو تأیید شد: /costs (FAQPage + lastReviewed 2026-10-26 + بج + FAQ مرئی)، /about (Person + MedicalBusiness/MedicalClinic + OpeningHours)، هاب ریکاوری ۴/۴ لینک اسپوک، /surgery-care ۳/۳ لینک بازگشتی
+- مکانیزم سالانه دو لایه شد: ۱ آذر = بازبینی تعرفه (ایشون خودکار)؛ ۱ فروردین = نسخه سال بعد مقاله (evergreen + notBefore)
+- باقی‌مانده نقشه راه: ارتقای مقالات قدیمی (۲۵ هشدار جدول/توپر) → اطلاع به کاربر → تحلیل رقبا
