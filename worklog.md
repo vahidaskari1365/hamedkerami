@@ -528,3 +528,20 @@ Stage Summary:
 - کلمات کانونی: ۱۸/۱۸ مقاله در ۵ جایگاه — مبنای رتبه ۱ گوگل
 - EN حالا کامل: /en /en/about /en/services /en/jaw-surgery-in-iran /en/costs /en/blog /en/contact
 - یادآوری: کلمات ثانویه غایب (فرصت بعدی) در خروجی scripts/keyword-audit.ts
+---
+Task ID: secondary-keywords-wave-2
+Agent: main (Z.ai CLI)
+Task: دستور کاربر «کلمات کیلیدی یادت نره استانداردو یادت نره» — پوشش ۱۰۰ درصدی کلمات ثانویه + استاندارد ۵گانه سبز
+
+Work Log:
+- ممیزی keyword-audit: ۱۸/۱۸ مقاله در ۵ جایگاه کامل بود؛ ۶۱ کلمه ثانویه غایب در بدنه (بزرگ‌ترین شکاف: jaw-surgery-age با ۰/۵ و jaw-fracture-surgery با ۰/۶)
+- src/lib/seo-keywords.ts: POOL_ARTICLE_KEYWORDS برای ۲۴ اسلاگ pool منتشرشده — فیلد keywords اسکیمای BlogPosting دیگر برای pool به DEFAULT_KEYWORDS برنمی‌گردد؛ keywordsForSlug سه‌لایه شد
+- تزریق ۶۱ جمله یکتا در ۱۸ فایل content-fixes (نسخه زنده پروداکشن) — هر کلمه در بخش مرتبط موضوعی، بدون ZWNJ، بدون بک‌تیک/HTML/لینک http، رقم فارسی
+- نکته ابزار: MultiEdit ترتیبی است نه اتمیک — در شکاف anchor، ادیت‌های قبلی اعمال و بعدی‌ها رها می‌شوند؛ با grep وضعیت هر ادیت چک و تکمیل شد
+- keyword-audit پس از تزریق: ثانویه ۱۲۲/۱۲۲ (۱۰۰٪) + هر ۱۸ مقاله در ۵ جایگاه؛ qa-articles با bun: صفر خطا، ۳۳ فایل pool گیت ۵گانه سبز، مجموع ۳۸٬۱۷۵ کلمه
+- manifest (۱۸ static) → build سبز → push bf3b1f0 → استپ publish در دیپلوی ردیف‌های db را به‌روز کرد → تأیید زنده → حذف manifest (24989a6)
+
+Stage Summary:
+- زنده: «جراحی دو فک زیبایی» در facial-contouring، «تروما صورت» در jaw-fracture، «مسواک بعد از جراحی فک» در recovery-care؛ اسکیمای zygomatic-implant-guide و jaw-surgery-cost-1405 کلیدواژه اختصاصی گرفتند
+- حالا هر ۴۲ مقاله (۱۸ ثابت + ۲۴ pool) کلمه کانونی در ۵ جایگاه + کلیدواژه‌های اختصاصی اسکیما دارند؛ مبنای رتبه ۱ گوگل
+-sitemap=۶۳ URL، /blog و سرچ ۲۰۰؛ گام بعدی پیشنهادی: تحلیل رقبا اجرا شده — کلمات ثانویه غایب دیگر صفر است؛ صفحه پیلار «بهترین دکتر جراحی فک و صورت تهران» (فرصت زمان‌دار doctoreto) و بلوک نظرات بیماران + Review schema بماند برای موج بعد
