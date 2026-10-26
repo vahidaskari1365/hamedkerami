@@ -12,6 +12,7 @@ export const LANDING_URLS: Record<string, string> = {
   "dental-implant": "https://dr-kermani.com/dental-implant",
   "implant-pasdaran": "https://dr-kermani.com/implant-pasdaran",
   "surgery-care": "https://dr-kermani.com/surgery-care",
+  "best-jaw-surgeon-tehran": "https://dr-kermani.com/best-jaw-surgeon-tehran",
 };
 
 function parseJson<T>(raw: string, fallback: T): T {

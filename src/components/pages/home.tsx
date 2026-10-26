@@ -703,6 +703,7 @@ function CtaSection() {
 /* Money-pages strip — لینک ایکویتی به ۵ صفحه پول (roadmap سئو) */
 function MoneyPagesSection() {
   const links = [
+    { href: "/best-jaw-surgeon-tehran", label: "بهترین دکتر جراحی فک و صورت تهران" },
     { href: "/costs", label: "تعرفه کامل جراحی فک و ایمپلنت" },
     { href: "/jaw-surgery", label: "هزینه جراحی فک (ارتوگناتیک)" },
     { href: "/dental-implant", label: "هزینه ایمپلنت دندان به تفکیک برند" },

@@ -74,6 +74,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/chin-surgery`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${base}/dental-implant`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${base}/implant-pasdaran`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${base}/best-jaw-surgeon-tehran`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${base}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/services`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/costs`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },

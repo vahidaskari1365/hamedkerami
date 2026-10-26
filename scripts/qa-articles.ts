@@ -26,6 +26,7 @@ const ROOT = path.resolve(import.meta.dir, "..");
 const PILLARS = [
   "/jaw-surgery", "/chin-surgery", "/dental-implant", "/implant-pasdaran",
   "/surgery-care", "/costs", "/gallery", "/services", "/about", "/contact", "/blog", "/appointment",
+  "/best-jaw-surgeon-tehran",
 ];
 /* اسلاگ‌های منتشرشده در دیتابیس پروداکشن (خارج از ۱۸ مقاله ثابت)
    — تأییدشده با sitemap زنده ۲۰۲۶-۱۰-۲۶. بعد از هر موج انتشار انبوه

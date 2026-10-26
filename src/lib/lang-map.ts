@@ -22,6 +22,7 @@ const FA_TO_EN: Readonly<Record<string, string>> = {
   "/dental-implant": "/en/services",
   "/implant-pasdaran": "/en/services",
   "/surgery-care": "/en/jaw-surgery-in-iran",
+  "/best-jaw-surgeon-tehran": "/en/jaw-surgery-in-iran",
   "/gallery": "/en/about",
 };
 
