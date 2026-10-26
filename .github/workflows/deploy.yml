@@ -246,6 +246,9 @@ jobs:
       # ایجنت روزانه (سردبیر QC کامل). بدون manifest کاری انجام نمی‌دهد.
       - name: Publish pending article upgrades (one-shot manifest)
         if: env.DEPLOY_READY == 'true'
+        env:
+          SITE_URL: https://dr-kermani.com
+          AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
         run: |
           node scripts/publish-upgrades.mjs || echo "ارتقا ناموفق — مانع دیپلوی نیست"
           # کش صفحه ممکن است نسخه پیش از ارتقا را نگه داشته باشد
