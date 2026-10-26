@@ -482,3 +482,27 @@ Stage Summary:
 - زنده تأیید شد: جدول <table> در ivb/pain/locking/bruxism/statistics، توپر <strong> در best-jaw-surgeon/genioplasty/recovery-care، تیتر پرسشی و کاور ۳D جدید روی همه ۲۴ pool
 - سیلان نهایی: cost-1405=200، cost-1406=404 (قفل)، sitemap=61 URL، /costs و /surgery-care و /about=200
 - ۹ مقاله باقی pool (جدول‌دار) منتظر کرن روزانه ۰۷:۰۰ تهران
+
+---
+Task ID: competitor-analysis
+Agent: main (Z.ai CLI)
+Task: دستور کاربر «شروع کن» پس از تأیید اتمام صف اصلی (آیتم‌های ۱ تا ۵) — تحلیل مقایسه‌ای سایت با رقبا (آیتم ۶/۷ نقشه راه)
+
+Work Log:
+- وضعیت صف اصلی تأیید شد: ۴۰/۴۰ مقاله قدیمی ارتقا یافته (old-articles-upgrade)، گیت ۵گانه qa-articles سبز (۳۳ فایل pool + ۱۸ مقاله ثابت، صفر خطا)، blog-agent ۱۰ مقاله/روز، بخش ۱ نقشه راه لایو
+- شناسایی رقبا با وب‌سرچ: dr-bolandparva.com، roshadent.com، drhamidpachenari.com، drsezavar.com + پلتفرم doctoreto.com
+- واکشی زنده ۵ رقیب + صفحات پایه dr-kermani.com (sitemap: 61 URL / 42 بلاگ؛ اسکیمای هوم: MedicalProcedure×6، Question×6، MedicalOrganization، GeoCoordinates، WebSite+SearchAction)
+- **کشف مهم**: مقاله زنده jaw-surgery-cost-1405 صفر جدول واقعی (<table>) دارد در حالی که متن به «جدول زیر» ارجاع می‌دهد (pool file هم ۰ ردیف |) — شکاف AEO در برابر roshadent که تیترش «جدول هزینه» است
+- کشف فرصت: صفحه جراحی فک تهران doctoreto خالی است («پزشک پیدا نشد») — پنجره رتبه‌گیری «بهترین دکتر جراحی فک و صورت تهران»
+- گزارش docx فارسی RTL تولید شد: skill docx کامل خوانده شد (SKILL/create/design-system/common-rules/docx-js-core/report/toc)، کاور R1 + پالت MC-1 با آداپتاسیون RTL، فونت Tahoma (ascii/hAnsi/cs)، bidirectional + rightToLeft + visuallyRightToLeft برای جدول‌ها، ۴ جدول مقایسه‌ای، TOC سه‌سکشنی
+- پکیج docx با bun add نصب شد
+- پست‌پروسس: add_toc_placeholders.py --auto (۱۳ entry) + حذف pgNumType خالی + پچ footer instrText به PAGE \* arabic \* MERGEFORMAT
+- postcheck.py: ۹/۹ پاس، صفر خطا، صفر هشدار
+- بازبینی بصری PDF (LibreOffice + pdftoppm): کاور RTL درست، جدول‌ها RTL با سربرگ آبی، TOC با ۱۳ entry؛ فیکس bidi جمله اول خلاصه مدیریتی (dash بعد از دامنه لاتین → پرانتز)
+
+Stage Summary:
+- خروجی: /home/z/my-project/download/dr-kermani-competitor-analysis-1405.docx (۹ صفحه، ~۳۲۰۰ کلمه، ۴ جدول)
+- اسکریپت‌ها: scripts/competitor-report.cjs + scripts/postprocess-report.py (قابل ویرایش برای نسخه‌های بعدی)
+- سه شکاف اولویت‌دار: ۱) جدول قیمت مقاله هزینه (بحرانی، ۱ روز) ۲) بلوک نظرات بیماران + Review schema ۳) محتوای ویدیویی آپارات
+- یک فرصت زمان‌دار: مقاله پیلار «بهترین دکتر جراحی فک و صورت تهران» قبل از پر شدن صفحه خالی doctoreto
+- قدم بعدی پیشنهادی: اجرای اقدام ۱ (جدول قیمت) توسط مخزن + انتشار، یا انتظار برای دستور کارفرما
