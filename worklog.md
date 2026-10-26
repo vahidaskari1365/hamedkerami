@@ -569,3 +569,27 @@ Stage Summary:
 - فایل‌های لمس‌شده: landing-defaults.ts، landing-data.ts، app/best-jaw-surgeon-tehran/page.tsx، sitemap.ts، home.tsx، lang-map.ts، llms.txt/route.ts، qa-articles.ts، content-fixes/best-jaw-surgeon-tehran.md
 - نکته عملیاتی: بعد از ران اول دیپلوی، حتما استپ publish را با curl چک کن — کاناری قرمز استپ publish را می‌پراند
 - گام بعدی پیشنهادی (از تحلیل رقبا): بلوک نظرات بیماران + Review schema، محتوای ویدیویی آپارات
+
+---
+Task ID: patient-reviews-wave
+Agent: main (Z.ai CLI)
+Task: بلوک نظرات بیماران + Review schema — شکاف ۲ تحلیل رقبا (دستور «شروع کن»)
+
+Work Log:
+- زیرساخت موجود کشف شد: articleComment (اسلاگ/نام/متن/تأیید) + API عمومی + پنل بازبینی — پروداکشن صفر نظر واقعی داشت
+- تصمیم صداقت‌محور: هیچ نظر جعلی تولید نشد؛ منبع بلوک = فقط بازخورد واقعی ثبت‌شده توسط تیم مطب (اسلاگ اختصاصی patient-reviews) با رضایت بیمار
+- src/lib/reviews.ts: getPatientReviews (تأییدشده، جدیدترین، ۸ مورد) + trimReviewBody (برش مرز کلمه)
+- landing-chrome: کامپوننت LandingReviews (کارت نقل‌قول، آواتار حرف اول، تاریخ شمسی) — هم‌سبک کارت‌های لندینگ
+- LandingPageView: سکشن «تجربه بیماران دکتر حامد کرمانی» بعد از FAQ — فقط با رکورد رندر می‌شود
+- هر ۶ لندینگ (jaw-surgery/chin-surgery/dental-implant/implant-pasdaran/surgery-care/pillar): fetch و پاس reviews
+- پیلار: اسکیمای Review (author/reviewBody/datePublished) شرطی داخل موجودیت Physician — بدون aggregateRating چون سیستم ستاره ندارد (صداقت اسکیما)
+- admin-entities: فیلدهای slug/name/body به موجودیت comments اضافه شد (sanitizeBody پشتیبانی می‌کند)
+- comments-page: فرم «افزودن بازخورد بیمار» (اسلاگ پیش‌فرض patient-reviews + نام + متن، منتشرشده) + برچسب ویژه در جزئیات به جای لینک /blog 404
+- پوش fd520e7 → دیپلوی → هر ۶ لندینگ 200 و اسکیمای سالم (۷ بلوک JSON-LD پارس شد)
+- رفع خرابی جزئی ادیت خط LandingFaq (join ناخواسته) قبل از بیلد
+
+Stage Summary:
+- بلوک اعتماد + اسکیمای Review آماده است: به محض ثبت اولین بازخورد واقعی در پنل (نظرات مقاله‌ها → افزودن بازخورد بیمار)، روی هر ۶ لندینگ + اسکیمای پیلار خودکار ظاهر می‌شود
+- راهنمای تیم: بازخورد واقعی با رضایت بیمار از واتساپ/اینستاگرام → پنل → نظرات مقاله‌ها → «افزودن بازخورد بیمار» → اسلاگ patient-reviews
+- شکاف ۳ تحلیل رقبا (ویدیو آپارات) باقی مانده — نیازمند محتوای ویدیویی از طرف دکتر
+- نکته: نظرات با اسلاگ patient-reviews در API عمومی /api/comments هم قابل واکشی‌اند (approved فقط)
