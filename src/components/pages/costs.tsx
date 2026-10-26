@@ -7,6 +7,8 @@ import { PageHero } from "@/components/pages/about";
 import { AnimatedShinyText, BorderBeam } from "@/components/magicui";
 import { useContent } from "@/lib/content-context";
 import { waLink, faToEnDigits } from "@/lib/data";
+import { COSTS_FAQ } from "@/lib/costs-faq";
+import { jalaliDisplay, tehranToday } from "@/lib/jalali";
 
 /* ============================================================
    صفحه هزینه ها — Pricing Suite (بازطراحی UI/UX)
@@ -326,6 +328,22 @@ export function CostsPage() {
         desc="هزینه های ذیل تقریبی است و بسته به شرایط هر بیمار، نوع برند انتخابی و حجم جراحی می تواند متفاوت باشد. هزینه دقیق پس از معاینه و بررسی تصاویر رادیوگرافی اعلام می شود."
       />
 
+      {/* بج تاریخ به‌روزرسانی + تعهد بازبینی سالانه ۱ آذر (سیگنال تازگی AEO) */}
+      <div className="mx-auto -mt-6 mb-2 max-w-7xl px-4 sm:px-6">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl bg-card px-5 py-3.5 ring-1 ring-teal/25 shadow-sm shadow-teal/5">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-teal/12 text-teal-3 ring-1 ring-teal/25" aria-hidden>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z" />
+            </svg>
+          </span>
+          <p className="text-xs leading-6 text-foreground/70">
+            <span suppressHydrationWarning className="font-black text-ink">آخرین به‌روزرسانی تعرفه‌ها: {jalaliDisplay(tehranToday())}</span>
+            <span className="mx-2 text-ink/25" aria-hidden>•</span>
+            بازبینی سراسری تعرفه‌ها هر سال در <b className="text-teal-3">۱ آذر</b> انجام می‌شود؛ این صفحه مرجع زنده قیمت است.
+          </p>
+        </div>
+      </div>
+
       <section className="bg-bone py-20" aria-label="جدول هزینه ها">
         <div className="mx-auto max-w-7xl space-y-16 px-4 sm:px-6">
           <Reveal>
@@ -419,6 +437,62 @@ export function CostsPage() {
                   </div>
                 </TiltCard>
               ))}
+            </div>
+          </Reveal>
+
+          {/* پرسش‌های پرتکرار هزینه — AEO: پاسخ مستقیم و آماردار + FAQPage schema در page.tsx */}
+          <Reveal>
+            <div className="mb-8">
+              <p className="flex items-center gap-3 text-sm font-bold text-teal-2">
+                <span className="h-px w-10 bg-teal" aria-hidden />
+                پاسخ سریع
+              </p>
+              <h2 className="mt-3 text-2xl font-black sm:text-3xl">پرسش های پرتکرار درباره هزینه ها</h2>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              {COSTS_FAQ.map((f, i) => (
+                <TiltCard key={f.q} className="rounded-3xl" max={4}>
+                  <div className="h-full rounded-3xl bg-card p-6 ring-1 ring-ink/10 transition-shadow duration-300 hover:shadow-xl hover:shadow-teal/10">
+                    <div className="flex items-start gap-3">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-teal/12 text-[11px] font-black text-teal-3 ring-1 ring-teal/25" aria-hidden>
+                        ؟
+                      </span>
+                      <h3 className="text-sm font-black leading-7">{f.q}</h3>
+                    </div>
+                    <p className="mt-3 text-xs leading-7 text-foreground/65">{f.a}</p>
+                  </div>
+                </TiltCard>
+              ))}
+            </div>
+          </Reveal>
+
+          {/* راهنماهای خوشه قیمت — لینک‌سازی داخلی money cluster */}
+          <Reveal>
+            <div className="rounded-3xl bg-card p-6 ring-1 ring-ink/10 sm:p-8">
+              <h2 className="text-lg font-black">راهنماهای تکمیلی هزینه</h2>
+              <p className="mt-2 text-xs leading-6 text-foreground/60">
+                برای تصمیم مالی دقیق‌تر، این راهنماهای مرتبط کنار جدول تعرفه‌ها بخوانید:
+              </p>
+              <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                {[
+                  { href: "/blog/jaw-surgery-cost-1405", label: "هزینه جراحی فک ۱۴۰۵؛ تعرفه کامل و عوامل مؤثر" },
+                  { href: "/blog/dental-implant-cost-1405", label: "هزینه ایمپلنت دندان ۱۴۰۵؛ قیمت برند به برند" },
+                  { href: "/blog/jaw-surgery-insurance", label: "جراحی فک با بیمه؛ سهم پایه و تکمیلی" },
+                  { href: "/surgery-care", label: "مراقبت‌های قبل و بعد از جراحی فک" },
+                ].map((l) => (
+                  <li key={l.href}>
+                    <a
+                      href={l.href}
+                      className="group flex items-center justify-between gap-3 rounded-2xl bg-bone px-4 py-3.5 text-xs font-bold leading-6 text-foreground/80 ring-1 ring-ink/8 transition hover:bg-teal/8 hover:text-teal-3 hover:ring-teal/30"
+                    >
+                      {l.label}
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="shrink-0 text-teal-2 transition-transform group-hover:-translate-x-1" aria-hidden>
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                      </svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </Reveal>
 

@@ -1,0 +1,81 @@
+name: Annual Price Review (۱ آذر)
+
+# مکانیزم به‌روزرسانی سالانه تعرفه‌ها (بخش ۱ نقشه راه)
+# هر سال در ۱ آذر (۲۲ نوامبر — ایران DST ندارد) یک ایشون یادآوری
+# با چک‌لیست بازبینی تعرفه ساخته می‌شود تا مالک سایت اعداد را
+# به‌روزرسانی کند. صفحه /costs و مقاله‌های هزینه خوشه قیمت‌اند.
+#
+# تعرفه‌ها در کد منبع هستند (site-content/landing-data) — پس
+# به‌روزرسانی = ویرایش کد + دیپلوی؛ این workflow فقط یادآوری
+# ساختاریافته می‌سازد (سیگنال تازگی AEO + تعهد ۱ آذر روی صفحه).
+
+on:
+  schedule:
+    - cron: "30 3 22 11 *" # ۱ آذر = ۲۲ نوامبر، ۰۷:۰۰ تهران
+  workflow_dispatch: # اجرای دستی برای تست
+
+permissions:
+  issues: write
+
+concurrency:
+  group: price-review
+  cancel-in-progress: false
+
+jobs:
+  open-review-issue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: ساخت ایشون بازبینی سالانه تعرفه
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const jalaliYear = new Intl.DateTimeFormat('fa-IR', {
+              timeZone: 'Asia/Tehran', year: 'numeric'
+            }).format(new Date());
+            const title = `بازبینی سالانه تعرفه‌ها (۱ آذر ${jalaliYear})`;
+            const body = [
+              '## چک‌لیست بازبینی سالانه تعرفه‌ها — ۱ آذر',
+              '',
+              'این ایشون خودکار است (workflow: Annual Price Review). با تکمیل موارد و بستن ایشون، چرخه سالانه کامل می‌شود.',
+              '',
+              '### ۱) صفحه /costs (money page)',
+              '- [ ] به‌روزرسانی `jawCosts` و `implantCosts` در محتوای سایت (پنل ادمین → Landing، یا کد `site-content.ts`)',
+              '- [ ] بررسی بج «آخرین به‌روزرسانی تعرفه‌ها» (تاریخ داینامیک است — پس از ویرایش اعداد، صفحه را رفرش کنید)',
+              '- [ ] صحت پاسخ‌های FAQ در `src/lib/costs-faq.ts` (بازه‌های قیمت داخل پاسخ‌ها)',
+              '',
+              '### ۲) مقاله‌های خوشه قیمت (خوشه BOFU)',
+              '- [ ] مقاله «هزینه جراحی فک ۱۴۰۵» — جدول/بازه‌ها همگام با /costs',
+              '- [ ] مقاله «هزینه ایمپلنت دندان ۱۴۰۵» — جدول برندها',
+              '- [ ] مقاله‌های بایمکس/دندان عقل/بلفاروپلاستی هزینه — بازه‌ها',
+              '',
+              '### ۳) به‌روزرسانی سال بعد (۱ فروردین)',
+              '- [ ] تغییر «۱۴۰۵ → ۱۴۰۶» در عنوان مقاله هزینه (evergreen آماده است: `content-queue/evergreen/` + قفل notBefore در topics.ts)',
+              '- [ ] خروج اسلاگ jaw-surgery-cost-1406 از HIDDEN_SLUGS در blog-posts.ts (فقط همزمان با انتشار نسخه ۱۴۰۶)',
+              '- [ ] IndexNow پینگ صفحات تغییر یافته',
+              '',
+              '### مرجع',
+              '- صفحه هزینه: https://dr-kermani.com/costs',
+              '- llms.txt (استناد AI): https://dr-kermani.com/llms.txt',
+              '- سئو/AEO: تاریخ به‌روزرسانی روی صفحه + FAQPage schema سیگنال تازگی است'
+            ].join('\n');
+
+            // از تکرار ایشون بازِ هم‌نام در یک روز جلوگیری می‌شود
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+            if (existing.data.some(i => i.title === title)) {
+              console.log('ایشون بازبینی امسال قبلا ساخته شده — رد شد');
+              return;
+            }
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['seo', 'price-review']
+            });
+            console.log(`ایجاد شد: ${issue.data.html_url}`);

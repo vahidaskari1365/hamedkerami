@@ -575,6 +575,9 @@ export const LANDING_DEFAULTS: Record<string, LandingData> = {
       { href: "/chin-surgery", label: "جراحی چانه (جنیوپلاستی)" },
       { href: "/dental-implant", label: "ایمپلنت دندان" },
       { href: "/implant-pasdaran", label: "ایمپلنت دندان در تهران" },
+      { href: "/blog/jaw-surgery-recovery-care", label: "تقویم روز به روز ریکاوری" },
+      { href: "/blog/jaw-surgery-nutrition", label: "تغذیه بعد از جراحی فک" },
+      { href: "/blog/jaw-surgery-sleeping", label: "خوابیدن بعد از جراحی فک" },
     ],
   },
 };
