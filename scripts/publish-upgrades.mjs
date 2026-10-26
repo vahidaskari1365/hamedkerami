@@ -32,17 +32,22 @@ const { pool = [], static: staticSlugs = [] } = JSON.parse(readFileSync(MANIFEST
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const results = new Map(); // slug → آخرین نتیجه
 
-function parsePool(slug) {
-  const raw = readFileSync(`content-queue/pool/${slug}.md`, "utf-8");
+function parseFrontmatter(raw) {
   const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
-  if (!m) throw new Error("frontmatter یافت نشد");
+  if (!m) return { meta: {}, body: raw };
   const meta = {};
   for (const line of m[1].split(/\r?\n/)) {
     const km = line.match(/^(title|excerpt|cover):\s*(.*)$/);
     if (km) meta[km[1]] = km[2].trim();
   }
+  return { meta, body: m[2] };
+}
+
+function parsePool(slug) {
+  const raw = readFileSync(`content-queue/pool/${slug}.md`, "utf-8");
+  const { meta, body } = parseFrontmatter(raw);
   if (!meta.title || !meta.excerpt) throw new Error("frontmatter ناقص (title/excerpt)");
-  return { title: meta.title, excerpt: meta.excerpt, cover: meta.cover || undefined, body: m[2].trim() };
+  return { title: meta.title, excerpt: meta.excerpt, cover: meta.cover || undefined, body: body.trim() };
 }
 
 async function ogMeta(slug) {
@@ -54,12 +59,25 @@ async function ogMeta(slug) {
   return { title, excerpt, cover: og("image").replace(SITE, "") || undefined };
 }
 
+/* متای فایل ثابت: فرانت‌متر اختیاری (title/excerpt/cover) وگرنه og زنده */
+async function staticMeta(slug) {
+  const raw = readFileSync(`content-fixes/${slug}.md`, "utf-8");
+  const { meta, body } = parseFrontmatter(raw);
+  const og = meta.title && meta.excerpt ? null : await ogMeta(slug);
+  return {
+    title: meta.title || og.title,
+    excerpt: meta.excerpt || og.excerpt,
+    cover: meta.cover || og?.cover || undefined,
+    body: body.trim(),
+  };
+}
+
 async function upgrade(slug, source) {
   try {
     const meta =
       source === "pool"
         ? parsePool(slug)
-        : { ...(await ogMeta(slug)), body: readFileSync(`content-fixes/${slug}.md`, "utf-8").trim() };
+        : await staticMeta(slug);
     const keyword = meta.title.split(/[؛|؟]/)[0].trim().slice(0, 60);
     const res = await fetch(`${SITE}/api/agents/publish`, {
       method: "POST",

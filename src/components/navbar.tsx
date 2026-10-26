@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Link, usePathname } from "@/components/hash-router";
 import { useContent } from "@/lib/content-context";
 import { NAV } from "@/lib/data";
+import { faToEn } from "@/lib/lang-map";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -124,7 +125,7 @@ export function Navbar() {
           {/* CTA نوبت‌دهی + سوییچر زبان انگلیسی + برگر موبایل */}
           <div className="mr-auto flex items-center gap-2 lg:mr-2">
             <Link
-              href="/en"
+              href={faToEn(pathname)}
               hrefLang="en"
               className="hidden h-9 items-center rounded-full border border-white/15 bg-white/5 px-3 text-[11px] font-black tracking-wide text-white/80 transition hover:bg-white/10 hover:text-white md:flex"
               aria-label="English version"
@@ -183,7 +184,7 @@ export function Navbar() {
                 );
               })}
               <Link
-                href="/en"
+                href={faToEn(pathname)}
                 hrefLang="en"
                 className="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-white/85 transition hover:bg-white/5"
               >

@@ -92,6 +92,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/en/about`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/en/services`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/en/jaw-surgery-in-iran`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/en/costs`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/en/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/en/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
   ];
 

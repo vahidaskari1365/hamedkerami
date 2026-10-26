@@ -15,6 +15,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { HtmlLang } from "@/components/html-lang";
 import { EN_BRAND, EN_CLINIC, EN_NAV } from "@/lib/en-content";
+import { enToFa } from "@/lib/lang-map";
 
 const SITE_PHONE = "+989382080270";
 
@@ -101,7 +102,7 @@ export function EnChrome({ children }: { children: React.ReactNode }) {
 
             <div className="ml-auto flex items-center gap-2 lg:ml-2">
               <Link
-                href="/"
+                href={enToFa(pathname)}
                 hrefLang="fa"
                 className="hidden items-center gap-1 rounded-full border border-white/15 bg-white/5 px-3 py-2 text-[11px] font-bold text-white/80 transition hover:bg-white/10 hover:text-white sm:flex"
                 aria-label="Persian version (فارسی)"
@@ -156,7 +157,7 @@ export function EnChrome({ children }: { children: React.ReactNode }) {
                 })}
                 <div className="mt-1 grid grid-cols-2 gap-2">
                   <Link
-                    href="/"
+                    href={enToFa(pathname)}
                     hrefLang="fa"
                     className="flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-4 py-3.5 text-sm font-bold text-white/85"
                   >
@@ -220,7 +221,7 @@ export function EnChrome({ children }: { children: React.ReactNode }) {
                 Surgery Videos
               </a>
               <Link
-                href="/"
+                href={enToFa(pathname)}
                 hrefLang="fa"
                 className="rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-[11px] font-bold text-white/75 transition hover:bg-white/10 hover:text-white"
               >

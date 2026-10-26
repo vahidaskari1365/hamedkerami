@@ -20,10 +20,12 @@ export const EN_BRAND = {
 
 export const EN_NAV = [
   { path: "/en", label: "Home" },
-  { path: "/en/about", label: "About Dr. Kermani" },
+  { path: "/en/about", label: "About" },
   { path: "/en/services", label: "Services" },
-  { path: "/en/jaw-surgery-in-iran", label: "Jaw Surgery in Iran" },
-  { path: "/en/contact", label: "Contact & Booking" },
+  { path: "/en/jaw-surgery-in-iran", label: "Jaw Surgery" },
+  { path: "/en/costs", label: "Costs" },
+  { path: "/en/blog", label: "Blog" },
+  { path: "/en/contact", label: "Contact" },
 ];
 
 export const EN_CLINIC = {
@@ -257,4 +259,118 @@ export const EN_LANDING = {
       a: "Your healing is followed online with photo reviews and video calls. Written guidance is sent to your local orthodontist or dentist so the final phase of treatment continues smoothly at home.",
     },
   ],
+};
+
+/* ---------- Landing: Costs (jaw surgery cost in Iran) ---------- */
+export const EN_COSTS = {
+  eyebrow: "Transparent pricing · 2026",
+  h1: "Jaw Surgery Cost in Iran — 2026 Price Guide",
+  heroDesc:
+    "The cost of jaw surgery in Iran ranges from about 90 million tomans for chin (genioplasty) surgery to 240 million tomans for simultaneous correction of both jaws and the chin — a fraction of equivalent US, UK or Gulf prices. Dr. Hamed Kermani gives every patient a written, itemized treatment plan before any payment, so the final number is never a surprise.",
+  answerBox:
+    "Jaw surgery in Iran costs between 90 and 240 million tomans in 2026: chin surgery (genioplasty) 90–110, single-jaw surgery 170–180, one jaw plus chin (monomax) 180–190, double-jaw (bimaxillary) surgery 190–200, and both jaws plus chin 210–240 million tomans. The exact price depends on the severity of the deformity, the orthodontic phase and anaesthesia, and is confirmed only after examination.",
+  tableTitle: "Price table — jaw & chin surgery in Iran (2026)",
+  tableHead: ["Procedure", "2026 price (million tomans)", "What it corrects"],
+  tableRows: [
+    ["Chin surgery (genioplasty)", "90 – 110", "Recessed, over-projected or small chin"],
+    ["Single-jaw surgery", "170 – 180", "When only one jaw is skeletally affected"],
+    ["One jaw + chin (monomax)", "180 – 190", "Profile correction with one anaesthesia"],
+    ["Double-jaw surgery (bimaxillary)", "190 – 200", "The most frequent orthognathic operation"],
+    ["Both jaws + chin", "210 – 240", "Full facial profile reconstruction"],
+  ],
+  tableNote:
+    "The figures above cover the complete treatment package — surgeon and team, general anaesthesia, hospital and early follow-up visits. The orthodontic phase before surgery is calculated separately, and the final quote is issued in writing after examination and radiographs.",
+  factorsTitle: "What determines the final price?",
+  factors: [
+    {
+      title: "Complexity of the deformity",
+      desc: "A small single-jaw movement needs a shorter operation and a smaller team; a severe discrepancy involving both jaws and the chin requires longer surgery, more instrumentation and a longer hospital stay — all reflected in the quote.",
+    },
+    {
+      title: "The orthodontic phase",
+      desc: "Most patients carry 12–18 months of braces before the operation, and this phase is billed separately from the surgery itself. Coordinating the surgeon and orthodontist shortens it — send your records early for a combined plan.",
+    },
+    {
+      title: "Anaesthesia and hospital",
+      desc: "General anaesthesia, the class of hospital and the length of admission are a serious share of the bill. All quotes are itemized so you can see exactly what each component costs before you commit.",
+    },
+    {
+      title: "The surgeon's experience",
+      desc: "An experienced jaw surgeon lowers the probability of a revision operation — which is the single largest possible saving. Dr. Kermani has performed more than 1,200 orthognathic and facial surgeries with a craniofacial fellowship.",
+    },
+  ],
+  insuranceTitle: "Does insurance cover jaw surgery in Iran?",
+  insuranceDesc:
+    "Honesty matters here: the functional part of jaw surgery — correcting a skeletal deformity and a bite disorder — is often covered by Iranian insurance providers, with an official invoice and surgical procedure code issued. Purely cosmetic requests without a documented functional problem should not expect real coverage. Your exact insurance share depends on your base and supplementary policy and is clarified transparently in the consultation session.",
+  faqTitle: "Jaw surgery cost in Iran — frequently asked questions",
+  faqs: [
+    {
+      q: "How much does double jaw surgery cost in Iran in 2026?",
+      a: "Double-jaw (bimaxillary) surgery in Iran costs about 190–200 million tomans, and adding chin surgery brings the package to 210–240 million tomans. The quote is issued in writing after the surgeon reviews your X-rays and photos.",
+    },
+    {
+      q: "Is the price in tomans or US dollars?",
+      a: "Local pricing is quoted in Iranian tomans. Because living and operating costs in Iran are far below Western countries, the same package converts to a fraction of US, UK or Gulf prices — typically 50–70% lower than comparable packages in Turkey or the Gulf.",
+    },
+    {
+      q: "What is included in the quoted package?",
+      a: "The surgeon and surgical team, general anaesthesia, the operating room and hospital stay, and the early follow-up visits are included. Pre-operative imaging, the orthodontic phase and medication are itemized separately so you can compare offers fairly.",
+    },
+    {
+      q: "Can I pay in installments?",
+      a: "Yes — this is in fact the most common structure. Part of the amount is paid at the start, part near the surgery date and part during follow-up visits, so the financial pressure is spread over months instead of a single point.",
+    },
+    {
+      q: "How do I get my exact quote?",
+      a: "Send your cephalometric X-ray, panoramic radiograph and face photos on WhatsApp. Dr. Kermani reviews your case, and you receive a written treatment plan with a transparent, all-inclusive price quote — before you book any travel.",
+    },
+  ],
+};
+
+/* ---------- Blog (EN listing) ---------- */
+export const EN_BLOG = {
+  crumb: "Blog",
+  eyebrow: "Educational articles",
+  h1: "Oral & Maxillofacial Surgery Articles — Dr. Hamed Kermani",
+  desc: "In-depth educational articles on jaw surgery, genioplasty, TMJ disorders, dental implants and treatment costs. Articles are written in Persian — use the search box to find your topic.",
+  searchLabel: "Search articles:",
+  searchPlaceholder: "Try: cost, recovery, botox, chin, implant…",
+  resultsOne: "article found",
+  resultsMany: "articles found",
+  noResultsTitle: "We don't have this topic yet",
+  noResultsDesc:
+    "Try simpler words, or ask the surgeon directly — your question may become the next article on this blog.",
+  askTitle: "Ask the surgeon directly",
+  askDesc: "If you could not find your answer in the articles, send your question via WhatsApp or phone:",
+  persianBadge: "Persian article",
+  readArticle: "Read the article",
+  featured: "Featured article",
+  /* glossary: EN token → Persian equivalents used inside the articles */
+  glossary: {
+    cost: "هزینه",
+    price: "قیمت",
+    recovery: "مراقبت",
+    healing: "بهبود",
+    botox: "بوتاکس",
+    implant: "ایمپلنت",
+    chin: "چانه",
+    jaw: "فک",
+    surgery: "جراحی",
+    insurance: "بیمه",
+    asymmetry: "نامتقارنی",
+    asymmetry2: "فک کج",
+    tmj: "مفصل",
+    "sleep-apnea": "آپنه",
+    snoring: "خروپف",
+    "before-after": "قبل و بعد",
+    complications: "عوارض",
+    orthodontics: "ارتودنسی",
+    braces: "ارتودنسی",
+    filler: "فیلر",
+    "gummy-smile": "لثه",
+    fracture: "شکستگی",
+    cleft: "شکاف",
+    genioplasty: "جنیوپلاستی",
+    orthognathic: "ارتوگناتیک",
+  } as Readonly<Record<string, string>>,
 };
