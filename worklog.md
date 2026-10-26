@@ -354,3 +354,22 @@ Work Log:
 Stage Summary:
 - /surgery-care با ۹ بخش سوال‌محور، ۲ جدول قابل استناد، ۷ FAQ، ۳ عکس با alt، CTA میانی و CTA نهایی منتشر شد
 - چارچوب landing-view از این به بعد جدول/عکس/CTA میانی را برای همه صفحات فرود پشتیبانی می‌کند
+
+---
+Task ID: qa-gate-5standards + 10-priority-articles
+Agent: main (Z.ai)
+Task: استاندارد ۵ گانه در QA enforce + آماده‌سازی لیست ۱۰ مقاله اولویت‌دار (منتظر «بذار»)
+
+Work Log:
+- کشف: ۸ از ۱۰ مقاله لیست اولویت‌دار توسط agent روزانه قبلا لایو شده‌اند (sitemap پروداکشن)
+- qa-articles.ts: گیت سخت استاندارد ۵ گانه برای pool+staging (۱۵۰۰ کلمه/پاسخ ۲۵-۹۰/FAQ≥۴/لینک معتبر/آمار/برند/CTA/الگوهای ممنوعه/کاور/یکتایی سراسری) — EXIT 0
+- ۲ مقاله جدید نوشته شد: jaw-surgery-cost-1406 (۱۸۷۶ کلمه، جدول قیمت زنده) + jaw-surgery-statistics (۱۸۳۲ کلمه، ۴ جدول قابل استناد) — در staging منتظر دستور کاربر
+- ۲ کاور 3D تولید شد (z-ai image، سبک لاکی+طلایی)
+- topics.ts: cost-1406 + statistics به ابتدای صف (اولویت انتشار بعدی) + ۲ عنوان جاافتاده خوشه قیمت (lefort-cost، bsso-cost)
+- ارتقای ۳ مقاله pool: jaw-surgery-pain ۹۴۴→۱۵۰۶ (جدول تقویم درد)، 3d-jaw-surgery-simulation ۹۷۴→۱۵۵۴ (جدول مقایسه)، consultation-checklist (تیتر پرسشی + ۲ لینک)
+- Build موفق + push main (4a5638f)
+
+Stage Summary:
+- گیت استاندارد ۵ گانه حالا در publish.ts (سردبیر) و qa-articles.ts (CI) هر دو اجباری است
+- لیست ۱۰ مقاله اولویت‌دار: ۸ لایو + ۲ آماده در staging — فقط با جابجایی staging→pool و صبر تا کرن ۰۷:۰۰ تهران منتشر می‌شوند
+- ۲۵ هشدار ارتقا باقی است (جدول/لیست و توپر در مقالات قدیمی pool) — پروژه ارتقای موازی
