@@ -618,3 +618,26 @@ Stage Summary:
 - اسکیمای نمونه سالم: @id/video-{hash} + name/description/thumbnailUrl (URL مطلق لوکال)/uploadDate/embedUrl — شانس نتیجه ویدیویی گوگل
 - کلیدواژه‌های موضوعی در توضیح سکشن‌ها: «جراحی فک و چانه و ایمپلنت دندان» — پنج‌گانه رعایت شد (AIO/GEO اسکیما، SXO پخش تنبل، E-E-A-T فقط ویدیوی واقعی)
 - کل شکاف‌های تحلیل رقبا بسته شد: پیلار + نظرات بیماران + ویدیو — گام بعدی: ادامه صف میراث (statistics با «بذار»، blog-agent/qa-articles، مسیر ۱، ۲۳ مقاله قدیمی)
+
+---
+Task ID: legacy-queue-completion
+Agent: main (Z.ai CLI)
+Task: دستور «کل گام بعدی رو انجام بده» — بستن کل صف میراث + سوخت‌رسانی خط تولید
+
+Work Log:
+- راستی‌آزمایی صف میراث: هر سه قلم امروز (۲۰۲۶-۱۰-۲۶) توسط موج‌های قبلی اجرا شده بود — مقاله آمار زنده (کامیت ۰۲:۲۸ با تایید «بذار»)، گیت ۵گانه در qa-articles.ts، ارتقای ۲۳ مقاله قدیمی (کامیت ۰۶:۴۷) + غنی‌سازی ۲۷/۲۷ (AEO/SXO ۱۰۰)
+- معمای online-jaw-consultation با لاگ Actions حل شد: گیر نکرده بود — در نوبت پشت دو مقاله هزینه بدون pool بود؛ رانر روزانه ~۱۸ دقیقه روی ECONNREFUSED هدر می‌رفت (سوخت pool تمام شده بود)
+- کشف تنگنا: ۲۴ موضوع صف بدون فایل pool — خط تولید در آستانه توقف کامل
+- ۷ مقاله pool دست‌نویس (۱۵۲۰-۱۶۵۰ کلمه، پاسخ ۲۵-۹۰، ۶ FAQ، ۵+ لینک با BOFU، جدول/لیست، تلفن، برند ۲+، یکتایی با ۵۱ مقاله زنده): lefort-osteotomy-cost، bsso-surgery-cost (رفع گلوگاه)، speaking، brushing-hygiene، exercises-physio، return-to-work، swelling-timeline (خوشه ریکاوری تکمیل شد)
+- ۷ کاور 3D 1344x768 با image-generation (استایل تیره/تیال هم‌سبک سری موجود)
+- فیکس‌ها: حذف ردیف تکراری jaw-surgery-statistics در topics.ts؛ مسیر هاردکد /home/z در indexnow-submit.mjs → نسبی (ENOENT رانر رفع شد)
+- ابزار جدید scripts/validate-pool.py: شبیه‌ساز کامل گیت‌های QA + سردبیر + یکتایی با DB زنده (هر مقاله قبل از push تست شد)
+- QA رسمی مخزن: ۴۰ فایل صفر خطا؛ push b7ff6a4؛ dispatch دستی workflow با توکن git (HTTP 204) — اولین انتشار خارج از کرون
+- ران ۴۰۳۲۸۴۰۶۱۵۹: **۸/۱۰ منتشر** (lefort ۱۶۵۹، bsso ۱۵۶۶، online-jaw ۱۷۳۰، speaking ۱۵۴۹، brushing ۱۵۳۶، exercises ۱۵۲۰، return-to-work ۱۵۴۹، swelling ۱۵۶۸) — ۲ موضوع بدون pool طبق انتظار ECONNREFUSED
+
+Stage Summary:
+- مقالات زنده: ۵۰ → ۵۸ (sitemap تأیید؛ هر ۸ صفحه 200 با H1/کاور/FAQ درست)
+- مقاله گیرکرده online-jaw-consultation منتشر شد؛ گلوگاه ۱۸ دقیقه‌ای روزانه رفع شد
+- خوشه ریکاوری کامل شد: recovery-care + nutrition + sleeping + pain + speaking + brushing + exercises + return-to-work + swelling
+- باقی‌مانده صف (۱۶ موضوع بدون pool): anesthesia-cost، seniors، after-implant-care، tmj-physio، cheek-implant-cost، ear-pain، jaw-cancer-signs، fracture-diet، profilometry، women-jaw، international-faq، nose-breathing، skeletal-class، kids-jaw — موج بعدی باید این‌ها را بنویسد؛ تا آن موقع ران روزانه فقط pool-دارها را منتشر می‌کند
+- درس: workflow_dispatch با توکن git remote کار می‌کند — برای انتشار فوری بدون انتظار کرون استفاده شود
