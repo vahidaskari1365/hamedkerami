@@ -14,8 +14,12 @@
    ============================================================ */
 
 import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const KEY_FILE = "/home/z/my-project/.indexnow-key";
+/* مسیر نسبی به محل اسکریپت — روی رانر گیت‌هاب هم کار می‌کند
+   (قبلاً مسیر مطلق هاردکد بود و در رانر ENOENT می‌داد) */
+const KEY_FILE = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", ".indexnow-key");
 const KEY = readFileSync(KEY_FILE, "utf8").trim();
 const SITE = "https://dr-kermani.com";
 const HOST = "dr-kermani.com";
