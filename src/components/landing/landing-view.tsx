@@ -12,6 +12,7 @@ import {
 } from "@/components/landing/landing-chrome";
 import { LandingVideos } from "@/components/landing/landing-videos";
 import { JsonLdScript, videoLd } from "@/components/schema";
+import Link from "next/link";
 import type { LandingData, LandingSectionData } from "@/lib/landing-defaults";
 import type { SiteVideo } from "@/lib/videos";
 import { trimReviewBody } from "@/lib/reviews";
@@ -21,14 +22,33 @@ import { trimReviewBody } from "@/lib/reviews";
    + اسکیما JSON-LD (FAQPage + MedicalProcedure + Breadcrumb)
    ============================================================ */
 
-/** نمایش **بولد** داخل پاراگراف‌ها */
+/** نمایش **بولد** و [متن](/مسیر) لینک داخلی داخل پاراگراف‌ها */
 function WithBold({ text }: { text: string }) {
-  const parts = text.split("**");
+  const linkParts = text.split(/(\[[^\]]+\]\([^)\s]+\))/g);
   return (
     <>
-      {parts.map((p, i) =>
-        i % 2 === 1 ? <strong key={i}>{p}</strong> : <span key={i}>{p}</span>
-      )}
+      {linkParts.map((part, i) => {
+        const m = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(part);
+        if (m) {
+          return (
+            <Link
+              key={`l${i}`}
+              href={m[2]}
+              className="font-bold text-teal underline decoration-teal/40 underline-offset-4 transition hover:text-teal-2"
+            >
+              {m[1]}
+            </Link>
+          );
+        }
+        const boldParts = part.split("**");
+        return boldParts.map((p, j) =>
+          j % 2 === 1 ? (
+            <strong key={`b${i}-${j}`}>{p}</strong>
+          ) : (
+            <span key={`b${i}-${j}`}>{p}</span>
+          )
+        );
+      })}
     </>
   );
 }
