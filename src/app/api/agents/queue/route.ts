@@ -31,8 +31,8 @@ export async function GET(req: Request) {
     const cursor = [...existing.map((p) => p.title)];
     const cursorSlugs = existing.map((p) => p.slug);
     const pending: ReturnType<typeof nextTopic>[] = [];
-    /* سقف صف = نرخ روزانه انتشار (۱۰ مقاله) */
-    for (let i = 0; i < 10; i++) {
+    /* سقف صف = نرخ روزانه انتشار (۱۶ مقاله — هم‌راستا با سقف رانر) */
+    for (let i = 0; i < 16; i++) {
       const t = nextTopic(cursor, cursorSlugs);
       if (!t) break;
       pending.push(t);
