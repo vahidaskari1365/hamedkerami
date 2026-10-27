@@ -643,23 +643,23 @@ Stage Summary:
 - درس: workflow_dispatch با توکن git remote کار می‌کند — برای انتشار فوری بدون انتظار کرون استفاده شود
 
 ---
-Task ID: pool-wave-16-topics
+Task ID: publish-polling-verification-final
 Agent: main (Z.ai CLI)
-Task: دستور «کل گام بعدی پیشنهادی رو انجام بده» — سوخت‌رسانی کامل خط تولید با ۱۶ pool باقی‌مانده
+Task: دستور «پولینگ انتشار → راستی‌آزمایی صفحات → گزارش نهایی» — بستن کامل موج ۱۶ مقاله‌ای
 
 Work Log:
-- شمارش دقیق: ۵۸ موضوع topics.ts منها ۴۰ pool موجود = ۱۶ موضوع بدون pool (۲ evergreen قفل notBefore خارج از بحث)
-- خط تولید در آستانه توقف کامل بود — ران روزانه فقط pool-دارها را منتشر می‌کرد
-- ۱۶ مقاله دست‌نویس نوشته شد (content-queue/pool/): anesthesia-cost، implant-for-seniors، after-implant-care، tmj-physiotherapy، cheek-implant-cost، jaw-ear-pain، jaw-cancer-signs، fracture-diet، profilometry، women-jaw، international-patients-faq، nose-breathing، skeletal-class-2-3، kids-jaw، implant-installments، implant-cost-trend
-- ۱۶ کاور 3D 1344x768 با image-generation (استایل تیره/طلایی هم‌سبک سری موجود) در public/images/agent/
-- ابزار بازسازی شد: scripts/blog-agent/validate-pool.py (شبیه‌ساز کامل گیت‌ها) + fetch-live-bodies.py (دانلود بدنه ۵۸ مقاله زنده → ۶۶۷۳ جمله برای چک یکتایی واقعی)
-- چند دور تکمیل طول: هر ۱۶ مقاله به ۱۵۱۵-۱۶۳۸ کلمه رسید؛ پاسخ مستقیم ۴۵-۵۷w؛ FAQ ۶؛ لینک ۴-۱۱؛ BOFU ۱-۴؛ یکتایی صفر تکرار با ۵۸ زنده + ۴۰ pool قدیمی
-- اصلاحات: تایپو چینی تصادفی، لینک tmj-joint-prosthesis، واژه انگلیسی reliance، لینک مقاله منتشرنشده (women-jaw در profilometry → jaw-surgery-age زنده)
-- qa-articles.ts: PILLARS با /en/jaw-surgery-in-iran به‌روز شد (صفحه واقعی زنده)؛ دو مقاله لینک پنجم گرفتند؛ nose-breathing لیست فاکتورها گرفت
-- QA رسمی نهایی: صفر خطا در ۵۶ فایل مخزن
-- push 6b8ce65؛ dispatch دستی workflow به دلیل تزریق توکن sandboxed ممکن نشد (401) — کرون ۰۳:۳۰ UTC خودکار ران می‌گیرد (۱۰ مقاله در ران؛ ۶ باقی فردا)
+- پولینگ Actions: کرون ۰۳:۳۰ UTC امروز ثبت نشده بود (تأخیر/اسکیپ گیتهاب) → طبق درس worklog، dispatch دستی (HTTP 204)
+- ران 40469553198: ۱۰/۱۰ منتشر (anesthesia-cost ۱۵۲۴w، implant-for-seniors ۱۵۶۸w، after-implant-care ۱۵۹۵w، tmj-physio ۱۶۱۸w، cheek-implant-cost ۱۵۱۵w، ear-pain ۱۶۳۳w، jaw-cancer-signs ۱۶۳۸w، fracture-diet ۱۶۳۸w، profilometry ۱۵۳۲w، women-jaw ۱۶۰۳w) — سقف رانر ۱۶ بود ولی API صف سمت سرور فقط ۱۰ pending برمی‌گرداند
+- کشف گلوگاه دوم: سقف ۱۰ هاردکد در src/app/api/agents/queue/route.ts → فیکس به ۱۶ (هم‌راستا با رانر)؛ کامیت d5014fa
+- پاک‌سازی محلی: بازگرداندن generate.mjs و qa-articles.ts به HEAD (بازگشت ناخواسته در قطع جلسه قبل)، حذف content-queue/staging/ + ۲ داپلیکیت روت (منبع ۱۴۲ خطای QA کاذب) و فایل سرگردان 3111 → QA سبز: ۵۷ فایل، صفر خطا
+- کشف مهم: jaw-surgery-cost-1406 و implant-cost-1406 در EVERGREEN_TOPICS با قفل notBefore: 2027-03-21 هستند (مقالات قیمت ۱۴۰۶ برای سال بعد) → فایل pool دست‌نویس jaw-surgery-cost-1406 (۱۹۵۲ کلمه، QA سبز) کامیت شد به‌عنوان سوخت سال آینده؛ کاور آن از قبل tracked بود
+- dispatch دوم (ران 40471276377): **۶/۶ منتشر** (international-patients-faq، jaw-surgery-nose-breathing، skeletal-class-2-3، kids-jaw-surgery، implant-installments، implant-cost-trend) — صف topics.ts کاملاً خالی شد: published: 75، next: []
+- راستی‌آزمایی زنده ۱۶ صفحه جدید (۱۰+۶): همه HTTP 200، H1=1، FAQPage+BlogPosting در اسکیما، کاور /images/agent/ ۸ بار ارجاع، ۵ CTA تلفنی
+- سایت‌مپ ۹۶ URL (بود ۶۳)؛ /blog دقیقاً ۷۵ لینک = تعداد DB؛ کاور نمونه 200
+- IndexNow: ران اول 202 Accepted (۶۳ URL)؛ ران دوم 403 (ریت‌لیمیت Bing در فاصله ۱۷ دقیقه — غیرمسدودکننده، کرون فردا پینگ می‌گیرد)
 
 Stage Summary:
-- مخزن ۵۶/۵۶ سبز؛ خط تولید تا پایان صف اصلی سوخت‌رسانی شد (فقط evergreen ۱۴۰۶ باقی می‌ماند با notBefore)
-- ران امروز انتظار: ۱۰ مقاله از ۱۶؛ ران فردا ۶ باقی → سپس «صف موضوعات خالی است»
-- بعد از ران: پولینگ sitemap (۸۰ → ~۹۰+) و راستی‌آزمایی صفحات ۲۰۰
+- **کل صف محتوایی topics.ts تخلیه شد: ۵۸/۵۸ موضوع منتشر → ۷۵ مقاله زنده** (۵۸ موضوع صف + ۱۷ مقاله ثابت/ویژه)
+- خط تولید پایدار شد: هر مقاله آینده فقط با اضافه‌شدن موضوع جدید به topics.ts + pool؛ ران روزانه دیگر ECONNREFUSED و اتلاف ۱۸ دقیقه‌ای ندارد
+- یادآوری ۲۰۲۷-۰۳-۲۱ (۱ فروردین ۱۴۰۶): تاپیک‌های cost-1406 آزاد می‌شوند — pool jaw-surgery-cost-1406 آماده است؛ **implant-cost-1406 فاقد pool** → قبل از آن تاریخ نوشته شود + پس از انتشار نسخه پنهان ۱۴۰۵ از HIDDEN_SLUGS خارج شود
+- یادآوری ۱ آذر هر سال: workflow قیمت (price-review.yml) جدول cost-1405/1406 را به‌روزرسانی می‌کند
