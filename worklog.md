@@ -643,6 +643,23 @@ Stage Summary:
 - درس: workflow_dispatch با توکن git remote کار می‌کند — برای انتشار فوری بدون انتظار کرون استفاده شود
 
 ---
+-- a/worklog.md
+Task ID: pool-wave-16-topics
+Task: دستور «کل گام بعدی پیشنهادی رو انجام بده» — سوخت‌رسانی کامل خط تولید با ۱۶ pool باقی‌مانده
+- شمارش دقیق: ۵۸ موضوع topics.ts منها ۴۰ pool موجود = ۱۶ موضوع بدون pool (۲ evergreen قفل notBefore خارج از بحث)
+- خط تولید در آستانه توقف کامل بود — ران روزانه فقط pool-دارها را منتشر می‌کرد
+- ۱۶ مقاله دست‌نویس نوشته شد (content-queue/pool/): anesthesia-cost، implant-for-seniors، after-implant-care، tmj-physiotherapy، cheek-implant-cost، jaw-ear-pain، jaw-cancer-signs، fracture-diet، profilometry، women-jaw، international-patients-faq، nose-breathing، skeletal-class-2-3، kids-jaw، implant-installments، implant-cost-trend
+- ۱۶ کاور 3D 1344x768 با image-generation (استایل تیره/طلایی هم‌سبک سری موجود) در public/images/agent/
+- ابزار بازسازی شد: scripts/blog-agent/validate-pool.py (شبیه‌ساز کامل گیت‌ها) + fetch-live-bodies.py (دانلود بدنه ۵۸ مقاله زنده → ۶۶۷۳ جمله برای چک یکتایی واقعی)
+- چند دور تکمیل طول: هر ۱۶ مقاله به ۱۵۱۵-۱۶۳۸ کلمه رسید؛ پاسخ مستقیم ۴۵-۵۷w؛ FAQ ۶؛ لینک ۴-۱۱؛ BOFU ۱-۴؛ یکتایی صفر تکرار با ۵۸ زنده + ۴۰ pool قدیمی
+- اصلاحات: تایپو چینی تصادفی، لینک tmj-joint-prosthesis، واژه انگلیسی reliance، لینک مقاله منتشرنشده (women-jaw در profilometry → jaw-surgery-age زنده)
+- qa-articles.ts: PILLARS با /en/jaw-surgery-in-iran به‌روز شد (صفحه واقعی زنده)؛ دو مقاله لینک پنجم گرفتند؛ nose-breathing لیست فاکتورها گرفت
+- QA رسمی نهایی: صفر خطا در ۵۶ فایل مخزن
+- push 6b8ce65؛ dispatch دستی workflow به دلیل تزریق توکن sandboxed ممکن نشد (401) — کرون ۰۳:۳۰ UTC خودکار ران می‌گیرد (۱۰ مقاله در ران؛ ۶ باقی فردا)
+- مخزن ۵۶/۵۶ سبز؛ خط تولید تا پایان صف اصلی سوخت‌رسانی شد (فقط evergreen ۱۴۰۶ باقی می‌ماند با notBefore)
+- ران امروز انتظار: ۱۰ مقاله از ۱۶؛ ران فردا ۶ باقی → سپس «صف موضوعات خالی است»
+- بعد از ران: پولینگ sitemap (۸۰ → ~۹۰+) و راستی‌آزمایی صفحات ۲۰۰
+---
 Task ID: publish-polling-verification-final
 Agent: main (Z.ai CLI)
 Task: دستور «پولینگ انتشار → راستی‌آزمایی صفحات → گزارش نهایی» — بستن کامل موج ۱۶ مقاله‌ای
