@@ -100,7 +100,7 @@ async function main() {
   }
 
   const results = [];
-  for (const topic of q.json.pending.slice(0, 10)) {
+  for (const topic of q.json.pending.slice(0, 16)) {
     console.log(`\n[runner] === ${topic.title} ===`);
     try {
       const pooled = poolArticleFor(topic.slug);
