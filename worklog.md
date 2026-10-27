@@ -643,7 +643,6 @@ Stage Summary:
 - درس: workflow_dispatch با توکن git remote کار می‌کند — برای انتشار فوری بدون انتظار کرون استفاده شود
 
 ---
--- a/worklog.md
 Task ID: pool-wave-16-topics
 Task: دستور «کل گام بعدی پیشنهادی رو انجام بده» — سوخت‌رسانی کامل خط تولید با ۱۶ pool باقی‌مانده
 - شمارش دقیق: ۵۸ موضوع topics.ts منها ۴۰ pool موجود = ۱۶ موضوع بدون pool (۲ evergreen قفل notBefore خارج از بحث)
