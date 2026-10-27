@@ -19,7 +19,7 @@ export const SITE = {
   whatsapp: "09382080270",
   whatsappDisplay: "۰۹۳۸-۲۰۸۰۲۷۰",
   instagram: "https://www.instagram.com/dr.hamedkermani.omfs/",
-  aparat: "https://www.aparat.com/dromfs",
+  aparat: "https://www.aparat.com/dr.hamedkermani.omfs",
   maps: "https://g.co/kgs/5VU5kZq",
   address:
     "بلوار کشاورز، تقاطع جمالزاده، ساختمان پزشکان کوثر، طبقه ۳ واحد ۱۲",

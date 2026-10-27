@@ -139,11 +139,17 @@ function cleanupStalePublicArtifacts() {
     "public/llms.txt",
     "public/llms-full.txt",
   ];
-  for (const f of STALE) {
-    try {
-      fs.unlinkSync(path.join(ROOT, f));
-      console.log("[bootstrap] removed stale artifact:", f);
-    } catch { /* نبود — مشکلی نیست */ }
+  /* نسخه ۲: Next standalone پوشه public را داخل .next/standalone/public هم
+     کپی می‌کند و route متادیتای /sitemap.xml را شادو می‌کند (باگ زنده 2026-10-27:
+     سایت‌مپ dromfs تمپلیت روی dr-kermani.com سرو می‌شد). هر دو مسیر پاک می‌شود. */
+  const DIRS = [ROOT, path.join(ROOT, ".next", "standalone")];
+  for (const dir of DIRS) {
+    for (const f of STALE) {
+      try {
+        fs.unlinkSync(path.join(dir, f));
+        console.log("[bootstrap] removed stale artifact:", path.join(dir, f));
+      } catch { /* نبود — مشکلی نیست */ }
+    }
   }
   /* فایل‌های موقتی تست‌های خیلی قدیمی */
   for (const junk of ["ci-pkg.tar.gz", "probe.txt", "ci-write-test.txt", "ci-test-1.txt", "ci-test-2.txt", "ci-test-3.txt"]) {
