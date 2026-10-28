@@ -1,0 +1,37 @@
+name: Article title fix (keyword-bearing title + H1)
+
+# به‌روزرسانی عنوان مقاله‌های زنده با نسخه‌های دارای کلیدواژه دقیق در
+# ۴۶ کاراکتر اول (بودجه serpTitle) — چون H1 صفحه از post.title رندر
+# می‌شود، فیکس تایتل هم‌زمان H1 را هم اصلاح می‌کند. بدنه دست‌نخورده از
+# llms-full.txt برمی‌گردد (مسیر انتشار ایجنت + سردبیر QC).
+# مانیفست: content-fixes/title-manifest.json { slug: { title, excerpt? } }
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: title-fix
+  cancel-in-progress: false
+
+jobs:
+  title-fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Publish new titles
+        env:
+          SITE_URL: https://dr-kermani.com
+          AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
+        run: node scripts/fix-title-publish.mjs
+
+      - name: IndexNow — پینگ Bing برای نسخه به‌روز
+        if: always()
+        run: node scripts/indexnow-submit.mjs --updated || echo "IndexNow ping ناموفق — مانع نیست"
