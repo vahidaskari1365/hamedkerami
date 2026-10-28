@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-28T13:05:14.871Z",
+  "generatedAt": "2026-10-28T13:41:33.894Z",
   "source": "audit/llms-live.txt",
   "totalArticles": 81,
-  "avgOutboundBlog": 4.2,
+  "avgOutboundBlog": 4.7,
   "articles": [
     {
       "slug": "zygomatic-implant-cost-1405",
@@ -21,15 +21,18 @@
         "all-on-4-implants-guide",
         "dental-implant-complications"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "implant-cost-trend",
+        "all-on-4-implants-guide"
+      ]
     },
     {
       "slug": "implant-diabetes",
       "title": "ایمپلنت دندان برای دیابتی‌ها؛ شرایط لازم و میزان موفقیت",
-      "outboundBlog": 8,
+      "outboundBlog": 9,
       "outboundLanding": 1,
-      "words": 1608,
+      "words": 1619,
       "targets": [
         "dental-implant-complications",
         "all-on-4-implants-guide",
@@ -37,6 +40,7 @@
         "implant-for-seniors",
         "online-jaw-consultation",
         "after-implant-care",
+        "implant-lifespan",
         "dental-implant-cost-1405",
         "implant-installments",
         "/appointment"
@@ -64,8 +68,11 @@
         "implant-vs-bridge",
         "/appointment"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "implant-diabetes",
+        "after-implant-care"
+      ]
     },
     {
       "slug": "full-mouth-implants",
@@ -88,8 +95,11 @@
         "implant-installments",
         "best-implant-brands"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "implant-installments",
+        "all-on-4-implants-guide"
+      ]
     },
     {
       "slug": "blepharoplasty-upper-lower",
@@ -156,9 +166,9 @@
     {
       "slug": "implant-cost-trend",
       "title": "روند قیمت جراحی فک و ایمپلنت در سال های اخیر؛ چرا هر سال تغییر می کند؟",
-      "outboundBlog": 6,
+      "outboundBlog": 7,
       "outboundLanding": 4,
-      "words": 1583,
+      "words": 1596,
       "targets": [
         "/costs",
         "jaw-surgery-cost-1405",
@@ -166,6 +176,7 @@
         "implant-installments",
         "jaw-surgery-insurance",
         "/best-jaw-surgeon-tehran",
+        "zygomatic-implant-cost-1405",
         "/appointment"
       ],
       "inboundCount": 1,
@@ -176,11 +187,12 @@
     {
       "slug": "implant-installments",
       "title": "ایمپلنت دندان اقساطی و پرداخت مرحله ای؛ راهنمای کامل بودجه درمان",
-      "outboundBlog": 4,
+      "outboundBlog": 5,
       "outboundLanding": 3,
-      "words": 1569,
+      "words": 1579,
       "targets": [
         "dental-implant-cost-1405",
+        "full-mouth-implants",
         "immediate-implant-guide",
         "best-implant-brands",
         "tehran-provincial-patients",
@@ -200,13 +212,14 @@
     {
       "slug": "kids-jaw-surgery",
       "title": "جراحی فک کودکان و نوجوانان؛ بهترین سن و شرایط",
-      "outboundBlog": 3,
+      "outboundBlog": 4,
       "outboundLanding": 3,
-      "words": 1642,
+      "words": 1654,
       "targets": [
         "jaw-surgery-signs",
         "jaw-surgery-age",
         "jaw-surgery-orthodontics",
+        "cleft-lip-palate-surgery",
         "/costs",
         "/appointment",
         "/jaw-surgery"
@@ -232,8 +245,11 @@
         "/appointment",
         "/jaw-surgery"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "jaw-surgery-signs",
+        "jaw-surgery-orthodontics"
+      ]
     },
     {
       "slug": "jaw-surgery-nose-breathing",
@@ -255,11 +271,12 @@
     {
       "slug": "international-patients-faq",
       "title": "جراحی فک در ایران؛ راهنمای کامل بیماران خارجی",
-      "outboundBlog": 5,
+      "outboundBlog": 6,
       "outboundLanding": 6,
-      "words": 1604,
+      "words": 1616,
       "targets": [
         "/costs",
+        "cleft-lip-palate-surgery",
         "online-jaw-consultation",
         "/appointment",
         "immediate-implant-guide",
@@ -269,8 +286,11 @@
         "/best-jaw-surgeon-tehran",
         "/en/jaw-surgery-in-iran"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "tehran-provincial-patients",
+        "facial-contouring"
+      ]
     },
     {
       "slug": "women-jaw-surgery",
@@ -289,8 +309,11 @@
         "/appointment",
         "/jaw-surgery"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "jaw-surgery-swelling-timeline",
+        "jaw-surgery-speaking"
+      ]
     },
     {
       "slug": "profilometry-face-analysis",
@@ -324,8 +347,11 @@
         "jaw-surgery-nutrition",
         "/appointment"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "jaw-bone-loss",
+        "jaw-surgery-nutrition"
+      ]
     },
     {
       "slug": "jaw-cancer-signs",
@@ -340,8 +366,11 @@
         "/appointment",
         "/services"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "tmj-joint-prosthesis",
+        "jaw-cysts-tumors"
+      ]
     },
     {
       "slug": "jaw-surgery-ear-pain",
@@ -357,8 +386,10 @@
         "/appointment",
         "/services"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 1,
+      "inboundFrom": [
+        "tmj-physiotherapy-exercises"
+      ]
     },
     {
       "slug": "cheek-implant-cost",
@@ -375,17 +406,21 @@
         "/appointment",
         "/services"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "facial-contouring",
+        "genioplasty-cost"
+      ]
     },
     {
       "slug": "tmj-physiotherapy-exercises",
       "title": "تمرینات فیزیوتراپی مفصل فک؛ ۸ ورزش خانگی برای کلیک، درد و قفل شدن",
-      "outboundBlog": 4,
+      "outboundBlog": 5,
       "outboundLanding": 2,
-      "words": 1635,
+      "words": 1647,
       "targets": [
         "tmj-pain-treatment",
+        "jaw-surgery-ear-pain",
         "bruxism-night-guard",
         "jaw-locking",
         "tmj-joint-prosthesis",
@@ -400,10 +435,11 @@
     {
       "slug": "after-implant-care",
       "title": "مراقبت بعد از ایمپلنت دندان؛ ۷۲ ساعت اول و نگهداری بلندمدت",
-      "outboundBlog": 3,
+      "outboundBlog": 4,
       "outboundLanding": 2,
-      "words": 1611,
+      "words": 1621,
       "targets": [
+        "implant-lifespan",
         "dental-implant-complications",
         "bruxism-night-guard",
         "/dental-implant",
@@ -443,27 +479,33 @@
     {
       "slug": "anesthesia-cost-jaw-surgery",
       "title": "هزینه بیهوشی جراحی فک ۱۴۰۵؛ تعرفه و بستری",
-      "outboundBlog": 3,
+      "outboundBlog": 4,
       "outboundLanding": 4,
-      "words": 1540,
+      "words": 1552,
       "targets": [
         "/costs",
+        "wisdom-tooth-surgery-cost-1405",
         "jaw-surgery-recovery-care",
         "jaw-surgery-insurance",
         "implant-cost-trend",
         "/appointment"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "bimax-surgery-cost-1405",
+        "jaw-surgery-cost-1405"
+      ]
     },
     {
       "slug": "jaw-surgery-swelling-timeline",
       "title": "ورم بعد از جراحی فک؛ چه زمانی طبیعی است و چه زمانی زنگ خطر؟",
-      "outboundBlog": 7,
+      "outboundBlog": 9,
       "outboundLanding": 2,
-      "words": 1583,
+      "words": 1608,
       "targets": [
         "jaw-surgery-recovery-care",
+        "women-jaw-surgery",
+        "jaw-surgery-speaking",
         "/gallery",
         "jaw-surgery-return-to-work",
         "jaw-surgery-sleeping",
@@ -479,12 +521,13 @@
     {
       "slug": "jaw-surgery-return-to-work",
       "title": "بازگشت به کار بعد از جراحی فک؛ تقویم دقیق ریکاوری",
-      "outboundBlog": 6,
+      "outboundBlog": 7,
       "outboundLanding": 3,
-      "words": 1568,
+      "words": 1581,
       "targets": [
         "jaw-surgery-recovery-care",
         "jaw-surgery-cost-1405",
+        "jaw-surgery-speaking",
         "jaw-surgery-nutrition",
         "jaw-surgery-sleeping",
         "jaw-exercises-physio",
@@ -533,25 +576,32 @@
         "jaw-surgery-pain",
         "/appointment"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "jaw-surgery-nutrition",
+        "jaw-surgery-recovery-care"
+      ]
     },
     {
       "slug": "jaw-surgery-speaking",
       "title": "حرف زدن بعد از جراحی فک؛ بازگشت گفتار طبیعی",
-      "outboundBlog": 6,
+      "outboundBlog": 7,
       "outboundLanding": 1,
-      "words": 1567,
+      "words": 1579,
       "targets": [
         "jaw-surgery-recovery-care",
+        "women-jaw-surgery",
         "jaw-surgery-complications",
         "jaw-surgery-sleeping",
         "jaw-surgery-nutrition",
         "jaw-surgery-return-to-work",
         "/appointment"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "jaw-surgery-swelling-timeline",
+        "jaw-surgery-return-to-work"
+      ]
     },
     {
       "slug": "online-jaw-consultation",
@@ -600,8 +650,11 @@
         "/appointment",
         "online-jaw-consultation"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "bsso-lower-jaw-surgery",
+        "jaw-surgery-cost-1405"
+      ]
     },
     {
       "slug": "lefort-osteotomy-cost",
@@ -622,18 +675,22 @@
         "/appointment",
         "/chin-surgery"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "lefort-osteotomy-guide",
+        "jaw-surgery-cost-1405"
+      ]
     },
     {
       "slug": "tehran-provincial-patients",
       "title": "راهنمای بیماران شهرستانی؛ از مشاوره تلفنی تا جراحی فک در تهران",
-      "outboundBlog": 8,
+      "outboundBlog": 9,
       "outboundLanding": 3,
-      "words": 1762,
+      "words": 1773,
       "targets": [
         "online-jaw-consultation",
         "3d-jaw-surgery-simulation",
+        "international-patients-faq",
         "/services",
         "/costs",
         "/dental-implant",
@@ -656,13 +713,14 @@
     {
       "slug": "tmj-joint-prosthesis",
       "title": "پروتز مفصل فک (TMJ)؛ چه کسانی به جای تعمیر، به مفصل کامل نیاز دارند؟",
-      "outboundBlog": 5,
+      "outboundBlog": 6,
       "outboundLanding": 3,
-      "words": 1716,
+      "words": 1726,
       "targets": [
         "jaw-locking",
         "/appointment",
         "jaw-surgery-age",
+        "jaw-cancer-signs",
         "3d-jaw-surgery-simulation",
         "jaw-surgery-consultation-checklist",
         "jaw-surgery-pain",
@@ -772,10 +830,11 @@
     {
       "slug": "jaw-bone-loss",
       "title": "تحلیل استخوان فک بعد از کشیدن دندان؛ چرا رخ می‌دهد و چه باید کرد؟",
-      "outboundBlog": 4,
+      "outboundBlog": 5,
       "outboundLanding": 3,
-      "words": 1734,
+      "words": 1746,
       "targets": [
+        "fracture-diet-healing",
         "zygomatic-implant-guide",
         "immediate-implant-guide",
         "sinus-lift-implant-guide",
@@ -797,10 +856,11 @@
     {
       "slug": "jaw-cysts-tumors",
       "title": "کیست و تومور فک؛ علائم هشدار، جراحی و بازسازی بعد از آن",
-      "outboundBlog": 1,
+      "outboundBlog": 2,
       "outboundLanding": 5,
-      "words": 1668,
+      "words": 1679,
       "targets": [
+        "jaw-cancer-signs",
         "/dental-implant",
         "/gallery",
         "jaw-surgery-recovery-care",
@@ -881,12 +941,14 @@
     {
       "slug": "jaw-surgery-signs",
       "title": "علامت نیاز به جراحی فک؛ ۱۰ نشانه که ارتودنسی تنها کافی نیست",
-      "outboundBlog": 7,
+      "outboundBlog": 9,
       "outboundLanding": 1,
-      "words": 1827,
+      "words": 1850,
       "targets": [
+        "skeletal-class-2-3",
         "/jaw-surgery",
         "tmj-pain-treatment",
+        "jaw-surgery-without-orthodontics",
         "online-jaw-consultation",
         "jaw-surgery-orthodontics",
         "jaw-surgery-recovery-care",
@@ -958,8 +1020,11 @@
         "/gallery",
         "/appointment"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "jaw-surgery-before-after",
+        "jaw-surgery-age"
+      ]
     },
     {
       "slug": "jaw-surgery-consultation-checklist",
@@ -1037,18 +1102,23 @@
         "/appointment",
         "jaw-surgery-age"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "jaw-surgery-signs",
+        "jaw-surgery-orthodontics"
+      ]
     },
     {
       "slug": "all-on-4-implants-guide",
       "title": "ایمپلنت فک کامل All-on-4؛ دندان ثابت یک روزه با ۴ پایه + هزینه",
-      "outboundBlog": 2,
+      "outboundBlog": 4,
       "outboundLanding": 4,
-      "words": 1792,
+      "words": 1813,
       "targets": [
+        "full-mouth-implants",
         "/dental-implant",
         "/services",
+        "zygomatic-implant-cost-1405",
         "/costs",
         "best-jaw-surgeon-tehran",
         "/appointment",
@@ -1096,15 +1166,16 @@
     {
       "slug": "bsso-lower-jaw-surgery",
       "title": "جراحی فک پایین (BSSO)؛ جلو برداری و عقب برداری استخوان فک پایین",
-      "outboundBlog": 4,
+      "outboundBlog": 5,
       "outboundLanding": 3,
-      "words": 1720,
+      "words": 1730,
       "targets": [
         "/jaw-surgery",
         "jaw-asymmetry",
         "lefort-osteotomy-guide",
         "jaw-surgery-recovery-care",
         "jaw-surgery-complications",
+        "bsso-surgery-cost",
         "/costs",
         "/appointment"
       ],
@@ -1118,14 +1189,15 @@
     {
       "slug": "lefort-osteotomy-guide",
       "title": "جراحی فک بالا (لی فورت) چیست؟ برای چه کسانی و چگونه انجام می شود؟",
-      "outboundBlog": 4,
+      "outboundBlog": 5,
       "outboundLanding": 3,
-      "words": 1753,
+      "words": 1763,
       "targets": [
         "3d-jaw-surgery-simulation",
         "/jaw-surgery",
         "bsso-lower-jaw-surgery",
         "jaw-surgery-orthodontics",
+        "lefort-osteotomy-cost",
         "/costs",
         "/appointment",
         "gummy-smile-treatment"
@@ -1140,11 +1212,13 @@
     {
       "slug": "jaw-surgery-nutrition",
       "title": "تغذیه بعد از جراحی فک؛ رژیم هفته به هفته از مایعات تا غذای عادی",
-      "outboundBlog": 4,
+      "outboundBlog": 6,
       "outboundLanding": 2,
-      "words": 1683,
+      "words": 1707,
       "targets": [
+        "fracture-diet-healing",
         "jaw-surgery-recovery-care",
+        "jaw-surgery-brushing-hygiene",
         "jaw-surgery-pain",
         "jaw-surgery-sleeping",
         "jaw-surgery-complications",
@@ -1195,13 +1269,14 @@
     {
       "slug": "jaw-surgery-pain",
       "title": "درد بعد از جراحی فک؛ کنترل آن و علائم خطر",
-      "outboundBlog": 5,
+      "outboundBlog": 6,
       "outboundLanding": 1,
-      "words": 1536,
+      "words": 1549,
       "targets": [
         "/jaw-surgery",
         "3d-jaw-surgery-simulation",
         "jaw-surgery-recovery-care",
+        "wisdom-tooth-surgery-cost-1405",
         "jaw-surgery-sleeping",
         "jaw-surgery-nutrition",
         "jaw-surgery-complications"
@@ -1245,11 +1320,12 @@
     {
       "slug": "bimax-surgery-cost-1405",
       "title": "جراحی دو فک بایمکس ۱۴۰۵؛ هزینه و شرایط عمل",
-      "outboundBlog": 6,
+      "outboundBlog": 7,
       "outboundLanding": 4,
-      "words": 1619,
+      "words": 1631,
       "targets": [
         "3d-jaw-surgery-simulation",
+        "anesthesia-cost-jaw-surgery",
         "/costs",
         "blepharoplasty-cost-1405",
         "jaw-surgery-pain",
@@ -1307,8 +1383,12 @@
         "jaw-surgery-recovery-care",
         "jaw-surgery-consultation-checklist"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 3,
+      "inboundFrom": [
+        "anesthesia-cost-jaw-surgery",
+        "jaw-surgery-pain",
+        "tmj-pain-treatment"
+      ]
     },
     {
       "slug": "best-implant-brands",
@@ -1363,11 +1443,14 @@
     {
       "slug": "jaw-surgery-cost-1405",
       "title": "هزینه جراحی فک ۱۴۰۵؛ تعرفه کامل ارتوگناتیک، تک فک و بایمکس + عوامل مؤثر بر قیمت",
-      "outboundBlog": 3,
+      "outboundBlog": 6,
       "outboundLanding": 3,
-      "words": 1740,
+      "words": 1771,
       "targets": [
+        "anesthesia-cost-jaw-surgery",
         "/jaw-surgery",
+        "bsso-surgery-cost",
+        "lefort-osteotomy-cost",
         "/costs",
         "jaw-surgery-orthodontics",
         "jaw-surgery-complications",
@@ -1385,14 +1468,16 @@
     {
       "slug": "facial-contouring",
       "title": "جراحی زیبایی فک و صورت (کانتورینگ)؛ راهنمای کامل روش ها",
-      "outboundBlog": 3,
+      "outboundBlog": 5,
       "outboundLanding": 6,
-      "words": 3047,
+      "words": 3066,
       "targets": [
         "/jaw-surgery",
+        "international-patients-faq",
         "/chin-surgery",
         "genioplasty-cost",
         "v-line-jaw-reduction",
+        "cheek-implant-cost",
         "/gallery",
         "/costs",
         "jaw-surgery-recovery-care",
@@ -1488,15 +1573,16 @@
     {
       "slug": "jaw-surgery-recovery-care",
       "title": "مراقبت بعد از جراحی فک؛ تقویم روز به روز ریکاوری (خواب، تغذیه، مسواک)",
-      "outboundBlog": 6,
+      "outboundBlog": 7,
       "outboundLanding": 7,
-      "words": 2195,
+      "words": 2206,
       "targets": [
         "jaw-surgery-sleeping",
         "jaw-surgery-nutrition",
         "jaw-surgery-pain",
         "/costs",
         "/dental-implant",
+        "jaw-surgery-brushing-hygiene",
         "jaw-surgery-complications",
         "/jaw-surgery",
         "jaw-surgery-before-after",
@@ -1571,10 +1657,11 @@
     {
       "slug": "jaw-surgery-before-after",
       "title": "جراحی فک قبل و بعد؛ تغییر واقعی چهره در نمونه های کلینیکی",
-      "outboundBlog": 3,
+      "outboundBlog": 4,
       "outboundLanding": 6,
-      "words": 2041,
+      "words": 2050,
       "targets": [
+        "jaw-surgery-statistics",
         "jaw-surgery-complications",
         "/services",
         "/costs",
@@ -1647,11 +1734,12 @@
     {
       "slug": "genioplasty-cost",
       "title": "هزینه جنیوپلاستی ۱۴۰۵؛ پروتز چانه یا جابجایی استخوان چانه؟",
-      "outboundBlog": 3,
+      "outboundBlog": 4,
       "outboundLanding": 7,
-      "words": 1985,
+      "words": 1994,
       "targets": [
         "/chin-surgery",
+        "cheek-implant-cost",
         "jaw-surgery-complications",
         "/costs",
         "/services",
@@ -1674,12 +1762,13 @@
     {
       "slug": "tmj-pain-treatment",
       "title": "درد مفصل فک (TMD)؛ از کلیک و قفل شدن فک تا درمان قطعی",
-      "outboundBlog": 3,
+      "outboundBlog": 4,
       "outboundLanding": 5,
-      "words": 2796,
+      "words": 2808,
       "targets": [
         "jaw-fracture-surgery",
         "/jaw-surgery",
+        "wisdom-tooth-surgery-cost-1405",
         "maxillofacial-vs-plastic-surgeon",
         "/services",
         "jaw-botox-masseter",
@@ -1701,10 +1790,11 @@
     {
       "slug": "jaw-surgery-age",
       "title": "سن مناسب جراحی فک؛ نوجوانی بهتر است یا بزرگسالی؟",
-      "outboundBlog": 3,
+      "outboundBlog": 4,
       "outboundLanding": 5,
-      "words": 2052,
+      "words": 2062,
       "targets": [
+        "jaw-surgery-statistics",
         "/jaw-surgery",
         "/gallery",
         "/costs",
@@ -1760,11 +1850,13 @@
     {
       "slug": "jaw-surgery-orthodontics",
       "title": "جراحی فک و ارتودنسی؛ چرا هر دو لازم اند و ترتیب درست درمان",
-      "outboundBlog": 3,
+      "outboundBlog": 5,
       "outboundLanding": 5,
-      "words": 2055,
+      "words": 2077,
       "targets": [
         "/jaw-surgery",
+        "jaw-surgery-without-orthodontics",
+        "skeletal-class-2-3",
         "best-jaw-surgeon-tehran",
         "/costs",
         "jaw-surgery-recovery-care",
@@ -1830,8 +1922,11 @@
         "/costs",
         "/contact"
       ],
-      "inboundCount": 0,
-      "inboundFrom": []
+      "inboundCount": 2,
+      "inboundFrom": [
+        "kids-jaw-surgery",
+        "international-patients-faq"
+      ]
     },
     {
       "slug": "sleep-apnea-mma-surgery",
