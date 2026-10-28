@@ -11,6 +11,7 @@ import {
   ReadingProgress,
 } from "@/components/article-reader";
 import { ArticleComments } from "@/components/article-comments";
+import { KeywordTags } from "@/components/keyword-tags";
 import { JsonLdScript, breadcrumbLd } from "@/components/schema";
 import { LandingCtaBand } from "@/components/landing/landing-chrome";
 import { getBlogPost, getPublishedPosts } from "@/lib/blog-posts";
@@ -272,6 +273,10 @@ export default async function BlogArticlePage({ params }: Props) {
           <div className="mx-auto w-full min-w-0 max-w-3xl">
             <ArticleTocMobile items={extras.toc} />
             <ArticleBody sections={extras.sections} />
+
+            {/* برچسب‌های کلیدواژه — نسخه مرئی BlogPosting.keywords
+               (هم‌راستایی محتوای مرئی با اسکیما — SEO/AEO) */}
+            <KeywordTags keywords={keywordsForSlug(slug)} />
 
             {/* باکس نویسنده — E-E-A-T */}
             <div className="mt-8 flex items-start gap-4 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-ink/6">

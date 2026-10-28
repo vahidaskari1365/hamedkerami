@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2, ChevronRight, Languages, MessageCircle } from "lucide-react";
 import { JsonLdScript } from "@/components/schema";
+import { KeywordTags } from "@/components/keyword-tags";
 import { EN_ARTICLES, getEnArticle, EN_ARTICLE_WA } from "@/lib/en-articles";
 import { SITE } from "@/lib/data";
 
@@ -86,6 +87,7 @@ export default async function EnArticlePage({
           headline: a.title,
           description: a.excerpt,
           inLanguage: "en",
+          keywords: a.keyword,
           datePublished: a.datePublished,
           dateModified: a.dateModified,
           author: { "@id": `${SITE.url}/#physician` },
@@ -220,6 +222,9 @@ export default async function EnArticlePage({
               ))}
             </div>
           </section>
+
+          {/* ---------- Keywords (visible BlogPosting.keywords) ---------- */}
+          <KeywordTags keywords={a.keyword} heading="Keywords" />
 
           {/* ---------- Related ---------- */}
           <section className="mt-12" aria-labelledby="en-art-related">
