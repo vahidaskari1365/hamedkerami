@@ -23,20 +23,47 @@ export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
 
-/* عنوان SERP — AEO/SXO: گوگل عنوان بالای ~۶۰ کاراکتر را می‌بُرد و
-   استاندارد داخلی هم ≤۶۰ است. عنوان کامل در H1 و og:title می‌ماند؛
-   فقط <title> به‌صورت هوشمند کوتاه می‌شود (بخش قبل از «|» یا برش کلمه‌ای).
-   چون layout قالب «%s | دکتر حامد کرمانی» دارد، اینجا با absolute
-   بودجه برند را خودمان حساب می‌کنیم تا خروجی نهایی ≤۶۰ بماند. */
+/* عنوان SERP — AEO/SXO: گوگل به‌جای شمار کاراکتر، عرض پیکسلی (~۶۰۰px)
+   را می‌بَرد که برای فارسی تقریباً ۶۰ تا ۶۵ کاراکتر است. عنوان کامل در
+   H1 و og:title می‌ماند؛ فقط <title> هوشمند کوتاه می‌شود — برش فقط در
+   مرز طبیعی عبارت («؛» «،» «+» «—» «–») و هرگز با «…»: عنوان نیمه‌تمام
+   با سه‌نقطه در نتایج گوگل ظاهر broken می‌شود و CTR را می‌کُشد.
+   بودجه کل ≤۶۵ کاراکتر شامل برند. */
 const TITLE_BRAND = " | دکتر حامد کرمانی";
+const TITLE_BODY_BUDGET = 46; /* ۶۵ منهای طول برند */
+
+/* حذف حروف ربط و نقطه‌گذاری انتهایی تا عنوان با «و» یا «،» تمام نشود */
+function cleanTitleEnd(s: string): string {
+  let out = s.trimEnd();
+  const connectives = [" و", " یا", " با", " در", " برای", " به", " از", " که", " تا", " های"];
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const c of connectives) {
+      if (out.endsWith(c)) { out = out.slice(0, -c.length).trimEnd(); changed = true; }
+    }
+  }
+  return out.replace(/[؛،+—–|-]+$/, "").trimEnd();
+}
+
 function serpTitle(full: string): string {
-  const budget = 60 - TITLE_BRAND.length; /* ۴۱ کاراکتر برای بدنه عنوان */
-  const beforePipe = full.split(/[|–]/)[0].trim();
-  if (beforePipe.length >= 20 && beforePipe.length <= budget) return beforePipe + TITLE_BRAND;
-  if (full.length <= budget) return full + TITLE_BRAND;
-  const cut = full.slice(0, budget - 1);
-  const core = cut.slice(0, cut.lastIndexOf(" ")) || cut;
-  return `${core}…${TITLE_BRAND}`;
+  if (full.length <= TITLE_BODY_BUDGET) return full + TITLE_BRAND;
+  const head = full.slice(0, TITLE_BODY_BUDGET + 1);
+  /* ۱) بلندترین پیشوندی که درست قبل از یک مرز طبیعی تمام می‌شود */
+  let core = "";
+  for (let i = head.length - 1; i >= 22; i--) {
+    if ("؛،+—–".includes(head[i - 1])) {
+      core = cleanTitleEnd(head.slice(0, i - 1));
+      if (core.length >= 20) break;
+      core = "";
+    }
+  }
+  /* ۲) نبود مرز طبیعی؟ برش کلمه‌ای با پاک‌سازی انتهای عنوان */
+  if (!core) {
+    const spaceAt = head.lastIndexOf(" ");
+    core = cleanTitleEnd(head.slice(0, spaceAt > 20 ? spaceAt : TITLE_BODY_BUDGET));
+  }
+  return core + TITLE_BRAND;
 }
 
 /* توضیح متا — استاندارد: ۱۲۰–۱۶۰ کاراکتر با برش کلمه‌ای (نه وسط کلمه) */

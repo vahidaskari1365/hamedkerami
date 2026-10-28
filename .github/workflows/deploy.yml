@@ -4,7 +4,7 @@ name: Build & Deploy to IranHost (cPanel UAPI)
 # (FTP این هاست کانال دیتایش فایروال است و SSH هم بسته — پس همه‌چیز از HTTPS پورت 2083 می‌گذرد)
 on:
   push:
-    branches: [main] # fix: قبلاً «ain]» تایپ شده بود و push به main هرگز دیپلوی خودکار تریگر نمی‌کرد
+    branches: [main] # deploy on every push to main (was broken)
   workflow_dispatch: # اجرای دستی از تب Actions
 
 env:
