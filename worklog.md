@@ -726,3 +726,24 @@ Stage Summary:
 - مقاله «عوارض جراحی فک» از قبل زنده بود (jaw-surgery-complications، ۲۱۰۳ کلمه، تایتل درست) — فلگ «—» ممیزی صرفاً نبود مپینگ در ابزار بود نه غیبت واقعی
 - باقی‌مانده هوش مصنوعی: VideoObject برای ۷ ویدیو آپارات، صفحات EN توریسم درمانی؛ باقی‌مانده مالک: GBP، بک‌لینک‌ها، نظرات گوگل، ریدایرکت dromfs در پنل ایران‌هاست
 - یادآوری امنیتی: توکن ghp_ لو رفته در چت باید ابطال و توکن جدید در remote و secret GH_TOKEN به‌روز شود
+
+---
+Task ID: video-schema-en-guides
+Agent: main (Z.ai CLI)
+Task: دستور «انجام بده» — اولویت ۲ و ۳ بریف: VideoObject کامل + ۸ مقاله EN توریسم پزشکی (فاز ۸)
+
+Work Log:
+- کشف: ۷ ویدیوی آپارات از قبل در src/lib/videos.ts مرکز‌داده بود (embed + thumbnail لوکال public/aparat + upload) و VideoObject در schema.tsx/videoLd روی هوم و ۵ لندینگ تزریق می‌شد
+- بهبود ۱: durationIso (ISO 8601) به هر ۷ ویدیو + emit در videoLd (توصیه گوگل)
+- بهبود ۲: route جدید /video-sitemap.xml (استاندارد sitemap-video 1.1) — ۷ صفحه میزبان + ۱۸ ورودی ویدیو با thumbnail لوکال/player_loc/content_loc/مدت/تاریخ؛ معرفی در robots.txt (sitemap آرایه‌ای شد)
+- فاز ۸ — EN: فایل داده src/lib/en-articles.ts با ۸ مقاله دستی (کیوردهای ردیف ۴۳-۵۰ keyword-plan): cost/surgeon/journey/implants/zygomatic/TMJ/medical-tourism/blepharoplasty — هر مقاله: H1=کیورد دقیق، پاسخ مستقیم، جدول/لیست، ≥۵ FAQ، لینک داخلی به لندینگ‌های /en، مقاله فارسی معادل (hreflang fa/en/x-default)
+- روت src/app/en/blog/[slug] (generateStaticParams، ۳ اسکیما MedicalWebPage+Article+FAQPage+Breadcrumb، CTA واتساپ) + بخش «Patient guides» در /en/blog + ورود ۸ URL به sitemap (۱۰۳→۱۱۱) + بخش EN در llms.txt
+- داده‌ها فقط از EN_COSTS/EN_STATS/EN_ABOUT موجود (هزینه ۲۰۲۶ واقعی: جنیوپلاستی ۹۰-۱۱۰ تا دو فک+چانه ۲۱۰-۲۴۰ میلیون تومان؛ ۱۲۰۰+ جراحی فک، ۲۰۰۰۰+ ایمپلنت، ۱۰۰+ زایگوماتیک، ۳۰+ تعویض مفصل)
+- tsc: بدون خطا در فایل‌های جدید (خطاهای پیش‌موجود skills/examples بی‌ربط؛ ignoreBuildErrors هم فعال)؛ دیپلوی f76340a سبز
+- راستی‌آزمایی زنده: /en/blog/jaw-surgery-cost-in-iran با تایتل درست و هر ۴ اسکیما؛ video-sitemap.xml زنده با تایتل ویدیوها؛ sitemap ۱۱۱ URL با هر ۸ راهنمای EN
+
+Stage Summary:
+- اولویت ۲ بریف کامل شد: VideoObject با duration + ویدیو-سایت‌مپ اختصاصی (شانس نتیجه ویدیویی گوگل)
+- اولویت ۳ بریف کامل شد: ۸ مقاله EN فاز ۸ + پیلار قبلی + /en/costs = زیرساخت کامل توریسم درمانی (عراق/عمان/افغانستان/خلیج)
+- انتظار: خزش مجدد EN طی ۱-۲ هفته؛ نظارت روی Search Console بخش International targeting
+- باقی‌مانده مالک: GBP، بک‌لینک‌ها (دکترتو/دکتردکتر/پذیرش۲۴/دانشگاه)، نظرات گوگل، ریدایرکت dromfs
