@@ -30,7 +30,7 @@ function parseLlmsBodies(text) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (line.startsWith("## ") && lines[i + 1] && lines[i + 1].startsWith("آدرس:")) {
-      if (cur) out[cur.slug] = cur.body;
+      if (cur) out[cur.slug] = cur.body.join("\n").trim();
       cur = { slug: (lines[i + 1].match(/blog\/([^\/\s]+)$/) || [])[1] || "", body: [], started: false };
       i++; /* پرش از خط آدرس */
       continue;
