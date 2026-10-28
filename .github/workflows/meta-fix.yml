@@ -1,0 +1,36 @@
+name: Article meta description fix (keyword-bearing SERP text)
+
+# به‌روزرسانی چکیده (متا دیسکریپشن) مقاله‌های زنده با نسخه‌های دارای
+# کلیدواژه دقیق — بدنه دست‌نخورده از llms-full.txt برمی‌گردد و فقط
+# excerpt در دیتابیس جایگزین می‌شود (مسیر انتشار ایجنت + سردبیر QC).
+# مانیفست: content-fixes/meta-manifest.json { slug: متن جدید }
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: meta-fix
+  cancel-in-progress: false
+
+jobs:
+  meta-fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Publish new excerpts
+        env:
+          SITE_URL: https://dr-kermani.com
+          AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
+        run: node scripts/fix-meta-publish.mjs
+
+      - name: IndexNow — پینگ Bing برای نسخه به‌روز
+        if: always()
+        run: node scripts/indexnow-submit.mjs --updated || echo "IndexNow ping ناموفق — مانع نیست"
