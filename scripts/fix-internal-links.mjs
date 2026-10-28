@@ -144,7 +144,8 @@ for (const [source, list] of bySource) {
   let body = orig;
   const usedRanges = [];
   for (const p of list) {
-    const url = `${SITE}/blog/${p.orphan}`;
+    /* لینک باید نسبی باشد — دروازه سردبیر لینک http مطلق را رد می‌کند (publish.ts بند ۷۷) */
+    const url = `/blog/${p.orphan}`;
     if (body.includes(`/blog/${p.orphan})`)) {
       results.push({ ...p, ok: true, note: "قبلاً لینک دارد — رد شد (idempotent)" });
       continue;
