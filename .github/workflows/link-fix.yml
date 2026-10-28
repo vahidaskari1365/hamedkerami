@@ -1,0 +1,37 @@
+name: Internal link fix (contextual inbound links for orphans)
+
+# افزودن جمله‌های لینک زمینه‌ای به مقاله‌های مبدأ طبق
+# content-fixes/internal-link-plan.json — هدف: پوشش ۱۹ مقالهٔ
+# بدون هیچ لینک ورودی از مقالات دیگر (authority داخلی خوشه‌ها).
+# بدنه verbatim از llms-full.txt + جمله جدید؛ title/excerpt/cover
+# از متای صفحه زنده. قبل از اجرای زنده: DRY=1 به‌صورت محلی.
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: link-fix
+  cancel-in-progress: false
+
+jobs:
+  link-fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Publish internal links
+        env:
+          SITE_URL: https://dr-kermani.com
+          AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
+        run: node scripts/fix-internal-links.mjs
+
+      - name: IndexNow — پینگ Bing برای نسخه به‌روز
+        if: always()
+        run: node scripts/indexnow-submit.mjs --updated || echo "IndexNow ping ناموفق — مانع نیست"

@@ -1,0 +1,61 @@
+{
+  "comment": "پلن لینک‌سازی داخلی برای ۱۹ مقاله بدون هیچ لینک ورودی (orphans). هر جفت: source مقاله‌ای است که جمله لینک به آن اضافه می‌شود؛ orphan مقصد لینک؛ anchor متن لنگر دارای کلیدواژه. اسکریپت: scripts/fix-internal-links.mjs",
+  "pairs": [
+    { "source": "all-on-4-implants-guide", "orphan": "zygomatic-implant-cost-1405", "anchor": "هزینه ایمپلنت زیگوماتیک" },
+    { "source": "implant-cost-trend", "orphan": "zygomatic-implant-cost-1405", "anchor": "هزینه ایمپلنت زیگوماتیک در فک تحلیل‌رفته" },
+
+    { "source": "after-implant-care", "orphan": "implant-lifespan", "anchor": "عمر ایمپلنت دندان" },
+    { "source": "implant-diabetes", "orphan": "implant-lifespan", "anchor": "طول عمر ایمپلنت دندان" },
+
+    { "source": "implant-installments", "orphan": "full-mouth-implants", "anchor": "ایمپلنت فول ماوث" },
+    { "source": "all-on-4-implants-guide", "orphan": "full-mouth-implants", "anchor": "ایمپلنت تمام دهان (فول ماوث)" },
+
+    { "source": "jaw-surgery-orthodontics", "orphan": "skeletal-class-2-3", "anchor": "کلاس ۲ و ۳ اسکلتال" },
+    { "source": "jaw-surgery-signs", "orphan": "skeletal-class-2-3", "anchor": "ناهنجاری اسکلتال کلاس ۲ و ۳" },
+
+    { "source": "tehran-provincial-patients", "orphan": "international-patients-faq", "anchor": "جراحی فک در ایران" },
+    { "source": "facial-contouring", "orphan": "international-patients-faq", "anchor": "راهنمای بیماران بین‌المللی جراحی فک" },
+
+    { "source": "jaw-surgery-swelling-timeline", "orphan": "women-jaw-surgery", "anchor": "جراحی فک در خانم‌ها" },
+    { "source": "jaw-surgery-speaking", "orphan": "women-jaw-surgery", "anchor": "نکات جراحی فک برای خانم‌ها" },
+
+    { "source": "jaw-surgery-nutrition", "orphan": "fracture-diet-healing", "anchor": "تغذیه بعد از شکستگی فک" },
+    { "source": "jaw-bone-loss", "orphan": "fracture-diet-healing", "anchor": "تغذیه برای ترمیم استخوان فک" },
+
+    { "source": "jaw-cysts-tumors", "orphan": "jaw-cancer-signs", "anchor": "علائم هشدار سرطان فک" },
+    { "source": "tmj-joint-prosthesis", "orphan": "jaw-cancer-signs", "anchor": "علائم سرطان فک" },
+
+    { "source": "tmj-pain-treatment", "orphan": "jaw-surgery-ear-pain", "anchor": "درد فک و گوش" },
+    { "source": "tmj-physiotherapy-exercises", "orphan": "jaw-surgery-ear-pain", "anchor": "درد ارجاعی فک به گوش" },
+
+    { "source": "genioplasty-cost", "orphan": "cheek-implant-cost", "anchor": "هزینه پروتز گونه" },
+    { "source": "facial-contouring", "orphan": "cheek-implant-cost", "anchor": "پروتز گونه" },
+
+    { "source": "jaw-surgery-cost-1405", "orphan": "anesthesia-cost-jaw-surgery", "anchor": "هزینه بیهوشی جراحی فک" },
+    { "source": "bimax-surgery-cost-1405", "orphan": "anesthesia-cost-jaw-surgery", "anchor": "هزینه بیهوشی جراحی دو فک" },
+
+    { "source": "jaw-surgery-recovery-care", "orphan": "jaw-surgery-brushing-hygiene", "anchor": "مسواک بعد از جراحی فک" },
+    { "source": "jaw-surgery-nutrition", "orphan": "jaw-surgery-brushing-hygiene", "anchor": "بهداشت دهان بعد از جراحی فک" },
+
+    { "source": "jaw-surgery-return-to-work", "orphan": "jaw-surgery-speaking", "anchor": "حرف زدن بعد از جراحی فک" },
+    { "source": "jaw-surgery-swelling-timeline", "orphan": "jaw-surgery-speaking", "anchor": "تأثیر تورم بر تکلم بعد از جراحی فک" },
+
+    { "source": "bsso-lower-jaw-surgery", "orphan": "bsso-surgery-cost", "anchor": "هزینه جراحی BSSO" },
+    { "source": "jaw-surgery-cost-1405", "orphan": "bsso-surgery-cost", "anchor": "هزینه جراحی فک پایین" },
+
+    { "source": "lefort-osteotomy-guide", "orphan": "lefort-osteotomy-cost", "anchor": "هزینه جراحی لفورت" },
+    { "source": "jaw-surgery-cost-1405", "orphan": "lefort-osteotomy-cost", "anchor": "هزینه جراحی فک بالا" },
+
+    { "source": "jaw-surgery-before-after", "orphan": "jaw-surgery-statistics", "anchor": "آمار جراحی فک" },
+    { "source": "jaw-surgery-age", "orphan": "jaw-surgery-statistics", "anchor": "نرخ موفقیت جراحی فک" },
+
+    { "source": "jaw-surgery-signs", "orphan": "jaw-surgery-without-orthodontics", "anchor": "جراحی فک بدون ارتودنسی" },
+    { "source": "jaw-surgery-orthodontics", "orphan": "jaw-surgery-without-orthodontics", "anchor": "امکان جراحی فک بدون ارتودنسی" },
+
+    { "source": "anesthesia-cost-jaw-surgery", "orphan": "wisdom-tooth-surgery-cost-1405", "anchor": "هزینه جراحی دندان عقل نهفته" },
+    { "source": "jaw-surgery-pain", "orphan": "wisdom-tooth-surgery-cost-1405", "anchor": "درد بعد از جراحی دندان عقل" },
+
+    { "source": "kids-jaw-surgery", "orphan": "cleft-lip-palate-surgery", "anchor": "جراحی لب و کام شکافته" },
+    { "source": "international-patients-faq", "orphan": "cleft-lip-palate-surgery", "anchor": "جراحی لب شکری و کام" }
+  ]
+}
