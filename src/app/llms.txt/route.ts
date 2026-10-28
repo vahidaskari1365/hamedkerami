@@ -1,4 +1,5 @@
 import { getPublishedPosts } from "@/lib/blog-posts";
+import { EN_ARTICLES } from "@/lib/en-articles";
 import { SITE, NAV } from "@/lib/data";
 
 /* ============================================================
@@ -36,6 +37,11 @@ ${NAV.map((n) => `- [${n.label}](${SITE.url}${n.path === "/" ? "" : n.path})`).j
 - [جراحی چانه (جنیوپلاستی)](${SITE.url}/chin-surgery) — اصلاح چانه عقب‌رفته و جلوآمده با جنیوپلاستی استخوانی و پروتز؛ بیش از ۲۴۸ اصلاح موفق.
 - [ایمپلنت دندان](${SITE.url}/dental-implant) — بیش از ۲۰۰۰۰ ایمپلنت موفق؛ برندهای آلمانی، سوئیسی، آمریکایی و کره‌ای و ایمپلنت زایگوماتیک.
 - [ایمپلنت دندان در تهران](${SITE.url}/implant-pasdaran) — دسترسی آسان از پاسداران و شمال تهران؛ پیش‌بررسی رایگان رادیوگرافی در واتسپ.
+
+## English guides for international patients (medical tourism)
+
+${EN_ARTICLES.map((a) => `- [${a.title}](${SITE.url}/en/blog/${a.slug}) — ${a.excerpt}`).join("\n")}
+- [Jaw Surgery in Iran — main landing](${SITE.url}/en/jaw-surgery-in-iran) — costs, process, visa letter, 10–14 day stay, online follow-up.
 
 ## مقالات وبلاگ (${posts.length} مقاله — به طور خودکار به روز می شود)
 

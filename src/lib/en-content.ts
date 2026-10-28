@@ -332,7 +332,7 @@ export const EN_BLOG = {
   crumb: "Blog",
   eyebrow: "Educational articles",
   h1: "Oral & Maxillofacial Surgery Articles — Dr. Hamed Kermani",
-  desc: "In-depth educational articles on jaw surgery, genioplasty, TMJ disorders, dental implants and treatment costs. Articles are written in Persian — use the search box to find your topic.",
+  desc: "In-depth articles on jaw surgery, genioplasty, TMJ disorders, dental implants and treatment costs. Below the article list you will find the English patient guides for international visitors — costs, surgeon selection, visa and recovery in Iran.",
   searchLabel: "Search articles:",
   searchPlaceholder: "Try: cost, recovery, botox, chin, implant…",
   resultsOne: "article found",

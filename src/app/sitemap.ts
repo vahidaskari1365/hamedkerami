@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getPublishedPosts } from "@/lib/blog-posts";
 import { jalaliDisplayToIso } from "@/lib/jalali";
+import { EN_ARTICLES } from "@/lib/en-articles";
 import { SITE } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -98,5 +99,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/en/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
   ];
 
-  return [...main, ...en, ...blog];
+  /* ---------- مقاله‌های EN توریسم پزشکی (فاز ۸ — en-articles.ts) ---------- */
+  const enGuides: MetadataRoute.Sitemap = EN_ARTICLES.map((a) => ({
+    url: `${base}/en/blog/${a.slug}`,
+    lastModified: new Date(`${a.dateModified}T00:00:00.000Z`),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...main, ...en, ...enGuides, ...blog];
 }

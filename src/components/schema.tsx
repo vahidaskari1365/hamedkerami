@@ -47,6 +47,7 @@ export interface VideoItem {
   thumb: string; // تصویر بندانگشتی (مسیر سایت یا URL کامل)
   upload: string; // تاریخ انتشار «YYYY-MM-DD»
   embed: string; // لینک پخش/ embed آپارات یا یوتیوب
+  durationIso?: string; // مدت ISO 8601 (مثل PT10S) — توصیه گوگل برای VideoObject
 }
 
 export function videoLd(v: VideoItem) {
@@ -61,6 +62,7 @@ export function videoLd(v: VideoItem) {
     uploadDate: v.upload,
     embedUrl: v.embed,
     contentUrl: v.embed,
+    ...(v.durationIso ? { duration: v.durationIso } : {}),
     inLanguage: "fa-IR",
     publisher: { "@id": `${SITE.url}/#physician` },
   };

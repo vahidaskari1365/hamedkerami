@@ -19,6 +19,8 @@ export interface SiteVideo {
   embed: string;
   /** مدت نمایشی فارسی */
   duration: string;
+  /** مدت استاندارد ISO 8601 برای اسکیمای VideoObject و ویدیو-سایت‌مپ */
+  durationIso: string;
   cat: "orthognathic" | "implant" | "intro";
 }
 
@@ -42,6 +44,7 @@ export const SITE_VIDEOS: SiteVideo[] = [
     upload: "2022-09-25",
     embed: aparatEmbed("p77oq71"),
     duration: "۰:۱۰",
+    durationIso: "PT10S",
     cat: "orthognathic",
   },
   {
@@ -53,6 +56,7 @@ export const SITE_VIDEOS: SiteVideo[] = [
     upload: "2022-09-23",
     embed: aparatEmbed("X04Y6"),
     duration: "۰:۲۳",
+    durationIso: "PT23S",
     cat: "orthognathic",
   },
   {
@@ -64,6 +68,7 @@ export const SITE_VIDEOS: SiteVideo[] = [
     upload: "2022-09-23",
     embed: aparatEmbed("i486x63"),
     duration: "۰:۰۶",
+    durationIso: "PT6S",
     cat: "orthognathic",
   },
   {
@@ -75,6 +80,7 @@ export const SITE_VIDEOS: SiteVideo[] = [
     upload: "2023-08-09",
     embed: aparatEmbed("40hon"),
     duration: "۱:۰۱",
+    durationIso: "PT61S",
     cat: "implant",
   },
   {
@@ -86,6 +92,7 @@ export const SITE_VIDEOS: SiteVideo[] = [
     upload: "2023-08-09",
     embed: aparatEmbed("dEIsD"),
     duration: "۰:۴۶",
+    durationIso: "PT46S",
     cat: "implant",
   },
   {
@@ -97,6 +104,7 @@ export const SITE_VIDEOS: SiteVideo[] = [
     upload: "2021-11-06",
     embed: aparatEmbed("eYJyT"),
     duration: "۵:۵۳",
+    durationIso: "PT353S",
     cat: "implant",
   },
   {
@@ -108,6 +116,7 @@ export const SITE_VIDEOS: SiteVideo[] = [
     upload: "2023-10-18",
     embed: aparatEmbed("PyjL5"),
     duration: "۰:۵۸",
+    durationIso: "PT58S",
     cat: "intro",
   },
 ];

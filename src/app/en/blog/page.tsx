@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { JsonLdScript } from "@/components/schema";
 import { EnBlogPage } from "@/components/en/en-blog";
 import { getPublishedPosts } from "@/lib/blog-posts";
+import { EN_ARTICLES } from "@/lib/en-articles";
 import { SITE } from "@/lib/data";
 
 /* ============================================================
@@ -48,6 +51,37 @@ export default async function EnBlogRoute() {
           date: p.date,
         }))}
       />
+      {/* راهنماهای انگلیسی توریسم پزشکی (فاز ۸) — بعد از فهرست مقالات فارسی */}
+      <section className="bg-bone pb-16 sm:pb-20" aria-labelledby="en-guides-h">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <h2 id="en-guides-h" className="text-xl font-black text-ink sm:text-2xl">
+            Patient guides for international visitors
+          </h2>
+          <p className="mt-2 max-w-2xl text-[13px] leading-7 text-foreground/60">
+            Full English guides on jaw surgery, implants, TMJ and blepharoplasty in Iran —
+            costs, surgeon selection, visa and recovery, written for patients from Iraq, Oman,
+            Afghanistan, the Gulf and the diaspora.
+          </p>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+            {EN_ARTICLES.map((a) => (
+              <li key={a.slug}>
+                <Link
+                  href={`/en/blog/${a.slug}`}
+                  className="flex items-center justify-between gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-ink/10 transition hover:ring-teal/40"
+                >
+                  <span>
+                    <span className="block text-[13.5px] font-black text-ink">{a.title}</span>
+                    <span className="mt-1 block text-[11.5px] text-foreground/55">
+                      {a.readMinutes} min read · updated {a.dateModified}
+                    </span>
+                  </span>
+                  <ChevronRight size={15} className="shrink-0 text-teal" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
       <JsonLdScript
         data={{
           "@context": "https://schema.org",

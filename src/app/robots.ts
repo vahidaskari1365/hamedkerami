@@ -46,6 +46,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "AI2Bot", allow: "/" },
       { userAgent: "CCBot", allow: "/" },
     ],
-    sitemap: `${SITE.url}/sitemap.xml`,
+    sitemap: [`${SITE.url}/sitemap.xml`, `${SITE.url}/video-sitemap.xml`],
   };
 }
