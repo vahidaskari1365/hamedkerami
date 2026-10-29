@@ -1,0 +1,45 @@
+name: Wave2 keyword fix (10 remaining failed articles)
+
+# موج ۲ فیکس کیورد — ده مقاله مردود باقی‌مانده ممیزی (علامت→علائم،
+# سوالات→مشاوره، هزینه-first، نامتقارنی-first + فیکس بدنه/متا).
+# اسپک: content-fixes/wave2.json — بدنه verbatim از llms-full.txt زنده
+# خوانده و ویرایش هدفمند می‌شود؛ سردبیر QC کامل روی مسیر publish اعمال می‌شود.
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "برای اجرا بنویسید: publish"
+        required: true
+        type: string
+
+concurrency:
+  group: wave2-fix
+  cancel-in-progress: false
+
+jobs:
+  wave2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Publish wave2 fixes
+        env:
+          SITE_URL: https://dr-kermani.com
+          AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
+        run: |
+          if [ "${{ inputs.confirm }}" != "publish" ]; then
+            echo "confirm=publish نیست — لغو شد"; exit 1
+          fi
+          node scripts/wave2-publish.mjs
+
+      - name: IndexNow — پینگ Bing برای نسخه به‌روز
+        if: always()
+        run: node scripts/indexnow-submit.mjs --updated || echo "IndexNow ping ناموفق — مانع نیست"

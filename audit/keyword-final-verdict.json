@@ -1,0 +1,831 @@
+{
+  "generated": "2026-10-29T01:51:59.455Z",
+  "threshold": 70,
+  "rows": [
+    {
+      "slug": "jaw-surgery-return-to-work",
+      "keyword": "بازگشت به کار بعد از جراحی فک",
+      "r1": 48,
+      "after": 85,
+      "live": {
+        "words": 1532,
+        "freq": 1,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "فراوانی-کم(1)"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "3d-jaw-surgery-simulation",
+      "keyword": "شبیه سازی جراحی فک",
+      "r1": 48,
+      "after": 76,
+      "live": {
+        "words": 1552,
+        "freq": 0,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-صفر"
+      ],
+      "verdict": "قبول*"
+    },
+    {
+      "slug": "jaw-surgery-signs",
+      "keyword": "علائم نیاز به جراحی فک",
+      "r1": 48,
+      "after": 40,
+      "live": {
+        "words": 1816,
+        "freq": 0,
+        "secIn": 0,
+        "secTotal": 5,
+        "kwInTitle": false,
+        "kwAtTitleStart": false,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-title/H1",
+        "کلیدواژه-ابتدای-title-نیست",
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-صفر",
+        "مرتبط-0/5"
+      ],
+      "verdict": "رد"
+    },
+    {
+      "slug": "kids-jaw-surgery",
+      "keyword": "جراحی فک کودکان",
+      "r1": 53,
+      "after": 87,
+      "live": {
+        "words": 1636,
+        "freq": 2,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "international-patients-faq",
+      "keyword": "جراحی فک در ایران",
+      "r1": 53,
+      "after": 87,
+      "live": {
+        "words": 1598,
+        "freq": 2,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-cancer-signs",
+      "keyword": "سرطان فک",
+      "r1": 53,
+      "after": 90,
+      "live": {
+        "words": 1640,
+        "freq": 3,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "implant-for-seniors",
+      "keyword": "ایمپلنت دندان سالمندان",
+      "r1": 53,
+      "after": 87,
+      "live": {
+        "words": 1570,
+        "freq": 2,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-surgery-brushing-hygiene",
+      "keyword": "مسواک بعد از جراحی فک",
+      "r1": 53,
+      "after": 79,
+      "live": {
+        "words": 1539,
+        "freq": 1,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-کم(1)"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "guided-implant-surgery",
+      "keyword": "ایمپلنت گاید شده",
+      "r1": 53,
+      "after": 87,
+      "live": {
+        "words": 1725,
+        "freq": 2,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-surgery-statistics",
+      "keyword": "آمار جراحی فک",
+      "r1": 53,
+      "after": 64,
+      "live": {
+        "words": 1829,
+        "freq": 0,
+        "secIn": 0,
+        "secTotal": 5,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-صفر",
+        "مرتبط-0/5"
+      ],
+      "verdict": "رد"
+    },
+    {
+      "slug": "jaw-surgery-consultation-checklist",
+      "keyword": "مشاوره جراحی فک",
+      "r1": 57,
+      "after": 40,
+      "live": {
+        "words": 1828,
+        "freq": 0,
+        "secIn": 0,
+        "secTotal": 5,
+        "kwInTitle": false,
+        "kwAtTitleStart": false,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-title/H1",
+        "کلیدواژه-ابتدای-title-نیست",
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-صفر",
+        "مرتبط-0/5"
+      ],
+      "verdict": "رد"
+    },
+    {
+      "slug": "bimax-surgery-cost-1405",
+      "keyword": "هزینه جراحی دو فک ۱۴۰۵",
+      "r1": 57,
+      "after": 46,
+      "live": {
+        "words": 1613,
+        "freq": 0,
+        "secIn": 3,
+        "secTotal": 6,
+        "kwInTitle": false,
+        "kwAtTitleStart": false,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-title/H1",
+        "کلیدواژه-ابتدای-title-نیست",
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-صفر",
+        "مرتبط-3/6"
+      ],
+      "verdict": "رد"
+    },
+    {
+      "slug": "women-jaw-surgery",
+      "keyword": "جراحی فک خانم ها",
+      "r1": 58,
+      "after": 87,
+      "live": {
+        "words": 1605,
+        "freq": 2,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-surgery-ear-pain",
+      "keyword": "درد فک و گوش",
+      "r1": 58,
+      "after": 87,
+      "live": {
+        "words": 1635,
+        "freq": 2,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-exercises-physio",
+      "keyword": "ورزش بعد از جراحی فک",
+      "r1": 58,
+      "after": 87,
+      "live": {
+        "words": 1522,
+        "freq": 2,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-surgery-pain",
+      "keyword": "درد بعد از جراحی فک",
+      "r1": 58,
+      "after": 67,
+      "live": {
+        "words": 1510,
+        "freq": 1,
+        "secIn": 0,
+        "secTotal": 5,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-کم(1)",
+        "مرتبط-0/5"
+      ],
+      "verdict": "رد"
+    },
+    {
+      "slug": "facial-contouring",
+      "keyword": "جراحی زیبایی فک و صورت",
+      "r1": 60,
+      "after": 81,
+      "live": {
+        "words": 3016,
+        "freq": 4,
+        "secIn": 2,
+        "secTotal": 7,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-2/7"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "gummy-smile-treatment",
+      "keyword": "لبخند لثه ای",
+      "r1": 60,
+      "after": 94,
+      "live": {
+        "words": 1828,
+        "freq": 21,
+        "secIn": 3,
+        "secTotal": 6,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-3/6"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "best-jaw-surgeon-tehran",
+      "keyword": "بهترین جراح فک و صورت در تهران",
+      "r1": 60,
+      "after": 74,
+      "live": {
+        "words": 1895,
+        "freq": 0,
+        "secIn": 4,
+        "secTotal": 5,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-صفر",
+        "مرتبط-4/5"
+      ],
+      "verdict": "قبول*"
+    },
+    {
+      "slug": "jaw-asymmetry",
+      "keyword": "نامتقارنی فک",
+      "r1": 60,
+      "after": 68,
+      "live": {
+        "words": 1870,
+        "freq": 7,
+        "secIn": 2,
+        "secTotal": 6,
+        "kwInTitle": false,
+        "kwAtTitleStart": false,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "کلیدواژه-نیست-در-title/H1",
+        "کلیدواژه-ابتدای-title-نیست",
+        "مرتبط-2/6"
+      ],
+      "verdict": "رد"
+    },
+    {
+      "slug": "jaw-surgery-recovery-care",
+      "keyword": "مراقبت بعد از جراحی فک",
+      "r1": 60,
+      "after": 66,
+      "live": {
+        "words": 2162,
+        "freq": 0,
+        "secIn": 2,
+        "secTotal": 6,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-صفر",
+        "مرتبط-2/6"
+      ],
+      "verdict": "رد"
+    },
+    {
+      "slug": "jaw-surgery-complications",
+      "keyword": "عوارض جراحی فک",
+      "r1": 60,
+      "after": 82,
+      "live": {
+        "words": 2128,
+        "freq": 3,
+        "secIn": 2,
+        "secTotal": 6,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-2/6"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-surgery-before-after",
+      "keyword": "جراحی فک قبل و بعد",
+      "r1": 60,
+      "after": 69,
+      "live": {
+        "words": 2016,
+        "freq": 0,
+        "secIn": 3,
+        "secTotal": 7,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-صفر",
+        "مرتبط-3/7"
+      ],
+      "verdict": "رد"
+    },
+    {
+      "slug": "v-line-jaw-reduction",
+      "keyword": "کوچک کردن زاویه فک",
+      "r1": 60,
+      "after": 86,
+      "live": {
+        "words": 2034,
+        "freq": 3,
+        "secIn": 4,
+        "secTotal": 6,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-4/6"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-botox-masseter",
+      "keyword": "بوتاکس فک",
+      "r1": 60,
+      "after": 83,
+      "live": {
+        "words": 2132,
+        "freq": 4,
+        "secIn": 3,
+        "secTotal": 7,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-3/7"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "genioplasty-cost",
+      "keyword": "هزینه جنیوپلاستی",
+      "r1": 60,
+      "after": 85,
+      "live": {
+        "words": 1948,
+        "freq": 4,
+        "secIn": 4,
+        "secTotal": 7,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-4/7"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "tmj-pain-treatment",
+      "keyword": "درد مفصل فک",
+      "r1": 60,
+      "after": 84,
+      "live": {
+        "words": 2758,
+        "freq": 4,
+        "secIn": 4,
+        "secTotal": 8,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-4/8"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-surgery-age",
+      "keyword": "سن مناسب جراحی فک",
+      "r1": 60,
+      "after": 75,
+      "live": {
+        "words": 2018,
+        "freq": 2,
+        "secIn": 0,
+        "secTotal": 5,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-0/5"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "maxillofacial-vs-plastic-surgeon",
+      "keyword": "تفاوت جراح فک و صورت با جراح پلاستیک",
+      "r1": 60,
+      "after": 93,
+      "live": {
+        "words": 2006,
+        "freq": 3,
+        "secIn": 2,
+        "secTotal": 5,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-2/5"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-surgery-orthodontics",
+      "keyword": "جراحی فک و ارتودنسی",
+      "r1": 60,
+      "after": 93,
+      "live": {
+        "words": 2034,
+        "freq": 3,
+        "secIn": 2,
+        "secTotal": 5,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-2/5"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-filler-vs-surgery",
+      "keyword": "فیلر فک",
+      "r1": 60,
+      "after": 90,
+      "live": {
+        "words": 1821,
+        "freq": 9,
+        "secIn": 1,
+        "secTotal": 6,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-1/6"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "cleft-lip-palate-surgery",
+      "keyword": "شکاف لب و کام",
+      "r1": 60,
+      "after": 92,
+      "live": {
+        "words": 2792,
+        "freq": 4,
+        "secIn": 2,
+        "secTotal": 6,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-2/6"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "sleep-apnea-mma-surgery",
+      "keyword": "جراحی آپنه خواب",
+      "r1": 60,
+      "after": 82,
+      "live": {
+        "words": 1938,
+        "freq": 3,
+        "secIn": 2,
+        "secTotal": 6,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-2/6"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-fracture-surgery",
+      "keyword": "شکستگی فک",
+      "r1": 60,
+      "after": 78,
+      "live": {
+        "words": 1799,
+        "freq": 4,
+        "secIn": 0,
+        "secTotal": 6,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "مرتبط-0/6"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "anesthesia-cost-jaw-surgery",
+      "keyword": "هزینه بیهوشی جراحی فک",
+      "r1": 62,
+      "after": 87,
+      "live": {
+        "words": 1516,
+        "freq": 2,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "jaw-surgery-speaking",
+      "keyword": "حرف زدن بعد از جراحی فک",
+      "r1": 62,
+      "after": 85,
+      "live": {
+        "words": 1563,
+        "freq": 1,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "فراوانی-کم(1)"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "implant-vs-bridge",
+      "keyword": "ایمپلنت یا بریج",
+      "r1": 62,
+      "after": 67,
+      "live": {
+        "words": 1774,
+        "freq": 1,
+        "secIn": 0,
+        "secTotal": 5,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-کم(1)",
+        "مرتبط-0/5"
+      ],
+      "verdict": "رد"
+    },
+    {
+      "slug": "blepharoplasty-cost-1405",
+      "keyword": "هزینه بلفاروپلاستی ۱۴۰۵",
+      "r1": 62,
+      "after": 66,
+      "live": {
+        "words": 1613,
+        "freq": 0,
+        "secIn": 1,
+        "secTotal": 5,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول",
+        "فراوانی-صفر",
+        "مرتبط-1/5"
+      ],
+      "verdict": "رد"
+    },
+    {
+      "slug": "tmj-joint-prosthesis",
+      "keyword": "پروتز مفصل فک",
+      "r1": 67,
+      "after": 81,
+      "live": {
+        "words": 1687,
+        "freq": 2,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": true,
+        "kwInFirstPara": false
+      },
+      "metaMissing": true,
+      "gaps": [
+        "کلیدواژه-نیست-در-meta",
+        "کلیدواژه-نیست-در-پاراگراف-اول"
+      ],
+      "verdict": "قبول"
+    },
+    {
+      "slug": "tehran-provincial-patients",
+      "keyword": "جراحی فک در تهران",
+      "r1": 68,
+      "after": 87,
+      "live": {
+        "words": 1727,
+        "freq": 2,
+        "secIn": 0,
+        "secTotal": 0,
+        "kwInTitle": true,
+        "kwAtTitleStart": false,
+        "kwInFirstPara": true
+      },
+      "metaMissing": false,
+      "gaps": [
+        "کلیدواژه-ابتدای-title-نیست"
+      ],
+      "verdict": "قبول"
+    }
+  ]
+}
