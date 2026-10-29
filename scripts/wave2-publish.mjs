@@ -22,6 +22,8 @@ function norm(s) {
     .replace(/\u200c/g, " ").replace(/\s+/g, " ").toLowerCase();
 }
 const wordCount = (b) => b.replace(/[#>*`|]/g, " ").split(/\s+/).filter(Boolean).length;
+/* شمارش کلمات سردبیر (uniqueness.ts) — مارک‌داون #>*` لخت می‌شود */
+const countWords = (b) => b.replace(/[#>*`]/g, " ").split(/\s+/).filter(Boolean).length;
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -92,10 +94,14 @@ const bodies = parseLlmsBodies(llmsText);
 console.log(`بدنه زنده: ${Object.keys(bodies).length} مقاله${DRY ? " (درای‌ران محلی)" : ""}`);
 
 const spec = JSON.parse(readFileSync("content-fixes/wave2.json", "utf-8"));
+/* فیلتر اختیاری: node scripts/wave2-publish.mjs --only=slug1,slug2 */
+const onlyIdx = process.argv.indexOf("--only");
+const only = onlyIdx >= 0 ? process.argv[onlyIdx + 1].split(",").filter(Boolean) : null;
 const results = [];
 
 for (const [slug, s] of Object.entries(spec)) {
   if (slug.startsWith("_")) continue;
+  if (only && !only.includes(slug)) continue;
   const r = { slug, errors: [], notes: [], applied: { body: false, title: false, meta: false } };
   try {
     const kws = kwFor(slug);
@@ -107,18 +113,20 @@ for (const [slug, s] of Object.entries(spec)) {
     const origBody = body;
     const nOrig = norm(origBody);
 
-    /* --- ۱) جایگزینی پاسخ مستقیم (اولین خط >) --- */
+    /* --- ۱) جایگزینی پاسخ مستقیم (اولین خط >) — فقط وقتی newDirect داریم --- */
     const lines = body.split("\n");
-    const di = lines.findIndex((l) => l.startsWith("> "));
-    if (di < 0) throw new Error("پاسخ مستقیم (> block) پیدا نشد");
-    const curDirect = lines[di];
-    if (norm(curDirect) === norm("> " + s.newDirect)) {
-      r.notes.push("پاسخ مستقیم از قبل اعمال شده (idempotent)");
-    } else {
-      lines[di] = "> " + s.newDirect;
-      r.applied.body = true;
+    if (s.newDirect) {
+      const di = lines.findIndex((l) => l.startsWith("> "));
+      if (di < 0) throw new Error("پاسخ مستقیم (> block) پیدا نشد");
+      const curDirect = lines[di];
+      if (norm(curDirect) === norm("> " + s.newDirect)) {
+        r.notes.push("پاسخ مستقیم از قبل اعمال شده (idempotent)");
+      } else {
+        lines[di] = "> " + s.newDirect;
+        r.applied.body = true;
+      }
+      body = lines.join("\n");
     }
-    body = lines.join("\n");
 
     /* --- ۲) درج پاراگراف‌ها بعد از تیتر لنگر --- */
     for (const ins of s.insertions || []) {
@@ -138,7 +146,11 @@ for (const [slug, s] of Object.entries(spec)) {
     const direct = norm((body.match(/^> (.+)$/m) || [])[1] || "");
     if (r.applied.body) {
       if (freq < 2) r.errors.push(`فراوانی کیورد ${freq} < ۲`);
-      if (s.newDirect && !direct.includes(norm(focus))) r.errors.push("کیورد در پاسخ مستقیم نیست");
+      if (s.newDirect) {
+        const dw = countWords(s.newDirect);
+        if (dw < 25 || dw > 90) r.errors.push(`کلمات پاسخ مستقیم ${dw} (باید ۲۵-۹۰ — گایت سردبیر)`);
+        if (!direct.includes(norm(focus))) r.errors.push("کیورد در پاسخ مستقیم نیست");
+      }
       if (wordCount(body) < 1500) r.errors.push(`کلمات ${wordCount(body)} < ۱۵۰۰`);
       const addedHttp = (body.match(/https?:\/\//g) || []).length - (origBody.match(/https?:\/\//g) || []).length;
       if (addedHttp > 0) r.errors.push("لینک مطلق جدید اضافه شد");
