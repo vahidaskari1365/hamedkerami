@@ -137,8 +137,8 @@ function Hero() {
             style={{ animationDelay: "0.9s" }}
           >
             <ShimmerButton
-              href={`tel:${SITE.phone}`}
-              ariaLabel="رزرو نوبت و مشاوره — تماس با مطب"
+              href="/appointment"
+              ariaLabel="رزرو نوبت آنلاین — ثبت نوبت و مشاوره"
               className="px-8 py-4 text-base font-bold text-ink shadow-xl shadow-teal/25"
             >
               رزرو نوبت و مشاوره

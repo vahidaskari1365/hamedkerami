@@ -8,7 +8,7 @@ import { Link } from "@/components/hash-router";
 import { useContent } from "@/lib/content-context";
 
 export function ServicesPage() {
-  const { site: SITE, services: SERVICES, serviceExtras: SERVICE_EXTRAS } = useContent();
+  const { services: SERVICES, serviceExtras: SERVICE_EXTRAS } = useContent();
   return (
     <>
       <PageHero
@@ -59,12 +59,12 @@ export function ServicesPage() {
                     ))}
                   </ul>
                   <div className="mt-8 flex flex-wrap gap-3">
-                    <a
-                      href={`tel:${SITE.phone}`}
+                    <Link
+                      href="/appointment"
                       className="rounded-full bg-ink px-6 py-3 text-sm font-bold text-white transition hover:bg-ink-3"
                     >
                       مشاوره و رزرو نوبت
-                    </a>
+                    </Link>
                     <Link
                       href="/costs"
                       className="rounded-full border border-ink/15 px-6 py-3 text-sm font-bold transition hover:border-teal hover:text-teal-2"
