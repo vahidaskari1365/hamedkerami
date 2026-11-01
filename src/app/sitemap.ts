@@ -46,11 +46,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const posts = await getPublishedPosts();
     blog = posts.map((p) => {
-      const day =
+      /* lastmod = جدیدترینِ (تاریخ تحریری، آخرین اصلاح واقعی) —
+         فیکس‌های عنوان/متا/بدنه که updatedAt را جلو می‌برند باعث
+         کشف دوباره سریع‌تر توسط گوگل می‌شوند (recrawl signal) */
+      const editorial =
         toDay(p.date ? jalaliDisplayToIso(p.date) : null) ??
-        toDay(p.updatedAt) ??
         toDay(p.publishedAt) ??
         FALLBACK_DAY;
+      const updated = toDay(p.updatedAt);
+      const day = updated && updated > editorial ? updated : editorial;
       return {
         url: `${base}/blog/${p.slug}`,
         lastModified: new Date(`${day}T00:00:00.000Z`),
