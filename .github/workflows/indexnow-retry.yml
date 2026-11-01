@@ -1,0 +1,36 @@
+name: IndexNow retry (Bing/Yandex self-healing)
+
+# ارسال روزانه URLهای سایت‌مپ به IndexNow (بینگ + یاندکس).
+# تا وقتی Site Verification بینگ کامل نشده API خطای 403 می‌دهد؛
+# این ورک‌فلو هر روز تلاش می‌کند و با کامل‌شدن تأیید، خودکار
+# موفق می‌شود — هیچ اقدام دستی لازم نیست.
+# (گوگل IndexNow را مصرف نمی‌کند؛ این فقط برای بینگ/یاندکس است.)
+# IndexNow خودش URLهای تکراری را نادیده می‌گیرد → ارسال مجدد بی‌ضرر.
+
+on:
+  schedule:
+    - cron: "30 4 * * *" # ۰۸:۰۰ تهران
+  workflow_dispatch:
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: indexnow-retry
+      cancel-in-progress: false
+    steps:
+      - name: Submit sitemap URLs to IndexNow
+        run: |
+          KEY=$(curl -s --max-time 30 "https://dr-kermani.com/0ce6e893dd2b8ef48d79fbf2d4d80523.txt" | tr -d '[:space:]')
+          if [ -z "$KEY" ]; then echo "فایل کلید در دسترس نیست"; exit 0; fi
+          URLS=$(curl -s --max-time 60 "https://dr-kermani.com/sitemap.xml" \
+            | grep -oE '<loc>[^<]+</loc>' | sed -e 's/<loc>//' -e 's#</loc>##' \
+            | jq -R . | jq -s . | jq -c '{host:"dr-kermani.com",key:env.KEY,keyLocation:"https://dr-kermani.com/\(env.KEY).txt",urlList:.}')
+          CODE=$(curl -s -o /tmp/resp.json -w "%{http_code}" --max-time 60 \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d "$URLS" "https://api.indexnow.org/indexnow" || echo "000")
+          echo "IndexNow → HTTP $CODE"
+          cat /tmp/resp.json 2>/dev/null || true
+          # 403 یعنی تأیید هنوز کامل نشده — خطا نیست، فردا دوباره
+          if [ "$CODE" = "200" ] || [ "$CODE" = "202" ]; then echo "✓ ارسال موفق"; else echo "در انتظار تأیید بینگ — تلاش بعدی فردا"; fi
