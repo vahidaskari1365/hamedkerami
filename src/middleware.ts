@@ -42,6 +42,18 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(url, 308);
   }
 
+  /* http → https برای دامنهٔ رسمی — نسخهٔ بدون SSL سایت نباید محتوا
+     بدهد وگرنه گوگل کل سایت را دوبله می‌بیند (Alternate/Duplicate).
+     فقط وقتی http بودنِ درخواست قطعی است (هدر x-forwarded-proto ==
+     'http') ریدایرکت می‌زنیم تا در هیچ سناریویی لوپ رخ ندهد؛
+     اندازه‌گیری سیگنال واقعی سرور: /api/debug-proto */
+  if (host === CANONICAL_HOST && req.headers.get("x-forwarded-proto") === "http") {
+    const url = req.nextUrl.clone();
+    url.protocol = "https:";
+    url.port = "";
+    return NextResponse.redirect(url, 308);
+  }
+
   if (req.nextUrl.pathname === "/__cache-purge") {
     return new NextResponse("cache purged", {
       status: 200,
