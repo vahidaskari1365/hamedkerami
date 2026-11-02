@@ -49,6 +49,9 @@ export function middleware(req: NextRequest) {
      اندازه‌گیری سیگنال واقعی سرور: /api/debug-proto */
   if (host === CANONICAL_HOST && req.headers.get("x-forwarded-proto") === "http") {
     const url = req.nextUrl.clone();
+    /* پشت پروکسی LiteSpeed درخواست داخلی به 0.0.0.0 می‌رسد —
+       هاست مقصد باید صریحاً دامنهٔ رسمی شود (مثل شاخهٔ www) */
+    url.hostname = CANONICAL_HOST;
     url.protocol = "https:";
     url.port = "";
     return NextResponse.redirect(url, 308);
