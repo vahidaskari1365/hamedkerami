@@ -22,7 +22,8 @@ jobs:
     steps:
       - name: Submit sitemap URLs to IndexNow
         run: |
-          KEY=$(curl -s --max-time 30 "https://dr-kermani.com/0ce6e893dd2b8ef48d79fbf2d4d80523.txt" | tr -d '[:space:]')
+          # کلید جدید از پنل بینگ — با همین کلید ارسال کامل ۱۱۱ URL برگشت 202 Accepted داد
+          KEY=$(curl -s --max-time 30 "https://dr-kermani.com/a45bb99f393b45e9b26fd44e23bb561b.txt" | tr -d '[:space:]')
           if [ -z "$KEY" ]; then echo "فایل کلید در دسترس نیست"; exit 0; fi
           URLS=$(curl -s --max-time 60 "https://dr-kermani.com/sitemap.xml" \
             | grep -oE '<loc>[^<]+</loc>' | sed -e 's/<loc>//' -e 's#</loc>##' \
