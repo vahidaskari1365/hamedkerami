@@ -75,6 +75,13 @@ export async function generateMetadata(): Promise<Metadata> {
   publisher: "دکتر حامد کرمانی",
   /* نکته سئو: canonical سراسری حذف شد — هر صفحه canonical خودش را دارد
      (اگر اینجا canonical="/" می‌ماند، صفحاتی که تعریف نمی‌کردند duplicate معرفی می‌شدند) */
+  /* تأیید مالکیت Bing Webmaster Tools — کد از پنل بینگ؛ متاتگ msvalidate.01
+     + فایل BingSiteAuth.xml (هر دو روش پوشش داده شده) */
+  verification: {
+    other: {
+      "msvalidate.01": "a45bb99f393b45e9b26fd44e23bb561b",
+    },
+  },
   category: "Health",
   manifest: "/manifest.json",
   appleWebApp: {
