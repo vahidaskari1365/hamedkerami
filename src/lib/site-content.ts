@@ -137,7 +137,17 @@ export async function getSiteContent() {
       brand: { ...BRAND, ...(settingMap.brand as object | undefined) },
       /* url همیشه از build می آید — دیتابیس سرورهای قدیمی دامنه قبلی دارند؛
          تغییر دامنه فقط با دیپلوی معنا دارد نه از پنل ادمین */
-      site: { ...SITE, ...(settingMap.site as object | undefined), url: SITE.url },
+      /* گارد سئو — توضیحات متا باید ۷۰ تا ۱۶۰ کاراکتر باشد (ممیزی SeoMods
+         ۲۰۲۶/۱۱/۰۳: دیسکریپشن ۲۱۸ کاراکتریِ رکورد دیتابیس، امتیاز On-Page
+         را کم می‌کرد). اگر مقدار ذخیره‌شدهٔ پنل ادمین خارج از بازه باشد،
+         مقدار بهینهٔ build جایگزین می‌شود؛ مقدار معتبرِ ادمین محترم است. */
+      site: (() => {
+        const merged = { ...SITE, ...(settingMap.site as object | undefined), url: SITE.url };
+        const d = merged.metaDescription;
+        if (typeof d !== "string" || d.length < 70 || d.length > 160)
+          merged.metaDescription = SITE.metaDescription;
+        return merged;
+      })(),
       hero: { ...HERO, ...(settingMap.hero as object | undefined) },
       about: { ...BIO, ...(settingMap.about as object | undefined) },
       videos: { ...VIDEOS, ...(settingMap.videos as object | undefined) },
