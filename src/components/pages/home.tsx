@@ -14,7 +14,7 @@ import {
 import { BeforeAfter } from "@/components/before-after";
 import { masonryAspect } from "@/components/masonry";
 import { Link } from "@/components/hash-router";
-import { waLink } from "@/lib/data";
+import { waLink, KEY_ANSWERS, QUOTE_EN } from "@/lib/data";
 import {
   AnimatedShinyText,
   BorderBeam,
@@ -72,8 +72,7 @@ function Hero() {
         {/* Kinpaku aurora orbs */}
         <span className="aurora-orb left-[-8%] top-[8%] h-72 w-72 bg-[#c9a13b]/25" aria-hidden />
         <span
-          className="aurora-orb right-[14%] top-[42%] h-56 w-56 bg-[#5c9e8b]/20"
-          style={{ animationDelay: "-8s" }}
+          className="aurora-orb right-[14%] top-[42%] h-56 w-56 bg-[#5c9e8b]/20 [animation-delay:-8s]"
           aria-hidden
         />
         <DotPattern
@@ -94,8 +93,7 @@ function Hero() {
         <motion.div style={{ y: textY, opacity: fade }}>
           {/* GEO: ورود با CSS keyframes — بدون استایل opacity:0 اینلاین در HTML سروری */}
           <div
-            className="geo-enter-x mb-5 flex items-center gap-3"
-            style={{ animationDelay: "0.15s" }}
+            className="geo-enter-x mb-5 flex items-center gap-3 [animation-delay:0.15s]"
           >
             <span className="h-px w-10 bg-teal" aria-hidden />
             <span className="rounded-full border border-teal/40 bg-teal/10 px-4 py-1.5 text-sm font-semibold text-gold-soft">
@@ -110,14 +108,12 @@ function Hero() {
           </h1>
 
           <p
-            className="geo-enter mt-6 max-w-[58ch] text-base leading-8 text-white/75 sm:text-lg"
-            style={{ animationDelay: "0.75s" }}
+            className="geo-enter mt-6 max-w-[58ch] text-base leading-8 text-white/75 sm:text-lg [animation-delay:0.75s]"
           >
             {HERO.name} — {HERO.sub}
           </p>
           <p
-            className="geo-enter mt-3 text-lg font-bold text-white/90 sm:text-xl"
-            style={{ animationDelay: "0.85s" }}
+            className="geo-enter mt-3 text-lg font-bold text-white/90 sm:text-xl [animation-delay:0.85s]"
           >
             تخصص در {""}
             <WordRotate
@@ -133,8 +129,7 @@ function Hero() {
           </p>
 
           <div
-            className="geo-enter mt-9 flex flex-wrap items-center gap-4"
-            style={{ animationDelay: "0.9s" }}
+            className="geo-enter mt-9 flex flex-wrap items-center gap-4 [animation-delay:0.9s]"
           >
             <ShimmerButton
               href="/appointment"
@@ -152,16 +147,14 @@ function Hero() {
           </div>
 
           <blockquote
-            className="geo-enter-fade mt-10 max-w-[62ch] border-r-2 border-teal/60 pr-5 text-sm leading-7 text-white/60"
-            style={{ animationDelay: "1.15s" }}
+            className="geo-enter-fade mt-10 max-w-[62ch] border-r-2 border-teal/60 pr-5 text-sm leading-7 text-white/60 [animation-delay:1.15s]"
           >
             «{HERO.quote}»
           </blockquote>
 
           {/* trust strip */}
           <ul
-            className="geo-enter mt-8 flex flex-wrap items-center gap-x-7 gap-y-3 text-[13px] text-white/65"
-            style={{ animationDelay: "1.3s" }}
+            className="geo-enter mt-8 flex flex-wrap items-center gap-x-7 gap-y-3 text-[13px] text-white/65 [animation-delay:1.3s]"
           >
             {["بورد تخصصی جراحی فک و صورت", "فلوشیپ کرانیوفاسیال — دانشگاه تهران", "بیش از ۱۰۰۰ جراحی موفق"].map(
               (t) => (
@@ -190,8 +183,7 @@ function Hero() {
             <BorderBeam width={2.5} speed={7} />
           </div>
           <div
-            className="geo-enter absolute -bottom-5 right-6 left-6 rounded-2xl bg-white/10 p-4 text-center backdrop-blur-xl ring-1 ring-teal/30"
-            style={{ animationDelay: "1.4s" }}
+            className="geo-enter absolute -bottom-5 right-6 left-6 rounded-2xl bg-white/10 p-4 text-center backdrop-blur-xl ring-1 ring-teal/30 [animation-delay:1.4s]"
           >
             <p className="text-sm font-extrabold">دکتر حامد کرمانی</p>
             <p className="mt-0.5 text-[11px] text-white/70">
@@ -214,8 +206,7 @@ function Hero() {
       {/* scroll hint */}
       <div
         aria-hidden
-        className="geo-enter-fade absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/50 lg:flex"
-        style={{ animationDelay: "2s" }}
+        className="geo-enter-fade absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/50 [animation-delay:2s] lg:flex"
       >
         <span className="text-[10px] tracking-widest">SCROLL</span>
         <motion.span
@@ -659,12 +650,7 @@ function CtaSection() {
     <section className="relative overflow-hidden bg-ink py-20 text-white" aria-label="تماس با ما">
       <div
         aria-hidden
-        className="absolute inset-0 opacity-45"
-        style={{
-          backgroundImage: "url(/images/hero-lacquer-2.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
+        className="absolute inset-0 bg-[url(/images/hero-lacquer-2.jpg)] bg-cover bg-center opacity-45"
       />
       <div aria-hidden className="absolute inset-0 bg-gradient-to-l from-ink via-ink/70 to-ink/85" />
       <FilmGrain opacity={0.06} />
@@ -693,6 +679,123 @@ function CtaSection() {
               اطلاعات تماس و آدرس مطب
             </Link>
           </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ================= KEY ANSWERS — هستهٔ دوزبانهٔ AEO/GEO/AIO =================
+   ممیزی SeoMods (۲۰۲۶/۱۱/۰۳) روی صفحهٔ اصلی: AEO ۵۵، Entity ۱۹، Citation ۸۰.
+   علت ریشه‌ای: ابزارها فقط توکن لاتین می‌شمارند و «؟» فارسی را علامت سؤال
+   نمی‌شناسند؛ پس تیتر سؤالی، تعریف، نقل‌قول و TL;DR همه «صفر» دیده شده بودند.
+   این بخش برای بیمار فارسی‌زبان محتوای واقعی می‌دهد و برای موتورهای پاسخ،
+   ساختار دوزبانهٔ قابل‌استناد — بدون هیچ ادعای جدید: همهٔ اعداد از
+   BIO/STATS/EDUCATION/JAW_COSTS همین سایت آمده است. */
+function KeyAnswersSection() {
+  const { jawCosts } = useContent();
+  return (
+    <section className="bg-white py-24" aria-label="پاسخ سوال‌های کلیدی درباره جراحی فک و صورت">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
+        <Reveal>
+          <h2 className="text-2xl font-black leading-snug sm:text-3xl">
+            پاسخ سوال‌های کلیدی شما درباره جراحی فک و صورت
+            <span dir="ltr" className="mt-2 block text-base font-bold text-teal-2 sm:text-lg">
+              Key Questions About Jaw &amp; Maxillofacial Surgery in Tehran
+            </span>
+          </h2>
+        </Reveal>
+
+        {/* TL;DR — پاسخ کوتاه (AEO: quick-answer block) */}
+        <Reveal delay={0.08}>
+          <div className="mt-9 rounded-3xl border border-teal/25 bg-teal/[0.04] p-6 sm:p-8">
+            <p className="flex flex-wrap items-center gap-x-3 gap-y-2 text-base font-black text-teal-2">
+              <span>پاسخ کوتاه</span>
+              <span dir="ltr" className="rounded-full bg-teal/10 px-3 py-1 text-xs font-bold tracking-wide">
+                TL;DR — Key Takeaways
+              </span>
+            </p>
+            <ul className="mt-5 space-y-3 text-sm leading-7 text-foreground/80 sm:text-[15px]">
+              <li className="flex gap-2.5">
+                <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-teal" aria-hidden />
+                <span>جراحی فک و صورت (OMFS) تخصص اصلاح فک، صورت و جمجمه است؛ از جراحی ارتوگناتیک و بایمکس تا جنیوپلاستی، بلفاروپلاستی، ایمپلنت دندان و بازسازی فک.</span>
+              </li>
+              <li className="flex gap-2.5">
+                <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-teal" aria-hidden />
+                <span>دکتر حامد کرمانی: تخصص OMFS از دانشگاه علوم پزشکی مشهد (۱۳۸۹)، فلوشیپ کرانیوفاسیال از دانشگاه علوم پزشکی تهران (۱۳۹۷)، استادیار دانشگاه‌های شهید بهشتی و مشهد.</span>
+              </li>
+              <li className="flex gap-2.5">
+                <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-teal" aria-hidden />
+                <span>سابقهٔ عمل: بیش از ۲۰,۰۰۰ ایمپلنت، ۱,۲۰۰ جراحی ارتوگناتیک، ۱۰۰ ایمپلنت زایگوماتیک، ۳۰ تعویض مفصل فک — پروانهٔ نظام پزشکی ۹۵۳۰۳.</span>
+              </li>
+              <li className="flex gap-2.5">
+                <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-teal" aria-hidden />
+                <span>مطب: تهران، بلوار کشاورز، تقاطع جمالزاده، ساختمان پزشکان کوثر — شنبه تا چهارشنبه ۱۵:۰۰ تا ۱۹:۰۰ — رزرو: ۰۹۳۸-۲۰۸۰۲۷۰.</span>
+              </li>
+            </ul>
+            <p dir="ltr" className="mt-6 border-t border-teal/15 pt-5 text-left text-[13px] leading-6 text-foreground/65">
+              TL;DR — Dr. Hamed Kermani is a board-certified oral &amp; maxillofacial surgeon (OMFS) in Tehran, Iran, with a craniofacial fellowship from Tehran University of Medical Sciences. His Tehran clinic covers orthognathic (single-jaw and bimaxillary) surgery, genioplasty, blepharoplasty, dental and zygomatic implants, and jaw reconstruction — 20,000+ implants and 1,200+ orthognathic surgeries performed. Address: Keshavarz Blvd, Jamalzadeh crossing, Tehran. Phone / WhatsApp: +98 938 208 0270.
+            </p>
+            <blockquote dir="ltr" className="mt-4 text-left text-[13px] italic leading-6 text-foreground/60">
+              {QUOTE_EN}
+            </blockquote>
+          </div>
+        </Reveal>
+
+        {/* Q&A دوزبانه — تیتر سؤالی (؟ انگلیسی) + پاسخ مستقیم + تعریف انگلیسی */}
+        <div className="mt-16 space-y-12">
+          {KEY_ANSWERS.map((item, i) => (
+            <Reveal key={item.en} delay={0.05}>
+              <article>
+                <h3 className="text-xl font-black leading-snug sm:text-2xl">
+                  {item.q}
+                  <span dir="ltr" className="mt-1.5 block text-sm font-bold text-teal-2 sm:text-base">
+                    {item.en}
+                  </span>
+                </h3>
+                <p className="mt-4 max-w-[70ch] text-[15px] leading-8 text-foreground/75">
+                  {item.a}
+                </p>
+                <p dir="ltr" className="mt-3 max-w-[70ch] text-left text-[13px] leading-6 text-foreground/55">
+                  {item.enA}
+                </p>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* جدول تعرفه — AEO: tables/definition lists */}
+        <Reveal>
+          <div className="mt-14 overflow-hidden rounded-3xl border border-ink/10 shadow-sm">
+            <table className="w-full text-right text-sm">
+              <caption className="bg-ink px-5 py-4 text-right font-bold text-white">
+                تعرفه جراحی‌های فک و صورت — ۱۴۰۵ (تومان)
+                <span dir="ltr" className="mt-0.5 block text-left text-xs font-medium text-white/60">
+                  Jaw surgery prices — Tehran, 2026 (Iranian Toman)
+                </span>
+              </caption>
+              <thead>
+                <tr className="bg-bone text-foreground">
+                  <th scope="col" className="px-5 py-3.5 font-black">نوع جراحی</th>
+                  <th scope="col" className="px-5 py-3.5 font-black">تعرفه</th>
+                </tr>
+              </thead>
+              <tbody>
+                {jawCosts.map((c) => (
+                  <tr key={c.item} className="border-t border-ink/10 transition-colors odd:bg-white even:bg-bone/40">
+                    <th scope="row" className="px-5 py-3.5 text-right font-bold">{c.item}</th>
+                    <td className="px-5 py-3.5 text-foreground/75">{c.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-xs leading-6 text-foreground/50">
+            تعرفه‌ها تقریبی است و هزینهٔ نهایی پس از معاینه و برنامه‌ریزی اعلام می‌شود — فهرست کامل:{" "}
+            <Link href="/costs" className="font-bold text-teal-2 underline decoration-teal/40 underline-offset-4 hover:text-teal">
+              تعرفه کامل جراحی فک و ایمپلنت
+            </Link>
+          </p>
         </Reveal>
       </div>
     </section>
@@ -740,6 +843,7 @@ export function HomePage() {
       <Hero />
       <Stats />
       <WhatIsSection />
+      <KeyAnswersSection />
       <AboutTeaser />
       <ServicesSection />
       <PortfolioSection />

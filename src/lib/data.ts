@@ -11,8 +11,9 @@ export const SITE = {
   title: "متخصص جراحی فک و صورت",
   titleLong: "متخصص جراحی های فک و صورت | فلوشیپ جراحی های کرانیوفیشال",
   url: "https://dr-kermani.com",
+  /* ۱۵۷ کاراکتر — بازهٔ ایده‌آل ۷۰ تا ۱۶۰ (ممیزی SeoMods: قبلی ۲۱۸ کاراکتر بود) */
   metaDescription:
-    "دکتر حامد کرمانی، متخصص جراحی فک و صورت و فلوشیپ جراحی های کرانیوفیشال از دانشگاه تهران. جراحی ارتوگناتیک (یک فک و دو فک)، جنیوپلاستی، بلفاروپلاستی، ایمپلنت دندان و بازسازی فک در تهران. مشاوره و رزرو نوبت: ۰۹۳۸-۲۰۸۰۲۷۰",
+    "دکتر حامد کرمانی، متخصص جراحی فک و صورت و فلوشیپ کرانیوفاسیال دانشگاه تهران؛ ارتوگناتیک، جنیوپلاستی، بلفاروپلاستی و ایمپلنت در تهران. رزرو نوبت: ۰۹۳۸-۲۰۸۰۲۷۰",
   /* فقط موبایل — شماره ثابت حذف شد (درخواست ۱۴۰۴/۰۸) */
   phone: "09382080270",
   phoneDisplay: "۰۹۳۸-۲۰۸۰۲۷۰",
@@ -427,3 +428,61 @@ export function faToEnDigits(s: string): string {
   const fa = "۰۱۲۳۴۵۶۷۸۹";
   return s.replace(/[۰-۹]/g, (d) => String(fa.indexOf(d)));
 }
+
+/* ============================================================
+   KEY_ANSWERS — هستهٔ دوزبانهٔ AEO/GEO/AIO برای صفحهٔ اصلی
+   (ممیزی SeoMods ۲۰۲۶/۱۱/۰۳: ابزارهای AEO، GEO، Citation و
+   Visibility همگی «تیتر سؤالی صفر»، «پاسخ مستقیم: تشخیص نشد»،
+   «جدول: صفر» و «TL;DR: نبود» گزارش دادند؛ علت: شمارندهٔ آن‌ها فقط
+   توکن لاتین می‌بیند و «؟» فارسی را علامت سؤال نمی‌شناسد.)
+   ساختار هر آیتم:
+     q   → سؤال فارسی (با «؟» فارسی)
+     en  → همان سؤال به انگلیسی — انتهای H3 با «؟» ASCII بسته می‌شود
+     a   → پاسخ مستقیم فارسی، ۲ تا ۴ جمله، بلافاصله زیر تیتر
+     enA → جملهٔ تعریفی انگلیسی («X is …») — الگویی که AI Overviews
+            بیش از همه بازنشر می‌کند
+   همهٔ اعداد و مدارک از داده‌های واقعی همین سایت (BIO/STATS/EDUCATION)
+   برداشته شده‌اند — هیچ ادعای جدیدی اضافه نشده است.
+   ============================================================ */
+export const KEY_ANSWERS = [
+  {
+    q: "جراحی فک و صورت چیست؟",
+    en: "What is Maxillofacial Surgery?",
+    a: "جراحی فک و صورت پل میان پزشکی و دندانپزشکی است؛ تخصصی که تشخیص و درمان جراحی فک بالا، فک پایین، صورت و جمجمه را بر عهده دارد — از اصلاح گاز گرفتن با ارتوگناتیک و بایمکس تا تومور و ضربهٔ فک، پروتز مفصل گیجگاهی‌فکی (TMJ) و کاشت دندان. جراح فک و صورت هم دورهٔ دندانپزشکی را گذرانده و هم تخصص جراحی را؛ به همین دلیل زیبایی و عملکرد را هم‌زمان می‌بیند.",
+    enA: "Maxillofacial surgery (OMFS) is a surgical specialty that treats diseases, injuries and defects of the mouth, jaws, face and skull. It bridges dentistry and medicine: orthognathic surgery, facial trauma care, TMJ joint prosthetics, jaw reconstruction and dental implants all belong to this field.",
+  },
+  {
+    q: "چه زمانی جراحی ارتوگناتیک یک فک یا دو فک لازم است؟",
+    en: "When is single-jaw or bimaxillary orthognathic surgery needed?",
+    a: "وقتی فک بالا یا پایین از جای طبیعی خود جلوتر یا عقب‌تر باشد و گاز گرفتن، جویدن، تکلم، تنفس یا تناسب چهره را مختل کند. جراحی یک فک برای اصلاح همان فک کافی است؛ در پرونده‌های پیچیده‌تر، جراحی دو فک (بایمکس) هر دو فک را در یک عمل اصلاح می‌کند و همیشه با درمان ارتودنسی پیش و پس از عمل همراه است.",
+    enA: "Orthognathic surgery is needed when the upper or lower jaw is misaligned and disturbs the bite, chewing, speech, breathing or facial balance. Single-jaw surgery repositions one jaw; bimaxillary (two-jaw) surgery corrects both jaws in a single operation.",
+  },
+  {
+    q: "دکتر حامد کرمانی کیست و چه سوابقی دارد؟",
+    en: "Who is Dr. Hamed Kermani?",
+    a: "دکتر حامد کرمانی متولد ۱۳۵۹، دکترای دندانپزشکی عمومی را از دانشگاه علوم پزشکی مشهد (۱۳۸۲) و تخصص جراحی فک و صورت (OMFS) را از همان دانشگاه (۱۳۸۹) گرفته است؛ سپس فلوشیپ جراحی‌های کرانیوفاسیال را در دانشگاه علوم پزشکی تهران (۱۳۹۷) به پایان رساند. ایشان استادیار ضریب «کا» دانشگاه‌های علوم پزشکی شهید بهشتی (۱۳۹۱-۹۴) و مشهد (۱۳۹۴-۹۶) بوده‌اند، ۱۸ مقالهٔ علمی در گوگل اسکولار دارند و تجربهٔ بالینی در بلژیک، آلمان و چین داشته‌اند. تا امروز بیش از ۲۰,۰۰۰ ایمپلنت، ۱,۲۰۰ جراحی ارتوگناتیک، ۱۰۰ ایمپلنت زایگوماتیک و ۳۰ تعویض مفصل فک انجام داده‌اند (پروانهٔ نظام پزشکی ۹۵۳۰۳).",
+    enA: "Dr. Hamed Kermani (born 1980) is an oral & maxillofacial surgeon in Tehran. He holds a DDS (2003) and the OMFS specialty (2010) from Mashhad University of Medical Sciences, plus a craniofacial fellowship from Tehran University of Medical Sciences (2018), and served as assistant professor at Shahid Beheshti and Mashhad universities. Record so far: 20,000+ dental implants, 1,200+ orthognathic surgeries, 100+ zygomatic implants and 30 TMJ joint replacements — medical license No. 95303.",
+  },
+  {
+    q: "هزینهٔ جراحی فک و صورت در تهران چقدر است؟",
+    en: "How much does jaw surgery cost in Tehran?",
+    a: "تعرفهٔ شفاف همین مرکز در جدول زیر آمده است: جنیوپلاستی ۹۰ تا ۱۱۰ میلیون تومان، جراحی یک فک ۱۷۰ تا ۱۸۰ میلیون، جراحی دو فک ۱۹۰ تا ۲۰۰ میلیون و جراحی دو فک همراه با جنیوپلاستی ۲۱۰ تا ۲۴۰ میلیون تومان. هزینهٔ نهایی پس از معاینه و بررسی پرونده (سی‌تی‌اسکن و برنامه‌ریزی) اعلام می‌شود.",
+    enA: "As a 2026 guide at this Tehran clinic: genioplasty is about 90-110M Toman, single-jaw surgery 170-180M, bimaxillary surgery 190-200M and bimaxillary + genioplasty 210-240M. The final quote always follows the clinical exam and 3D planning.",
+  },
+  {
+    q: "ایمپلنت زایگوماتیک چیست و برای چه کسانی مناسب است؟",
+    en: "What is a zygomatic implant?",
+    a: "ایمپلنت زایگوماتیک ایمپلنتی کشیده‌تر است که به‌جای فک بالا در استخوان گونه (زایگوما) گیر می‌افتد؛ راه‌حل بیمارانی است که فک بالای آن‌ها به‌شدت تحلیل رفته و برای ایمپلنت معمولی استخوان کافی ندارند. با این روش در بسیاری از پرونده‌ها، پیوند استخوان گسترده (GBR) و سینوس لیفت حذف می‌شود؛ دکتر کرمانی بیش از ۱۰۰ مورد از این جراحی را انجام داده‌اند.",
+    enA: "A zygomatic implant is a longer dental implant anchored in the zygomatic (cheek) bone instead of the upper jaw. It is designed for patients with severe upper-jaw bone loss and often avoids large bone grafts (GBR) or sinus lifts.",
+  },
+  {
+    q: "بهترین جراح فک و صورت در تهران چه ویژگی‌هایی دارد؟",
+    en: "Who is the best maxillofacial surgeon in Tehran?",
+    a: "معیارِ درست انتخاب، تبلیغات نیست؛ این‌هاست: مدارک رسمی (بورد تخصصی جراحی فک و صورت از وزارت بهداشت + فلوشیپ فوق‌تخصصی)، حجم پروندهٔ مشابه با مشکل شما، نمونه‌کارهای قبل و بعد واقعی و قابل‌رؤیت، برنامه‌ریزی دیجیتال سه‌بعدی قبل از عمل، و عمل در بیمارستان با تیم بیهوشی مجرب. دکتر کرمانی همهٔ این معیارها را پوشش می‌دهد: تخصص رسمی، فلوشیپ کرانیوفاسیال دانشگاه تهران، سابقهٔ استادی دانشگاه و هزاران جراحی ثبت‌شده.",
+    enA: "When choosing a jaw surgeon in Tehran, check four things: a formal OMFS board certificate, an advanced fellowship (for example craniofacial), a real before/after case portfolio, and digital 3D planning in a hospital with an experienced anesthesia team.",
+  },
+];
+
+/* نقل‌قول دکتر — نسخهٔ انگلیسی برای موتورهای پاسخ (ترجمهٔ وفادار HERO.quote) */
+export const QUOTE_EN =
+  '"Successful treatment depends on solid academic and hands-on experience, staying true to scientific principles, and putting financial considerations aside." — Dr. Hamed Kermani, oral & maxillofacial surgeon (OMFS), Tehran';

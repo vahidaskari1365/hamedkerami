@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SiteShell } from "@/components/site-chrome";
 import { HomePage } from "@/components/pages/home";
 import { JsonLdScript, videoLd } from "@/components/schema";
-import { VIDEOS } from "@/lib/data";
+import { VIDEOS, KEY_ANSWERS } from "@/lib/data";
 import { getSiteContent } from "@/lib/site-content";
 
 /* ------------------------------------------------------------
@@ -29,14 +29,24 @@ export default async function Page() {
      در همان صفحه باشند. آکاردئون FAQ در HomePage رندر می‌شود و منبع
      داده (getSiteContent) هم همین است — schema و متن مرئی همیشه یکی‌اند (AEO) */
   const { faq } = await getSiteContent();
+  /* FAQPage = سوال‌های پنل ادمین + KEY_ANSWERS دوزبانه (هر دو مرئی
+     در همین صفحه‌اند — شرط گوگل). بخش دوزبانه هستهٔ AEO/GEO است:
+     تیتر سؤالی با «؟» انگلیسی + پاسخ مستقیم + جملهٔ تعریفی. */
   const faqLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faq.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
+    mainEntity: [
+      ...faq.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+      ...KEY_ANSWERS.map((f) => ({
+        "@type": "Question",
+        name: `${f.q} (${f.en})`,
+        acceptedAnswer: { "@type": "Answer", text: `${f.a}\n\n${f.enA}` },
+      })),
+    ],
   };
 
   return (

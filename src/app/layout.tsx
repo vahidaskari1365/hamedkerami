@@ -208,6 +208,97 @@ async function JsonLd() {
       name: "شماره نظام پزشکی",
       value: "95303",
     },
+    /* knowsAbout — پوشش موضوعی تخصص (سیگنال entity برای AI Overviews
+       و موتورهای مولد؛ همه از خدمات واقعی سایت) */
+    knowsAbout: [
+      "Oral and Maxillofacial Surgery",
+      "Orthognathic Surgery",
+      "Bimaxillary Surgery",
+      "Craniofacial Surgery",
+      "Zygomatic Implant",
+      "Jaw Reconstruction",
+      "Genioplasty",
+      "Blepharoplasty",
+      "Dental Implantology",
+      "Temporomandibular Joint (TMJ) Prosthetics",
+      "Sinus Lift",
+      "Guided Bone Regeneration (GBR)",
+    ],
+    /* mentions — موجودیت‌های کلیدی صفحه با sameAs به مقالات واقعی
+       ویکی‌پدیا (هر ۱۲ لینک زنده تأیید شده): پاسخ به یافتهٔ ممیزی
+       Entity Coverage «Entities in structured data — None» */
+    mentions: [
+      {
+        "@type": "MedicalProcedure",
+        name: "Orthognathic Surgery",
+        alternateName: "جراحی ارتوگناتیک فک",
+        sameAs: "https://en.wikipedia.org/wiki/Orthognathic_surgery",
+      },
+      {
+        "@type": "MedicalProcedure",
+        name: "Bimaxillary Surgery",
+        alternateName: "جراحی دو فک (بایمکس)",
+      },
+      {
+        "@type": "MedicalProcedure",
+        name: "Zygomatic Implant",
+        alternateName: "ایمپلنت زایگوماتیک",
+        sameAs: "https://en.wikipedia.org/wiki/Zygoma_implant",
+      },
+      {
+        "@type": "MedicalProcedure",
+        name: "Genioplasty",
+        alternateName: "جنیوپلاستی (جراحی چانه)",
+        sameAs: "https://en.wikipedia.org/wiki/Genioplasty",
+      },
+      {
+        "@type": "MedicalProcedure",
+        name: "Blepharoplasty",
+        alternateName: "بلفاروپلاستی",
+        sameAs: "https://en.wikipedia.org/wiki/Blepharoplasty",
+      },
+      {
+        "@type": "MedicalProcedure",
+        name: "Dental Implant",
+        alternateName: "ایمپلنت دندان",
+        sameAs: "https://en.wikipedia.org/wiki/Dental_implant",
+      },
+      {
+        "@type": "MedicalProcedure",
+        name: "Maxillofacial Surgery",
+        alternateName: "جراحی فک و صورت",
+        sameAs: "https://en.wikipedia.org/wiki/Maxillofacial_surgery",
+      },
+      {
+        "@type": "CollegeOrUniversity",
+        name: "Tehran University of Medical Sciences",
+        alternateName: "دانشگاه علوم پزشکی تهران",
+        sameAs: "https://en.wikipedia.org/wiki/Tehran_University_of_Medical_Sciences",
+      },
+      {
+        "@type": "CollegeOrUniversity",
+        name: "Mashhad University of Medical Sciences",
+        alternateName: "دانشگاه علوم پزشکی مشهد",
+        sameAs: "https://en.wikipedia.org/wiki/Mashhad_University_of_Medical_Sciences",
+      },
+      {
+        "@type": "CollegeOrUniversity",
+        name: "Shahid Beheshti University of Medical Sciences",
+        alternateName: "دانشگاه علوم پزشکی شهید بهشتی",
+        sameAs: "https://en.wikipedia.org/wiki/Shahid_Beheshti_University_of_Medical_Sciences_and_Health_Services",
+      },
+      {
+        "@type": "Hospital",
+        name: "Arman Hospital",
+        alternateName: "بیمارستان آرمان تهران",
+      },
+      {
+        "@type": "Place",
+        name: "Tehran",
+        alternateName: "تهران",
+        sameAs: "https://en.wikipedia.org/wiki/Tehran",
+      },
+    ],
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
