@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     languages: { fa: "/about", en: "/en/about", "x-default": "/about" },
   },
   openGraph: {
+    images: [{ url: "/images/og-cover.jpg", width: 1200, height: 630 }],
     title: "About Dr. Hamed Kermani — Oral & Maxillofacial Surgeon",
     description:
       "Craniofacial fellowship-trained OMFS surgeon in Tehran — education, international training and surgical track record.",

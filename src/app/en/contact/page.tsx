@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     languages: { fa: "/contact", en: "/en/contact", "x-default": "/contact" },
   },
   openGraph: {
+    images: [{ url: "/images/og-cover.jpg", width: 1200, height: 630 }],
     title: "Contact & Booking — Dr. Hamed Kermani, Tehran",
     description:
       "Request an appointment online or via WhatsApp — clinic on Keshavarz Boulevard, Tehran. International patients welcome.",

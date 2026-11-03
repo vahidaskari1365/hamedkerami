@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     languages: { fa: "/contact", en: "/en/contact", "x-default": "/contact" },
   },
   openGraph: {
+    images: [{ url: "/images/og-cover.jpg", width: 1200, height: 630 }],
     title: "تماس و رزرو نوبت مطب دکتر حامد کرمانی",
     description:
       "تهران، بلوار کشاورز، تقاطع جمالزاده، ساختمان پزشکان کوثر — تلفن ۰۹۳۸-۲۰۸۰۲۷۰.",

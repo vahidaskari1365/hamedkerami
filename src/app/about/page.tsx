@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     languages: { fa: "/about", en: "/en/about", "x-default": "/about" },
   },
   openGraph: {
+    images: [{ url: "/images/og-cover.jpg", width: 1200, height: 630 }],
     title: "درباره دکتر حامد کرمانی | جراح فک و صورت",
     description:
       "رزومه، مدارک بین‌المللی و سوابق جراحی دکتر حامد کرمانی — متخصص جراحی فک و صورت و فلوشیپ کرانیوفاسیال در تهران.",

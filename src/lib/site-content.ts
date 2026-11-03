@@ -181,8 +181,12 @@ export async function getSiteContent() {
             title: b.title,
             date: b.date,
             excerpt: b.excerpt,
-            body: b.body,
             cover: b.cover,
+            /* body عمداً حذف شد — این آبجکت به ContentProvider کلاینت
+               serialize می‌شود؛ بدنهٔ کامل ۸۲ مقاله (~۱.۴MB) روی «همهٔ»
+               صفحه‌ها به HTML/flight و /api/content تزریق می‌شد و CWV را
+               می‌کشت. بدنه فقط سمت سرور از getBlogPost/getPublishedPosts
+               (lib/blog-posts) خوانده می‌شود. */
           }))
         : BLOG_POSTS,
       beforeAfter: {

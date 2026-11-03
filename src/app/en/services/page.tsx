@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     languages: { fa: "/services", en: "/en/services", "x-default": "/services" },
   },
   openGraph: {
+    images: [{ url: "/images/og-cover.jpg", width: 1200, height: 630 }],
     title: "Jaw & Facial Surgery Services — Dr. Hamed Kermani, Tehran",
     description:
       "Orthognathic surgery, bimaxillary surgery, genioplasty, blepharoplasty, dental implants and jaw reconstruction in Tehran, Iran.",

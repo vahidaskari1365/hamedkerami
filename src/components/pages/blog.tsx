@@ -34,10 +34,11 @@ export function BlogPage() {
   const q = normalizeFa(query.trim());
   const tokens = q.split(/\s+/).filter(Boolean);
 
-  /* جستجوی AND روی توکن‌ها در عنوان + چکیده + بدنه */
-  const matches = (p: { title: string; excerpt: string; body: string }): boolean => {
+  /* جستجوی AND روی توکن‌ها در عنوان + چکیده — بدنهٔ مقاله‌ها دیگر در
+     کانتکست کلاینت نیست (فیکس ۱.۴MB flight payload) */
+  const matches = (p: { title: string; excerpt: string; body?: string }): boolean => {
     if (!tokens.length) return true;
-    const hay = normalizeFa(`${p.title} ${p.excerpt} ${p.body}`);
+    const hay = normalizeFa(`${p.title} ${p.excerpt} ${p.body ?? ""}`);
     return tokens.every((t) => hay.includes(t));
   };
 

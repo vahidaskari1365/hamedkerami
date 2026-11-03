@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     languages: { fa: "/services", en: "/en/services", "x-default": "/services" },
   },
   openGraph: {
+    images: [{ url: "/images/og-cover.jpg", width: 1200, height: 630 }],
     title: "خدمات جراحی فک و صورت دکتر حامد کرمانی",
     description:
       "ارتوگناتیک، بایمکس، جنیوپلاستی، بلفاروپلاستی، ایمپلنت دندان و بازسازی فک در تهران.",
