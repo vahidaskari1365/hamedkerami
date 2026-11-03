@@ -643,6 +643,74 @@ function FaqSection() {
   );
 }
 
+/* ================= Journey (SXO + GEO) — مسیر درمان گام به گام ================= */
+function JourneySection() {
+  const { site: SITE } = useContent();
+  const steps = [
+    {
+      t: "مشاوره و معاینه",
+      d: "بررسی چهره و گاز گرفتن، رادیوگرافی و گفت‌وگوی صریح دربارهٔ نتیجهٔ واقع‌بینانه. مطب شنبه تا چهارشنبه ۱۵ تا ۱۹ فعال است؛ تماس یا پیام واتساپ کافی است.",
+    },
+    {
+      t: "برنامه‌ریزی دیجیتال سه‌بعدی",
+      d: "بر پایهٔ سی‌تی‌اسکن، مسیر جراحی پیش از عمل شبیه‌سازی می‌شود؛ بیمار پیش از اتاق عمل می‌داند دقیقاً چه تغییری در فک و صورتش رخ می‌دهد.",
+    },
+    {
+      t: "آماده‌سازی با ارتودنسی",
+      d: "برای تثبیت نتیجه، جراحی همیشه با درمان ارتودنسی پیش و پس از عمل همراه است؛ مدت آن بسته به پروندهٔ هر بیمار متفاوت است.",
+    },
+    {
+      t: "عمل در بیمارستان",
+      d: "جراحی ارتوگناتیک با بیهوشی عمومی و بستری کوتاه انجام می‌شود؛ در جراحی دو فک، فک بالا با استئوتومی ليفورت I و فک پایین با BSSO جابه‌جا می‌شود.",
+    },
+    {
+      t: "نقاهت و پیگیری",
+      d: "بیشتر بیماران پس از ۲ هفته به زندگی عادی برمی‌گردند و تورم اصلی در ۳ تا ۴ هفته فروکش می‌کند؛ پیگیری تا تثبیت کامل نتیجه ادامه دارد.",
+    },
+  ];
+  return (
+    <section className="bg-bone py-24" aria-label="مسیر درمان گام به گام">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+        <Reveal>
+          <p className="flex items-center gap-3 text-sm font-bold text-teal-2">
+            <span className="h-px w-10 bg-teal" aria-hidden />
+            مسیر درمان
+          </p>
+          <h2 className="mt-4 text-3xl font-black leading-snug sm:text-4xl">
+            مسیر درمان جراحی فک و صورت چگونه است؟ گام به گام تا نتیجهٔ نهایی
+          </h2>
+          <p className="mt-5 max-w-[60ch] text-base leading-8 text-foreground/70">
+            اگر برای اولین بار جراحی ارتوگناتیک یا ایمپلنت دندان را جدی گرفته‌اید،
+            کل مسیر همین پنج گام است؛ بدون ابهام و بدون گام‌های پنهان.
+          </p>
+        </Reveal>
+        <ol className="mt-10 space-y-4">
+          {steps.map((s, i) => (
+            <Reveal key={s.t} delay={i * 0.04}>
+              <li className="flex gap-4 rounded-2xl border border-ink/10 bg-card p-5 shadow-sm">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal/10 text-base font-black text-teal-2" aria-hidden>
+                  {["۱", "۲", "۳", "۴", "۵"][i]}
+                </span>
+                <div>
+                  <h3 className="text-base font-black leading-7 sm:text-lg">{s.t}</h3>
+                  <p className="mt-1.5 text-sm leading-8 text-foreground/70">{s.d}</p>
+                </div>
+              </li>
+            </Reveal>
+          ))}
+        </ol>
+        <Reveal delay={0.1}>
+          <p className="mt-8 rounded-2xl border border-teal/20 bg-white p-5 text-sm leading-8 text-foreground/75">
+            <strong className="font-black text-teal-2">TL;DR —</strong> مشاوره، سی‌تی‌اسکن و برنامه‌ریزی سه‌بعدی، ارتودنسی آماده‌سازی، عمل ارتوگناتیک در بیمارستان (ليفورت I و BSSO) و پیگیری نقاهت دو هفته‌ای؛ برای شروع همین امروز، رزرو نوبت با شماره {""}
+            <a href={`tel:${SITE.phone}`} className="font-bold text-teal-2 underline decoration-teal/40 underline-offset-4">۰۹۳۸-۲۰۸۰۲۷۰</a>
+            {" "}یا <a href={waLink(SITE.whatsapp)} target="_blank" rel="noopener noreferrer" className="font-bold text-teal-2 underline decoration-teal/40 underline-offset-4">پیام واتساپ</a>.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 /* ================= CTA — golden silk backdrop ================= */
 function CtaSection() {
   const { site: SITE } = useContent();
@@ -850,6 +918,7 @@ export function HomePage() {
       <BlogTeaser />
       <MoneyPagesSection />
       <FaqSection />
+      <JourneySection />
       <CtaSection />
     </>
   );

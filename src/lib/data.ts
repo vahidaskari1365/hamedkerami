@@ -455,7 +455,7 @@ export const KEY_ANSWERS = [
     q: "چه زمانی جراحی ارتوگناتیک یک فک یا دو فک لازم است؟",
     en: "When is single-jaw or bimaxillary orthognathic surgery needed?",
     a: "وقتی فک بالا یا پایین از جای طبیعی خود جلوتر یا عقب‌تر باشد و گاز گرفتن، جویدن، تکلم، تنفس یا تناسب چهره را مختل کند. جراحی یک فک برای اصلاح همان فک کافی است؛ در پرونده‌های پیچیده‌تر، جراحی دو فک (بایمکس) هر دو فک را در یک عمل اصلاح می‌کند و همیشه با درمان ارتودنسی پیش و پس از عمل همراه است.",
-    enA: "Orthognathic surgery is needed when the upper or lower jaw is misaligned and disturbs the bite, chewing, speech, breathing or facial balance. Single-jaw surgery repositions one jaw; bimaxillary (two-jaw) surgery corrects both jaws in a single operation.",
+    enA: "Orthognathic surgery is needed when the upper or lower jaw is misaligned and disturbs the bite, chewing, speech, breathing or facial balance. Single-jaw surgery repositions one jaw; bimaxillary (two-jaw) surgery corrects both jaws in a single operation. Technically the upper jaw is repositioned with a Le Fort I osteotomy and the lower jaw with a BSSO (bilateral sagittal split osteotomy).",
   },
   {
     q: "دکتر حامد کرمانی کیست و چه سوابقی دارد؟",
@@ -467,7 +467,7 @@ export const KEY_ANSWERS = [
     q: "هزینهٔ جراحی فک و صورت در تهران چقدر است؟",
     en: "How much does jaw surgery cost in Tehran?",
     a: "تعرفهٔ شفاف همین مرکز در جدول زیر آمده است: جنیوپلاستی ۹۰ تا ۱۱۰ میلیون تومان، جراحی یک فک ۱۷۰ تا ۱۸۰ میلیون، جراحی دو فک ۱۹۰ تا ۲۰۰ میلیون و جراحی دو فک همراه با جنیوپلاستی ۲۱۰ تا ۲۴۰ میلیون تومان. هزینهٔ نهایی پس از معاینه و بررسی پرونده (سی‌تی‌اسکن و برنامه‌ریزی) اعلام می‌شود.",
-    enA: "As a 2026 guide at this Tehran clinic: genioplasty is about 90-110M Toman, single-jaw surgery 170-180M, bimaxillary surgery 190-200M and bimaxillary + genioplasty 210-240M. The final quote always follows the clinical exam and 3D planning.",
+    enA: "As a 2026 guide at this Tehran clinic: chin surgery (genioplasty) is about 90-110M Toman, single-jaw surgery 170-180M, bimaxillary surgery 190-200M and bimaxillary surgery + chin surgery 210-240M. The final quote always follows the clinical exam and 3D planning.",
   },
   {
     q: "ایمپلنت زایگوماتیک چیست و برای چه کسانی مناسب است؟",
@@ -478,8 +478,8 @@ export const KEY_ANSWERS = [
   {
     q: "بهترین جراح فک و صورت در تهران چه ویژگی‌هایی دارد؟",
     en: "Who is the best maxillofacial surgeon in Tehran?",
-    a: "معیارِ درست انتخاب، تبلیغات نیست؛ این‌هاست: مدارک رسمی (بورد تخصصی جراحی فک و صورت از وزارت بهداشت + فلوشیپ فوق‌تخصصی)، حجم پروندهٔ مشابه با مشکل شما، نمونه‌کارهای قبل و بعد واقعی و قابل‌رؤیت، برنامه‌ریزی دیجیتال سه‌بعدی قبل از عمل، و عمل در بیمارستان با تیم بیهوشی مجرب. دکتر کرمانی همهٔ این معیارها را پوشش می‌دهد: تخصص رسمی، فلوشیپ کرانیوفاسیال دانشگاه تهران، سابقهٔ استادی دانشگاه و هزاران جراحی ثبت‌شده.",
-    enA: "When choosing a jaw surgeon in Tehran, check four things: a formal OMFS board certificate, an advanced fellowship (for example craniofacial), a real before/after case portfolio, and digital 3D planning in a hospital with an experienced anesthesia team.",
+    a: "معیارِ درست انتخاب، تبلیغات نیست؛ این‌هاست: مدارک رسمی (بورد تخصصی جراحی فک و صورت از وزارت بهداشت + فلوشیپ فوق‌تخصصی)، حجم پروندهٔ مشابه با مشکل شما، نمونه‌کارهای قبل و بعد واقعی و قابل‌رؤیت، برنامه‌ریزی دیجیتال سه‌بعدی قبل از عمل، و عمل در بیمارستان با تیم بیهوشی مجرب. جراحی‌های فک و صورت دکتر کرمانی در بیمارستان آرمان تهران انجام می‌شود. ایشان همهٔ این معیارها را پوشش می‌دهد: تخصص رسمی، فلوشیپ کرانیوفاسیال دانشگاه تهران، سابقهٔ استادی دانشگاه و هزاران جراحی ثبت‌شده.",
+    enA: "When choosing a jaw surgeon in Tehran, check four things: a formal OMFS board certificate, an advanced fellowship (for example craniofacial), a real before/after case portfolio, and digital 3D planning in a hospital with an experienced anesthesia team. Dr. Kermani operates at Arman Hospital, Tehran.",
   },
 ];
 
