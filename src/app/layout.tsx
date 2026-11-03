@@ -189,7 +189,25 @@ async function JsonLd() {
       longitude: SITE.geo.lng,
     },
     hasMap: SITE.maps,
-    sameAs: [SITE.instagram, SITE.aparat],
+    /* sameAs — پروفایل‌های تأییدشدهٔ هویتی: GBP برای ایران تحریم است،
+       پس معادل‌های واقعی و راستی‌آزمایی‌شده (رجیستری رسمی نظام پزشکی،
+       پذیرش۲۴، نوبت، بیمارستان آرمان) + شبکه‌های اجتماعی —
+       همه 200 زنده تأیید شده‌اند؛ entity-consistency برای E-E-A-T */
+    sameAs: [
+      SITE.instagram,
+      SITE.aparat,
+      "https://membersearch.irimc.org/member/profile?id=cdbda269-be8b-4de3-aeda-5f92617e27b2",
+      "https://www.paziresh24.com/dr/%D8%AF%DA%A9%D8%AA%D8%B1-%D8%AD%D8%A7%D9%85%D8%AF-%DA%A9%D8%B1%D9%85%D8%A7%D9%86%DB%8C/",
+      "https://nobat.ir/doctor/%D8%AF%DA%A9%D8%AA%D8%B1-%D8%AD%D8%A7%D9%85%D8%AF-%DA%A9%D8%B1%D9%85%D8%A7%D9%86%DB%8C-%D8%AA%D9%87%D8%B1%D8%A7%D9%86/dr-drkermani/",
+      "https://armanhospital.com/%D8%AF%DA%A9%D8%AA%D8%B1-%D8%AD%D8%A7%D9%85%D8%AF-%DA%A9%D8%B1%D9%85%D8%A7%D9%86%DB%8C-%D9%85%D8%AA%D8%AE%D8%B5%D8%B5-%D8%AC%D8%B1%D8%A7%D8%AD%DB%8C-%D9%81%DA%A9-%D9%88-%D8%B5%D9%88%D8%B1%D8%AA/",
+    ],
+    /* شماره پروانهٔ طبابت از رجیستری رسمی سازمان نظام پزشکی —
+       سیگنال E-E-A-T پزشکی (اعتبار رسمی هویت) */
+    identifier: {
+      "@type": "PropertyValue",
+      name: "شماره نظام پزشکی",
+      value: "95303",
+    },
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
@@ -254,7 +272,16 @@ async function JsonLd() {
       longitude: SITE.geo.lng,
     },
     hasMap: SITE.maps,
-    sameAs: [SITE.instagram, SITE.aparat, SITE.maps],
+    /* هم‌خوان با physicianLd — پروفایل‌های تأییدشدهٔ هویتی برند */
+    sameAs: [
+      SITE.instagram,
+      SITE.aparat,
+      SITE.maps,
+      "https://membersearch.irimc.org/member/profile?id=cdbda269-be8b-4de3-aeda-5f92617e27b2",
+      "https://www.paziresh24.com/dr/%D8%AF%DA%A9%D8%AA%D8%B1-%D8%AD%D8%A7%D9%85%D8%AF-%DA%A9%D8%B1%D9%85%D8%A7%D9%86%DB%8C/",
+      "https://nobat.ir/doctor/%D8%AF%DA%A9%D8%AA%D8%B1-%D8%AD%D8%A7%D9%85%D8%AF-%DA%A9%D8%B1%D9%85%D8%A7%D9%86%DB%8C-%D8%AA%D9%87%D8%B1%D8%A7%D9%86/dr-drkermani/",
+      "https://armanhospital.com/%D8%AF%DA%A9%D8%AA%D8%B1-%D8%AD%D8%A7%D9%85%D8%AF-%DA%A9%D8%B1%D9%85%D8%A7%D9%86%DB%8C-%D9%85%D8%AA%D8%AE%D8%B5%D8%B5-%D8%AC%D8%B1%D8%A7%D8%AD%DB%8C-%D9%81%DA%A9-%D9%88-%D8%B5%D9%88%D8%B1%D8%AA/",
+    ],
     /* GEO: areaServed — سیگنال جغرافیایی برای entity checker
        (has_geo_schema) و شفاف‌سازی منطقه خدمت برای موتورهای پاسخ‌محور */
     areaServed: {
