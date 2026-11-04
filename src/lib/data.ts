@@ -90,7 +90,7 @@ export const SERVICES = [
     title: "جراحی یک فک",
     latin: "Orthognathic — Single Jaw",
     desc: "اصلاح ناهنجاری های فک بالا یا پایین به صورت مجزا؛ بهبود عملکرد گاز گرفتن، تکلم و تناسب چهره با جراحی ارتوگناتیک دقیق و برنامه ریزی سه بعدی.",
-    image: "/images/case-1.jpg",
+    image: "/images/services-3d/jaw-surgery.jpg",
     points: [
       "اصلاح عقب رفتگی یا جلو آمدگی فک",
       "بهبود اکلوژن (جفت شدن دندان ها)",
@@ -102,7 +102,7 @@ export const SERVICES = [
     title: "جراحی دو فک",
     latin: "Bimaxillary Surgery",
     desc: "جراحی همزمان فک بالا و پایین (بایمکس) برای اصلاح کامل روابط فکی، بهبود تنفس، ظاهر پروفایل و لبخند در پرونده های پیچیده تر.",
-    image: "/images/case-4.jpg",
+    image: "/images/services-3d/bimax.jpg",
     points: [
       "اصلاح همزمان فک بالا و پایین",
       "بهبود پروفایل و تناسب صورت",
@@ -114,7 +114,7 @@ export const SERVICES = [
     title: "بلفاروپلاستی",
     latin: "Blepharoplasty",
     desc: "جراحی پلک برای رفع پف و افتادگی پلک بالا و پایین؛ جوانسازی نگاه با برش های ظریف و پنهان در چین طبیعی پلک.",
-    image: "/images/blepharo-1.jpg",
+    image: "/images/services-3d/blepharoplasty.jpg",
     points: [
       "رفع پف و کیسه های زیر چشم",
       "اصلاح افتادگی پلک بالا",
@@ -126,7 +126,7 @@ export const SERVICES = [
     title: "جنیوپلاستی (جراحی چانه)",
     latin: "Genioplasty",
     desc: "اصلاح فرم، اندازه و موقعیت چانه؛ جلو بردن، عقب بردن یا کاهش عرض چانه برای رسیدن به تعادل در پروفایل صورت.",
-    image: "/images/case-6.jpg",
+    image: "/images/services-3d/genioplasty.jpg",
     points: [
       "اصلاح عقب رفتگی چانه",
       "کاهش یا افزایش طول چانه",
@@ -138,7 +138,7 @@ export const SERVICES = [
     title: "ایمپلنت (کاشت دندان)",
     latin: "Dental Implants",
     desc: "کاشت دندان با برندهای معتبر جهانی، ایمپلنت های زایگوماتیک برای فک به شدت تحلیل رفته و جراحی های پیشرفته داخل دهان.",
-    image: "/images/case-9.jpg",
+    image: "/images/services-3d/implant.jpg",
     points: [
       "ایمپلنت برندهای آلمان، سوییس، آمریکا و کره",
       "ایمپلنت زایگوماتیک (استرومن و ...)",
@@ -150,7 +150,7 @@ export const SERVICES = [
     title: "بازسازی فک",
     latin: "Jaw Reconstruction",
     desc: "بازسازی کامل فک بالا و پایین پس از تحلیل شدید، تومور یا تصادف؛ بازگرداندن عملکرد جویدن و زیبایی چهره با پروتزهای مفصل فک.",
-    image: "/images/case-8.jpg",
+    image: "/images/services-3d/reconstruction.jpg",
     points: [
       "بازسازی فک بالا با ایمپلنت",
       "پروتز مفصل گیجگاهی فک (TMJ)",

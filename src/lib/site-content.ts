@@ -39,6 +39,32 @@ function parse<T>(raw: string | undefined, fallback: T): T {
 /* لوگوی پیش‌فرض — قابل تغییر از تنظیمات (brand.logoImage) */
 const BRAND = { logoImage: "/images/logo.png" };
 
+/* ── تصاویر سه‌بعدی جدید کارت‌های خدمات (۲۰۲۶/۱۱) ──
+   رندرهای مدیکال هم‌سبک با برند (Kinpaku: طلایی روی لاکی مشکی) به‌جای
+   عکس‌های قدیمی case-*.jpg. رکورد دیتابیس پروداکشن هنوز مسیر قدیمی دارد و
+   از این‌جا قابل ویرایش نیست؛ پس مسیرهای قدیمی/خالی بر اساس اسلاگ به نسخهٔ
+   سه‌بعدی مهاجرت می‌کنند و عکس سفارشیِ انتخابی ادمین محترم شمرده می‌شود. */
+const SERVICE_3D: Record<string, string> = {
+  "jaw-surgery": "/images/services-3d/jaw-surgery.jpg",
+  bimax: "/images/services-3d/bimax.jpg",
+  blepharoplasty: "/images/services-3d/blepharoplasty.jpg",
+  genioplasty: "/images/services-3d/genioplasty.jpg",
+  implant: "/images/services-3d/implant.jpg",
+  reconstruction: "/images/services-3d/reconstruction.jpg",
+};
+const LEGACY_SERVICE_IMAGES = new Set([
+  "",
+  "/images/case-1.jpg",
+  "/images/case-4.jpg",
+  "/images/case-6.jpg",
+  "/images/case-8.jpg",
+  "/images/case-9.jpg",
+  "/images/blepharo-1.jpg",
+  "/images/blepharo-2.jpg",
+]);
+const migrateServiceImage = (slug: string, image: string): string =>
+  LEGACY_SERVICE_IMAGES.has(image) ? (SERVICE_3D[slug] ?? image) : image;
+
 export async function getSiteContent() {
   try {
     const [
@@ -163,7 +189,7 @@ export async function getSiteContent() {
             title: s.title,
             latin: s.latin,
             desc: s.desc,
-            image: s.image,
+            image: migrateServiceImage(s.slug, s.image),
             points: points(s),
           }))
         : SERVICES.map((s) => ({ ...s, points: s.points })),
