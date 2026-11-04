@@ -7,12 +7,37 @@ import {
   signSession,
   loginAllowed,
   loginSucceeded,
+  hashPassword,
   SESSION_COOKIE,
   SESSION_TTL_SEC,
 } from "@/lib/auth";
 
 /* ساخت حساب ادمین فقط از طریق prisma/seed.ts انجام می‌شود؛
    هیچ نقطه‌ی عمومی‌ای حساب پیش‌فرض با رمز معلوم نمی‌سازد. */
+
+/* ── بازیابی اضطراری رمز ادمین — بدون هیچ نقطهٔ عمومی ──
+   رمز seed یک‌بار تصادفی ساخته شده، فقط در کنسول چاپ شده و به‌صورت
+   scrypt در دیتابیس ذخیره می‌شود — بازیابی‌پذیر نیست (طراحی امن).
+   اگر مالک رمز را گم کند: در cPanel (Setup Node.js App → Environment
+   variables) متغیر ADMIN_RESET_PASSWORD را می‌گذارد، یک بار در پنل
+   لاگین می‌کند و بعد متغیر را حذف و اپ را Restart می‌کند.
+   تا وقتی متغیر موجود است، رمز ادمین = مقدار متغیر (idempotent)؛
+   با تغییر رمز، همهٔ نشست‌های قدیمی هم بلافاصله باطل می‌شوند (pv). */
+async function applyEnvPasswordReset(): Promise<void> {
+  const p = process.env.ADMIN_RESET_PASSWORD;
+  if (!p || p.length < 10 || p.length > 256) return;
+  try {
+    const user = await db.adminUser.findUnique({ where: { username: "admin" } });
+    if (user && !verifyPassword(p, user.passwordHash)) {
+      await db.adminUser.update({
+        where: { username: "admin" },
+        data: { passwordHash: hashPassword(p) },
+      });
+    }
+  } catch {
+    /* خطای دیتابیس — جریان لاگین عادی ادامه پیدا می‌کند */
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -46,6 +71,10 @@ export async function POST(req: NextRequest) {
         { status: 429 }
       );
     }
+
+    /* بازیابی اضطراری: اگر ADMIN_RESET_PASSWORD در env باشد، قبل از
+       بررسی اعتبار روی رکورد ادمین اعمال می‌شود (توضیحات بالای فایل) */
+    await applyEnvPasswordReset();
 
     const user = await db.adminUser.findUnique({ where: { username } });
     const valid = user !== null && verifyPassword(password, user.passwordHash);
