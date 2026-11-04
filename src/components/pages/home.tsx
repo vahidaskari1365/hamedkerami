@@ -763,7 +763,11 @@ function CtaSection() {
 function KeyAnswersSection() {
   const { jawCosts } = useContent();
   return (
-    <section className="bg-white py-24" aria-label="پاسخ سوال‌های کلیدی درباره جراحی فک و صورت">
+    <section
+      id="key-answers"
+      className="scroll-mt-24 bg-white py-24"
+      aria-label="پاسخ سوال‌های کلیدی درباره جراحی فک و صورت"
+    >
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <Reveal>
           <h2 className="text-2xl font-black leading-snug sm:text-3xl">
@@ -810,27 +814,63 @@ function KeyAnswersSection() {
           </div>
         </Reveal>
 
-        {/* Q&A دوزبانه — تیتر سؤالی (؟ انگلیسی) + پاسخ مستقیم + تعریف انگلیسی */}
-        <div className="mt-16 space-y-12">
-          {KEY_ANSWERS.map((item, i) => (
-            <Reveal key={item.en} delay={0.05}>
-              <article>
-                <h3 className="text-xl font-black leading-snug sm:text-2xl">
-                  {item.q}
-                  <span dir="ltr" className="mt-1.5 block text-sm font-bold text-teal-2 sm:text-base">
-                    {item.en}
+        {/* فهرست پرسش‌ها — لنگرهای پرش (SXO): انسان اسکن می‌کند و یک‌ضرب به پاسخ
+            موردنظر می‌پرد؛ برای موتورهای پاسخ هم نقشهٔ لنگردار سؤال‌ها شفاف‌تر می‌شود.
+            کلیک روی هر آیتم، آکاردئون بسته را هم باز می‌کند. */}
+        <Reveal delay={0.12}>
+          <nav aria-label="فهرست پرسش‌های کلیدی" className="mt-8 flex flex-wrap gap-2.5">
+            {KEY_ANSWERS.map((item, i) => (
+              <a
+                key={item.en}
+                href={`#qa-${i + 1}`}
+                onClick={(e) => {
+                  const el = document.getElementById(`qa-${i + 1}`);
+                  const btn = el?.querySelector("button");
+                  if (btn && btn.getAttribute("data-state") !== "open") btn.click();
+                  e.preventDefault();
+                  el?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className="rounded-full border border-ink/10 bg-bone px-4 py-2 text-[13px] font-bold text-foreground/75 transition hover:border-teal/50 hover:text-teal-2"
+              >
+                {item.q}
+              </a>
+            ))}
+          </nav>
+        </Reveal>
+
+        {/* Q&A دوزبانه — SXO-safe AEO: تیتر سؤالی (؟ انگلیسی) همیشه نمایان؛
+            پاسخ‌ها پشت آکاردئون Radix اما محتوا در SSR/DOM باقی می‌ماند (attribute
+            hidden فقط نمایش را جمع می‌کند، نه HTML را) → خزندهٔ LLM و گوگل همان
+            متن قبلی را می‌بینند و نمرهٔ AEO/GEO/AIO دست‌نخورده می‌ماند؛ ارتفاع بصری
+            بخش ~۶۰٪ کم می‌شود (قبل از خدمات، دیوارِ متن نداریم). پرسش اول (تعریف)
+            پیش‌فرض باز است. */}
+        <Reveal delay={0.16}>
+          <Accordion type="single" collapsible defaultValue="qa-1" className="mt-10 space-y-3.5">
+            {KEY_ANSWERS.map((item, i) => (
+              <AccordionItem
+                key={item.en}
+                value={`qa-${i + 1}`}
+                id={`qa-${i + 1}`}
+                className="scroll-mt-24 rounded-2xl border border-ink/10 bg-card px-5 shadow-sm sm:px-6"
+              >
+                <AccordionTrigger className="text-right hover:no-underline">
+                  <span className="text-right">
+                    <span className="block text-[15px] font-black leading-7 sm:text-lg">{item.q}</span>
+                    <span dir="ltr" className="mt-1 block text-left text-xs font-bold text-teal-2 sm:text-sm">
+                      {item.en}
+                    </span>
                   </span>
-                </h3>
-                <p className="mt-4 max-w-[70ch] text-[15px] leading-8 text-foreground/75">
-                  {item.a}
-                </p>
-                <p dir="ltr" className="mt-3 max-w-[70ch] text-left text-[13px] leading-6 text-foreground/55">
-                  {item.enA}
-                </p>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+                </AccordionTrigger>
+                <AccordionContent className="text-sm">
+                  <p className="max-w-[70ch] text-[15px] leading-8 text-foreground/75">{item.a}</p>
+                  <p dir="ltr" className="mt-3 max-w-[70ch] border-t border-ink/5 pt-3 text-left text-[13px] leading-6 text-foreground/55">
+                    {item.enA}
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </Reveal>
 
         {/* جدول تعرفه — AEO: tables/definition lists */}
         <Reveal>
