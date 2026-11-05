@@ -27,6 +27,9 @@ export type BlogArticle = {
    مجاز به انتشار است. در آن زمان فقط از این Set خارج شود.
    ============================================================ */
 const HIDDEN_SLUGS: ReadonlySet<string> = new Set(["jaw-surgery-cost-1406"]);
+/* برای مسیرهای دیگر (مثل site-content / لیست وبلاگ) هم صادر می‌شود
+   تا مقالهٔ پنهان هیچ‌جا — حتی لیست — ظاهر نشود */
+export { HIDDEN_SLUGS };
 
 export async function getPublishedPosts(): Promise<BlogArticle[]> {
   try {

@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { HIDDEN_SLUGS } from "@/lib/blog-posts";
 import {
   BIO,
   BEFORE_AFTER,
@@ -92,7 +93,9 @@ export async function getSiteContent() {
       db.stat.findMany({ orderBy: { order: "asc" } }),
       db.successRate.findMany({ orderBy: { order: "asc" } }),
       db.costItem.findMany({ orderBy: { order: "asc" } }),
-      db.blogPost.findMany({ where: { published: true }, orderBy: { createdAt: "desc" } }),
+      db.blogPost
+        .findMany({ where: { published: true }, orderBy: { createdAt: "desc" } })
+        .then((rows) => rows.filter((b) => !HIDDEN_SLUGS.has(b.slug))),
       db.galleryCase.findMany({ orderBy: { order: "asc" } }),
       db.portfolioCover.findMany({ orderBy: { order: "asc" } }),
       db.certificate.findMany({ orderBy: { order: "asc" } }),
