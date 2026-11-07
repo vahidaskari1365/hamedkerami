@@ -44,7 +44,7 @@ export async function GET() {
     }
     return NextResponse.json({
       enabled: true,
-      schedule: "هر روز ۰۷:۰۰ تهران — روزی ۲ مقاله به ترتیب صف",
+      schedule: "شنبه و سه‌شنبه ۰۷:۰۰ تهران — هفته‌ای ۲ مقاله داستانی «سفر بیمار»",
       busy: isBusy(),
       lastRunDate: lastRun?.value ?? null,
       lastResult: result,

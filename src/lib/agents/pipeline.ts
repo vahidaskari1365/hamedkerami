@@ -1,5 +1,5 @@
 /* ============================================================
-   pipeline — ارکستراتور بلاگ روزانه (روزی ۲ مقاله، ۰۷:۰۰ تهران)
+   pipeline — ارکستراتور بلاگ (هفتگی ۲ مقاله: شنبه + سه‌شنبه، ۰۷:۰۰ تهران)
    ۵ ایجنت خلاق در creative.ts، انتشار QC در publish.ts.
    حالت‌های اجرا:
    ۱) زمان‌بند درون‌پردازشی سرور (scheduler.ts) — پشتیبان
@@ -21,8 +21,14 @@ import {
 import { publishSubmittedArticle, type PublishResult } from "@/lib/agents/publish";
 import { nextTopic, type Topic } from "@/lib/agents/topics";
 
-/* روزی ۲ مقاله — طبق درخواست کاربر (۰۷:۰۰ تهران، به ترتیب صف) */
-export const ARTICLES_PER_DAY = 2;
+/* ریتم انتشار (درخواست کاربر، آبان ۱۴۰۵): هفته‌ای ۲ مقاله —
+   شنبه (مقالهٔ نو) و سه‌شنبه (بازنویسی/مقالهٔ نو) — ۰۷:۰۰ تهران.
+   روزهای غیرمقاله runDailyBlog با skipped خارج می‌شود.
+   استاندارد داستانی «سفر بیمار»: docs/agent/STANDARD.md */
+export const ARTICLES_PER_DAY = 1;
+
+/** روزهای مقاله به وقت تهران — شنبه (Saturday) و سه‌شنبه (Tuesday) */
+const ARTICLE_DAYS: ReadonlySet<string> = new Set(["Sat", "Tue"]);
 
 /** قفل درون‌پردازشی — تیک زمان‌بند و تریگر API هرگز هم‌زمان اجرا نمی‌شوند */
 let runningNow = false;
@@ -106,6 +112,9 @@ async function runDailyBlogInner(force = false): Promise<PublishResult[] | { ski
   /* قفل روزانه — مگر force (اجرای دستی) */
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tehran" }).format(new Date());
   if (!force) {
+    /* گیت روز هفته — فقط شنبه و سه‌شنبه مقاله تولید می‌شود (ریتم هفتگی ۲) */
+    const weekday = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tehran", weekday: "short" }).format(new Date());
+    if (!ARTICLE_DAYS.has(weekday)) return { skipped: `امروز ${weekday} است — روز مقاله نیست (فقط شنبه و سه‌شنبه)` };
     const lastRun = await db.setting.findUnique({ where: { key: "agents_last_run_date" } });
     if (lastRun?.value === today) return { skipped: "امروز قبلا اجرا شده است" };
   }

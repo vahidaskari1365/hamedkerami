@@ -1,5 +1,5 @@
 /* ============================================================
-   blog-agent — انتشار روزانه ۱۰ مقاله (۰۷:۰۰ تهران)
+   blog-agent — انتشار هفتگی مقاله داستانی (شنبه + سه‌شنبه، ۰۷:۰۰ تهران)
    دو منبع محتوا به ترتیب:
    ۱) مخزن مقالات آماده (content-queue/pool/<slug>.json) — مقالات
       دست‌نویس تاییدشده؛ در رانر گیت‌هاب بدون نیاز به API هوش مصنوعی
@@ -95,12 +95,12 @@ async function main() {
   if (!q.ok) throw new Error(`GET /queue → HTTP ${q.status}: ${JSON.stringify(q.json).slice(0, 200)}`);
   console.log(`[runner] منتشرشده: ${q.json.totalPublished} | صف: ${q.json.pending.map((t) => t.title).join(" | ")}`);
   if (!q.json.pending.length) {
-    console.log("[runner] صف ۲۴ مقاله‌ای تمام شد — evergreen/به‌روزرسانی سالانه در topics.ts");
+    console.log("[runner] صف موضوعات فعلا خالی است — موضوعات بعدی از docs/agent/PLAN.md (مسیر ایجنت سندباکس) تأمین می‌شود");
     return;
   }
 
   const results = [];
-  for (const topic of q.json.pending.slice(0, 16)) {
+  for (const topic of q.json.pending.slice(0, 1)) { /* ریتم جدید: هر اجرا فقط ۱ مقاله (هفتگی ۲: شنبه+سه‌شنبه) */
     console.log(`\n[runner] === ${topic.title} ===`);
     try {
       const pooled = poolArticleFor(topic.slug);
