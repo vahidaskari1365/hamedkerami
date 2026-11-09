@@ -764,3 +764,12 @@ Work Log:
 - کشف ریشه‌ای: instrumentation.ts در هر استارت سرور ۱۶ مقاله ثابت را از کد upsert می‌کند («منبع حقیقت = کد») → دیپلوی همزمان (پوش فیکس لینک نسبی) ۷ مبدأ seed را بازنویسی و ۹ لینک را پاک کرد
 - فیکس ساختاری: همان ۹ لینک داخل src/lib/articles/*.ts (7 فایل seed) درج شد (scripts/add-links-to-seeds.mjs) تا با دیپلوی بعدی authoritatively اعمال شود؛ دروازه سردبیر هم لینک مطلق http را رد می‌کرد → همه لینک‌ها نسبی
 - نتیجه مرحله اول (قبل از کشف seed): ۳۰/۳۰ انتشار موفق، میانگین لینک داخلی ۴.۲→۴.۶، یتیم‌ها ۱۹→۲
+
+## ۱۹ آبان ۱۴۰۵ — رفع خطای ویدیوی سرچ کنسول (Video validation / Affected pages)
+
+- علامت GSC: «Cannot continue validation process — Affected pages were found» با آیتم‌های VideoObject صفحه اصلی (Fresh Socket Implant، Ridge Splitting، جراحی دو فک و چانه)
+- ریشه: صفحه اصلی صفر ویدیو رندر می‌کرد ولی JSON-LD آن ۷ ویدیو اعلام می‌کرد و video-sitemap ۳ ویدیو برای «/» می‌شمارد → ناسازگاری مارک‌آپ ↔ محتوای صفحه ↔ sitemap
+- عامل دوم: VideoCard فقط با کلیک iframe را می‌ساخت (facade) → پلیر در HTML اولیه وجود نداشت و Googlebot آن را نمی‌بیند
+- فیکس: بخش «فیلم های جراحی» با ۳ پلیر واقعی به صفحه اصلی اضافه شد؛ VideoObject صفحه اصلی ۷→۳ (فقط ویدیوهای واقعاً نمایش‌داده‌شده)؛ facade → iframe SSR با loading=lazy در landing-videos (روی همه صفحات)
+- راستی‌آزمایی زنده پس از دیپلوی (8513ff2): ۶ صفحه مارک‌آپ↔iframe برابر؛ / ۳=۳=sitemap ✔ — about/gallery بدون مارک‌آپ اما پلیر در HTML و sitemap زیرمجموعهٔ محتوا (مجاز)
+- IndexNow: سندباکس 403 (SiteVerificationNotCompleted) → dispatch ورک‌فلو indexnow-retry (HTTP 204)
