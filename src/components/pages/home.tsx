@@ -31,6 +31,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { LandingVideos } from "@/components/landing/landing-videos";
+import { APARAT_CHANNEL, HIGHLIGHT_VIDEOS } from "@/lib/videos";
 import { useContent } from "@/lib/content-context";
 
 /* ================= HERO — Kinpaku lacquer ================= */
@@ -910,6 +912,50 @@ function KeyAnswersSection() {
   );
 }
 
+/* ================= ویدیوهای جراحی — پلیر واقعی در صفحه =================
+   دقیقاً همان ۳ ویدیوی HIGHLIGHT_VIDEOS که: ۱) VideoObject همین‌ها
+   در page.tsx تزریق می‌شود، ۲) در video-sitemap.xml زیر «/» ثبت شده‌اند.
+   مارک‌آپ ↔ محتوای صفحه ↔ sitemap باید یکی باشد وگرنه گوگل در گزارش
+   «ویدیو» خطای Affected pages می‌دهد. */
+function VideosSection() {
+  return (
+    <section className="bg-white py-24" aria-label="فیلم های جراحی">
+      <div className="mx-auto max-w-7xl px-4 text-center sm:px-6">
+        <Reveal>
+          <p className="flex items-center justify-center gap-3 text-sm font-bold text-teal-2">
+            <span className="h-px w-10 bg-teal" aria-hidden />
+            فیلم های جراحی
+            <span className="h-px w-10 bg-teal" aria-hidden />
+          </p>
+          <h2 className="mt-4 text-3xl font-black leading-snug sm:text-4xl">
+            تصاویر واقعی اتاق عمل و نتایج بیماران
+          </h2>
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-foreground/70">
+            فیلم های جراحی دو فک، جنیوپلاستی و ایمپلنت — بدون تدوین تبلیغاتی؛
+            ویدیوهای کامل تر در کانال آپارات دکتر کرمانی در دسترس است.
+          </p>
+        </Reveal>
+        <Reveal className="mt-12 text-right">
+          <LandingVideos videos={HIGHLIGHT_VIDEOS} />
+        </Reveal>
+        <Reveal>
+          <a
+            href={APARAT_CHANNEL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-10 inline-flex items-center gap-3 rounded-full bg-ink px-9 py-4 text-sm font-bold text-white transition hover:bg-ink-3"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <path d="M8 5.5v13l11-6.5L8 5.5z" />
+            </svg>
+            مشاهده کانال آپارات
+          </a>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 /* ================= PAGE ================= */
 /* Money-pages strip — لینک ایکویتی به ۵ صفحه پول (roadmap سئو) */
 function MoneyPagesSection() {
@@ -956,6 +1002,7 @@ export function HomePage() {
       <ServicesSection />
       <PortfolioSection />
       <BlogTeaser />
+      <VideosSection />
       <MoneyPagesSection />
       <FaqSection />
       <JourneySection />

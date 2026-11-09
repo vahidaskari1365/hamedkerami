@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { SiteShell } from "@/components/site-chrome";
 import { HomePage } from "@/components/pages/home";
 import { JsonLdScript, videoLd } from "@/components/schema";
-import { VIDEOS, KEY_ANSWERS } from "@/lib/data";
+import { KEY_ANSWERS } from "@/lib/data";
+import { HIGHLIGHT_VIDEOS } from "@/lib/videos";
 import { getSiteContent } from "@/lib/site-content";
 
 /* ------------------------------------------------------------
@@ -51,9 +52,12 @@ export default async function Page() {
 
   return (
     <SiteShell>
-      {/* اسکیمای ویدئو — هر ویدئویی که در VIDEOS.items اضافه شود
-          خودکار VideoObject می‌گیرد (AIO/GEO) */}
-      {VIDEOS.items.map((v) => (
+      {/* اسکیمای ویدئو — فقط ویدئوهایی که واقعاً در همین صفحه رندر می‌شوند
+          (VideosSection در home.tsx). قبلاً همه‌ی ۷ ویدیو مارک‌آپ می‌شدند
+          ولی هیچ‌کدام در صفحه نبود → گوگل خطای
+          «Video not detected on page / Affected pages were found» می‌داد.
+          قانون: مارک‌آپ ↔ محتوای صفحه ↔ video-sitemap همیشه یکی (AIO/GEO) */}
+      {HIGHLIGHT_VIDEOS.map((v) => (
         <JsonLdScript key={v.id} data={videoLd(v)} />
       ))}
       {faq.length ? <JsonLdScript data={faqLd} /> : null}
