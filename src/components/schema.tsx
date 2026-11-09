@@ -61,7 +61,10 @@ export function videoLd(v: VideoItem) {
     thumbnailUrl: [thumb],
     uploadDate: v.upload,
     embedUrl: v.embed,
-    contentUrl: v.embed,
+    /* contentUrl عمداً ندارد — طبق spec گوگل contentUrl باید URL فایل
+       مدیای واقعی (mp4) باشد؛ آپارات خزندهٔ خارجی را به فایل راه نمی‌دهد
+       و گذاشتن آدرس صفحهٔ پلیر در contentUrl باعث شکست پردازش ویدیو و
+       خطای «Affected pages» در گزارش ویدیو می‌شد. embedUrl کافی است. */
     ...(v.durationIso ? { duration: v.durationIso } : {}),
     inLanguage: "fa-IR",
     publisher: { "@id": `${SITE.url}/#physician` },

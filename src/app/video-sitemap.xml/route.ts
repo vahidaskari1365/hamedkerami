@@ -51,13 +51,15 @@ ${hostPages()
     ({ path, videos }) => `  <url>
     <loc>${SITE.url}${path}</loc>
 ${videos
+  /* نکته spec: content_loc فقط برای URL فایل واقعی ویدیو (mp4) است؛
+     چون آپارات فایل خام به خزنده نمی‌دهد فقط player_loc می‌فرستیم —
+     گذاشتن صفحه پلیر در content_loc پردازش ویدیو را در گوگل شکست می‌داد */
   .map(
     (v) => `    <video:video>
       <video:thumbnail_loc>${SITE.url}${v.thumb}</video:thumbnail_loc>
       <video:title>${esc(v.title)}</video:title>
       <video:description>${esc(v.description)}</video:description>
       <video:player_loc>${esc(v.embed)}</video:player_loc>
-      <video:content_loc>${esc(v.embed)}</video:content_loc>
       <video:duration>${secondsFromIso(v.durationIso)}</video:duration>
       <video:publication_date>${v.upload}</video:publication_date>
       <video:family_friendly>yes</video:family_friendly>
