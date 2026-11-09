@@ -773,3 +773,11 @@ Work Log:
 - فیکس: بخش «فیلم های جراحی» با ۳ پلیر واقعی به صفحه اصلی اضافه شد؛ VideoObject صفحه اصلی ۷→۳ (فقط ویدیوهای واقعاً نمایش‌داده‌شده)؛ facade → iframe SSR با loading=lazy در landing-videos (روی همه صفحات)
 - راستی‌آزمایی زنده پس از دیپلوی (8513ff2): ۶ صفحه مارک‌آپ↔iframe برابر؛ / ۳=۳=sitemap ✔ — about/gallery بدون مارک‌آپ اما پلیر در HTML و sitemap زیرمجموعهٔ محتوا (مجاز)
 - IndexNow: سندباکس 403 (SiteVerificationNotCompleted) → dispatch ورک‌فلو indexnow-retry (HTTP 204)
+
+## ادامهٔ همان روز — دنبالهٔ خطای ویدیو (X04Y6 باقی‌مانده در لیست اعتبارسنجی)
+
+- وضعیت: از ۳ آیتم خطا فقط «جراحی دو فک و چانه» (X04Y6) در گزارش باقی ماند → گوگل دارد داده‌های پس از فیکس را پردازش می‌کند؛ پیام فعلی بر اساس خزش قبل از دیپلوی است
+- سلامت آپارات: هر ۷ embed و صفحه تماشا = HTTP 200 — ویدیو زنده است
+- ایراد دوم کشف و رفع شد: contentUrl (JSON-LD) و video:content_loc (sitemap) به اشتباه URL صفحهٔ پلیر را می‌دادند نه فایل مدیای mp4 → پردازش ویدیو در گوگل شکست می‌خورد (آپارات فایل خام به خزندهٔ خارجی نمی‌دهد — 503)
+- فیکس (bbc76d7): حذف contentUrl از videoLd و content_loc از video-sitemap — طبق spec فقط embedUrl/player_loc کافی است
+- راستی‌آزمایی زنده: sitemap صفر content_loc؛ هوم ۳ iframe + ۳ VideoObject + صفر contentUrl
