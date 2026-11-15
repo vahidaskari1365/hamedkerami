@@ -32,7 +32,9 @@ export async function generateMetadata(): Promise<Metadata> {
      حالا لینک فید مستقیم در <body> رندر می‌شود و React 19 آن را به
      <head> منتقل می‌کند؛ هیچ صفحه‌ای نمی‌تواند حذفش کند. */
   title: {
-    default: "دکتر حامد کرمانی | متخصص جراحی فک و صورت در تهران",
+    /* کوئری برند گوگل «دکتر حامد کرمانی جراح فک» با ۴۰ نمایش و CTR ۰٪ —
+       «جراح فک و صورت» + «دندانپزشکی» باید در تایتل SERP دیده شود */
+    default: "دکتر حامد کرمانی | جراح فک و صورت و متخصص دندانپزشکی در تهران",
     template: "%s | دکتر حامد کرمانی",
   },
   description: SITE.metaDescription,
@@ -48,8 +50,11 @@ export async function generateMetadata(): Promise<Metadata> {
     "مونومکس",
     "جراحی تک فک",
     "جنیوپلاستی",
+    "ژنیوپلاستی",
     "جراحی چانه",
     "عمل چانه",
+    "پروتز چانه",
+    "دکتر کرمانی دندانپزشک",
     "بلفاروپلاستی",
     "جراحی زیبایی صورت",
     "ایمپلنت دندان",
@@ -109,20 +114,20 @@ export async function generateMetadata(): Promise<Metadata> {
     locale: "fa_IR",
     url: SITE.url,
     siteName: "دکتر حامد کرمانی | جراحی فک و صورت",
-    title: "دکتر حامد کرمانی | متخصص جراحی فک و صورت و فلوشیپ کرانیوفاسیال",
+    title: "دکتر حامد کرمانی | جراح فک و صورت و متخصص دندانپزشکی در تهران",
     description: SITE.metaDescription,
     images: [
       {
         url: "/images/og-cover.jpg",
         width: 1200,
         height: 630,
-        alt: "دکتر حامد کرمانی، متخصص جراحی فک و صورت و فلوشیپ کرانیوفاسیال",
+        alt: "دکتر حامد کرمانی، جراح فک و صورت و فلوشیپ کرانیوفاسیال",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "دکتر حامد کرمانی | متخصص جراحی فک و صورت",
+    title: "دکتر حامد کرمانی | جراح فک و صورت",
     description: SITE.metaDescription,
     images: ["/images/og-cover.jpg"],
   },

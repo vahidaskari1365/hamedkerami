@@ -30,8 +30,9 @@ const PILLARS = [
   "/en/jaw-surgery-in-iran",
 ];
 /* اسلاگ‌های منتشرشده در دیتابیس پروداکشن (خارج از ۱۸ مقاله ثابت)
-   — تأییدشده با sitemap زنده ۲۰۲۶-۱۰-۲۶. بعد از هر موج انتشار انبوه
-   (کرن روزانه) اسلاگ‌های تازه را به این فهرست اضافه کن. */
+   — تأییدشده با sitemap زنده ۲۰۲۶-۱۰-۲۶؛ چهار اسلاگ آخر در ۱۵ آبان
+     ۱۴۰۵ با curl زنده (HTTP 200) تأیید شدند. بعد از هر موج انتشار انبوه
+     (کرن روزانه) اسلاگ‌های تازه را به این فهرست اضافه کن. */
 const DB_PUBLISHED_SLUGS: string[] = [
   "all-on-4-implants-guide", "best-implant-brands", "bimax-surgery-cost-1405",
   "blepharoplasty-cost-1405", "bruxism-night-guard", "bsso-lower-jaw-surgery",
@@ -42,6 +43,8 @@ const DB_PUBLISHED_SLUGS: string[] = [
   "jaw-surgery-statistics", "jaw-surgery-without-orthodontics",
   "lefort-osteotomy-guide", "mouth-protrusion", "wisdom-tooth-surgery-cost-1405",
   "zygomatic-implant-guide",
+  "cheek-implant-cost", "international-patients-faq",
+  "skeletal-class-2-3", "jaw-surgery-brushing-hygiene",
 ];
 const VALID_LINK_TARGETS = new Set<string>([
   ...PILLARS,
@@ -219,6 +222,8 @@ const POOL_VALID_TARGETS = new Set<string>([
   ...PILLARS,
   ...BLOG_ARTICLES.map((a) => `/blog/${a.slug}`),
   ...[...poolSlugs].map((s) => `/blog/${s}`),
+  /* لینک به مقاله‌های زندهٔ دیتابیس از فایل‌های pool/staging هم معتبر است */
+  ...DB_PUBLISHED_SLUGS.map((s) => `/blog/${s}`),
 ]);
 
 for (const dir of POOL_DIRS) {

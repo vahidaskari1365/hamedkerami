@@ -1,0 +1,46 @@
+name: Keyword boost publish (GSC query-targeted enrichment)
+
+# انتشار زندهٔ مقاله‌های غنی‌شده برای کوئری‌های GSC با نمایش بی‌کلیک —
+# مانیفست content-fixes/keyword-boost.json { slug: {title, excerpt, bodyFile} }
+# با همان مسیر ایجنت روزانه (سردبیر QC کامل + چک یکتایی) منتشر می‌شود.
+# بدنه/عنوان منبع حقیقت: src/lib/articles/*.ts (استخراج با
+# scripts/extract-article-bodies.mjs — پس از QA صفر خطا).
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "برای اجرا بنویسید: publish"
+        required: true
+        type: string
+
+concurrency:
+  group: keyword-boost
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Publish enriched articles
+        env:
+          SITE_URL: https://dr-kermani.com
+          AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
+        run: |
+          if [ "${{ inputs.confirm }}" != "publish" ]; then
+            echo "confirm=publish نیست — لغو شد"; exit 1
+          fi
+          node scripts/keyword-boost-publish.mjs
+
+      - name: IndexNow — پینگ Bing برای نسخه به‌روز
+        if: always()
+        run: node scripts/indexnow-submit.mjs --updated || echo "IndexNow ping ناموفق — مانع نیست"
