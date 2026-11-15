@@ -55,6 +55,7 @@ jobs:
           cp server.js deploy/server.js
           cp -r prisma deploy/prisma
           cp db/init.db deploy/db/init.db
+          [ -f db/landing-sync.json ] && cp db/landing-sync.json deploy/db/landing-sync.json || true
           echo "restart-$(date +%s)" > deploy/tmp/restart.txt
           rm -rf deploy/.next/standalone/node_modules/.cache 2>/dev/null || true
           du -sh deploy/* 2>/dev/null || true

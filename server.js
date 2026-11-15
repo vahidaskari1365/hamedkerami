@@ -94,6 +94,12 @@ function extractPendingPackage() {
         fs.mkdirSync(path.join(ROOT, "db"), { recursive: true });
         fs.copyFileSync(srcInit, path.join(ROOT, "db", "init.db"));
       }
+      /* فگ همگام‌سازی یک‌بارهٔ ردیف‌های LandingPage — بعد از اجرا پاک می‌شود */
+      const srcFlag = path.join(STAGE, "db", "landing-sync.json");
+      if (fs.existsSync(srcFlag)) {
+        fs.mkdirSync(path.join(ROOT, "db"), { recursive: true });
+        fs.copyFileSync(srcFlag, path.join(ROOT, "db", "landing-sync.json"));
+      }
     } catch (e) {
       console.error("[bootstrap] init.db copy (non-fatal):", e.message);
     }
@@ -226,6 +232,49 @@ if (!fs.existsSync(DB_FILE) && fs.existsSync(INIT_FILE)) {
   fs.copyFileSync(INIT_FILE, DB_FILE);
   console.log("[bootstrap] دیتابیس ساخته شد (db/custom.db از init.db)");
 }
+
+/* ============================================================
+   بخش ۲٫۵ — همگام‌سازی یک‌بارهٔ ردیف‌های LandingPage از init.db
+   کد لندینگ‌ها (LANDING_DEFAULTS) در init.db سید می‌شود، اما ردیف‌های
+   قدیمی در custom.db پروداکشن آن‌ها را سایه می‌اندازند و ویرایش کد
+   هرگز زنده نمی‌شد. پکیج دیپلوی می‌تواند db/landing-sync.json (فهرست
+   اسلاگ‌ها) بفرستد: برای هر اسلاگ، ردیف از init.db در custom.db
+   upsert می‌شود و فگ پاک می‌گردد (یک‌بار اجرا؛ شکست → بوت بعدی).
+   ============================================================ */
+function syncLandingRows() {
+  try {
+    const flagFile = path.join(DB_DIR, "landing-sync.json");
+    if (!fs.existsSync(flagFile)) return;
+    const slugs = JSON.parse(fs.readFileSync(flagFile, "utf8"));
+    if (!Array.isArray(slugs) || !slugs.length) {
+      fs.unlinkSync(flagFile);
+      return;
+    }
+    const prismaPkg = path.join(ROOT, ".next", "standalone", "node_modules", "@prisma", "client");
+    const script = `
+const { PrismaClient } = require(${JSON.stringify(prismaPkg)});
+(async () => {
+  const src = new PrismaClient({ datasources: { db: { url: "file:" + ${JSON.stringify(INIT_FILE)} } } });
+  const dst = new PrismaClient({ datasources: { db: { url: "file:" + ${JSON.stringify(DB_FILE)} } } });
+  for (const slug of ${JSON.stringify(slugs)}) {
+    const row = await src.landingPage.findUnique({ where: { slug } });
+    if (!row) { console.log("[landing-sync] skip (not in init.db):", slug); continue; }
+    await dst.landingPage.upsert({ where: { slug }, create: row, update: row });
+    console.log("[landing-sync] synced:", slug);
+  }
+  await src.$disconnect();
+  await dst.$disconnect();
+})().catch((e) => { console.error("[landing-sync] FAILED:", e.message); process.exit(1); });
+`;
+    execFileSync(process.execPath, ["-e", script], { stdio: "inherit", timeout: 90000 });
+    fs.unlinkSync(flagFile);
+    console.log("[bootstrap] landing rows synced from init.db — flag cleared");
+  } catch (e) {
+    /* فگ حذف نمی‌شود تا بوت بعدی دوباره تلاش کند */
+    console.error("[bootstrap] landing sync (non-fatal):", e.message);
+  }
+}
+syncLandingRows();
 /* همیشه دیتابیس خودِ اپ — اگر cPanel/env قدیمی DATABASE_URL دیگری
    ست کرده باشد، مسیر اشتباه زنده می‌ماند و همه کوئری‌ها خطا می‌دهند */
 process.env.DATABASE_URL = "file:" + DB_FILE;
