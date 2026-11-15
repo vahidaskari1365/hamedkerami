@@ -781,3 +781,19 @@ Work Log:
 - ایراد دوم کشف و رفع شد: contentUrl (JSON-LD) و video:content_loc (sitemap) به اشتباه URL صفحهٔ پلیر را می‌دادند نه فایل مدیای mp4 → پردازش ویدیو در گوگل شکست می‌خورد (آپارات فایل خام به خزندهٔ خارجی نمی‌دهد — 503)
 - فیکس (bbc76d7): حذف contentUrl از videoLd و content_loc از video-sitemap — طبق spec فقط embedUrl/player_loc کافی است
 - راستی‌آزمایی زنده: sitemap صفر content_loc؛ هوم ۳ iframe + ۳ VideoObject + صفر contentUrl
+
+---
+
+## ۱۵ آبان ۱۴۰۵ — هدف‌گذاری کوئری‌های GSC با نمایش بی‌کلیک (صفحه اول گوگل)
+
+جدول کوئری‌های GSC (نمایش بدون کلیک) تحلیل و برای هر کلمه صفحهٔ هدف تعیین شد؛ edits در کامیت‌های 6ef30b9 / 595ef86 / a166c5b.
+
+- **برند (CTR صفر، پوزیشن ۴-۹)**: تایتل هوم «دکتر حامد کرمانی | جراح فک و صورت و متخصص دندانپزشکی در تهران» + چکیدهٔ ۱۵۵ کاراکتری با «جراح فک و صورت» و «دندانپزشکی» — og/twitter هم‌گام
+- **chin-surgery**: تایتل با ژنیوپلاستی + بخش «بهترین جراح چانه در تهران» + FAQ ژنیوپلاستی برای چانه عقب رفته / انتخاب جراح چانه / قیمت پروتز چانه + رفع تایپو «ستون فقرات پروفایل» + related به دو مقاله
+- **jaw-surgery**: تایتل با بایمکس + بخش «جراحی بایمکس؛ اصلاح همزمان دو فک» + FAQ «هزینه جراحی ارتوگناتیک»
+- **implant-pasdaran**: تایتل «ایمپلنت دندان در پاسداران و شمال تهران» + بخش مسیر مراجعه + FAQ صادقانهٔ محل مطب + related به تعرفه‌ها و برندهای ایمپلنت
+- **costs**: FAQ «قیمت هر واحد روکش ایمپلنت» + «هزینه ارتودنسی ۱۴۰۵» (بدون عدد ساختگی)
+- **مقالات (انتشار زنده با /api/agents/publish — keyword-boost.yml، 4/4 موفق)**: genioplasty-cost تایتل «هزینه عمل ژنیوپلاستی ۱۴۰۵» + بخش «چانه عقب رفته» + ۳ FAQ جدید؛ complications FAQ تفاوت عوارض بایمکس؛ before-after تایتل دو کیوردی «جراحی فک قبل و بعد؛ تغییرات چهره بعد از جراحی فک»؛ best-surgeon پاراگراف فوق تخصص + FAQ + لینک «بهترین جراح چانه در تهران»
+- **QA صفر خطا شد (خط تولید باز شد)**: blog-agent سه اجرای اخیرش fail بود — ۴ اسلاگ زنده (cheek-implant-cost و…) به DB_PUBLISHED_SLUGS اضافه، دو فایل تکراری pool/staging (jaw-surgery-cost-1406, jaw-surgery-statistics) حذف، POOL_VALID_TARGETS به مقالات دیتابیس گسترش یافت
+- **سد سایه‌اندازی دیتابیس سرور**: ردیف‌های قدیمی LandingPage در custom.db سرور defaults جدید را می‌پوشاندند → مکانیزم همگام یک‌باره: db/landing-sync.json در پکیج دیپلوی → server.js بوت‌استرپ ردیف‌ها را از init.db upsert و فگ پاک می‌کند (a166c5b) — هر سه لندینگ زنده تأیید شد
+- زیرساخت جدید: scripts/extract-article-bodies.mjs، scripts/keyword-boost-publish.mjs، scripts/sync-db-articles.mjs، scripts/sync-init-landings.ts، scripts/check-live-vs-repo.mjs، workflow keyword-boost.yml
