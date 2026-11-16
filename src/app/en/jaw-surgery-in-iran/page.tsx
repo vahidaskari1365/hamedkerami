@@ -62,7 +62,7 @@ export default function EnIranLandingPage() {
           about: { "@id": `${SITE.url}/#physician` },
           audience: { "@type": "Patient" },
           reviewedBy: { "@id": `${SITE.url}/#physician` },
-          lastReviewed: "2026-10-20",
+          lastReviewed: "2026-11-16",
           significantLink: `${SITE.url}/en/contact`,
         }}
       />
