@@ -58,19 +58,19 @@ export const EN_STATS = [
 
 export const EN_SUCCESS = [
   {
-    rate: "109%",
-    title: "Orthognathic (jaw) surgery",
-    detail: "Across more than 1,200 successful jaw corrections.",
+    rate: "1,200+",
+    title: "Successful jaw corrections",
+    detail: "Orthognathic (jaw) surgeries with documented outcomes.",
   },
   {
-    rate: "109%",
-    title: "Jaw reconstruction & implants",
-    detail: "Across more than 20,000 successful treatments.",
+    rate: "20,000+",
+    title: "Successful treatments",
+    detail: "Jaw reconstruction & dental implant treatments.",
   },
   {
-    rate: "109%",
-    title: "Other procedures",
-    detail: "Across more than 5,000 successful surgeries.",
+    rate: "5,000+",
+    title: "Successful surgeries",
+    detail: "Other oral & maxillofacial procedures performed.",
   },
 ];
 
@@ -177,7 +177,7 @@ export const EN_LANDING = {
   why: [
     {
       title: "High-volume, fellowship-trained surgeons",
-      desc: "Iranian oral & maxillofacial surgeons treat one of the largest patient populations in the region. Dr. Kermani alone has performed 1,200+ jaw and facial surgeries with a 109% success rate across more than 1,200 orthognathic cases.",
+      desc: "Iranian oral & maxillofacial surgeons treat one of the largest patient populations in the region. Dr. Kermani alone has performed more than 1,200 successful jaw corrections and over 20,000 dental treatments, backed by a craniofacial surgery fellowship.",
     },
     {
       title: "A fraction of the cost",
@@ -225,6 +225,31 @@ export const EN_LANDING = {
   costsTitle: "What does jaw surgery in Iran cost?",
   costsDesc:
     "Exact pricing depends on the type of surgery (single jaw, double jaw, with or without genioplasty), hospital choice and implant materials. As a reference point, the full cost of corrective jaw surgery in Iran is typically 50–70% below equivalent packages in Turkey or the Gulf, and a fraction of US or UK private prices. You receive your exact quote in writing after the online consultation — no surprises, no hidden fees.",
+  recoveryTitle: "Recovery timeline — what happens week by week",
+  recoveryDesc:
+    "Jaw surgery recovery follows a predictable, staged pattern. Planning your travel around this timeline is the key to a comfortable 10–14 day stay in Tehran.",
+  recovery: [
+    {
+      phase: "Days 1–3",
+      detail:
+        "Swelling peaks on day 2–3 and a liquid, high-protein diet starts. You sleep with your head elevated and the care team manages swelling and comfort at the hospital and clinic.",
+    },
+    {
+      phase: "Week 1–2",
+      detail:
+        "You stay on a smooth liquid diet and continue head-up sleeping. Clinic check-ups and suture removal happen before the end of your stay — most patients fly home in this window.",
+    },
+    {
+      phase: "Week 3–4",
+      detail:
+        "The diet progresses to soft foods and desk work (including remote work) becomes comfortable. Light walking is encouraged; strenuous exercise waits for your surgeon's clearance.",
+    },
+    {
+      phase: "Month 2 and later",
+      detail:
+        "Everyday activities like speaking and swallowing feel natural again, numbness continues to fade, and online follow-up with your local orthodontist completes the final tooth alignment.",
+    },
+  ],
   faqs: [
     {
       q: "How much does double jaw surgery cost in Iran?",
@@ -257,6 +282,14 @@ export const EN_LANDING = {
     {
       q: "What follow-up do I get after returning home?",
       a: "Your healing is followed online with photo reviews and video calls. Written guidance is sent to your local orthodontist or dentist so the final phase of treatment continues smoothly at home.",
+    },
+    {
+      q: "How safe is jaw surgery in Iran?",
+      a: "Safety depends on the surgeon and the facility, not the country. Dr. Kermani is a board-certified oral & maxillofacial surgeon with a craniofacial fellowship, operating in a fully equipped hospital with an anaesthesiology team. Every case starts with a complete pre-operative work-up, and digital 3-D planning is done before you fly.",
+    },
+    {
+      q: "How long does the operation itself take?",
+      a: "Double-jaw (bimaxillary) surgery takes around 3 to 4 hours of anaesthesia time; single-jaw surgery and genioplasty are shorter procedures. You stay overnight or longer in the hospital and continue recovery under clinic supervision in Tehran.",
     },
   ],
 };

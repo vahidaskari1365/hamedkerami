@@ -476,7 +476,9 @@ export function CostsPage() {
               <ul className="mt-5 grid gap-3 sm:grid-cols-2">
                 {[
                   { href: "/blog/jaw-surgery-cost-1405", label: "هزینه جراحی فک ۱۴۰۵؛ تعرفه کامل و عوامل مؤثر" },
+                  { href: "/blog/genioplasty-cost", label: "هزینه عمل ژنیوپلاستی؛ پروتز چانه یا جابجایی استخوان؟" },
                   { href: "/blog/dental-implant-cost-1405", label: "هزینه ایمپلنت دندان ۱۴۰۵؛ قیمت برند به برند" },
+                  { href: "/implant-pasdaran", label: "ایمپلنت دندان در پاسداران و شمال تهران" },
                   { href: "/blog/jaw-surgery-insurance", label: "جراحی فک با بیمه؛ سهم پایه و تکمیلی" },
                   { href: "/surgery-care", label: "مراقبت‌های قبل و بعد از جراحی فک" },
                 ].map((l) => (

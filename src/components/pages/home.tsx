@@ -965,6 +965,7 @@ function MoneyPagesSection() {
     { href: "/jaw-surgery", label: "هزینه جراحی فک (ارتوگناتیک)" },
     { href: "/dental-implant", label: "هزینه ایمپلنت دندان به تفکیک برند" },
     { href: "/chin-surgery", label: "هزینه جنیوپلاستی و جراحی چانه" },
+    { href: "/implant-pasdaran", label: "ایمپلنت دندان در پاسداران و شمال تهران" },
     { href: "/services", label: "تعرفه دندان عقل و جراحی های دیگر" },
   ];
   return (

@@ -193,6 +193,26 @@ export default function EnIranLandingPage() {
         </div>
       </section>
 
+      {/* ---------- Recovery timeline ---------- */}
+      <section className="bg-bone py-14 sm:py-16" aria-labelledby="en-recovery-h">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <h2 id="en-recovery-h" className="text-2xl font-black text-ink sm:text-3xl">
+            {EN_LANDING.recoveryTitle}
+          </h2>
+          <p className="mt-3 max-w-2xl text-[13.5px] leading-7 text-foreground/65">
+            {EN_LANDING.recoveryDesc}
+          </p>
+          <ol className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {EN_LANDING.recovery.map((r) => (
+              <li key={r.phase} className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-ink/10">
+                <p className="text-sm font-black text-teal-3">{r.phase}</p>
+                <p className="mt-2 text-[13px] leading-7 text-foreground/70">{r.detail}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
       {/* ---------- FAQ ---------- */}
       <section className="bg-bone-2 py-14 sm:py-16" aria-labelledby="en-faq-h">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
