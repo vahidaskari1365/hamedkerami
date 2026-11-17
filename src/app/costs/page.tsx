@@ -12,7 +12,14 @@ export const metadata: Metadata = {
   title: { absolute: "هزینه جراحی فک و صورت و ایمپلنت دندان (۱۴۰۵) | تعرفه کامل" },
   description:
     "تعرفه ۱۴۰۵ جراحی فک و صورت: هزینه جراحی چانه ۹۰ تا ۱۱۰ میلیون، یک فک ۱۷۰ تا ۱۸۰ میلیون، دو فک (بایمکس) ۱۹۰ تا ۲۰۰ میلیون تومان و قیمت ایمپلنت دندان برندهای آلمان، کره، سوییس و آمریکا.",
-  alternates: { canonical: "/costs" },
+  alternates: {
+    canonical: "/costs",
+    languages: {
+      fa: "/costs",
+      en: "/en/costs",
+      "x-default": "/costs",
+    },
+  },
   openGraph: {
     images: [{ url: "/images/og-cover.jpg", width: 1200, height: 630 }],
     title: "هزینه جراحی فک و صورت و ایمپلنت دندان | تعرفه ۱۴۰۵",

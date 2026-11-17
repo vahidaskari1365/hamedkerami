@@ -14,7 +14,14 @@ export async function generateMetadata(): Promise<Metadata> {
     title: data.metaTitle,
     description: data.metaDescription,
     keywords: data.keywords,
-    alternates: { canonical: "/dental-implant" },
+    alternates: {
+      canonical: "/dental-implant",
+      languages: {
+        fa: "/dental-implant",
+        en: "/en/services",
+        "x-default": "/dental-implant",
+      },
+    },
     openGraph: {
       title: data.metaTitle,
       description: data.metaDescription,

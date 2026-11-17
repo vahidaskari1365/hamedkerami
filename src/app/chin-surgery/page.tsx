@@ -14,7 +14,14 @@ export async function generateMetadata(): Promise<Metadata> {
     title: data.metaTitle,
     description: data.metaDescription,
     keywords: data.keywords,
-    alternates: { canonical: "/chin-surgery" },
+    alternates: {
+      canonical: "/chin-surgery",
+      languages: {
+        fa: "/chin-surgery",
+        en: "/en/services",
+        "x-default": "/chin-surgery",
+      },
+    },
     openGraph: {
       title: data.metaTitle,
       description: data.metaDescription,

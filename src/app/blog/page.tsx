@@ -10,7 +10,14 @@ export const metadata: Metadata = {
   title: { absolute: "وبلاگ آموزشی جراحی فک و صورت | مقالات دکتر حامد کرمانی" },
   description:
     "مقالات تخصصی جراحی فک و صورت: راهنمای کامل ارتوگناتیک، هزینه جراحی فک ۱۴۰۵، جراحی دو فک (بایمکس)، جنیوپلاستی، ایمپلنت دندان و ایمپلنت زایگوماتیک — با پاسخ کوتاه و تعرفه به روز.",
-  alternates: { canonical: "/blog" },
+  alternates: {
+    canonical: "/blog",
+    languages: {
+      fa: "/blog",
+      en: "/en/blog",
+      "x-default": "/blog",
+    },
+  },
   openGraph: {
     images: [{ url: "/images/og-cover.jpg", width: 1200, height: 630 }],
     title: "وبلاگ آموزشی جراحی فک و صورت | دکتر حامد کرمانی",

@@ -10,7 +10,14 @@ export const metadata: Metadata = {
   title: { absolute: "گالری نمونه جراحی های فک و صورت | نتایج قبل و بعد" },
   description:
     "گالری نمونه جراحی های دکتر حامد کرمانی: نتایج قبل و بعد جراحی ارتوگناتیک (یک فک و دو فک)، جنیوپلاستی، بلفاروپلاستی و بازسازی فک با ایمپلنت دندان.",
-  alternates: { canonical: "/gallery" },
+  alternates: {
+    canonical: "/gallery",
+    languages: {
+      fa: "/gallery",
+      en: "/en/about",
+      "x-default": "/gallery",
+    },
+  },
   openGraph: {
     images: [{ url: "/images/og-cover.jpg", width: 1200, height: 630 }],
     title: "گالری نمونه جراحی های فک و صورت | قبل و بعد",

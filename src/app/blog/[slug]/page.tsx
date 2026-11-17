@@ -232,7 +232,7 @@ export default async function BlogArticlePage({ params }: Props) {
                 {views.toLocaleString("fa-IR")} بازدید
               </span>
             ) : null}
-            <span>نویسنده: دکتر حامد کرمانی — متخصص جراحی فک و صورت</span>
+            <span>نویسنده و بازبینی پزشکی: دکتر حامد کرمانی — متخصص جراحی فک و صورت</span>
           </div>
           {/* خلاصه عنوان‌ها — دید اولیه به ساختار مقاله (SXO) */}
           {extras.toc.length ? (

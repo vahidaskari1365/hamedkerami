@@ -11,7 +11,14 @@ export const metadata: Metadata = {
   title: "رزرو نوبت آنلاین مطب | دکتر حامد کرمانی — جراح فک و صورت",
   description:
     "رزرو نوبت آنلاین مطب دکتر حامد کرمانی در تهران؛ انتخاب روز و ساعت از تقویم شمسی و تأیید قطعی با کد پیامکی در کمتر از یک دقیقه. آدرس: بلوار کشاورز، تقاطع جمالزاده — تلفن: ۰۹۳۸-۲۰۸۰۲۷۰",
-  alternates: { canonical: "/appointment" },
+  alternates: {
+    canonical: "/appointment",
+    languages: {
+      fa: "/appointment",
+      en: "/en/contact",
+      "x-default": "/appointment",
+    },
+  },
   openGraph: {
     title: "رزرو نوبت آنلاین مطب دکتر حامد کرمانی",
     description:

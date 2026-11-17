@@ -16,6 +16,11 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: data.keywords,
     alternates: {
       canonical: "/surgery-care",
+      languages: {
+        fa: "/surgery-care",
+        en: "/en/jaw-surgery-in-iran",
+        "x-default": "/surgery-care",
+      },
     },
     openGraph: {
       title: data.metaTitle,
